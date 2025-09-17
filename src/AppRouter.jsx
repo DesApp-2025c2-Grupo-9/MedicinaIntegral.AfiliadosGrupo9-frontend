@@ -1,9 +1,10 @@
 import { Route, Routes } from "react-router-dom";
+import AvatarAfiliado from './components/AvatarAfiliado/AvatarAfiliado';
 
 export function AppRouter() {
   return (
     <Routes>
-      <Route path='/' element={<h1>Hola Mundo</h1>} />
+      <Route path='/' element={<AvatarAfiliado />} /> 
     </Routes>
   );
 }
