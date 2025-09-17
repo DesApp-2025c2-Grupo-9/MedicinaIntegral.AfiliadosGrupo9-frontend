@@ -14,9 +14,14 @@
 
   --color-rojo-alerta: #DC143C;
 
+  /* Shadow */
+  --shadow-custom-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.25);
+
 }
 
 body {
   /* Fonts */
   font-family: 'Inter', sans-serif;
+  color: #3F4041; /* Por default, todo el texto tendrá este color */
+  font-weight: 500; /* Por default, todo el texto será Medium */
 }

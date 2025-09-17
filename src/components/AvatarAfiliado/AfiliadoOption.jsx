@@ -10,7 +10,7 @@ function AfiliadoOption({ afiliado={ nombre: 'John', apellido: 'Doe' } }) {
       'text-menta-600': isActive
     })}>
       <div className='h-4 aspect-square flex items-center justify-center'>{icons.usuario}</div>
-      <p className='text-sm font-medium'>{afiliado.nombre} {afiliado.apellido}</p>
+      <p className='text-sm'>{afiliado.nombre} {afiliado.apellido}</p>
     </div>
   )
 }

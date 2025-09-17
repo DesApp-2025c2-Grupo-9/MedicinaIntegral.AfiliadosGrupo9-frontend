@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import AvatarAfiliado from './components/AvatarAfiliado/AvatarAfiliado';
+import NavButton from './components/NavButton';
 
 export function AppRouter() {
   return (
     <Routes>
-      <Route path='/' element={<AvatarAfiliado />} /> 
+      <Route path='/' element={<NavButton />} />
     </Routes>
   );
 }
