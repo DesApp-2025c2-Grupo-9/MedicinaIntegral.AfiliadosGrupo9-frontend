@@ -2,8 +2,11 @@ import React from 'react'
 import Titulo from './Titulo'
 import SubTitulo from './SubTitulo'
 function ColumnaPrincipal(props) {
+    //Las rows son los campos adicionales, se suman 2 por el título y el subtitulo
+    let rows = props.campos + 2
+    let gridStyle = `grid grid-cls-1 grid-rows-${rows}`
     return (
-        <div className='grid grid-cols-1 grid-rows-6'>
+        <div className= {gridStyle}>
             <Titulo titulo={props.titulo} />
             <SubTitulo subtitulo={props.subtitulo} />
             <p className='text-xs row-start-3'>{props.campo1}</p>
