@@ -21,7 +21,7 @@ function RecetaCard(props) {
 
         <UsuarioActual />
         {/*Según es estado de la receta, varía la sección derecha de la card receta */}
-        {receta.pendiente ? (
+        {receta.estado == 'Pendiente' ? (
           <>
             <BotonEditar posicion={3} />
             <BotonPapelera posicion={4} />
