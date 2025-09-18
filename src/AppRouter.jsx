@@ -1,9 +1,11 @@
 import { Route, Routes } from "react-router-dom";
+import SidebarLink from './components/SidebarLink';
+import { icons } from './utils/icons';
 
 export function AppRouter() {
   return (
     <Routes>
-      <Route path='/' element={<h1>Hola Mundo</h1>} />
+      <Route path='/' element={<SidebarLink icon={icons.cartillaMedica} description='Cartilla Médica' />} />
     </Routes>
   );
 }
