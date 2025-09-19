@@ -1,9 +1,10 @@
 import React from "react";
 
 import ModalObservaciones from "../components/ModalObservaciones/ModalObservaciones";
+import BackButton from "../components/BackButton";
 import { useState } from "react";
 
-function Reintegros() {
+function Pruebas() {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -18,8 +19,9 @@ function Reintegros() {
         Donec consectetur tortor enim, sit amet efficitur sem aliquam in."
         headerText="Volver a Reintegros"
       />
+      <BackButton />
     </>
   );
 }
 
-export default Reintegros;
+export default Pruebas;
