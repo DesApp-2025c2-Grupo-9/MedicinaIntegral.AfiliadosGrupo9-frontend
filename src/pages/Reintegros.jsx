@@ -13,6 +13,8 @@ function Reintegros() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         nombreUsuario="Carolina"
+        observacionesTexto="Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+        Donec consectetur tortor enim, sit amet efficitur sem aliquam in."
       />
     </>
   );

@@ -1,27 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-@import 'tailwindcss';
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
 
 @theme {
   /* Colours */
-  --color-negro-principal: #3F4041;
+  --color-negro-principal: #3f4041;
   --color-blanco-principal: #ffffff;
+  --color-fondo-documento: #eeffed;
 
   --color-gris-placeholder: #858585;
-  --color-gris-border: #CECECE;
+  --color-gris-border: #cecece;
+  --color-menta-100: #c4ffc4;
+  --color-menta-200: #89ff89;
+  --color-menta-600: #00ab01;
 
-  --color-menta-200: #89FF89;
-  --color-menta-600: #00AB01;
-
-  --color-rojo-alerta: #DC143C;
+  --color-rojo-alerta: #dc143c;
 
   /* Shadow */
   --shadow-custom-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.25);
-
 }
 
 body {
   /* Fonts */
-  font-family: 'Inter', sans-serif;
-  color: #3F4041; /* Por default, todo el texto tendrá este color */
+  font-family: "Inter", sans-serif;
+  color: #3f4041; /* Por default, todo el texto tendrá este color */
   font-weight: 500; /* Por default, todo el texto será Medium */
 }
