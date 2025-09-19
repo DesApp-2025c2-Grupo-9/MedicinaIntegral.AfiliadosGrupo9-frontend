@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import Reintegros from "./pages/Reintegros";
+import Pruebas from "./pages/Pruebas";
 
 export function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<h1>Hola Mundo</h1>} />
-      <Route path="/reintegros" element={<Reintegros />} />
+      <Route path="/pruebas" element={<Pruebas />} />
     </Routes>
   );
 }

@@ -1,10 +1,18 @@
 import { useState } from "react";
 import { icons } from "../../utils/icons";
 import Input from "../Input";
-import NavButton from "../NavButton";
 import UsuarioActual from "../UsuarioActual";
+import Button from "../Button";
+import FechaIcono from "../FechaIcono";
 
-function ModalPrueba({ open, onClose, nombreUsuario, observacionesTexto }) {
+function ModalObservaciones({
+  open,
+  onClose,
+  nombreUsuario,
+  observacionesTexto,
+  headerText = "volver,",
+  fechaEnvio,
+}) {
   const [observaciones, setObservaciones] = useState("");
   const [comentario, setComentario] = useState("");
 
@@ -19,31 +27,28 @@ function ModalPrueba({ open, onClose, nombreUsuario, observacionesTexto }) {
       >
         {/* Header */}
         <div
-          className="flex justify-between items-start p-2  border-[#CECECE] cursor-pointer"
+          className="flex justify-between items-start p-2  border-gris-border cursor-pointer"
           onClick={onClose}
         >
           <div className="flex items-center gap-2">
             <span className="w-4 h-4">{icons.flechaVolver}</span>
-            <span className="font-bold">Volver a Reintegros</span>
+            <span className="font-bold">{headerText}</span>
           </div>
         </div>
 
         {/* Usuario,calendario y observaciones*/}
-        <div className="border border-gray-300 rounded  flex flex-col  bg-white">
+        <div className="border border-gray-300 rounded-lg  flex flex-col  bg-blanco-principal">
           {/* Usuario y calendario */}
           <div
-            className="flex justify-between items-center w-full py-3 px-4 bg-[#C4FFC4] border-b
-           border-[#CECECE] cursor-pointer"
+            className="flex justify-between items-center w-full py-3 px-4 bg-menta-100 border-b
+           border-gris-border"
           >
             <UsuarioActual nombre={nombreUsuario} />
-            <div className="flex items-center gap-2">
-              <span className="w-4 h-4">{icons.calendario}</span>
-              <span className="text-sm">20/09/2025</span>
-            </div>
+            <FechaIcono fecha={fechaEnvio} />
           </div>
 
           {/* Observaciones */}
-          <div className="flex flex-col gap-2 p-3 px-4  bg-blanco-principal rounded border border-gris-border min-h-[128px]">
+          <div className="flex flex-col gap-2 p-3 px-4  bg-blanco-principal rounded  min-h-[128px]">
             <label className="text-base font-bold w-fit select-none">
               Observaciones:
             </label>
@@ -63,18 +68,22 @@ function ModalPrueba({ open, onClose, nombreUsuario, observacionesTexto }) {
         </div>
 
         {/* Botón enviar */}
+
         <div className="flex justify-end">
-          <NavButton
-            description="Enviar"
+          <Button
+            state={comentario ? "active" : "disabled"}
+            disabled={!comentario}
             onClick={() => {
               console.log("Enviar:", { observaciones, comentario });
               onClose();
             }}
-          />
+          >
+            Enviar
+          </Button>
         </div>
       </div>
     </div>
   );
 }
 
-export default ModalPrueba;
+export default ModalObservaciones;
