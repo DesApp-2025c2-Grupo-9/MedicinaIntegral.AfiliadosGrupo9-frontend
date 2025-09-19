@@ -1,7 +1,7 @@
 import React from "react";
-
 import ModalObservaciones from "../components/ModalObservaciones/ModalObservaciones";
 import BackButton from "../components/BackButton";
+import PaginationButtons from "../components/PaginationButtons";
 import { useState } from "react";
 
 function Pruebas() {
@@ -20,6 +20,7 @@ function Pruebas() {
         headerText="Volver a Reintegros"
       />
       <BackButton />
+      <PaginationButtons />
     </>
   );
 }
