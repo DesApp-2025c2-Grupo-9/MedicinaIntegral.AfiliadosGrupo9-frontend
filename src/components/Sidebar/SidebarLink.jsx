@@ -1,5 +1,5 @@
 import { cva } from 'class-variance-authority'
-import { icons } from '../utils/icons'
+import { icons } from '../../utils/icons'
 import { twMerge } from 'tailwind-merge';
 
 const variants = cva([
