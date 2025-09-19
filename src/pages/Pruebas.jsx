@@ -3,7 +3,7 @@ import React from "react";
 import ModalObservaciones from "../components/ModalObservaciones/ModalObservaciones";
 import { useState } from "react";
 
-function Reintegros() {
+function Pruebas() {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -22,4 +22,4 @@ function Reintegros() {
   );
 }
 
-export default Reintegros;
+export default Pruebas;
