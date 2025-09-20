@@ -17,10 +17,10 @@ export function AppRouter() {
         <Route path='/autorizaciones' element={<h1>Autorizaciones.</h1>} />
         <Route path='/cartilla-medica' element={<h1>Cartilla Médica.</h1>} />
       </Route>
+      <Route path='/pruebaCards' element={<PruebaCards/>} /> 
       
       <Route path="/pruebas" element={<Pruebas />} />
 
-      <Route path='pruebaCards' element={<PruebaCards/>} />
     </Routes>
   );
 }

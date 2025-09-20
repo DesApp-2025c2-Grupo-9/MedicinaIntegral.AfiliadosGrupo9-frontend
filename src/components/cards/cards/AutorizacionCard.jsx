@@ -1,43 +1,46 @@
 import BotonEditar from "./cardComponents/BotonEditar";
-import BotonPapelera from './cardComponents/BotonPapelera'
+import BotonPapelera from "./cardComponents/BotonPapelera";
 import BotonObservaciones from "./cardComponents/BotonObservaciones";
-import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal"
+import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal";
 import EstadoVersion1 from "./cardComponents/EstadoVersion1";
 import UsuarioActual from "./cardComponents/UsuarioActual";
-
-
+import MarcoCard from "./cardComponents/MarcoCard";
+import TituloCard from "./cardComponents/TituloCard";
+import SubTituloCard from "./cardComponents/SubTituloCard";
+import CampoInformacion from "./cardComponents/CampoInformacion";
 
 function AutorizacionCard(props) {
-  const autorizacion = props.autorizacion
+  const autorizacion = props.autorizacion;
+  const campos = [
+    `Fecha prevista ${formatFecha(autorizacion.fecha)}`,
+    autorizacion.lugar,
+    `Dias de internación: ${autorizacion.diasInternacion} días`,
+  ];
 
-
-let cardStyle = `grid grid-cols-2 m-3 p-3 bg-white rounded-xl shadow-md border border-gray-200 w-md`
+  let cardStyle = ` grid-cols-2 w-md`;
   return (
-    <div className={cardStyle}>
-      <ColumnaPrincipal
-      titulo = {autorizacion.especialidad}
-      subtitulo = {autorizacion.medico}
-      campo1 = {'Fecha prevista ' + formatFecha(autorizacion.fecha)}
-      campo2 = {autorizacion.lugar}
-      campo3 = {'Dias de internación: ' + autorizacion.diasInternacion + ' días'} 
-      />
+    <MarcoCard estilo={cardStyle}>
+      <ColumnaPrincipal campos={campos.length}>
+        <TituloCard>{autorizacion.especialidad}</TituloCard>
+        <SubTituloCard>{autorizacion.medico}</SubTituloCard>
+        {campos.map((texto, index) => (
+          <CampoInformacion key={index}>{texto}</CampoInformacion>
+        ))}
+      </ColumnaPrincipal>
       <div className="grid grid-rows-4">
-        <UsuarioActual/>
-        <EstadoVersion1 estado = {autorizacion.estado}/>
-        {
-          autorizacion.estado == 'Pendiente' ? (
-            <>
-              <BotonEditar posicion={3}/>
-              <BotonPapelera posicion = {4}/>
-            </>
-          ): <BotonObservaciones/>
-
-        }
-
+        <UsuarioActual />
+        <EstadoVersion1 estado={autorizacion.estado} />
+        {autorizacion.estado == "Pendiente" ? (
+          <>
+            <BotonEditar posicion={3} />
+            <BotonPapelera posicion={4} />
+          </>
+        ) : (
+          <BotonObservaciones />
+        )}
       </div>
-      
-    </div>
-  )
+    </MarcoCard>
+  );
 }
 
 function formatFecha(fecha) {
@@ -45,10 +48,10 @@ function formatFecha(fecha) {
   //Retorna un String para mostrar la fecha al usuario
 
   const dia = String(fecha.getDate()).padStart(2, "0");
-  const mes = String(fecha.getMonth() + 1)
+  const mes = String(fecha.getMonth() + 1);
   const anio = fecha.getFullYear();
 
-  return `${dia}/${mes}/${anio}`
+  return `${dia}/${mes}/${anio}`;
 }
 
-export default AutorizacionCard
+export default AutorizacionCard;

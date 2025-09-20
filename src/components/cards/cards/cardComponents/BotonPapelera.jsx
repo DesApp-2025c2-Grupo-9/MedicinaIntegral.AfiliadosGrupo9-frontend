@@ -1,8 +1,18 @@
 import { icons } from '../../../../utils/icons'
 
-function Papelera(props) {
+const rowClasses = {
+  1: 'row-start-1',
+  2: 'row-start-2',
+  3: 'row-start-3',
+  4: 'row-start-4',
+  5: 'row-start-5',
+  6: 'row-start-6',
+};
+
+function BotonPapelera(props) {
   //Se debe cargar la posición para que quede al final de la card
-  let posicion = `col-start-2 row-start-${props.posicion} justify-items-end`
+  let row = rowClasses[props.posicion]
+  let posicion = `col-start-2 ${row} justify-items-end`
   return (
     <div className={posicion}>
                 <button 
@@ -16,4 +26,4 @@ function Papelera(props) {
   )
 }
 
-export default Papelera
+export default BotonPapelera

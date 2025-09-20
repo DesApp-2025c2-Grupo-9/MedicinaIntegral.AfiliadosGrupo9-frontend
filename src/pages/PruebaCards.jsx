@@ -21,14 +21,14 @@ function PruebaCards() {
     cantidad: '2 cajas',
     presentacion: 'Pastillas',
     detalleMedicamento: '30 unidades por caja',
-    estado: 'Aceptada'
+    estado: 'Aceptado'
   }
   const recetaObservadaRechazada = {
     medicamento: 'Loplac 50mg',
     cantidad: '2 cajas',
     presentacion: 'Pastillas',
     detalleMedicamento: '30 unidades por caja',
-    estado: 'Observada'
+    estado: 'Rechazado'
   }
   const reintegroPendiente ={
     fecha: new Date("1969-12-31T17:00:00"),
@@ -117,7 +117,6 @@ function PruebaCards() {
         <h1>Reintegro Aceptado</h1>
         <ReintegroCard reintegro={reintegroAceptado}/>
       </div>
-
       <div className='col-start-2 row-start-2 border-2 p-2'>
         <h1>Autorización pendiente</h1>
         <AutorizacionCard autorizacion = {autorizacionPendiente}/>

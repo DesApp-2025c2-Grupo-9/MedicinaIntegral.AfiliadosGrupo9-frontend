@@ -5,22 +5,32 @@ import BotonEditar from "./cardComponents/BotonEditar"
 import BotonPapelera from './cardComponents/BotonPapelera'
 import BotonObservaciones from "./cardComponents/BotonObservaciones"
 import EstadoVersion1 from "./cardComponents/EstadoVersion1"
+import MarcoCard from "./cardComponents/MarcoCard"
+import TituloCard from "./cardComponents/TituloCard"
+import SubTituloCard from "./cardComponents/SubTituloCard"
+import CampoInformacion from "./cardComponents/CampoInformacion"
 function ReintegroCard(props) {
   //Estilo de la card
   
-  let cardStyle = `grid grid-cols-2 m-3 p-3 bg-white rounded-xl shadow-md border border-gray-200 w-md`
-  
+  let cardStyle = ` grid-cols-2 w-md`
   
   let reintegro = props.reintegro
+
+  const campos = [
+    `Fecha de la prestación ${formatFecha(reintegro.fecha)}`,
+    reintegro.lugar,
+    reintegro.valor
+  ]
   
-  return (<div className={cardStyle}>
-    <ColumnaPrincipal
-      titulo = {reintegro.especialidad}
-      subtitulo = {reintegro.medico}
-      campo1 = {'Fecha de la prestación ' + formatFecha(reintegro.fecha)}
-      campo2 = {reintegro.lugar}
-      campo3 = {reintegro.valor}
-    />
+  return (<MarcoCard estilo={cardStyle}>
+    <ColumnaPrincipal campos={campos.length}>
+      <TituloCard>{reintegro.especialidad}</TituloCard>
+      <SubTituloCard>{reintegro.medico}</SubTituloCard>
+      {campos.map(
+        (texto, index)=>
+          <CampoInformacion key={index}>{texto}</CampoInformacion>
+      )}
+    </ColumnaPrincipal>
     <div className="grid grid-rows-4">
 
         <UsuarioActual />
@@ -33,7 +43,7 @@ function ReintegroCard(props) {
         ) : <BotonObservaciones/>
         }
       </div>
-  </div>
+  </MarcoCard>
   )
 }
 
