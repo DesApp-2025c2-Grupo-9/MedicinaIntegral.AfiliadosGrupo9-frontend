@@ -9,6 +9,7 @@
 
   --color-gris-placeholder: #858585;
   --color-gris-border: #cecece;
+
   --color-menta-100: #c4ffc4;
   --color-menta-200: #89ff89;
   --color-menta-600: #00ab01;
@@ -20,8 +21,9 @@
 }
 
 body {
-  /* Fonts */
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif; /* Por default, todo el texto tendrá la fuente Inter */
   color: #3f4041; /* Por default, todo el texto tendrá este color */
   font-weight: 500; /* Por default, todo el texto será Medium */
+  background-color: #eeffed;
+  overflow-x: hidden;
 }
