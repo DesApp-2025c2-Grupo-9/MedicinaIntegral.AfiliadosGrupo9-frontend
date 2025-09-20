@@ -1,22 +1,15 @@
-import { useState } from "react";
+import React from "react";
 import { icons } from "../../utils/icons";
-import Input from "../Input";
 import UsuarioActual from "../UsuarioActual";
-import Button from "../Button";
-import FechaIcono from "../FechaIcono";
 
-function ModalObservaciones({
+function ModalSituacionTerapeutica({
   open,
   onClose,
-  nombreUsuario,
   prefix,
-  observacionesTexto,
+  nombreUsuario,
+  diagnosticoTexto,
   headerText = "volver,",
-  fechaEnvio,
 }) {
-  const [observaciones, setObservaciones] = useState("");
-  const [comentario, setComentario] = useState("");
-
   if (!open) return null;
 
   return (
@@ -37,54 +30,29 @@ function ModalObservaciones({
           </div>
         </div>
 
-        {/* Usuario,calendario y observaciones*/}
+        {/* Usuario y situacion terapeutica*/}
         <div className="border border-gray-300 rounded-lg  flex flex-col  bg-blanco-principal">
-          {/* Usuario y calendario */}
+          {/* Usuario*/}
           <div
             className="flex justify-between items-center w-full py-3 px-4 bg-menta-100 border-b
            border-gris-border"
           >
             <UsuarioActual prefix={prefix} nombre={nombreUsuario} />
-            <FechaIcono fecha={fechaEnvio} />
           </div>
 
-          {/* Observaciones */}
+          {/* Diagnóstico principal */}
           <div className="flex flex-col gap-2 p-3 px-4  bg-blanco-principal rounded  min-h-[128px]">
             <label className="text-base font-bold w-fit select-none">
-              Observaciones:
+              Diagnóstico principal:
             </label>
             <p className="text-sm font-medium text-negro-principal">
-              {observacionesTexto || "Sin observaciones"}
+              {diagnosticoTexto || "Sin observaciones"}
             </p>
           </div>
-        </div>
-        {/* Comentario prestador */}
-        <div className="flex flex-col gap-2 rounded  min-h-[128px]">
-          <Input
-            label="Comentario para el prestador:"
-            isTextArea={true}
-            value={comentario}
-            onChange={(e) => setComentario(e.target.value)}
-          />
-        </div>
-
-        {/* Botón enviar */}
-
-        <div className="flex justify-end">
-          <Button
-            state={comentario ? "active" : "disabled"}
-            disabled={!comentario}
-            onClick={() => {
-              console.log("Enviar:", { observaciones, comentario });
-              onClose();
-            }}
-          >
-            Enviar
-          </Button>
         </div>
       </div>
     </div>
   );
 }
 
-export default ModalObservaciones;
+export default ModalSituacionTerapeutica;
