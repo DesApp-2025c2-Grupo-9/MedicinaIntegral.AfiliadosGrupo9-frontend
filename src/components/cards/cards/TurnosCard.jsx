@@ -1,4 +1,3 @@
-import { icons } from '../../../utils/icons'
 import ColumnaPrincipal from './cardComponents/ColumnaPrincipal'
 import BotonPapelera from './cardComponents/BotonPapelera'
 import UsuarioActual from './cardComponents/UsuarioActual'

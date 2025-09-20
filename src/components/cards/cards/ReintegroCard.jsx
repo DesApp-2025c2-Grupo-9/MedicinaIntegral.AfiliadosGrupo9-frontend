@@ -1,3 +1,4 @@
+
 import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal"
 import UsuarioActual from "./cardComponents/UsuarioActual"
 import BotonEditar from "./cardComponents/BotonEditar"

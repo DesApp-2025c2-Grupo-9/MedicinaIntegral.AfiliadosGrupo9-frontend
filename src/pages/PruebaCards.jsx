@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { AutorizacionCard, RecetaCard, ReintegroCard, TurnosCard } from '../components/cards'
 function PruebaCards() {
   const turno = {
@@ -59,6 +60,34 @@ function PruebaCards() {
     formaDePago: 'Efectivo',
     estado: 'Aceptado'
   }
+  const autorizacionPendiente = {
+    especialidad : "Oftalmologia",
+    medico : "Merlina Addams",
+    fecha : new Date("1969-12-31T17:00:00"),
+    lugar : 'Centro Medicina Integral',
+    direccion : 'Arias 2030, Castelar',
+    diasInternacion : 5,
+    estado : 'Pendiente'
+  }
+  const autorizacionObservadoRechazado = {
+    especialidad : "Oftalmologia",
+    medico : "Merlina Addams",
+    fecha : new Date("1969-12-31T17:00:00"),
+    lugar : 'Centro Medicina Integral',
+    direccion : 'Arias 2030, Castelar',
+    diasInternacion : 5,
+    estado : 'Rechazado'
+  }
+  const autorizacionAceptado = {
+    especialidad : "Oftalmologia",
+    medico : "Merlina Addams",
+    fecha : new Date("1969-12-31T17:00:00"),
+    lugar : 'Centro Medicina Integral',
+    direccion : 'Arias 2030, Castelar',
+    diasInternacion : 5,
+    estado : 'Aceptado'
+  }
+
 
 
 
@@ -85,8 +114,20 @@ function PruebaCards() {
         <ReintegroCard reintegro={reintegroPendiente}/>
         <h1>Reintegro rechazado/observado</h1>
         <ReintegroCard reintegro={reintegroObservadoRechazado}/>
-        <h1>ReintegroAceptado</h1>
+        <h1>Reintegro Aceptado</h1>
         <ReintegroCard reintegro={reintegroAceptado}/>
+      </div>
+
+      <div className='col-start-2 row-start-2'>
+        <h1>Autorización pendiente</h1>
+        <AutorizacionCard autorizacion = {autorizacionPendiente}/>
+
+        <h1>Autorización rechazado/observado</h1>
+        <AutorizacionCard autorizacion = {autorizacionObservadoRechazado}/>
+
+        <h1>Autorización Aceptado</h1>
+        <AutorizacionCard autorizacion = {autorizacionAceptado}/>
+
       </div>
     </div>
   )
