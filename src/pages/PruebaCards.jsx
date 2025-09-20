@@ -92,14 +92,14 @@ function PruebaCards() {
 
 
   return (
-    <div className='grid grid-cols-auto grid-rows-2'>
-      <div className='col-start-1'>
+    <div className='grid grid-cols-auto grid-rows-2 '>
+      <div className='col-start-1 border-2 p-2'>
         <h1>Turno "Buscar turnos"</h1>
         <TurnosCard turno={turno}></TurnosCard>
         <h1>Turno "Mis turnos"</h1>
         <TurnosCard turno={turno} paciente={true}></TurnosCard>
       </div>
-      <div className='col-start-2'>
+      <div className='col-start-2 border-2 p-2'>
         <h1>Receta aceptada</h1>
         <RecetaCard receta={recetaAceptada} />
 
@@ -109,7 +109,7 @@ function PruebaCards() {
         <h1>Receta rechazada/observada</h1>
         <RecetaCard receta={recetaObservadaRechazada} />
       </div>
-      <div className='col-start-1 row-start-2'>
+      <div className='col-start-1 row-start-2 border-2 p-2'>
         <h1>Reintegro Pendiente</h1>
         <ReintegroCard reintegro={reintegroPendiente}/>
         <h1>Reintegro rechazado/observado</h1>
@@ -118,7 +118,7 @@ function PruebaCards() {
         <ReintegroCard reintegro={reintegroAceptado}/>
       </div>
 
-      <div className='col-start-2 row-start-2'>
+      <div className='col-start-2 row-start-2 border-2 p-2'>
         <h1>Autorización pendiente</h1>
         <AutorizacionCard autorizacion = {autorizacionPendiente}/>
 

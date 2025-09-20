@@ -1,4 +1,4 @@
-import React from 'react'
+
 import Titulo from './Titulo'
 import SubTitulo from './SubTitulo'
 function ColumnaPrincipal(props) {
