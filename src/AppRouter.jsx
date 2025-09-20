@@ -1,12 +1,22 @@
 import { Route, Routes } from "react-router-dom";
 import Pruebas from "./pages/Pruebas";
-import Topbar from './components/Topbar/Topbar';
+import MainLayout from './layout/MainLayout';
 
 export function AppRouter() {
   return (
     <Routes>
-      <Route path="/" element={<Topbar />} />
+      <Route element={<MainLayout />}>
+        <Route path='/' element={<h1>Inicio.</h1>} />
+        <Route path='/mi-cuenta' element={<h1>Mi cuenta.</h1>} />
+        <Route path='/turnos' element={<h1>Turnos.</h1>} />
+        <Route path='/reintegros' element={<h1>Reintegros.</h1>} />
+        <Route path='/recetas' element={<h1>Recetas.</h1>} />
+        <Route path='/autorizaciones' element={<h1>Autorizaciones.</h1>} />
+        <Route path='/cartilla-medica' element={<h1>Cartilla Médica.</h1>} />
+      </Route>
+      
       <Route path="/pruebas" element={<Pruebas />} />
+
     </Routes>
   );
 }
