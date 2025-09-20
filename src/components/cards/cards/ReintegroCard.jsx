@@ -3,11 +3,12 @@ import UsuarioActual from "./cardComponents/UsuarioActual";
 import BotonEditar from "./cardComponents/BotonEditar";
 import BotonPapelera from "./cardComponents/BotonPapelera";
 import BotonObservaciones from "./cardComponents/BotonObservaciones";
-import EstadoVersion1 from "./cardComponents/EstadoVersion1";
+import EstadoCard from "./cardComponents/EstadoCard";
 import MarcoCard from "./cardComponents/MarcoCard";
 import TituloCard from "./cardComponents/TituloCard";
 import SubTituloCard from "./cardComponents/SubTituloCard";
 import CampoInformacion from "./cardComponents/CampoInformacion";
+import TipoDeTramite from "./cardComponents/TipoDeTramite";
 function ReintegroCard(props) {
   //Estilo de la card
 
@@ -21,26 +22,34 @@ function ReintegroCard(props) {
     reintegro.valor,
   ];
 
+  console.log(props.dashboard)
   return (
     <MarcoCard estilo={cardStyle}>
       <ColumnaPrincipal campos={campos.length}>
         <TituloCard>{reintegro.especialidad}</TituloCard>
-        <SubTituloCard>{reintegro.medico}</SubTituloCard>
+        <SubTituloCard>Dr. {reintegro.medico}</SubTituloCard>
         {campos.map((texto, index) => (
           <CampoInformacion key={index}>{texto}</CampoInformacion>
         ))}
       </ColumnaPrincipal>
-      <div className="grid grid-rows-4">
-        <UsuarioActual />
-        <EstadoVersion1 estado={reintegro.estado} />
-        {reintegro.estado == "Pendiente" ? (
-          <>
-            <BotonEditar posicion={3} />
-            <BotonPapelera posicion={4} />
-          </>
-        ) : (
-          <BotonObservaciones />
-        )}
+      {/**Columna dinámica con opciones o información del trámite */}
+      <div className="grid grid-rows-4 justify-items-end">
+          <EstadoCard estado = {reintegro.estado}/>{/*El estilo del estado es dinámico si está o no en el dashboard*/}
+        {props.dashboard ? (//Si es card de dashboard mostrar el tipo de tramite
+          <TipoDeTramite tipo = {'Reintegro'}/>
+        ):
+        <>
+          <UsuarioActual />
+          {reintegro.estado == "Pendiente" ? (
+            <>
+              <BotonEditar posicion={3} />
+              <BotonPapelera posicion={4} />
+            </>
+          ) : (
+            <BotonObservaciones />
+          )}
+        </>
+        }
       </div>
     </MarcoCard>
   );

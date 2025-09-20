@@ -120,12 +120,18 @@ function PruebaCards() {
       <div className='col-start-2 row-start-2 border-2 p-2'>
         <h1>Autorización pendiente</h1>
         <AutorizacionCard autorizacion = {autorizacionPendiente}/>
-
         <h1>Autorización rechazado/observado</h1>
         <AutorizacionCard autorizacion = {autorizacionObservadoRechazado}/>
-
         <h1>Autorización Aceptado</h1>
         <AutorizacionCard autorizacion = {autorizacionAceptado}/>
+      </div>
+      <div className='col-start-1 col-end-3 row-start 3 p-2'>
+        <h1>Receta aceptada</h1>
+        <RecetaCard receta={recetaAceptada} />
+        <h1>Reintegro rechazado/observado</h1>
+        <ReintegroCard reintegro={reintegroObservadoRechazado} dashboard = {true}/>
+        <h1>Autorización pendiente</h1>
+        <AutorizacionCard autorizacion = {autorizacionPendiente}/>
 
       </div>
     </div>

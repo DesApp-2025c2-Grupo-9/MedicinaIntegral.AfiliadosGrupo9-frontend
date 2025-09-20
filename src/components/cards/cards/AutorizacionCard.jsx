@@ -2,7 +2,7 @@ import BotonEditar from "./cardComponents/BotonEditar";
 import BotonPapelera from "./cardComponents/BotonPapelera";
 import BotonObservaciones from "./cardComponents/BotonObservaciones";
 import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal";
-import EstadoVersion1 from "./cardComponents/EstadoVersion1";
+import EstadoVersion1 from "./cardComponents/EstadoCard";
 import UsuarioActual from "./cardComponents/UsuarioActual";
 import MarcoCard from "./cardComponents/MarcoCard";
 import TituloCard from "./cardComponents/TituloCard";
@@ -17,12 +17,12 @@ function AutorizacionCard(props) {
     `Dias de internación: ${autorizacion.diasInternacion} días`,
   ];
 
-  let cardStyle = ` grid-cols-2 w-md`;
+  let cardStyle = `grid-cols-2 w-md`;
   return (
     <MarcoCard estilo={cardStyle}>
       <ColumnaPrincipal campos={campos.length}>
         <TituloCard>{autorizacion.especialidad}</TituloCard>
-        <SubTituloCard>{autorizacion.medico}</SubTituloCard>
+        <SubTituloCard>Dr. {autorizacion.medico}</SubTituloCard>
         {campos.map((texto, index) => (
           <CampoInformacion key={index}>{texto}</CampoInformacion>
         ))}

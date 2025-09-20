@@ -1,4 +1,4 @@
-function EstadoVersion1(props) {
+function EstadoCard(props) {
   return (
     <div className="col-start-2 row-start-2 justify-items-end text-xs">
       {props.estado == "Aceptado" ? (
@@ -18,4 +18,4 @@ function EstadoVersion1(props) {
   );
 }
 
-export default EstadoVersion1;
+export default EstadoCard;

@@ -7,12 +7,12 @@ import TituloCard from "./cardComponents/TituloCard";
 import SubTituloCard from "./cardComponents/SubTituloCard";
 import CampoInformacion from "./cardComponents/CampoInformacion";
 import MarcoCard from "./cardComponents/MarcoCard";
-import EstadoVersion1 from "./cardComponents/EstadoVersion1";
+import EstadoVersion1 from "./cardComponents/EstadoCard";
 
 function RecetaCard(props) {
   let receta = props.receta;
   //Los campos que se van a cargar del medicamento
-  const campos = [receta.presentacion, receta.detalleMedicamento];
+  const campos = [`Presentación: ${receta.presentacion}`, receta.detalleMedicamento];
   const cardStyle = "grid-cols-2 max-w-md min-w-sm";
 
   return (
