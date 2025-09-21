@@ -5,11 +5,13 @@ import PaginationButtons from "../components/PaginationButtons";
 import TwoButtons from "../components/TwoButtons";
 import { useState } from "react";
 import ModalSituacionTerapeutica from "../components/ModalSituacionTerapeutica/ModalSituacionTerapeutica";
-import DropdownFamiliar from "../components/ModalModificacionRecetas/DropDownFamiliar";
+import DropdownFamiliar from "../components/ModalModificacionReceta/DropDownFamiliar";
+import ModalModificacionReceta from "../components/ModalModificacionReceta/ModalModificacionReceta";
 
 function Pruebas() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalSituacionOpen, setModalSituacionOpen] = useState(false);
+  const [modalOpenRecetas, setModalOpenRecetas] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
   const familiares = [
@@ -22,6 +24,7 @@ function Pruebas() {
     <>
       <h2>Prueba Dropdown</h2>
       <DropdownFamiliar
+        label={"Modificar solicitud de Receta"}
         familiares={familiares}
         value={selectedUser?.id}
         onChange={(id) => {
@@ -40,6 +43,9 @@ function Pruebas() {
       </button>
       <button onClick={() => setModalSituacionOpen(true)}>
         Abrir Modal Situación Terapéutica
+      </button>
+      <button onClick={() => setModalOpenRecetas(true)}>
+        Abrir modal recetas
       </button>
 
       <ModalObservaciones
@@ -71,6 +77,19 @@ function Pruebas() {
         prefix="Situación terapéutica,"
         diagnosticoTexto="Diabetes tipo 2"
         headerText="Volver a Mi cuenta"
+      />
+
+      <ModalModificacionReceta
+        open={modalOpenRecetas}
+        onClose={() => setModalOpenRecetas(false)}
+        label="Para afiliado:"
+        familiares={familiares}
+        headerText="Modificar solicitud de Receta"
+        value={selectedUser?.id}
+        onChange={(id) => {
+          const user = familiares.find((f) => f.id === id);
+          setSelectedUser(user);
+        }}
       />
     </>
   );
