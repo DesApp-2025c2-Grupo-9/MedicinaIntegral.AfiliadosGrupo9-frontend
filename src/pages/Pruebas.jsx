@@ -5,13 +5,36 @@ import PaginationButtons from "../components/PaginationButtons";
 import TwoButtons from "../components/TwoButtons";
 import { useState } from "react";
 import ModalSituacionTerapeutica from "../components/ModalSituacionTerapeutica/ModalSituacionTerapeutica";
+import DropdownFamiliar from "../components/ModalModificacionRecetas/DropDownFamiliar";
 
 function Pruebas() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalSituacionOpen, setModalSituacionOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
+  const familiares = [
+    { id: 1, nombre: "Carolina", apellido: "Benitez" },
+    { id: 2, nombre: "Juan", apellido: "Perez" },
+    { id: 3, nombre: "Ana", apellido: "Gomez" },
+    { id: 4, nombre: "Luis", apellido: "Rodriguez" },
+  ];
   return (
     <>
+      <h2>Prueba Dropdown</h2>
+      <DropdownFamiliar
+        familiares={familiares}
+        value={selectedUser?.id}
+        onChange={(id) => {
+          const user = familiares.find((f) => f.id === id);
+          setSelectedUser(user);
+        }}
+      />
+
+      {selectedUser && (
+        <p>
+          Seleccionado: {selectedUser.nombre} {selectedUser.apellido}
+        </p>
+      )}
       <button onClick={() => setModalOpen(true)}>
         Abrir Modal Observaciones
       </button>
