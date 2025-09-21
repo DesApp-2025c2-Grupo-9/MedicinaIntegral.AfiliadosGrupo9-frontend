@@ -2,12 +2,13 @@ import BotonEditar from "./cardComponents/BotonEditar";
 import BotonPapelera from "./cardComponents/BotonPapelera";
 import BotonObservaciones from "./cardComponents/BotonObservaciones";
 import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal";
-import EstadoVersion1 from "./cardComponents/EstadoCard";
+import EstadoCard from "./cardComponents/EstadoCard";
 import UsuarioActual from "./cardComponents/UsuarioActual";
 import MarcoCard from "./cardComponents/MarcoCard";
 import TituloCard from "./cardComponents/TituloCard";
 import SubTituloCard from "./cardComponents/SubTituloCard";
 import CampoInformacion from "./cardComponents/CampoInformacion";
+import TipoDeTramite from "./cardComponents/TipoDeTramite";
 
 function AutorizacionCard(props) {
   const autorizacion = props.autorizacion;
@@ -27,17 +28,24 @@ function AutorizacionCard(props) {
           <CampoInformacion key={index}>{texto}</CampoInformacion>
         ))}
       </ColumnaPrincipal>
-      <div className="grid grid-rows-4">
-        <UsuarioActual />
-        <EstadoVersion1 estado={autorizacion.estado} />
-        {autorizacion.estado == "Pendiente" ? (
-          <>
-            <BotonEditar posicion={3} />
-            <BotonPapelera posicion={4} />
-          </>
-        ) : (
-          <BotonObservaciones />
-        )}
+      <div className="grid grid-rows-4 justify-items-end">
+        <EstadoCard estado={autorizacion.estado} dashboard={props.dashboard} />
+        {//Si es card de dashboard
+          props.dashboard ? (<>
+            <TipoDeTramite tipo={'Autorización'} />
+          </>) ://Si no es de dashboard
+            <>
+              <UsuarioActual />
+              {autorizacion.estado == "Pendiente" ? (
+                <>
+                  <BotonEditar posicion={3} />
+                  <BotonPapelera posicion={4} />
+                </>
+              ) : (
+                <BotonObservaciones />
+              )}
+            </>
+        }
       </div>
     </MarcoCard>
   );

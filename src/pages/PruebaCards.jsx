@@ -127,11 +127,11 @@ function PruebaCards() {
       </div>
       <div className='col-start-1 col-end-3 row-start 3 p-2'>
         <h1>Receta aceptada</h1>
-        <RecetaCard receta={recetaAceptada} />
+        <RecetaCard receta={recetaAceptada} dashboard={true} />
         <h1>Reintegro rechazado/observado</h1>
         <ReintegroCard reintegro={reintegroObservadoRechazado} dashboard = {true}/>
         <h1>Autorización pendiente</h1>
-        <AutorizacionCard autorizacion = {autorizacionPendiente}/>
+        <AutorizacionCard autorizacion = {autorizacionPendiente} dashboard = {true}/>
 
       </div>
     </div>

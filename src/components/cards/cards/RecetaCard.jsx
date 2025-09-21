@@ -7,7 +7,8 @@ import TituloCard from "./cardComponents/TituloCard";
 import SubTituloCard from "./cardComponents/SubTituloCard";
 import CampoInformacion from "./cardComponents/CampoInformacion";
 import MarcoCard from "./cardComponents/MarcoCard";
-import EstadoVersion1 from "./cardComponents/EstadoCard";
+import EstadoCard from "./cardComponents/EstadoCard";
+import TipoDeTramite from "./cardComponents/TipoDeTramite";
 
 function RecetaCard(props) {
   let receta = props.receta;
@@ -26,9 +27,23 @@ function RecetaCard(props) {
           <CampoInformacion key={index}>{texto}</CampoInformacion>
         ))}
       </ColumnaPrincipal>
-      <div className="grid grid-rows-4">
-        <UsuarioActual />
-        <EstadoVersion1 estado={receta.estado} />
+      <div className="grid grid-rows-4 justify-items-end">
+        <EstadoCard estado={receta.estado} dashboard={props.dashboard} />
+        {
+          props.dashboard ? (//Si es card de dashboard
+            <TipoDeTramite tipo={'Receta'} />
+          ) : <>{/**Si no es de dashboard */}
+            <UsuarioActual />
+            {receta.estado == "Pendiente" ? (
+              <>
+                <BotonEditar posicion={campos.length + 1} />
+                <BotonPapelera posicion={campos.length + 2} />
+              </>
+            ) : (
+              <BotonObservaciones />
+            )}
+          </>
+        }
         {/*Según es estado de la receta, varía la sección derecha de la card receta */}
         {receta.estado == "Pendiente" ? (
           <>
