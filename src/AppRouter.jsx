@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import Pruebas from "./pages/Pruebas";
 import MainLayout from './layout/MainLayout';
 import SectionTitle from './components/SectionTitle'
+import PruebaCards from "./pages/PruebaCards";
+
 
 export function AppRouter() {
   return (
@@ -15,6 +17,7 @@ export function AppRouter() {
         <Route path='/autorizaciones' element={<h1>Autorizaciones.</h1>} />
         <Route path='/cartilla-medica' element={<h1>Cartilla Médica.</h1>} />
       </Route>
+      <Route path='/pruebaCards' element={<PruebaCards/>} /> 
       
       <Route path="/pruebas" element={<Pruebas />} />
 
