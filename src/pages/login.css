@@ -1,0 +1,151 @@
+.login-page * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+.login-page .login-wrapper {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f2f2f2;
+  padding: 0px 60px 0 0px;
+  
+  gap: 60px; /* espacio entre imagen y formulario */
+}
+
+
+.login-page .bienvenida {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+
+
+.login-page .image-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+
+.login-page .image-section img {
+  width: 100%;
+  max-height: 100vh; 
+  object-fit:cover;
+  border-radius: 2px;
+  padding-top: 0%;
+  padding-bottom: 0%;
+  
+}
+
+.login-page .login-container { /*form*/
+  flex: 1;
+  max-width: 350px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  
+  
+}
+
+.login-page .login-container h2 {
+  text-align: left;
+  width: 100%;
+  margin-left: 30px;
+  padding-left: 0;
+}
+
+
+/*--------------------------------------*/
+.login-page input {
+  width: 90%; /* achica los inputs */
+  padding: 8px;
+  margin: 8px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.login-page form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra horizontalmente los inputs */
+  
+}
+
+
+.login-page button {
+  width: 90%;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  
+}
+
+.login-page button:hover {
+  background: #0056b3;
+}
+
+.login-page .error {
+  color: red;
+  font-size: 14px;
+}
+
+.login-page .footer {
+  margin-top: 20px;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+
+@media (max-width: 768px) {
+  .login-page .login-wrapper {
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+    height: auto; /* se acomoda verticalmente */
+  }
+
+  .login-page .image-section,
+  .login-container {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+  }
+
+ .login-page .image-section img {
+    max-height: 250px;
+  }
+}
+
+/*este es el alerta*/
+.login-page .swal-title-small {
+  font-size: 20px;
+}
+
+.login-page .swal-popup-small {
+  padding: 1em;
+}
+
+.login-page .swal-button-small {
+  font-size: 14px;
+  padding: 6px 12px;
+  background: #007bff;
+  color: white;
+}
+
+.login-page .swal-button-small:hover {
+  background: #0056b3;
+}
+

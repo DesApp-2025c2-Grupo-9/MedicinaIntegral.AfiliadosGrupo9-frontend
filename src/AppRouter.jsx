@@ -4,6 +4,9 @@ import MainLayout from './layout/MainLayout';
 import SectionTitle from './components/SectionTitle'
 import PruebaCards from "./pages/PruebaCards";
 import PreLayout from './layout/PreLayout';
+import Login from './pages/Login';
+import Register from './pages/Register';
+
 
 
 export function AppRouter() {
@@ -12,12 +15,12 @@ export function AppRouter() {
 
       {/* Rutas públicas */}
       <Route element={<PreLayout />} >
-        <Route path='/register' element={<h1>Ruta /register</h1>} />
-        <Route path='/login' element={<h1>Ruta /login</h1>} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/login' element={<Login />} />
       </Route>
 
       {/* Rutas protegidas */}
-      <Route element={<MainLayout />}>
+      <Route element={<MainLayout />}> 
         <Route path='/' element={<SectionTitle text={"Inicio"}/>} /> 
         <Route path='/mi-cuenta' element={<h1>Mi cuenta.</h1>} />
         <Route path='/turnos' element={<h1>Turnos.</h1>} />
