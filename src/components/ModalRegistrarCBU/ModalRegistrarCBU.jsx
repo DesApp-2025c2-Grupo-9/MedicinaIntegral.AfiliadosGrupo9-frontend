@@ -7,10 +7,9 @@ function ModalRegistrarCBU() {
     const [isOpen, setIsOpen] = useState(true);
     const [registro, setRegistro] = useState({ nroCBU:"nroCBU", tipoDeCuenta:"tipoDeCuenta", cuilOCuit:"cuilOCuit", nombre:"nombre", apellido:"apellido" })
 
-    const handleConfirmar = (e) => {
+    const handleConfirmar = () => {
         // Guardar datos en la base de datos..
         setIsOpen(false);  // Cierro el modal
-        console.log(e.target)
     }
 
     const handleChange = (e) => {
@@ -35,9 +34,9 @@ function ModalRegistrarCBU() {
                                 <div className='flex self-stretch flex-col justify-end items-start gap-2'>
                                     <label htmlFor="tipoDeCuenta" className="text-base font-bold w-fit select-none">Tipo de cuenta</label>
                                     <select className="outline-none border border-slate-300 rounded-lg h-fit p-3 min-w-40 w-full" name="tipoDeCuenta" id='tipoDeCuenta' onChange={handleChange}>
-                                        <option value="Cuenta corriente">Cuenta corriente</option>
-                                        <option value="Caja de ahorro">Caja de ahorro</option>
-                                        <option value="Cuenta sueldo">Cuenta sueldo</option>
+                                        <option className="py-2 pl-3" value="Cuenta corriente">Cuenta corriente</option>
+                                        <option className="py-2 pl-3" value="Caja de ahorro">Caja de ahorro</option>
+                                        <option className="py-2 pl-3" value="Cuenta sueldo">Cuenta sueldo</option>
                                     </select>
                                 </div>
                                 <Input id={"nombre"} label={"Nombre"} placeholder="Ingresar nombre" onChange={handleChange} />

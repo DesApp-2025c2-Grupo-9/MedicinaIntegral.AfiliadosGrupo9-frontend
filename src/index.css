@@ -27,3 +27,40 @@ body {
   background-color: #eeffed;
   overflow-x: hidden;
 }
+
+
+/* Estilos para los elementos select del formulario */
+select,
+::picker(select) {
+  appearance: base-select;
+}
+
+select::picker-icon {
+  transition: 0.4s rotate;
+}
+
+select:open::picker-icon {
+  rotate: 180deg;
+}
+
+::picker(select) {
+  border: 1px solid #CECECE;
+  top: calc(anchor(bottom) + 3px);
+  border-radius: 8px;
+}
+
+option::checkmark {
+  display: none;
+}
+
+option {
+  color: var(--color-negro-principal);
+}
+
+option:checked {
+  font-weight: bold;
+}
+
+select option .text {
+  width: inherit;
+}
