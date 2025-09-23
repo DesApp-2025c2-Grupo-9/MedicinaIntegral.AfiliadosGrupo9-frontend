@@ -1,8 +1,11 @@
 import { icons } from '../../utils/icons';
+import { useNavigate } from 'react-router-dom';
 
 function LogoutButton() {
+  const navigate = useNavigate();
   const handleClick = () => {
     console.log('Sesión cerrada.');
+    navigate('/login');
   }
 
   return (

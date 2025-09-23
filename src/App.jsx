@@ -1,10 +1,18 @@
 import { BrowserRouter } from "react-router-dom";
 import { AppRouter } from "./AppRouter";
+import { UserProvider } from './context/UserContext';
 
-export function App() {
+
+function App() {
   return (
     <BrowserRouter>
-      <AppRouter />
+      <UserProvider>
+        <AppRouter />
+      </UserProvider>
     </BrowserRouter>
-  )
+  );
 }
+
+export default App;
+
+
