@@ -33,7 +33,7 @@ function NavButton({
       <div className="flex w-4 aspect-square flex-col justify-center items-center">
         {icon}
       </div>
-      <p className="text-center text-sm">{description}</p>
+      <p className="text-center text-responsive">{description}</p>
     </div>
   );
 }

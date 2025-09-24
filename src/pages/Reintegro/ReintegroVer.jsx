@@ -3,6 +3,7 @@ import PreLayoutTramites from "../../layout/PreLayoutTramites";
 import TwoNavButtons from "../../components/TwoNavButtons";
 import { ReintegroCard } from "../../components/cards";
 import { icons } from "../../utils/icons";
+import PaginationButtons from "../../components/PaginationButtons";
 
 const reintegrosFake = [
   {
@@ -105,8 +106,10 @@ function ReintegroVer() {
     return true;
   });
 
+  const reintegrosMostrados = reintegrosFiltrados.slice(0, 9);
+
   return (
-    <div className="w-full">
+    <div className="flex flex-col min-h-screen">
       <PreLayoutTramites
         title="Reintegros"
         showFilter={true}
@@ -120,17 +123,17 @@ function ReintegroVer() {
         }
         onFilterChange={handleFiltroChange}
       >
-        <div
-          className="grid gap-6 mt-4 w-full"
-          style={{
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-          }}
-        >
-          {reintegrosFiltrados.map((r) => (
-            <ReintegroCard key={r.id} reintegro={r} />
-          ))}
+        <div className="flex-1 flex items-center justify-center">
+          <div className="grid gri-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
+            {reintegrosMostrados.map((r) => (
+              <ReintegroCard key={r.id} reintegro={r} />
+            ))}
+          </div>
         </div>
       </PreLayoutTramites>
+      <div className=" flex justify-end p-3 ">
+        <PaginationButtons />
+      </div>
     </div>
   );
 }
