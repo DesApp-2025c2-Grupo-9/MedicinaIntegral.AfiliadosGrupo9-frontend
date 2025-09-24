@@ -1,5 +1,6 @@
 import { icons } from '../utils/icons';
 import { cva } from 'class-variance-authority';
+import { NavLink } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 
 const variants = cva([
@@ -16,14 +17,14 @@ const variants = cva([
   }
 })
 
-function NavButton({ icon=icons.inicio, description='Description' }) {
+function NavButton({ icon=icons.inicio, description='Description', path='/' }) {
   const isActive = false; // Basándonos en la URL actual, definiremos el valor de isActive
 
   return (
-    <div className={twMerge(variants({ state: isActive ? 'active' : 'idle' }))}>
+    <NavLink to={path} className={twMerge(variants({ state: isActive ? 'active' : 'idle' }))}>
       <div className='flex w-4 aspect-square flex-col justify-center items-center'>{icon}</div>
       <p className='text-center text-sm'>{description}</p>
-    </div>
+    </NavLink>
   )
 }
 export default NavButton

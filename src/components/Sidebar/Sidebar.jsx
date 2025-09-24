@@ -4,7 +4,7 @@ import NavLinks from './NavLinks'
 
 function Sidebar({ className }) {
   return (
-    <div className={clsx('flex w-59 p-10 pr-0 flex-col justify-between items-start border border-gris-border bg-blanco-principal rounded-lg shadow-custom-shadow', className, {
+    <div className={clsx('flex min-w-59 p-10 pr-0 flex-col justify-between items-start border border-gris-border bg-blanco-principal rounded-lg shadow-custom-shadow', className, {
       'h-dvh': !className
     })}>
       <NavLinks />

@@ -18,7 +18,7 @@ const variants = cva(
   {
     variants: {
       state: {
-        active: [""],
+        active: ["cursor-pointer"],
         disabled: [""],
       },
       style: {

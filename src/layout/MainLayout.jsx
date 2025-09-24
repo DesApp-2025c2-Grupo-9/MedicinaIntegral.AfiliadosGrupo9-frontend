@@ -7,9 +7,9 @@ function MainLayout() {
     <>
       <Topbar className='mb-5' />
 
-      <div className='flex gap-5 w-dvw'>
+      <div className='flex gap-5 w-dvw lg:pr-10'>
         <Sidebar className='h-[calc(100dvh-81px)] hidden lg:flex' />
-        <div className='px-4 lg:px-0'>
+        <div className='px-4 lg:px-0 w-full'>
           <Outlet />
         </div>
       </div>
