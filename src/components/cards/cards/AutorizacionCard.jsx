@@ -18,10 +18,10 @@ function AutorizacionCard(props) {
     `Dias de internación: ${autorizacion.diasInternacion} días`,
   ];
 
-  let cardStyle = `grid-cols-2 w-md`;
+  let cardStyle = `grid-cols-2`;
   return (
     <MarcoCard estilo={cardStyle}>
-      <ColumnaPrincipal campos={campos.length}>
+      <ColumnaPrincipal>
         <TituloCard>{autorizacion.especialidad}</TituloCard>
         <SubTituloCard>Dr. {autorizacion.medico}</SubTituloCard>
         {campos.map((texto, index) => (

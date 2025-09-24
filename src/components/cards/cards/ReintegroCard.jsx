@@ -25,7 +25,7 @@ function ReintegroCard(props) {
   console.log(props.dashboard);
   return (
     <MarcoCard estilo={cardStyle}>
-      <ColumnaPrincipal campos={campos.length}>
+      <ColumnaPrincipal>
         <TituloCard>{reintegro.especialidad}</TituloCard>
         <SubTituloCard>Dr. {reintegro.medico}</SubTituloCard>
         {campos.map((texto, index) => (

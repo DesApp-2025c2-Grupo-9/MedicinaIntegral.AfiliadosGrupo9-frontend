@@ -1,5 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
-import { AutorizacionCard, RecetaCard, ReintegroCard, TurnosCard } from '../components/cards'
+import { AutorizacionCard, RecetaCard, ReintegroCard, TurnosCard, AfiliadoCard, CartillaCard } from '../components/cards'
+
+
 function PruebaCards() {
   const turno = {
     especialidad: "Oftalmología",
@@ -87,6 +89,33 @@ function PruebaCards() {
     diasInternacion : 5,
     estado : 'Aceptado'
   }
+  const afiliado01 = {
+    nroAfiliado : '1234567-01',
+    nombre: 'Jane Doe',
+    planMedico : 'Oro',
+    dni : '13123123',
+    email : 'alguien@example.com',
+    situacionTerapeutica: [
+      'Miopia', 'Astigmatismo'
+    ]
+  }
+  const afiliado02 = {
+    nroAfiliado : '1234567-02',
+    nombre: 'Clara Doe',
+    planMedico : 'Oro',
+    dni : '13123125',
+    email : 'alguien@example.com',
+    situacionTerapeutica: [
+      'Miopia'
+    ]
+  }
+  const prestacion = {
+    medico: 'Merlina Addams',
+    especialidad: 'Oftalmología',
+    lugar: 'Centro Medicina Integral',
+    direccion: 'Arias 2030, Castelar',
+    telefono: '1134759678'
+  }
 
 
 
@@ -125,14 +154,31 @@ function PruebaCards() {
         <h1>Autorización Aceptado</h1>
         <AutorizacionCard autorizacion = {autorizacionAceptado}/>
       </div>
-      <div className='col-start-1 col-end-3 row-start 3 p-2'>
+      <div className='col-start-1 col-end-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1'>
+        <div className='col-start-1'>
         <h1>Receta aceptada</h1>
         <RecetaCard receta={recetaAceptada} dashboard={true} />
+        </div>
+        <div className='col-start-2'>
+
         <h1>Reintegro rechazado/observado</h1>
         <ReintegroCard reintegro={reintegroObservadoRechazado} dashboard = {true}/>
+        </div>
+        <div>
+
         <h1>Autorización pendiente</h1>
         <AutorizacionCard autorizacion = {autorizacionPendiente} dashboard = {true}/>
+        </div>
 
+      </div>
+      <div>
+        <h1>Afiliado Cards</h1>
+        <AfiliadoCard afiliado={afiliado01}/>
+        <AfiliadoCard afiliado={afiliado02}/>
+      </div>
+      <div>
+        <h1>Cartilla card</h1>
+        <CartillaCard prestacion = {prestacion}/>
       </div>
     </div>
   )

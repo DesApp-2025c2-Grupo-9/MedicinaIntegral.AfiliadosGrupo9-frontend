@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import ReintegroVer from "./pages/Reintegro/ReintegroVer";
 import Inicio from "./pages/Inicio";
 import ReintegrosLayout from "./layout/ReintegrosLayout";
+import MiCuenta from "./pages/MiCuenta";
 
 export function AppRouter() {
   return (
@@ -22,7 +23,7 @@ export function AppRouter() {
       {/* Rutas protegidas */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Inicio />} />
-        <Route path="/mi-cuenta" element={<h1>Mi cuenta.</h1>} />
+        <Route path="/mi-cuenta" element={<MiCuenta/>} />
         <Route path="/turnos" element={<h1>Turnos.</h1>} />
 
         <Route path="/reintegros" element={<ReintegrosLayout />}>

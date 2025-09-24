@@ -1,4 +1,3 @@
-import React from "react";
 import { icons } from "../../utils/icons";
 import UsuarioActual from "../UsuarioActual";
 
@@ -8,12 +7,12 @@ function ModalSituacionTerapeutica({
   prefix,
   nombreUsuario,
   diagnosticoTexto,
-  headerText = "volver,",
+  headerText = "Volver",
 }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
       {/* Caja externa */}
       <div
         className="flex flex-col w-[720px] p-3 gap-3 rounded-lg border border-gris-border

@@ -26,13 +26,14 @@ function TurnosCard(props) {
 
   //Estilo de la card
   let columns = paciente ? 2 : 1;
-  let ancho = paciente ? "max-w-md min-w-sm" : "w-xs";
-  let cardStyle = ` grid-cols-${columns} ${ancho}`;
+  //let ancho = paciente ? "max-w-md min-w-sm" : "w-xs";
+  let cardStyle = ` grid-cols-${columns} 
+    `;
 
   return (
     <MarcoCard estilo={cardStyle}>
       {/*columna datos del turno*/}
-      <ColumnaPrincipal campos={campos.length}>
+      <ColumnaPrincipal>
         <TituloCard>{turno.especialidad}</TituloCard>
         <SubTituloCard>{`Dr. ${turno.profesional}`}</SubTituloCard>
         {/* Cargar los campos de la card*/}
@@ -42,7 +43,7 @@ function TurnosCard(props) {
       </ColumnaPrincipal>
       {/*Columna derecha si tiene turno asignado*/}
       {paciente ? (
-        <div className="grid grid-rows-6">
+        <div className="grid grid-rows-4">
           <UsuarioActual />
           <BotonPapelera
             onClick={papeleraOnClick}
