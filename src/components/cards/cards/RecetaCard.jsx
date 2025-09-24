@@ -14,7 +14,7 @@ function RecetaCard(props) {
   let receta = props.receta;
   //Los campos que se van a cargar del medicamento
   const campos = [`Presentación: ${receta.presentacion}`, receta.detalleMedicamento];
-  const cardStyle = "grid-cols-2 max-w-md min-w-sm";
+  const cardStyle = "grid-cols-2";
 
   return (
     //Card

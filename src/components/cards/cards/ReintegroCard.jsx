@@ -12,7 +12,7 @@ import TipoDeTramite from "./cardComponents/TipoDeTramite";
 function ReintegroCard(props) {
   //Estilo de la card
 
-  let cardStyle = ` grid-cols-2 w-md`;
+  let cardStyle = ` grid-cols-2`;
 
   let reintegro = props.reintegro;
 

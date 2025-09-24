@@ -26,8 +26,9 @@ function TurnosCard(props) {
 
   //Estilo de la card
   let columns = paciente ? 2 : 1;
-  let ancho = paciente ? "max-w-md min-w-sm" : "w-xs";
-  let cardStyle = ` grid-cols-${columns} ${ancho}`;
+  //let ancho = paciente ? "max-w-md min-w-sm" : "w-xs";
+  let cardStyle = ` grid-cols-${columns} 
+    `;
 
   return (
     <MarcoCard estilo={cardStyle}>
