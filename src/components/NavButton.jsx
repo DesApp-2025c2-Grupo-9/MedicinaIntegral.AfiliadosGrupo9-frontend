@@ -1,9 +1,6 @@
-
-import { icons } from '../utils/icons';
-import { cva } from 'class-variance-authority';
-import { NavLink } from 'react-router-dom';
-import { twMerge } from 'tailwind-merge';
-
+import { icons } from "../utils/icons";
+import { cva } from "class-variance-authority";
+import { twMerge } from "tailwind-merge";
 
 const variants = cva(
   [
@@ -24,7 +21,6 @@ const variants = cva(
   }
 );
 
-
 function NavButton({
   icon = icons.inicio,
   description = "Description",
@@ -40,7 +36,5 @@ function NavButton({
       <p className="text-center text-responsive">{description}</p>
     </div>
   );
-
-
 }
 export default NavButton;
