@@ -21,7 +21,7 @@ function AutorizacionCard(props) {
   let cardStyle = `grid-cols-2`;
   return (
     <MarcoCard estilo={cardStyle}>
-      <ColumnaPrincipal campos={campos.length}>
+      <ColumnaPrincipal>
         <TituloCard>{autorizacion.especialidad}</TituloCard>
         <SubTituloCard>Dr. {autorizacion.medico}</SubTituloCard>
         {campos.map((texto, index) => (

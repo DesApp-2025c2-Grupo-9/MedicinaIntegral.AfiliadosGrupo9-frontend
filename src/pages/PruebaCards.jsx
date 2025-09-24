@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
-import { AutorizacionCard, RecetaCard, ReintegroCard, TurnosCard, AfiliadoCard } from '../components/cards'
+import { AutorizacionCard, RecetaCard, ReintegroCard, TurnosCard, AfiliadoCard, CartillaCard } from '../components/cards'
+
 
 function PruebaCards() {
   const turno = {
@@ -108,6 +109,13 @@ function PruebaCards() {
       'Miopia'
     ]
   }
+  const prestacion = {
+    medico: 'Merlina Addams',
+    especialidad: 'Oftalmología',
+    lugar: 'Centro Medicina Integral',
+    direccion: 'Arias 2030, Castelar',
+    telefono: '1134759678'
+  }
 
 
 
@@ -167,6 +175,10 @@ function PruebaCards() {
         <h1>Afiliado Cards</h1>
         <AfiliadoCard afiliado={afiliado01}/>
         <AfiliadoCard afiliado={afiliado02}/>
+      </div>
+      <div>
+        <h1>Cartilla card</h1>
+        <CartillaCard prestacion = {prestacion}/>
       </div>
     </div>
   )

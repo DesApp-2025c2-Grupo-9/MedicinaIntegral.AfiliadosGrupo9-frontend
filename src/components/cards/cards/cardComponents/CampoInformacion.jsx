@@ -3,7 +3,7 @@ function CampoInformacion({ children, campo }) {
   //Se suma 2 ya que las primeras 2 row son para Título y Subtiulo de la card
   const numeroDeCampo = campo + 2;
   //Children es el texto que va a contener
-  return <p className={`text-xs row-start-${numeroDeCampo}`}>{children}</p>;
+  return <p className={`text-xs`}>{children}</p>;
 }
 
 export default CampoInformacion;

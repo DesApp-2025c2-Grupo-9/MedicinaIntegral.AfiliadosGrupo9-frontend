@@ -1,6 +1,5 @@
-function ColumnaPrincipal({ children, campos }) {
-  //Las rows son los campos adicionales, se suman 2 por el título y el subtitulo
-  let gridStyle = `grid grid-cls-1 grid-rows-${campos + 2}`;
+function ColumnaPrincipal({ children }) {
+  let gridStyle = `grid`;
   return <div className={gridStyle}>{children}</div>;
 }
 

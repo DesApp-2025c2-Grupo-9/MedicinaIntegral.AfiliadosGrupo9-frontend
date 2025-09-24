@@ -20,7 +20,7 @@ function RecetaCard(props) {
     //Card
     <MarcoCard estilo={cardStyle}>
       {/*Datos de la receta*/}
-      <ColumnaPrincipal campos={campos.length}>
+      <ColumnaPrincipal>
         <TituloCard>{receta.medicamento}</TituloCard>
         <SubTituloCard>{receta.cantidad}</SubTituloCard>
         {campos.map((texto, index) => (
@@ -29,10 +29,13 @@ function RecetaCard(props) {
       </ColumnaPrincipal>
       <div className="grid grid-rows-4 justify-items-end">
         <EstadoCard estado={receta.estado} dashboard={props.dashboard} />
+        {/*Según es estado de la receta, varía la sección derecha de la card receta */}
         {
           props.dashboard ? (//Si es card de dashboard
+            //Mostrar tipo de tramite
             <TipoDeTramite tipo={'Receta'} />
-          ) : <>{/**Si no es de dashboard */}
+          ) : <>
+            {/**Si no es card de dashboard */}
             <UsuarioActual />
             {receta.estado == "Pendiente" ? (
               <>
@@ -42,17 +45,12 @@ function RecetaCard(props) {
             ) : (
               <BotonObservaciones />
             )}
+            {receta.estado !== 'Pendiente' ? (
+              <BotonObservaciones/>
+            ): (<></>)
+            }
           </>
         }
-        {/*Según es estado de la receta, varía la sección derecha de la card receta */}
-        {receta.estado == "Pendiente" ? (
-          <>
-            <BotonEditar posicion={campos.length + 1} />
-            <BotonPapelera posicion={campos.length + 2} />
-          </>
-        ) : (
-          <BotonObservaciones />
-        )}
       </div>
     </MarcoCard>
   );
