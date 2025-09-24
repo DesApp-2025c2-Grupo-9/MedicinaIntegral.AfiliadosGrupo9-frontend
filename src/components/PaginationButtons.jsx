@@ -8,17 +8,21 @@ function PaginationButtons({ onPrev, onNext }) {
       <button
         onClick={onPrev}
         className="flex w-[42px] h-7 justify-center items-center rounded-[20px] border border-gris-border 
-                     bg-blanco-principal "
+                     bg-blanco-principal hover:bg-menta-200 hover:border-menta-200 "
       >
-        <span className="text-gris-border">{icons.volver}</span>
+        <span className="text-gris-border hover:text-blanco-principal">
+          {icons.volver}
+        </span>
       </button>
       {/*Botón next*/}
       <button
         onClick={onNext}
         className="flex w-[42px] h-7 justify-center items-center rounded-[20px] border border-gris-border 
-                     bg-blanco-principal "
+                     bg-blanco-principal hover:bg-menta-200 hover:border-menta-200 "
       >
-        <span className="text-gris-border">{icons.avanzar}</span>
+        <span className="text-gris-border hover:text-blanco-principal">
+          {icons.avanzar}
+        </span>
       </button>
     </div>
   );

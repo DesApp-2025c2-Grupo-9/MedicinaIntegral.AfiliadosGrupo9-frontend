@@ -12,7 +12,7 @@ import TipoDeTramite from "./cardComponents/TipoDeTramite";
 function ReintegroCard(props) {
   //Estilo de la card
 
-  let cardStyle = ` grid-cols-2`;
+  let cardStyle = ` grid-cols-2 max-w-md mx-auto`;
 
   let reintegro = props.reintegro;
 
@@ -22,7 +22,7 @@ function ReintegroCard(props) {
     reintegro.valor,
   ];
 
-  console.log(props.dashboard)
+  console.log(props.dashboard);
   return (
     <MarcoCard estilo={cardStyle}>
       <ColumnaPrincipal>
@@ -34,10 +34,11 @@ function ReintegroCard(props) {
       </ColumnaPrincipal>
       {/**Columna dinámica con opciones o información del trámite */}
       <div className="grid grid-rows-4 justify-items-end">
-        <EstadoCard estado={reintegro.estado} dashboard={props.dashboard} />{/*El estilo del estado es dinámico si está o no en el dashboard*/}
-        {props.dashboard ? (//Si es card de dashboard mostrar el tipo de tramite
-          <TipoDeTramite tipo={'Reintegro'} />
-        ) :
+        <EstadoCard estado={reintegro.estado} dashboard={props.dashboard} />
+        {/*El estilo del estado es dinámico si está o no en el dashboard*/}
+        {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
+          <TipoDeTramite tipo={"Reintegro"} />
+        ) : (
           <>
             <UsuarioActual />
             {reintegro.estado == "Pendiente" ? (
@@ -49,7 +50,7 @@ function ReintegroCard(props) {
               <BotonObservaciones />
             )}
           </>
-        }
+        )}
       </div>
     </MarcoCard>
   );
