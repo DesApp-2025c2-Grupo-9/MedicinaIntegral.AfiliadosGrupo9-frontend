@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
-import { AutorizacionCard, RecetaCard, ReintegroCard, TurnosCard } from '../components/cards'
+import { AutorizacionCard, RecetaCard, ReintegroCard, TurnosCard, AfiliadoCard } from '../components/cards'
+
 function PruebaCards() {
   const turno = {
     especialidad: "Oftalmología",
@@ -87,6 +88,26 @@ function PruebaCards() {
     diasInternacion : 5,
     estado : 'Aceptado'
   }
+  const afiliado01 = {
+    nroAfiliado : '1234567-01',
+    nombre: 'Jane Doe',
+    planMedico : 'Oro',
+    dni : '13123123',
+    email : 'alguien@example.com',
+    situacionTerapeutica: [
+      'Miopia', 'Astigmatismo'
+    ]
+  }
+  const afiliado02 = {
+    nroAfiliado : '1234567-02',
+    nombre: 'Clara Doe',
+    planMedico : 'Oro',
+    dni : '13123125',
+    email : 'alguien@example.com',
+    situacionTerapeutica: [
+      'Miopia'
+    ]
+  }
 
 
 
@@ -141,6 +162,11 @@ function PruebaCards() {
         <AutorizacionCard autorizacion = {autorizacionPendiente} dashboard = {true}/>
         </div>
 
+      </div>
+      <div>
+        <h1>Afiliado Cards</h1>
+        <AfiliadoCard afiliado={afiliado01}/>
+        <AfiliadoCard afiliado={afiliado02}/>
       </div>
     </div>
   )
