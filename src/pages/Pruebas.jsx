@@ -9,12 +9,18 @@ import DropdownFamiliar from "../components/ModalModificacionReceta/DropDownFami
 import ModalModificacionReceta from "../components/ModalModificacionReceta/ModalModificacionReceta";
 import TwoNavButtons from "../components/TwoNavButtons";
 import { icons } from "../utils/icons";
+import PreLayoutTramites from "../layout/PreLayoutTramites";
 
 function Pruebas() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalSituacionOpen, setModalSituacionOpen] = useState(false);
   const [modalOpenRecetas, setModalOpenRecetas] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [filtro, setFiltro] = useState("Todos");
+
+  const handleFiltroChange = (event) => {
+    setFiltro(event.target.value);
+  };
 
   const familiares = [
     { id: 1, nombre: "Carolina", apellido: "Benitez" },
@@ -98,6 +104,19 @@ function Pruebas() {
         firstDescription="Historial de reintegros"
         secondIcon={icons.agregar}
         secondDescription="Solicitar nuevo reintegro"
+      />
+      <PreLayoutTramites
+        title="Reintegros"
+        showFilter={true}
+        leftButtons={
+          <TwoNavButtons
+            firstIcon={icons.reintegros}
+            firstDescription="Historial de reintegros"
+            secondIcon={icons.agregar}
+            secondDescription="Solicitar nuevo reintegro"
+          />
+        }
+        onFilterChange={handleFiltroChange}
       />
     </>
   );
