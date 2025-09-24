@@ -7,6 +7,8 @@ import PreLayout from "./layout/PreLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ReintegroVer from "./pages/Reintegro/ReintegroVer";
+import Inicio from "./pages/Inicio";
+import ReintegrosLayout from "./layout/ReintegrosLayout";
 
 export function AppRouter() {
   return (
@@ -19,10 +21,15 @@ export function AppRouter() {
 
       {/* Rutas protegidas */}
       <Route element={<MainLayout />}>
-        <Route path="/" element={<SectionTitle text={"Inicio"} />} />
+        <Route path="/" element={<Inicio />} />
         <Route path="/mi-cuenta" element={<h1>Mi cuenta.</h1>} />
         <Route path="/turnos" element={<h1>Turnos.</h1>} />
-        <Route path="/reintegros" element={<ReintegroVer />} />
+
+        <Route path="/reintegros" element={<ReintegrosLayout />}>
+          <Route path="ver-reintegro" element={<ReintegroVer />} />
+          <Route path="solicitar-reintegro" element={<p>Solicitar turno</p>} />
+        </Route>
+
         <Route path="/recetas" element={<h1>Recetas.</h1>} />
         <Route path="/autorizaciones" element={<h1>Autorizaciones.</h1>} />
         <Route path="/cartilla-medica" element={<h1>Cartilla Médica.</h1>} />
