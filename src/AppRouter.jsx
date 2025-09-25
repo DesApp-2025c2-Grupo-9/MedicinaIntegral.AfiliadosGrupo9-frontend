@@ -10,6 +10,8 @@ import ReintegroVer from "./pages/Reintegro/ReintegroVer";
 import Inicio from "./pages/Inicio";
 import ReintegrosLayout from "./layout/ReintegrosLayout";
 import MiCuenta from "./pages/MiCuenta";
+import NuevoReintegroForm from './pages/NuevoReintegroForm';
+import DatosFacturaReintegroForm from './pages/DatosFacturaReintegroForm';
 
 export function AppRouter() {
   return (
@@ -26,9 +28,10 @@ export function AppRouter() {
         <Route path="/mi-cuenta" element={<MiCuenta/>} />
         <Route path="/turnos" element={<h1>Turnos.</h1>} />
 
-        <Route path="/reintegros" element={<ReintegrosLayout />}>
-          <Route path="ver-reintegro" element={<ReintegroVer />} />
-          <Route path="solicitar-reintegro" element={<p>Solicitar turno</p>} />
+        <Route path='/reintegros' element={<ReintegrosLayout />}>
+          <Route path='historial-reintegros' element={<i>Historial de reintegros</i>} />
+          <Route path='solicitar-reintegro' element={<NuevoReintegroForm />} />
+          <Route path='datos-factura' element={<DatosFacturaReintegroForm />} />
         </Route>
 
         <Route path="/recetas" element={<h1>Recetas.</h1>} />

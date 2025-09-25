@@ -1,6 +1,6 @@
 function InputContainer({ children }) {
   return (
-    <div className='flex self-stretch items-center gap-4'>
+    <div className='flex flex-col md:flex-row self-stretch items-center gap-4'>
       {children}
     </div>
   )
