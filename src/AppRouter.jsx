@@ -7,6 +7,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Inicio from './pages/Inicio';
 import ReintegrosLayout from './layout/ReintegrosLayout';
+import NuevoReintegroForm from './pages/NuevoReintegroForm';
+import DatosFacturaReintegroForm from './pages/DatosFacturaReintegroForm';
 
 export function AppRouter() {
   return (
@@ -25,11 +27,11 @@ export function AppRouter() {
         <Route path='/turnos' element={<h1>Turnos.</h1>} />
 
         <Route path='/reintegros' element={<ReintegrosLayout />}>
-          <Route index element={<i>Aquí mostrar turnos solicitados</i>} />
-          <Route path='solicitar-reintegro' element={<p>Solicitar turno</p>} />
+          <Route path='historial-reintegros' element={<i>Historial de reintegros</i>} />
+          <Route path='solicitar-reintegro' element={<NuevoReintegroForm />} />
+          <Route path='datos-factura' element={<DatosFacturaReintegroForm />} />
         </Route>
 
-        
         <Route path='/recetas' element={<h1>Recetas.</h1>} />
         <Route path='/autorizaciones' element={<h1>Autorizaciones.</h1>} />
         <Route path='/cartilla-medica' element={<h1>Cartilla Médica.</h1>} />

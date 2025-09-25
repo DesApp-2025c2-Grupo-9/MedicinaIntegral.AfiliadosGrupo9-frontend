@@ -5,7 +5,7 @@ const navLinks = [
   { icon: icons.inicio, description: 'Inicio', path: '/' },
   { icon: icons.usuario, description: 'Mi cuenta', path: '/mi-cuenta' },
   { icon: icons.turnos, description: 'Turnos', path: '/turnos' },
-  { icon: icons.reintegros, description: 'Reintegros', path: '/reintegros' },
+  { icon: icons.reintegros, description: 'Reintegros', path: '/reintegros/historial-reintegros' },
   { icon: icons.recetas, description: 'Recetas', path: '/recetas' },
   { icon: icons.autorizaciones, description: 'Autorizaciones', path: '/autorizaciones' },
   { icon: icons.cartillaMedica, description: 'Cartilla Médica', path: '/cartilla-medica' },
