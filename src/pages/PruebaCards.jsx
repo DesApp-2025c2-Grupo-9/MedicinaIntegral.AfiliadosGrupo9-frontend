@@ -20,8 +20,9 @@ function PruebaCards() {
   }
   const recetaAceptada = {
     medicamento: 'Loplac 50mg',
-    cantidad: '2 cajas',
-    presentacion: 'Pastillas',
+    //Tipo
+    cantidad: 2,
+    presentacion: 'Pastillas',//tipo
     detalleMedicamento: '30 unidades por caja',
     estado: 'Aceptado'
   }
