@@ -39,7 +39,7 @@ function NuevoReintegroForm() {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} className='mb-5'>
+    <Form onSubmit={handleSubmit(onSubmit)} className='mb-5 max-w-211.5'>
       <Select {...register('paraAfiliado')} id='paraAfiliado' label='Para afiliado:' placeholder='Seleccionar afiliado' options={['Carolina Benitez', 'John Doe', 'Jane Doe']} errorMsg={errors.paraAfiliado?.message} />
 
       <InputContainer>

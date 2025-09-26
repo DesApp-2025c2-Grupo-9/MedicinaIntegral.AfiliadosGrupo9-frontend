@@ -16,19 +16,19 @@ function PreLayoutTramites({
         {/* título y botones */}
         <div className="flex flex-col gap-2">
           {/* título  */}
-          <div className="flex items-center gap-3">
+          {/* <div className="flex items-center gap-3">
             <SectionTitle text={title} />
-          </div>
+          </div> */}
           {/* botones  */}
-          <div>{leftButtons}</div>
+          {/* <div>{leftButtons}</div> */}
         </div>
 
         {/* filtro de estados */}
-        {showFilter && (
+        {/* {showFilter && (
           <div>
             <FiltroEstados handleChange={onFilterChange} />
           </div>
-        )}
+        )} */}
       </div>
       {/*contenido restante dinámico*/}
       <div>{children}</div>

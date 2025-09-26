@@ -6,8 +6,6 @@ function MainLayout() {
   return (
     <>
       <Topbar className="mb-5" />
-
-
       <div className='flex lg:gap-5 w-dvw lg:pr-10'>
         <div>
           <Sidebar className='min-h-[calc(100dvh-81px)] h-full hidden lg:flex' />

@@ -29,7 +29,7 @@ export function AppRouter() {
         <Route path="/turnos" element={<h1>Turnos.</h1>} />
 
         <Route path='/reintegros' element={<ReintegrosLayout />}>
-          <Route path='historial-reintegros' element={<i>Historial de reintegros</i>} />
+          <Route path='historial-reintegros' element={<ReintegroVer />} />
           <Route path='solicitar-reintegro' element={<NuevoReintegroForm />} />
           <Route path='datos-factura' element={<DatosFacturaReintegroForm />} />
         </Route>

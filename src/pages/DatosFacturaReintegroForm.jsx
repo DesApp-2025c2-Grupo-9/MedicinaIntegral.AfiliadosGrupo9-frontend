@@ -59,7 +59,7 @@ function DatosFacturaReintegroForm() {
   };
 
   return (
-    <Form legend='Datos de la factura' onSubmit={handleSubmit(onSubmit)} className='mb-5'>
+    <Form legend='Datos de la factura' onSubmit={handleSubmit(onSubmit)} className='max-w-211.5'>
       <InputContainer>
         <Input {...register('fechaFactura')} type='date' id='fechaFactura' label='Fecha:' errorMsg={errors.fechaFactura?.message} />
         <Input {...register('cuit')} type='text' id='cuit' label='CUIT:' placeholder='Ingresar CUIT' errorMsg={errors.cuit?.message} />
