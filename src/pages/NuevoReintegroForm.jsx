@@ -6,7 +6,7 @@ import Select from '../components/Select';
 import InputContainer from '../components/InputContainer';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { useNuevoReintegroStore } from '../stores/nuevoReintegroStore';
+import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
 import { useNavigate } from 'react-router-dom';
 
 const nuevoReintegroSchema = reintegroSchema.pick({

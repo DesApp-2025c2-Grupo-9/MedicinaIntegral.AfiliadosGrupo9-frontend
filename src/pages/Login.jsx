@@ -3,6 +3,7 @@ import './login.css';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import clinica_img from '../assets/img/clinica.webp';
 
 
 const Login = () => {
@@ -47,7 +48,7 @@ const Login = () => {
     <div className="login-page">
     <div className="login-wrapper">
       <div className="image-section">
-        <img src="/clinica.jpg" alt="clinica" />
+        <img src={clinica_img} alt="clinica" />
       </div>
 
       <div className="login-container">

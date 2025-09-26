@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '../components/Input';
 import Select from '../components/Select';
 import Button from '../components/Button';
-import { useNuevoReintegroStore } from '../stores/nuevoReintegroStore';
+import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';

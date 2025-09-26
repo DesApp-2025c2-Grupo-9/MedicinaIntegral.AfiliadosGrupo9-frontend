@@ -16,6 +16,9 @@
 
   --color-rojo-alerta: #dc143c;
 
+  --color-negro-translucido: rgba(0, 0, 0, 0.56);
+  --color-verde-translucido: rgba(0, 171, 1, 0.24);
+
   /* Shadow */
   --shadow-custom-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.25);
 }

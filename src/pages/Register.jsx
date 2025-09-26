@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { UserContext } from '../context/UserContext';
+import { Link } from 'react-router-dom';
+import clinica_img from '../assets/img/clinica.webp';
 
 const Register = () => {
 const [usuario, setUsuario] = useState('');
@@ -40,7 +42,7 @@ return (
     <div className="login-page">
     <div className="login-wrapper">
     <div className="image-section">
-        <img src="/clinica.jpg" alt="clinica" />
+        <img src={clinica_img} alt="clinica" />
     </div>
 
     <div className="login-container">
@@ -71,7 +73,7 @@ return (
         <button type="submit">Registrarse</button>
         </form>
         <div className="footer">
-        ¿Ya tenés cuenta? <a href="/login">Ingresá aquí</a>
+        ¿Ya tenés cuenta? <Link to="/login">Ingresá aquí</Link>
         </div>
     </div>
     </div>
