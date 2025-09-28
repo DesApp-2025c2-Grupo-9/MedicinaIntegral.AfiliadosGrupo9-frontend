@@ -40,43 +40,38 @@ setError('Por favor completá todos los campos');
 
 return (
     <div className="login-page">
-    <div className="login-wrapper">
-    <div className="image-section">
-        <img src={clinica_img} alt="clinica" />
-    </div>
+        <div className="login-wrapper">
+            <div className="image-section">
+                <img src={clinica_img} alt="clinica" />
+            </div>
 
-    <div className="login-container">
-        <h1 className="bienvenida">Registrate</h1>
-        <form onSubmit={handleSubmit}>
-        <h2>Ingrese su número de documento:</h2>
-        <input
-            type="text"
-            placeholder="ej: 12345678"
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-        />
-        <h2>Elija una contraseña:</h2>
-        <input
-            type="password"
-            placeholder="ej: ******"
-            value={clave}
-            onChange={(e) => setClave(e.target.value)}
-        />
-        <h2>Confirme su contraseña:</h2>
-        <input
-            type="password"
-            placeholder="ej: ******"
-            value={confirmarClave}
-            onChange={(e) => setConfirmarClave(e.target.value)}
-        />
-        {error && <p className="error">{error}</p>}
-        <button type="submit">Registrarse</button>
-        </form>
-        <div className="footer">
-        ¿Ya tenés cuenta? <Link to="/login">Ingresá aquí</Link>
+            <div className='login-container'>
+                <div className="login">
+                        <h1 className="bienvenida">Registrate</h1>
+                        <form onSubmit={handleSubmit}>
+                        <h2>Elija una contraseña:</h2>
+                        <input
+                            type="password"
+                            placeholder="ej: ******"
+                            value={clave}
+                            onChange={(e) => setClave(e.target.value)}
+                        />
+                        <h2>Confirme su contraseña:</h2>
+                        <input
+                            type="password"
+                            placeholder="ej: ******"
+                            value={confirmarClave}
+                            onChange={(e) => setConfirmarClave(e.target.value)}
+                        />
+                        {error && <p className="error">{error}</p>}
+                        <button type="submit">Registrarse</button>
+                        </form>
+                        <div className="footer">
+                        ¿Ya tenés cuenta? <span><Link to="/login">Ingresá aquí</Link></span>
+                        </div>
+                    </div>
+            </div>
         </div>
-    </div>
-    </div>
     </div>
 );
 };
