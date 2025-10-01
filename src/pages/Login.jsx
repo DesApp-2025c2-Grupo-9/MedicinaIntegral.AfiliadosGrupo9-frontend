@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import './login.css';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
-
+import clinica_img from '../assets/img/clinica.webp';
 
 const Login = () => {
   const [usuario, setUsuario] = useState('');
@@ -45,36 +45,38 @@ const Login = () => {
 
   return (
     <div className="login-page">
-    <div className="login-wrapper">
-      <div className="image-section">
-        <img src="/clinica.jpg" alt="clinica" />
-      </div>
+      <div className="login-wrapper">
+        <div className="image-section">
+          <img src={clinica_img} alt="clinica" />
+        </div>
 
-      <div className="login-container">
-        <h1 className="bienvenida">Bienvenido</h1>
-        <form onSubmit={handleSubmit}>
-          <h2>Ingrese su número de documento:</h2>
-          <input
-            type="text"
-            placeholder="ej: 12345678"
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-          />
-          <h2>Ingrese su contraseña:</h2>
-          <input
-            type="password"
-            placeholder="ej:******"
-            value={clave}
-            onChange={(e) => setClave(e.target.value)}
-          />
-          {error && <p className="error">{error}</p>}
-          <button type="submit">Ingresar</button>
-        </form>
-        <div className="footer">
-          ¿No tenés cuenta? <Link to="/register">Registrate aquí</Link>
+        <div className="login-container">
+          <div className="login">
+          <h1 className="bienvenida">Bienvenido</h1>
+          <form onSubmit={handleSubmit}>
+            <h2>Ingrese su número de documento:</h2>
+            <input
+              type="text"
+              placeholder="ej: 12345678"
+              value={usuario}
+              onChange={(e) => setUsuario(e.target.value)}
+            />
+            <h2>Ingrese su contraseña:</h2>
+            <input
+              type="password"
+              placeholder="ej:******"
+              value={clave}
+              onChange={(e) => setClave(e.target.value)}
+            />
+            {error && <p className="error">{error}</p>}
+            <button type="submit">Ingresar</button>
+          </form>
+          <div className="footer">
+            ¿No tenés cuenta? <span><Link to="/register">Registrate aquí</Link></span>
+          </div>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };

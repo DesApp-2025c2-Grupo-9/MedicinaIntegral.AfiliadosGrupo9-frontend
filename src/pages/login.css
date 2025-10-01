@@ -4,93 +4,98 @@
   box-sizing: border-box;
 }
 
-
-
 .login-page .login-wrapper {
   display:flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background: #f2f2f2;
-  padding: 0px 60px 0 0px;
-  
-  gap: 60px; /* espacio entre imagen y formulario */
+  padding: 0px 45px 0 0px;
+  gap: 32px;/* espacio entre imagen y formulario */
 }
-
 
 .login-page .bienvenida {
   text-align: center;
   font-size: 24px;
-  margin-bottom: 20px;
+  margin: 20px 0 40px 0;
+  height: fit-content;
   color: #333;
 }
 
-
-
 .login-page .image-section {
-  flex: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
-  
+  width: 90%;
+  height: 100%;
 }
-
 
 .login-page .image-section img {
   width: 100%;
-  max-height: 100vh; 
-  object-fit:cover;
-  border-radius: 2px;
+  height: 100%;
+  object-fit: cover;
   padding-top: 0%;
   padding-bottom: 0%;
-  
 }
 
-.login-page .login-container { /*form*/
-  flex: 1;
-  max-width: 350px;
-  background: white;
+.login-page .login-container {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  height: fit-content;
+}
+
+.login-page .login { /*form*/
+  width: 500px;
+  min-width: 295px;
+  height: 450px;
+  background: #fff ;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  
-  
 }
 
-.login-page .login-container h2 {
-  text-align: left;
-  width: 100%;
-  margin-left: 30px;
+.login-page .login h2, .login input, .login button, .login form {
+  height: fit-content;
+}
+
+.login-page .login h2 {
+ left: 10%;
+  width: fit-content;
   padding-left: 0;
+  position: relative;
+  height: fit-content;
 }
-
 
 /*--------------------------------------*/
 .login-page input {
-  width: 90%; /* achica los inputs */
+  width: 80%; /* achica los inputs */
   padding: 8px;
-  margin: 8px 0;
+  margin: 8px 0px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  outline: none;
+  left: 0;
+  align-self: center; /* centra horizontalmente los inputs */
 }
 
-.login-page form {
+.login-page .login-container form {
+  flex: 1;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* centra horizontalmente los inputs */
-  
+  gap: 6px;
 }
 
-
 .login-page button {
-  width: 90%;
+  width: 80%;
   padding: 10px;
+  margin-top: 20px;
   background: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  
+  align-self: center;
 }
 
 .login-page button:hover {
@@ -104,29 +109,60 @@
 
 .login-page .footer {
   margin-top: 20px;
-  font-size: 12px;
+  font-size: 14px;
   margin-left: 10px;
+  height: fit-content;
+  text-align: center;
 }
+
+
+.login-page .footer span {
+  font-weight: bold;
+  color: #007bff;
+}
+
 
 
 @media (max-width: 768px) {
   .login-page .login-wrapper {
+    background: #fff;
+  }
+
+  .login-page .login-container {
+    align-items: center;
+    width: 100%;
+    margin: 0 20px;
+    background: #fff;
+  }
+
+  .login-page .login-container .login {
+    background: none;
+    box-shadow: none;
+  }
+
+  .login-page .login-wrapper {
     flex-direction: column;
-    padding: 20px;
+    padding: 0px;
     gap: 20px;
-    height: auto; /* se acomoda verticalmente */
+    justify-content: start;
   }
 
   .login-page .image-section,
-  .login-container {
+  .login {
     flex: none;
     width: 100%;
     max-width: 100%;
+    height: fit-content;
   }
 
  .login-page .image-section img {
     max-height: 250px;
   }
+
+  .login-page .login-container form {
+    padding: 0;
+  }
+
 }
 
 /*este es el alerta*/

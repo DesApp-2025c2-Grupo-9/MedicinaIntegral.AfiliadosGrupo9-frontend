@@ -7,9 +7,7 @@ import { useState } from "react";
 import ModalSituacionTerapeutica from "../components/ModalSituacionTerapeutica/ModalSituacionTerapeutica";
 import DropdownFamiliar from "../components/ModalModificacionReceta/DropDownFamiliar";
 import ModalModificacionReceta from "../components/ModalModificacionReceta/ModalModificacionReceta";
-import TwoNavButtons from "../components/TwoNavButtons";
 import { icons } from "../utils/icons";
-import PreLayoutTramites from "../layout/PreLayoutTramites";
 
 function Pruebas() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -98,25 +96,6 @@ function Pruebas() {
           const user = familiares.find((f) => f.id === id);
           setSelectedUser(user);
         }}
-      />
-      <TwoNavButtons
-        firstIcon={icons.reintegros}
-        firstDescription="Historial de reintegros"
-        secondIcon={icons.agregar}
-        secondDescription="Solicitar nuevo reintegro"
-      />
-      <PreLayoutTramites
-        title="Reintegros"
-        showFilter={true}
-        leftButtons={
-          <TwoNavButtons
-            firstIcon={icons.reintegros}
-            firstDescription="Historial de reintegros"
-            secondIcon={icons.agregar}
-            secondDescription="Solicitar nuevo reintegro"
-          />
-        }
-        onFilterChange={handleFiltroChange}
       />
     </>
   );

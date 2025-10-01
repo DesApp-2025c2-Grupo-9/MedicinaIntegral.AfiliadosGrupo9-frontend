@@ -1,9 +1,7 @@
 import { useState } from "react";
-import PreLayoutTramites from "../../layout/PreLayoutTramites";
-import TwoNavButtons from "../../components/TwoNavButtons";
 import { ReintegroCard } from "../../components/cards";
-import { icons } from "../../utils/icons";
 import PaginationButtons from "../../components/PaginationButtons";
+import FiltroEstados from '../../components/FiltroEstados';
 
 const reintegrosFake = [
   {
@@ -98,42 +96,25 @@ function ReintegroVer() {
 
   const reintegrosFiltrados = reintegrosFake.filter((r) => {
     if (filtro === "Todos") return true;
-    if (filtro === "Pendientes de procesamiento")
-      return r.estado === "Pendiente";
+    if (filtro === "Pendientes de procesamiento") return r.estado === "Pendiente";
     if (filtro === "Observados") return r.estado === "Observación";
     if (filtro === "Rechazados última semana") return r.estado === "Rechazado";
     if (filtro === "Aceptados última semana") return r.estado === "Aceptado";
-    return true;
   });
 
   const reintegrosMostrados = reintegrosFiltrados.slice(0, 9);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <PreLayoutTramites
-        title="Reintegros"
-        showFilter={true}
-        leftButtons={
-          <TwoNavButtons
-            firstIcon={icons.reintegros}
-            firstDescription="Historial de reintegros"
-            secondIcon={icons.agregar}
-            secondDescription="Solicitar nuevo reintegro"
-          />
+    <div className='flex flex-col items-end gap-3 relative'>
+      <FiltroEstados handleChange={handleFiltroChange} className='sm:absolute -top-11 mr-auto' />
+      <div className='w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6'>
+        {
+          reintegrosMostrados.map((r) => (
+            <ReintegroCard key={r.id} reintegro={r} />
+          ))
         }
-        onFilterChange={handleFiltroChange}
-      >
-        <div className="flex-1 flex items-center justify-center">
-          <div className="grid gri-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
-            {reintegrosMostrados.map((r) => (
-              <ReintegroCard key={r.id} reintegro={r} />
-            ))}
-          </div>
-        </div>
-      </PreLayoutTramites>
-      <div className=" flex justify-end p-3 ">
-        <PaginationButtons />
       </div>
+      <PaginationButtons />
     </div>
   );
 }

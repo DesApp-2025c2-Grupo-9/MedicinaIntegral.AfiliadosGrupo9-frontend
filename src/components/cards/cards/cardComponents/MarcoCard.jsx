@@ -3,7 +3,7 @@ function MarcoCard({ children, estilo = "" }) {
 
   return (
     <div
-      className={`grid m-3 p-3 bg-white rounded-xl shadow-md border border-gray-200 ${estilo}`}
+      className={`grid m-3 p-3 bg-blanco-principal rounded-xl shadow-custom-shadow border border-gris-border ${estilo}`}
     >
       {children}
     </div>

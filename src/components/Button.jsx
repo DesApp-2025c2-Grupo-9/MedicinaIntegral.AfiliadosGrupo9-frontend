@@ -14,6 +14,7 @@ const variants = cva(
     "rounded-lg",
     "text-base",
     "font-semibold",
+    "min-w-40"
   ],
   {
     variants: {
@@ -57,11 +58,11 @@ const variants = cva(
   }
 );
 
-function Button({ state, style, onClick, children, ...props }) {
+function Button({ state, style, onClick, className, children, ...props }) {
   return (
     <button
       onClick={onClick}
-      className={twMerge(variants({ state, style }))}
+      className={twMerge(variants({ state, style }), className)}
       {...props}
     >
       {children}

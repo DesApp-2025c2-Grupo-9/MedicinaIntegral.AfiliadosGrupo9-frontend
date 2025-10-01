@@ -1,13 +1,29 @@
-function FiltroEstados({ handleChange }) {
+import { twMerge } from 'tailwind-merge';
+
+const estados = [
+    'Todos',
+    'Pendientes de procesamiento',
+    'Observados',
+    'Rechazados última semana',
+    'Aceptados última semana'
+];
+
+function FiltroEstados({ handleChange, className }) {
     return (
-        <div className="h-fit flex gap-2 w-[17.4rem]">
-            <label htmlFor="verEstados" className="text-menta-600">Ver</label>
-            <select className="w-full" name="verEstados" id="verEstados" onChange={handleChange}>
-                   <option className="py-2 px-3" value="Todos" >Todos</option>
-                    <option className="py-2 pr-4 px-3" value="Pendientes de procesamiento">Pendientes de procesamiento</option>
-                    <option className="py-2 px-3" value="Observados">Observados</option>
-                    <option className="py-2 px-3" value="Rechazados última semana">Rechazados última semana</option>
-                    <option className="py-2 px-3" value="Aceptados última semana">Aceptados última semana</option>
+        <div className={twMerge('flex gap-2', className)}>
+            <label htmlFor="verEstados" className="text-menta-600 font-bold">Ver:</label>
+            <select className="cursor-pointer" name="verEstados" id="verEstados" onChange={handleChange}>
+                {
+                    estados.map((estado, index) =>
+                        <option
+                            value={estado}
+                            key={index}
+                            className='py-2 px-3'
+                        >
+                            {estado}
+                        </option>
+                    )
+                }
             </select>
         </div>
     )
