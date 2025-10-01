@@ -18,12 +18,16 @@ const variants = cva([
   }
 });
 
-function SidebarLink({ path, icon=icons.inicio, description='Description' }) {
+function SidebarLink({ path, icon=icons.inicio, description='Description', onClick }) {
   const location = useLocation();
   const isActive = location.pathname === path; // Basándonos en la URL actual, definiremos el valor de isActive
 
   return (
-    <Link to={path} className={twMerge(variants({ state: isActive ? 'active' : 'idle' }))}>
+    <Link
+      to={path}
+      onClick={onClick}
+      className={twMerge(variants({ state: isActive ? 'active' : 'idle' }))}
+    >
       <div className='w-[22px] h-5 flex flex-col justify-center items-center'>{icon}</div>
       <p>{description}</p>
     </Link>

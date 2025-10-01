@@ -1,79 +1,87 @@
 import { useState } from 'react';
 import Swal from 'sweetalert2';
-import { UserContext } from '../context/UserContext';
-import { Link } from 'react-router-dom';
-import clinica_img from '../assets/img/clinica.webp';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
-const [usuario, setUsuario] = useState('');
-const [clave, setClave] = useState('');
-const [confirmarClave, setConfirmarClave] = useState('');
-const [error, setError] = useState('');
+  const [usuario, setUsuario] = useState('');
+  const [clave, setClave] = useState('');
+  const [confirmarClave, setConfirmarClave] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-const handleSubmit = (e) => {
-e.preventDefault();
+  const handleSubmit = e => {
+    e.preventDefault();
 
-if (!usuario || !clave || !confirmarClave) {
-setError('Por favor completá todos los campos');
-} else if (clave !== confirmarClave) {
-    setError('Las contraseñas no coinciden');
+    if (!usuario || !clave || !confirmarClave) {
+      setError('Por favor, complete todos los campos.');
+    } else if (clave !== confirmarClave) {
+      setError('Las contraseñas no coinciden');
     } else {
-    setError('');
-    console.log('Usuario:', usuario);
-    console.log('Contraseña:', clave);
+      setError('');
+      console.log('Usuario:', usuario);
+      console.log('Contraseña:', clave);
 
-    Swal.fire({
+      Swal.fire({
         title: 'Registro exitoso',
-        text: `Tu cuenta fue creada correctamente`,
+        text: 'Su cuenta fue creada correctamente',
         icon: 'success',
         confirmButtonText: 'Aceptar',
         draggable: true,
         width: '400px',
         customClass: {
-        popup: 'swal-popup-small',
-        title: 'swal-title-small',
-        confirmButton: 'swal-button-small'
+          popup: 'swal-popup-small',
+          title: 'swal-title-small',
+          confirmButton: 'swal-button-small'
         }
+      }).then(() => {
+      navigate('/login');
     });
     }
-};
+  };
 
-return (
-    <div className="login-page">
-        <div className="login-wrapper">
-            <div className="image-section">
-                <img src={clinica_img} alt="clinica" />
-            </div>
+  return (
+    <div className='login-container'>
+      <div className='login'>
+        <h1 className='bienvenida'>Registrate</h1>
 
-            <div className='login-container'>
-                <div className="login">
-                        <h1 className="bienvenida">Registrate</h1>
-                        <form onSubmit={handleSubmit}>
-                        <h2>Elija una contraseña:</h2>
-                        <input
-                            type="password"
-                            placeholder="ej: ******"
-                            value={clave}
-                            onChange={(e) => setClave(e.target.value)}
-                        />
-                        <h2>Confirme su contraseña:</h2>
-                        <input
-                            type="password"
-                            placeholder="ej: ******"
-                            value={confirmarClave}
-                            onChange={(e) => setConfirmarClave(e.target.value)}
-                        />
-                        {error && <p className="error">{error}</p>}
-                        <button type="submit">Registrarse</button>
-                        </form>
-                        <div className="footer">
-                        ¿Ya tenés cuenta? <span><Link to="/login">Ingresá aquí</Link></span>
-                        </div>
-                    </div>
-            </div>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor='documento-register'>Ingrese su número de documento:</label>
+          <input
+            id='documento-register'
+            type="text"
+            placeholder="ej: 12345678"
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value)}
+          />
+          <label htmlFor='contraseña-register'>Elija una contraseña:</label>
+          <input
+            id='contraseña-register'
+            type='password'
+            placeholder='ej: ******'
+            value={clave}
+            onChange={e => setClave(e.target.value)}
+          />
+          <label className='contraseña-confirm'>Confirme su contraseña:</label>
+          <input
+            id='contraseña-confirm'
+            type='password'
+            placeholder='ej: ******'
+            value={confirmarClave}
+            onChange={e => setConfirmarClave(e.target.value)}
+          />
+          {error && <p className='error'>{error}</p>}
+          <button type='submit'>Registrarse</button>
+        </form>
+
+        <p className='footer'>
+          ¿Ya tenés cuenta?{' '}
+          <span>
+            <Link to='/login'>Ingresá aquí</Link>
+          </span>
+        </p>
+      </div>
     </div>
-);
+  );
 };
 
 export default Register;

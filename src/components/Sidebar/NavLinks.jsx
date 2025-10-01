@@ -11,7 +11,7 @@ const navLinks = [
   { icon: icons.cartillaMedica, description: 'Cartilla Médica', path: '/cartilla-medica' },
 ];
 
-function NavLinks() {
+function NavLinks({ onClick }) {
   return (
     <div className='flex flex-col items-start gap-5'>
       {
@@ -21,6 +21,7 @@ function NavLinks() {
             path={link.path}
             icon={link.icon}
             description={link.description}
+            onClick={onClick}
           />
         )
       }
