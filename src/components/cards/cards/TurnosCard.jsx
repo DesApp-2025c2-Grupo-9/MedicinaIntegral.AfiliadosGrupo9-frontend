@@ -2,9 +2,6 @@ import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal";
 import BotonPapelera from "./cardComponents/BotonPapelera";
 import UsuarioActual from "./cardComponents/UsuarioActual";
 import MarcoCard from "./cardComponents/MarcoCard";
-import CampoInformacion from "./cardComponents/CampoInformacion";
-import TituloCard from "./cardComponents/TituloCard";
-import SubTituloCard from "./cardComponents/SubTituloCard";
 function TurnosCard(props) {
   //Recibe en sus props un turno
   //Opcionalmente, si el turno le pertenece al afiliado, se manda el afiliado o una flag
@@ -17,12 +14,7 @@ function TurnosCard(props) {
     alert("Boton apretado");
   };
 
-  const campos = [
-    formatFecha(turno.fecha),
-    turno.lugar,
-    turno.direccion,
-    turno.telefono,
-  ];
+  const campos = 4; //4 campos sin contar titulo y subtitulo
 
   //Estilo de la card
   let columns = paciente ? 2 : 1;
@@ -34,12 +26,12 @@ function TurnosCard(props) {
     <MarcoCard estilo={cardStyle}>
       {/*columna datos del turno*/}
       <ColumnaPrincipal>
-        <TituloCard>{turno.especialidad}</TituloCard>
-        <SubTituloCard>{`Dr. ${turno.profesional}`}</SubTituloCard>
-        {/* Cargar los campos de la card*/}
-        {campos.map((texto, index) => (
-          <CampoInformacion key={index}>{texto}</CampoInformacion>
-        ))}
+        {turno.especialidad}
+        {`Dr. ${turno.profesional}`}
+        {formatFecha(turno.fecha)}
+        {turno.lugar}
+        {turno.direccion}
+        {turno.telefono}
       </ColumnaPrincipal>
       {/*Columna derecha si tiene turno asignado*/}
       {paciente ? (
@@ -47,7 +39,7 @@ function TurnosCard(props) {
           <UsuarioActual />
           <BotonPapelera
             onClick={papeleraOnClick}
-            posicion={campos.length + 2}
+            posicion={campos}
           />
         </div>
       ) : (

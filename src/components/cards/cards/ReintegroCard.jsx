@@ -5,9 +5,6 @@ import BotonPapelera from "./cardComponents/BotonPapelera";
 import BotonObservaciones from "./cardComponents/BotonObservaciones";
 import EstadoCard from "./cardComponents/EstadoCard";
 import MarcoCard from "./cardComponents/MarcoCard";
-import TituloCard from "./cardComponents/TituloCard";
-import SubTituloCard from "./cardComponents/SubTituloCard";
-import CampoInformacion from "./cardComponents/CampoInformacion";
 import TipoDeTramite from "./cardComponents/TipoDeTramite";
 function ReintegroCard(props) {
   //Estilo de la card
@@ -16,21 +13,14 @@ function ReintegroCard(props) {
 
   let reintegro = props.reintegro;
 
-  const campos = [
-    `Fecha de la prestación ${formatFecha(reintegro.fecha)}`,
-    reintegro.lugar,
-    reintegro.valor,
-  ];
-
-  console.log(props.dashboard);
   return (
     <MarcoCard estilo={cardStyle}>
       <ColumnaPrincipal>
-        <TituloCard>{reintegro.especialidad}</TituloCard>
-        <SubTituloCard>Dr. {reintegro.medico}</SubTituloCard>
-        {campos.map((texto, index) => (
-          <CampoInformacion key={index}>{texto}</CampoInformacion>
-        ))}
+        {reintegro.especialidad}
+        {`Dr. ${reintegro.medico}`}
+        {`Fecha de la prestación ${formatFecha(reintegro.fecha)}`}
+        {reintegro.lugar}
+        {reintegro.valor}
       </ColumnaPrincipal>
       {/**Columna dinámica con opciones o información del trámite */}
       <div className="grid grid-rows-4 justify-items-end">
