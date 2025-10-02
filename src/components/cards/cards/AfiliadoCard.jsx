@@ -30,7 +30,7 @@ function AfiliadoCard(props) {
                     (textoCampo, index) =>
                         <CampoInformacion key={index}>{textoCampo}</CampoInformacion>
                 )}
-                <button className="text-xs text-blue-500 grid justify-items-start col-start-1" onClick={() => { setsituacionTerapeuticaOpen(!situacionTerapeuticaOpen) }}>
+                <button className="text-xs text-blue-500 grid justify-items-start col-start-1 cursor-pointer" onClick={() => { setsituacionTerapeuticaOpen(!situacionTerapeuticaOpen) }}>
                     Situación terapeutica
                 </button>
             </ColumnaPrincipal>
