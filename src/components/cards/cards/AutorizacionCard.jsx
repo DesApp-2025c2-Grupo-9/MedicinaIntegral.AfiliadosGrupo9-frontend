@@ -11,7 +11,7 @@ function AutorizacionCard(props) {
   const autorizacion = props.autorizacion;
   let cardStyle = `grid-cols-2`;
   return (
-    <MarcoCard estilo={cardStyle}>
+    <MarcoCard estilo={cardStyle} estado ={autorizacion.estado}>
       <ColumnaPrincipal>
         {autorizacion.especialidad}
         {`Dr. ${autorizacion.medico}`}

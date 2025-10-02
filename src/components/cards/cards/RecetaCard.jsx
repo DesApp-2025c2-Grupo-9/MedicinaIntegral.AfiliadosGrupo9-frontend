@@ -15,7 +15,7 @@ function RecetaCard(props) {
 
   return (
     //Card
-    <MarcoCard estilo={cardStyle}>
+    <MarcoCard estilo={cardStyle} estado = {receta.estado}>
       {/*Datos de la receta*/}
       <ColumnaPrincipal>
         {receta.medicamento}

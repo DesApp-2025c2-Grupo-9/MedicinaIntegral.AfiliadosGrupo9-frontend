@@ -23,7 +23,7 @@ function TurnosCard(props) {
     `;
 
   return (
-    <MarcoCard estilo={cardStyle}>
+    <MarcoCard estilo={cardStyle} >
       {/*columna datos del turno*/}
       <ColumnaPrincipal>
         {turno.especialidad}
