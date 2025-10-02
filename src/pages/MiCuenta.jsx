@@ -79,7 +79,7 @@ function MiCuenta() {
     return afiliado.cbus.map(cbu => [`${cbu.nombre} ${cbu.apellido}`, cbu.cbu])
   }
   return (
-    <>
+    <div>
       <div>
         <SectionTitle>Mi cuenta</SectionTitle>
         <div className="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
@@ -105,7 +105,7 @@ function MiCuenta() {
       </div>
       {CBUModalOnOf && <ModalRegistrarCBU/>}
 
-    </>
+    </div>
   )
 }
 

@@ -139,7 +139,7 @@
 }
 
 .login-page .error {
-  color: red;
+  color: #dc143c;
   font-size: 14px;
   padding-left: 10%;
 }
