@@ -5,28 +5,19 @@ import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal";
 import EstadoCard from "./cardComponents/EstadoCard";
 import UsuarioActual from "./cardComponents/UsuarioActual";
 import MarcoCard from "./cardComponents/MarcoCard";
-import TituloCard from "./cardComponents/TituloCard";
-import SubTituloCard from "./cardComponents/SubTituloCard";
-import CampoInformacion from "./cardComponents/CampoInformacion";
 import TipoDeTramite from "./cardComponents/TipoDeTramite";
 
 function AutorizacionCard(props) {
   const autorizacion = props.autorizacion;
-  const campos = [
-    `Fecha prevista ${formatFecha(autorizacion.fecha)}`,
-    autorizacion.lugar,
-    `Dias de internación: ${autorizacion.diasInternacion} días`,
-  ];
-
   let cardStyle = `grid-cols-2`;
   return (
     <MarcoCard estilo={cardStyle}>
       <ColumnaPrincipal>
-        <TituloCard>{autorizacion.especialidad}</TituloCard>
-        <SubTituloCard>Dr. {autorizacion.medico}</SubTituloCard>
-        {campos.map((texto, index) => (
-          <CampoInformacion key={index}>{texto}</CampoInformacion>
-        ))}
+        {autorizacion.especialidad}
+        {`Dr. ${autorizacion.medico}`}
+        {`Fecha prevista ${formatFecha(autorizacion.fecha)}`}
+        {autorizacion.lugar}
+        {`Dias de internación: ${autorizacion.diasInternacion} días`} 
       </ColumnaPrincipal>
       <div className="grid grid-rows-4 justify-items-end">
         <EstadoCard estado={autorizacion.estado} dashboard={props.dashboard} />

@@ -10,23 +10,31 @@ import { icons } from "../utils/icons"
         Si la lista está vacia muestra un mensaje diciendo que no hay CBU registrado
         Si la lista tiene CBUs los lista
 */
+const editarCBU = () => {
+    alert('Editar CBU')
+}
+
+const eliminarCBU = () => {
+    alert('Eliminar CBU')
+
+}
+
 function ListaCbus({ listaCbus }) {
     const editar = (
-        <div className="text-blue-600 h-5 grid grid-rows-1 grid-cols-2 cursor-pointer">
-                    <div >
-                        {icons.editar}
-                    </div>
-                     <div>
-                        Editar
-                    </div>
-                </div>
-        )
+    <button 
+    className="text-blue-500 h-5 flex gap-1 cursor-pointer hover:text-blue-600"
+    onClick={editarCBU}>
+        {icons.editar}
+        Editar
+    </button>)
     const eliminar = (
-                <div className="text-red-600 h-5 flex">
-                    {icons.papelera}
-                    Eliminar
-                </div>
-            )
+    <button 
+    className="text-red-500 h-5 flex gap-1 cursor-pointer hover:text-red-600"
+    onClick={eliminarCBU}
+    >
+        {icons.papelera}
+        Eliminar
+    </button>)
 
     return (
         <div className="grid sm:grid-cols-1 md:grid-cols-1 xl:grid-cols-2">
@@ -36,7 +44,7 @@ function ListaCbus({ listaCbus }) {
                         <HeaderTabla headers={['N° CBU', 'Titular']} />
                         <BodyTabla>
                             {listaCbus.map(
-                                (cbu, index) => <RowTabla head={cbu[1]} content={[cbu[0], editar, eliminar]} key={cbu} index={index} />
+                                (cbu, index) => <RowTabla head={cbu[1]} content={[cbu[0], editar, eliminar]} key={cbu[1]} index={index} />
                             )}
                         </BodyTabla>
                     </Tabla>

@@ -3,8 +3,7 @@ import Input from '../Input.jsx'
 import Button from '../Button.jsx'
 import { useEffect, useState } from 'react';
 
-function ModalRegistrarCBU() {
-    const [isOpen, setIsOpen] = useState(true);
+function ModalRegistrarCBU({isOpen, setIsOpen}) {
     const [registro, setRegistro] = useState({ nroCBU:"nroCBU", tipoDeCuenta:"tipoDeCuenta", cuilOCuit:"cuilOCuit", nombre:"nombre", apellido:"apellido" })
 
     useEffect(() => {

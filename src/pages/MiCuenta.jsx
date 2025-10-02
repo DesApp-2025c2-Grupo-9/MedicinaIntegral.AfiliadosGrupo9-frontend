@@ -103,7 +103,7 @@ function MiCuenta() {
         <ListaCbus listaCbus={cbusGrupoFamiliar}/>
         <Button onClick={()=> {setCBUModalOnOf(!CBUModalOnOf)}}>Registrar nuevo CBU</Button>
       </div>
-      {CBUModalOnOf && <ModalRegistrarCBU/>}
+      {CBUModalOnOf && <ModalRegistrarCBU isOpen={CBUModalOnOf} setIsOpen={setCBUModalOnOf}/>}
 
     </div>
   )
