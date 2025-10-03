@@ -78,7 +78,7 @@ const Login = () => {
               onChange={e => setClave(e.target.value)}
             />
             <span className='icon-eye' onClick={() => setMostrarClave(prev => !prev)}>
-            {mostrarClave ? <FaEyeSlash /> : <FaEye />}
+            {mostrarClave ? < FaEye  /> : < FaEyeSlash />}
             </span>
 
 
