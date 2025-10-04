@@ -2,7 +2,6 @@ import { useState, useContext } from 'react';
 import './login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { validacionLogin } from '../utils/validacionLogin';
 import OcultarClave from '../components/OcultarClave/ocultarClave';
 

@@ -39,7 +39,7 @@ const Register = () => {
           confirmButton: 'swal-button-small'
         }
       }).then(() => {
-      navigate('/login');
+      navigate('/');
     });
     
   };

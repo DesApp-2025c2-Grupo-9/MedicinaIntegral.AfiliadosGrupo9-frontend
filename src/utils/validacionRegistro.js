@@ -1,7 +1,8 @@
 export const validacionRegistro  = (usuario, clave, confirmarClave) => {
-
+    const formatoClave = /^[A-Z]\d{5}$/;
+    
     if (!usuario || !clave || !confirmarClave) {
-        setError('Por favor, complete todos los campos.');
+        return 'Por favor, complete todos los campos.';
     }
     
     if (usuario.length < 7 || usuario.length > 8) {
@@ -12,8 +13,13 @@ export const validacionRegistro  = (usuario, clave, confirmarClave) => {
         return 'La contraseña debe tener 6 caracteres.';
     }
 
+    
+    if (!formatoClave.test(clave)) {
+        return 'La contraseña debe tener una letra mayúscula seguida de cinco números.';
+    }
+
     if (clave !== confirmarClave) {
-        setError('Las contraseñas no coinciden');
+        return 'Las contraseñas no coinciden';
     } 
     return '';
 };
