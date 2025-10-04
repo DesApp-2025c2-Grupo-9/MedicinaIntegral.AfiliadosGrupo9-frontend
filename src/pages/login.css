@@ -104,7 +104,7 @@
 
 /*--------------------------------------*/
 .login-page input {
-  width: 100%;
+  width: 80%;
   padding: 8px;
   margin: 8px 0px;
   border-radius: 5px;
@@ -235,12 +235,14 @@
   position: relative;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 80%; 
+  margin: 0 auto;
+
 }
 
 .input-eye input {
   width: 100%;
-  padding-right: 40px; /* espacio para el icono */
+  padding-right: 40px;
 }
 
 .icon-eye {

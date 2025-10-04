@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
+import { validacionRegistro } from '../utils/validacionRegistro'; 
 
 const Register = () => {
   const [usuario, setUsuario] = useState('');
@@ -12,11 +13,13 @@ const Register = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (!usuario || !clave || !confirmarClave) {
-      setError('Por favor, complete todos los campos.');
-    } else if (clave !== confirmarClave) {
-      setError('Las contraseñas no coinciden');
-    } else {
+    /*aca hay validaciones*/ 
+      const mensajeError = validacionRegistro(usuario, clave, confirmarClave);
+      if (mensajeError) {
+        setError(mensajeError);
+        return;
+      }
+    
       setError('');
       console.log('Usuario:', usuario);
       console.log('Contraseña:', clave);
@@ -36,7 +39,7 @@ const Register = () => {
       }).then(() => {
       navigate('/login');
     });
-    }
+    
   };
 
   return (
@@ -51,13 +54,22 @@ const Register = () => {
             type="text"
             placeholder="ej: 12345678"
             value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
+            maxLength={8}
+            onChange={e => {
+              const valor = e.target.value; 
+              if (/^\d*$/.test(valor)) {
+              setUsuario(valor);
+              }
+              
+          }
+        }
           />
           <label htmlFor='contraseña-register'>Elija una contraseña:</label>
           <input
             id='contraseña-register'
             type='password'
             placeholder='ej: ******'
+            maxLength={6}
             value={clave}
             onChange={e => setClave(e.target.value)}
           />
@@ -66,8 +78,10 @@ const Register = () => {
             id='contraseña-confirm'
             type='password'
             placeholder='ej: ******'
+            maxLength={6}
             value={confirmarClave}
             onChange={e => setConfirmarClave(e.target.value)}
+            
           />
           {error && <p className='error'>{error}</p>}
           <button type='submit'>Registrarse</button>

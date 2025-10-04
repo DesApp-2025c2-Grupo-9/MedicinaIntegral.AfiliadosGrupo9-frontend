@@ -1,9 +1,9 @@
 import { useState, useContext } from 'react';
 import './login.css';
-import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { validacionLogin } from '../utils/validacionLogin';
 
 
 const Login = () => {
@@ -19,22 +19,11 @@ const Login = () => {
     e.preventDefault();
 
     /*aca hay validaciones*/ 
-      if (!usuario || !clave) {
-      setError('Por favor, complete todos los campos.');
-      return;
+    const mensajeError = validacionLogin(usuario, clave);
+    if (mensajeError) {
+    setError(mensajeError);
+    return;
     }
-
-    if (usuario.length < 7 || usuario.length > 8) { 
-      setError('El número de documento no es válido.');
-      return;
-    }
-
-    if (clave.length !== 6) { 
-      setError('La contraseña no es válida.');
-      return;
-    }
-
-    
 
     setError('');
     console.log('Usuario:', usuario);
