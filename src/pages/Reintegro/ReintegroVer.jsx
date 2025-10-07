@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { ReintegroCard } from "../../components/cards";
 import PaginationButtons from "../../components/PaginationButtons";
 import FiltroEstados from '../../components/FiltroEstados';
+import { useStateFilter } from '../../store/stateFilter';
 
 const reintegrosFake = [
   {
@@ -87,26 +87,16 @@ const reintegrosFake = [
   },
 ];
 
+
 function ReintegroVer() {
-  const [filtro, setFiltro] = useState("Todos");
+  const { state } = useStateFilter();
 
-  const handleFiltroChange = (e) => {
-    setFiltro(e.target.value);
-  };
-
-  const reintegrosFiltrados = reintegrosFake.filter((r) => {
-    if (filtro === "Todos") return true;
-    if (filtro === "Pendientes de procesamiento") return r.estado === "Pendiente";
-    if (filtro === "Observados") return r.estado === "Observación";
-    if (filtro === "Rechazados última semana") return r.estado === "Rechazado";
-    if (filtro === "Aceptados última semana") return r.estado === "Aceptado";
-  });
-
+  const reintegrosFiltrados = reintegrosFake.filter(r => state.includes(r.estado) || state === 'Todos');
   const reintegrosMostrados = reintegrosFiltrados.slice(0, 9);
 
   return (
     <div className='flex flex-col items-end gap-3 relative'>
-      <FiltroEstados handleChange={handleFiltroChange} className='sm:absolute -top-11 mr-auto' />
+      <FiltroEstados className='sm:absolute -top-11 mr-auto' />
       <div className='w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6'>
         {
           reintegrosMostrados.map((r) => (
