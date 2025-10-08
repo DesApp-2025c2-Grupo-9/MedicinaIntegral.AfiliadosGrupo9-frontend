@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createReintegro, getReintegros } from './api';
+import { createReintegro, deleteReintegro, getReintegros } from './api';
 
 // Reintegros
 export function useGetReintegros() {
@@ -22,4 +22,13 @@ export function useCreateReintegro() {
 
 export function useUpdateReintegro() {}
 
-export function useDeleteReintegro() {}
+export function useDeleteReintegro() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteReintegro,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reintegros'] });
+    }
+  });
+}

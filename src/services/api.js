@@ -12,4 +12,8 @@ export const createReintegro = async body => {
 
 export const updateReintegro = async () => {};
 
-export const deleteReintegro = async () => {};
+export const deleteReintegro = async id => {
+  const res = await axios.delete(`api/reintegros/${id}`);
+  console.log(res.data)
+  return res.data;
+};

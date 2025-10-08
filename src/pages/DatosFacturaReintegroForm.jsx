@@ -46,12 +46,11 @@ function DatosFacturaReintegroForm() {
 
   const onSubmit = async inputData => {
     try {
-      const res = await mutateAsync({
+      await mutateAsync({
         ...data,
         ...inputData,
         formaDePago: inputData.formaDePago.toLowerCase()
       });
-      console.log('Reintegro creado.', res);
       Swal.fire({
         html: `
         La solicitud fue enviada correctamente.<br/>
