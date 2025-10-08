@@ -98,9 +98,16 @@ function MiCuenta() {
           }
         </div>
       </div>
-      <div>
-        <SectionTitle>CBUs Registrados</SectionTitle>
-        <ListaCbus listaCbus={cbusGrupoFamiliar}/>
+      <SectionTitle>CBUs Registrados</SectionTitle>
+      <div className="flex items-center gap-4 mt-4">
+        
+        <select className="w-full max-w-md p-2 border border-gray-300 rounded">
+          {cbusGrupoFamiliar.map(([nombreCompleto, cbu], index) => (
+            <option key={index} value={cbu}>
+              {nombreCompleto} - {cbu}
+            </option>
+          ))}
+        </select>
         <Button onClick={()=> {setCBUModalOnOf(!CBUModalOnOf)}}>Registrar nuevo CBU</Button>
       </div>
       {CBUModalOnOf && <ModalRegistrarCBU isOpen={CBUModalOnOf} setIsOpen={setCBUModalOnOf}/>}
