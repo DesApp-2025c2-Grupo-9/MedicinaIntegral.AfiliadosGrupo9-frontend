@@ -1,3 +1,15 @@
+import ColumnaPrincipal from './cardComponents/ColumnaPrincipal';
+import UsuarioActual from './cardComponents/UsuarioActual';
+import BotonEditar from './cardComponents/BotonEditar';
+import BotonPapelera from './cardComponents/BotonPapelera';
+import BotonObservaciones from './cardComponents/BotonObservaciones';
+import EstadoCard from './cardComponents/EstadoCard';
+import MarcoCard from './cardComponents/MarcoCard';
+import TipoDeTramite from './cardComponents/TipoDeTramite';
+import { format } from 'date-fns';
+import { useDeleteReintegro } from '../../../services/queries';
+import Swal from 'sweetalert2';
+
 import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal";
 import UsuarioActual from "./cardComponents/UsuarioActual";
 import BotonEditar from "./cardComponents/BotonEditar";
@@ -8,10 +20,43 @@ import TipoDeTramite from "./cardComponents/TipoDeTramite";
 import { useState } from "react";
 function ReintegroCard(props) {
   //Estilo de la card
+  const { mutateAsync } = useDeleteReintegro();
 
   let cardStyle = ` grid-cols-2 `;
 
   let reintegro = props.reintegro;
+
+  const deleteReintegro = async () => {
+    try {
+      Swal.fire({
+        html: '¿Desea cancelar el reintegro?',
+        icon: 'question',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#dc143c',
+        confirmButtonText: 'Confirmar',
+        confirmButtonColor: '#00ab01'
+      }).then(async result => {
+        try {
+          if (result.isConfirmed) {
+            const res = await mutateAsync(reintegro.id);
+            Swal.fire({
+              html: res.message,
+              icon: 'success',
+              confirmButtonText: 'Continuar',
+              confirmButtonColor: '#00ab01'
+            });
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.close();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const [detalleOn, setdetalleOn] = useState(false)
 
@@ -21,23 +66,32 @@ function ReintegroCard(props) {
         {reintegro.especialidad}
         {''/**Provisorio */}
         {`Dr. ${reintegro.medico}`}
+        {`Fecha de la prestación ${format(reintegro.fecha, 'dd/MM/yyyy')}`}
         {`Fecha de la prestación ${formatFecha(reintegro.fecha)}`}
         {reintegro.valor}
         {reintegro.lugar}
       </ColumnaPrincipal>
       {/**Columna dinámica con opciones o información del trámite */}
+      <div className='grid grid-rows-4 justify-items-end relative'>
+        <EstadoCard
+          estado={reintegro.estado}
+          dashboard={props.dashboard}
+        />
       <div className="grid grid-rows-4 justify-items-end">
         
         {/*El estilo del estado es dinámico si está o no en el dashboard*/}
         {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
-          <TipoDeTramite tipo={"Reintegro"} />
+          <TipoDeTramite tipo={'Reintegro'} />
         ) : (
           <>
-            <UsuarioActual />
-            {reintegro.estado == "Pendiente" ? (
+            <UsuarioActual paciente={reintegro.paraAfiliado} />
+            {reintegro.estado == 'Pendiente' ? (
               <>
                 <BotonEditar posicion={3} />
-                <BotonPapelera posicion={4} />
+                <BotonPapelera
+                  posicion={4}
+                  onClick={deleteReintegro}
+                />
               </>
             ) : (
               <BotonObservaciones />
@@ -50,14 +104,3 @@ function ReintegroCard(props) {
 }
 
 export default ReintegroCard;
-
-function formatFecha(fecha) {
-  //Recibe una fecha tipo Date como parámetro
-  //Retorna un String para mostrar la fecha al usuario
-
-  const dia = String(fecha.getDate()).padStart(2, "0");
-  const mes = String(fecha.getMonth() + 1);
-  const anio = fecha.getFullYear();
-
-  return `${dia}/${mes}/${anio}`;
-}

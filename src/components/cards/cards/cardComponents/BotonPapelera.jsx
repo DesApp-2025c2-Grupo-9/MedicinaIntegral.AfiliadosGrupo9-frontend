@@ -16,6 +16,7 @@ function BotonPapelera(props) {
   return (
     <div className={posicion}>
                 <button 
+                type='button'
                 className='flex flex-row text-red-500 hover:text-red-600 p-1 justify-end cursor-pointer'
                 onClick={props.onClick}
                 >

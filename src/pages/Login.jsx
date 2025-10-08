@@ -1,8 +1,10 @@
 import { useState, useContext } from 'react';
 import './login.css';
-import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import { validacionLogin } from '../utils/validacionLogin';
+import OcultarClave from '../components/OcultarClave/ocultarClave';
+
 
 const Login = () => {
   const [usuario, setUsuario] = useState('');
@@ -10,13 +12,17 @@ const Login = () => {
   const [error, setError] = useState('');
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const [mostrarClave, setMostrarClave] = useState(false);
+
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (!usuario || !clave) {
-      setError('Por favor, complete todos los campos.');
-      return;
+    /*aca hay validaciones*/ 
+    const mensajeError = validacionLogin(usuario, clave);
+    if (mensajeError) {
+    setError(mensajeError);
+    return;
     }
 
     setError('');
@@ -25,22 +31,9 @@ const Login = () => {
 
     setUser({ documento: usuario });
 
-    Swal.fire({
-      title: 'Login exitoso',
-      text: 'Bienvenido',
-      icon: 'success',
-      confirmButtonText: 'Aceptar',
-      draggable: true,
-      width: '400px',
-      customClass: {
-        popup: 'swal-popup-small',
-        title: 'swal-title-small',
-        confirmButton: 'swal-button-small'
-      }
-    }).then(() => {
-      navigate('/');
-    });
-  };
+    navigate('/');
+    
+  }; 
 
   return (
     <div className='login-container'>
@@ -53,17 +46,26 @@ const Login = () => {
             id='documento-login'
             type='text'
             placeholder='ej: 12345678'
+            maxLength={8}
             value={usuario}
-            onChange={e => setUsuario(e.target.value)}
+            onChange={e => {
+              const valor = e.target.value; 
+              if (/^\d*$/.test(valor)) {
+              setUsuario(valor);
+            }
+          }
+            }
           />
           <label htmlFor='contraseña-login'>Ingrese su contraseña:</label>
-          <input
-            id='contraseña-login'
-            type='password'
-            placeholder='ej:******'
-            value={clave}
-            onChange={e => setClave(e.target.value)}
-          />
+          
+            <OcultarClave
+              id='contraseña-login'
+              type={mostrarClave ? 'text' : 'password'}
+              placeholder='ej:******'
+              value={clave}
+              onChange={e => setClave(e.target.value)}
+            /> 
+          
           {error && <p className='error'>{error}</p>}
           <button type='submit'>Ingresar</button>
         </form>
