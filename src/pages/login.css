@@ -104,7 +104,7 @@
 
 /*--------------------------------------*/
 .login-page input {
-  width: 100%;
+  width: 80%;
   padding: 8px;
   margin: 8px 0px;
   border-radius: 5px;
@@ -229,23 +229,3 @@
   background: #0056b3;
 }
 
-/*ocultar contraseña*/
-
-.input-eye {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.input-eye input {
-  width: 100%;
-  padding-right: 40px; /* espacio para el icono */
-}
-
-.icon-eye {
-  position: absolute;
-  right: 10px;
-  cursor: pointer;
-
-}
