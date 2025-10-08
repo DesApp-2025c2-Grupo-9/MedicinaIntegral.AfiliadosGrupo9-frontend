@@ -6,7 +6,7 @@ import CampoInformacion from "./CampoInformacion";
 
 
 function ColumnaPrincipal(props) {
-  const { children, subtituloOn = true } = props
+  const { children, subtituloOn = true, detalleOn = true} = props
   //Convierte el children a array
   const arrayChildren = React.Children.toArray(children)
 
@@ -15,10 +15,15 @@ function ColumnaPrincipal(props) {
   const campos = arrayChildren.slice(subtituloOn ? 2 : 1)//Asigna el resto del array para los campos
   return <div className='grid'>
     <TituloCard>{titulo}</TituloCard>
-    <SubTituloCard>{subtitulo}</SubTituloCard>
-    {campos.map((texto, index) => (
-      <CampoInformacion key={index}>{texto}</CampoInformacion>
-    ))}
+    {!detalleOn?
+    (
+      <SubTituloCard>{subtitulo}</SubTituloCard>
+
+    ):(
+      campos.map((texto, index) => (
+        <CampoInformacion key={index}>{texto}</CampoInformacion>
+      ))
+    )}
   </div>;
 }
 

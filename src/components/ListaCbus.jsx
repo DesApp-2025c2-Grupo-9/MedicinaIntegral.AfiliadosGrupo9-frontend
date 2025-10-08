@@ -37,7 +37,7 @@ function ListaCbus({ listaCbus }) {
     </button>)
 
     return (
-        <div className="grid sm:grid-cols-1 md:grid-cols-1 xl:grid-cols-2">
+        <div className="grid grid-cols-1">
             {
                 listaCbus.length > 0 ? (//Mostrar los CBU
                     <Tabla>

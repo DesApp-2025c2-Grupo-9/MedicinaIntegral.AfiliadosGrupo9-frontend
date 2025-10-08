@@ -2,7 +2,6 @@ import BotonEditar from "./cardComponents/BotonEditar";
 import BotonPapelera from "./cardComponents/BotonPapelera";
 import BotonObservaciones from "./cardComponents/BotonObservaciones";
 import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal";
-import EstadoCard from "./cardComponents/EstadoCard";
 import UsuarioActual from "./cardComponents/UsuarioActual";
 import MarcoCard from "./cardComponents/MarcoCard";
 import TipoDeTramite from "./cardComponents/TipoDeTramite";
@@ -20,7 +19,6 @@ function AutorizacionCard(props) {
         {`Dias de internación: ${autorizacion.diasInternacion} días`} 
       </ColumnaPrincipal>
       <div className="grid grid-rows-4 justify-items-end">
-        <EstadoCard estado={autorizacion.estado} dashboard={props.dashboard} />
         {//Si es card de dashboard
           props.dashboard ? (<>
             <TipoDeTramite tipo={'Autorización'} />

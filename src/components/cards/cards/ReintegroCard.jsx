@@ -3,9 +3,9 @@ import UsuarioActual from "./cardComponents/UsuarioActual";
 import BotonEditar from "./cardComponents/BotonEditar";
 import BotonPapelera from "./cardComponents/BotonPapelera";
 import BotonObservaciones from "./cardComponents/BotonObservaciones";
-import EstadoCard from "./cardComponents/EstadoCard";
 import MarcoCard from "./cardComponents/MarcoCard";
 import TipoDeTramite from "./cardComponents/TipoDeTramite";
+import { useState } from "react";
 function ReintegroCard(props) {
   //Estilo de la card
 
@@ -13,14 +13,17 @@ function ReintegroCard(props) {
 
   let reintegro = props.reintegro;
 
+  const [detalleOn, setdetalleOn] = useState(false)
+
   return (
     <MarcoCard estilo={cardStyle} estado = {reintegro.estado}>
-      <ColumnaPrincipal>
+      <ColumnaPrincipal >
         {reintegro.especialidad}
+        {''/**Provisorio */}
         {`Dr. ${reintegro.medico}`}
         {`Fecha de la prestación ${formatFecha(reintegro.fecha)}`}
-        {reintegro.lugar}
         {reintegro.valor}
+        {reintegro.lugar}
       </ColumnaPrincipal>
       {/**Columna dinámica con opciones o información del trámite */}
       <div className="grid grid-rows-4 justify-items-end">
