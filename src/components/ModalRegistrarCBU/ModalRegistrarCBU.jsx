@@ -2,9 +2,11 @@ import Form from '../Form.jsx'
 import Input from '../Input.jsx'
 import Button from '../Button.jsx'
 import { useEffect, useState } from 'react';
+import { validacionNuevoCbu } from '../../utils/validacionNuevocbu.js';
 
-function ModalRegistrarCBU({setIsOpen}) {
+function ModalRegistrarCBU({isOpen, setIsOpen, onRegistrarCBU}) {
     const [registro, setRegistro] = useState({ nroCBU:"nroCBU", tipoDeCuenta:"tipoDeCuenta", cuilOCuit:"cuilOCuit", nombre:"nombre", apellido:"apellido" })
+    const [errores, setErrores] = useState({});
 
     useEffect(() => {
         document.body.classList.add("overflow-hidden");
@@ -14,11 +16,16 @@ function ModalRegistrarCBU({setIsOpen}) {
     }
   }, []);
 
-    const handleConfirmar = () => {
-        // Guardar datos en la base de datos..
-        setIsOpen(false);  // Cierro el modal
-    }
+    const handleConfirmar = (e) => {
+    e.preventDefault();
+    const erroresValidados = validarRegistroCBU(registro);
+    setErrores(erroresValidados);
 
+    if (Object.keys(erroresValidados).length === 0) {
+        onRegistrarCBU(`${registro.nombre} ${registro.apellido}`, registro.nroCBU);
+        setIsOpen(false);
+    }
+}
     const handleChange = (e) => {
         setRegistro({ ...registro, [e.target.id]:e.target.value });
     };
@@ -30,6 +37,7 @@ function ModalRegistrarCBU({setIsOpen}) {
                 <p className="text-sm font-medium text-negro-principal pb-4 mt-[-8px]">Los pagos de reintegro se realizan por CBU. Corrobore que sea correcto.</p>
                 <div className='w-full flex'>
                     <Input id={"nroCBU"} label={"N° de CBU"} placeholder="Ingresar CBU" onChange={handleChange} />
+                    {errores.nroCBU && <p className="text-red-500 text-sm mt-1">{errores.nroCBU}</p>}
                 </div>
                 <div className='flex flex-row gap-4 w-full pb-4'>
                     <div className='flex flex-col w-1/2 mr-2 gap-3'>

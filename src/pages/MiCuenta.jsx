@@ -4,10 +4,17 @@ import { AfiliadoCard } from "../components/cards"
 import { useState } from "react"
 import ModalRegistrarCBU from "../components/ModalRegistrarCBU/ModalRegistrarCBU"
 import ListaCbus from "../components/ListaCbus"
+import Select from 'react-select';
+import Swal from 'sweetalert2';
+
 
 
 function MiCuenta() {
   const [CBUModalOnOf, setCBUModalOnOf] = useState(false)
+  const [selectedCBU, setSelectedCBU] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [nuevoCbu, setNuevoCbu] = useState("");
 
   const afiliado = {
     nroAfiliado: '1234567-01',
@@ -70,10 +77,31 @@ function MiCuenta() {
     }
   ]
 
-  const cbusGrupoFamiliar = [
-    ...grupoFamiliar.flatMap(x => obtenerCBU(x)),
+  const [cbusGrupoFamiliar, setCbusGrupoFamiliar] = useState([
+    ...grupoFamiliar.flatMap(obtenerCBU),
     ...obtenerCBU(afiliado)
-  ]
+  ]);
+
+  function agregarNuevoCBU(nombreCompleto, cbu) {
+  console.log("Nuevo CBU registrado:", nombreCompleto, cbu);
+  setCbusGrupoFamiliar(prev => [...prev, [nombreCompleto, cbu]]);
+
+    Swal.fire({
+    title: 'Registro exitoso',
+    text: 'El CBU fue registrado correctamente',
+    icon: 'success',
+    confirmButtonText: 'Aceptar',
+    width: '400px',
+    customClass: {
+      popup: 'swal-popup-small',
+      title: 'swal-title-small',
+      confirmButton: 'swal-button-small'
+    }
+  });
+
+
+
+  }
 
   function obtenerCBU (afiliado) {
     return afiliado.cbus.map(cbu => [`${cbu.nombre} ${cbu.apellido}`, cbu.cbu])
@@ -97,20 +125,28 @@ function MiCuenta() {
             )
           }
         </div>
-      </div>
+    </div>
       <SectionTitle>CBUs Registrados</SectionTitle>
-      <div className="flex items-center gap-4 mt-4">
-        
-        <select className="w-full max-w-md p-2 border border-gray-300 rounded">
-          {cbusGrupoFamiliar.map(([nombreCompleto, cbu], index) => (
-            <option key={index} value={cbu}>
-              {nombreCompleto} - {cbu}
-            </option>
-          ))}
-        </select>
-        <Button onClick={()=> {setCBUModalOnOf(!CBUModalOnOf)}}>Registrar nuevo CBU</Button>
-      </div>
-      {CBUModalOnOf && <ModalRegistrarCBU isOpen={CBUModalOnOf} setIsOpen={setCBUModalOnOf}/>}
+        <div className="flex items-center gap-4 mt-4">
+          
+          <Select
+            options={cbusGrupoFamiliar.map(([nombreCompleto, cbu]) => ({
+              label: `${nombreCompleto} - ${cbu}`,
+              value: cbu
+            }))}
+            onChange={(selectedOption) => setSelectedCBU(selectedOption.value)}
+            className="w-100 max-w-xl"
+            placeholder="Seleccioná un CBU..."
+          />
+          <Button onClick={()=> {setCBUModalOnOf(!CBUModalOnOf)}}>Registrar nuevo CBU</Button>
+        </div>
+      {CBUModalOnOf && (
+      <ModalRegistrarCBU
+        isOpen={CBUModalOnOf}
+        setIsOpen={setCBUModalOnOf}
+        onRegistrarCBU={agregarNuevoCBU}
+      />
+)}
 
     </div>
   )
