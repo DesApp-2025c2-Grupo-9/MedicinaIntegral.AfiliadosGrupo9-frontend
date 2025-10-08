@@ -10,13 +10,6 @@ import { format } from 'date-fns';
 import { useDeleteReintegro } from '../../../services/queries';
 import Swal from 'sweetalert2';
 
-import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal";
-import UsuarioActual from "./cardComponents/UsuarioActual";
-import BotonEditar from "./cardComponents/BotonEditar";
-import BotonPapelera from "./cardComponents/BotonPapelera";
-import BotonObservaciones from "./cardComponents/BotonObservaciones";
-import MarcoCard from "./cardComponents/MarcoCard";
-import TipoDeTramite from "./cardComponents/TipoDeTramite";
 import { useState } from "react";
 function ReintegroCard(props) {
   //Estilo de la card
@@ -57,9 +50,6 @@ function ReintegroCard(props) {
       console.log(error);
     }
   };
-
-  const [detalleOn, setdetalleOn] = useState(false)
-
   return (
     <MarcoCard estilo={cardStyle} estado = {reintegro.estado}>
       <ColumnaPrincipal >
@@ -67,17 +57,13 @@ function ReintegroCard(props) {
         {''/**Provisorio */}
         {`Dr. ${reintegro.medico}`}
         {`Fecha de la prestación ${format(reintegro.fecha, 'dd/MM/yyyy')}`}
-        {`Fecha de la prestación ${formatFecha(reintegro.fecha)}`}
         {reintegro.valor}
         {reintegro.lugar}
       </ColumnaPrincipal>
       {/**Columna dinámica con opciones o información del trámite */}
       <div className='grid grid-rows-4 justify-items-end relative'>
-        <EstadoCard
-          estado={reintegro.estado}
-          dashboard={props.dashboard}
-        />
-      <div className="grid grid-rows-4 justify-items-end">
+        
+        
         
         {/*El estilo del estado es dinámico si está o no en el dashboard*/}
         {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
@@ -91,14 +77,15 @@ function ReintegroCard(props) {
                 <BotonPapelera
                   posicion={4}
                   onClick={deleteReintegro}
-                />
+                  />
               </>
             ) : (
               <BotonObservaciones />
             )}
           </>
         )}
-      </div>
+        </div>
+      
     </MarcoCard>
   );
 }

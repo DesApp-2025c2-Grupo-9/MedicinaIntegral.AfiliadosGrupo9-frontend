@@ -15,15 +15,15 @@ function ColumnaPrincipal(props) {
   const campos = arrayChildren.slice(subtituloOn ? 2 : 1)//Asigna el resto del array para los campos
   return <div className='grid'>
     <TituloCard>{titulo}</TituloCard>
-    {!detalleOn?
-    (
+    
+    
       <SubTituloCard>{subtitulo}</SubTituloCard>
 
-    ):(
-      campos.map((texto, index) => (
+    
+     { campos.map((texto, index) => (
         <CampoInformacion key={index}>{texto}</CampoInformacion>
       ))
-    )}
+    }
   </div>;
 }
 

@@ -5,21 +5,18 @@ import BotonEditar from "./cardComponents/BotonEditar";
 import BotonObservaciones from "./cardComponents/BotonObservaciones";
 import MarcoCard from "./cardComponents/MarcoCard";
 import TipoDeTramite from "./cardComponents/TipoDeTramite";
-import { useState } from "react";
-
 function RecetaCard(props) {
   let receta = props.receta;
   //Los campos que se van a cargar del medicamento
   const campos = 2;//Dos campos ademas de titulo y subitulo
   const cardStyle = "grid-cols-2";
 
-  const [detalleOn, setdetalleOn] = useState(false)
 
   return (
     //Card
-    <MarcoCard estilo={cardStyle} estado = {receta.estado} setdetalleOn = {setdetalleOn} detalleOn = {detalleOn} mostrarDetalle = {true}>
+    <MarcoCard estilo={cardStyle} estado = {receta.estado} >
       {/*Datos de la receta*/}
-      <ColumnaPrincipal detalleOn={detalleOn}>
+      <ColumnaPrincipal >
         Receta
         {receta.medicamento}
         {receta.cantidad}
