@@ -14,6 +14,8 @@ import DatosFacturaReintegroForm from './pages/DatosFacturaReintegroForm';
 import TurnosLayout from './layout/TurnosLayout';
 import RecetasLayout from './layout/RecetasLayout';
 import AutorizacionesLayout from './layout/AutorizacionesLayout';
+import VerRecetas from './pages/Recetas/VerRecetas';
+import SolicitarReceta from './pages/Recetas/SolicitarReceta';
 
 export function AppRouter() {
   return (
@@ -41,8 +43,8 @@ export function AppRouter() {
         </Route>
 
         <Route path='/recetas' element={<RecetasLayout />}>
-          <Route path='ver-recetas' element={<h3>Ver recetas.</h3>} />
-          <Route path='solicitar-receta' element={<h3>Solicitar nueva receta.</h3>} />
+          <Route path='ver-recetas' element={<VerRecetas/>} />
+          <Route path='solicitar-receta' element={<SolicitarReceta/>} />
         </Route>
 
         <Route path='/autorizaciones' element={<AutorizacionesLayout />}>

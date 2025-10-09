@@ -6,7 +6,7 @@ function CartillaCard(props) {
 
   return (
     <MarcoCard>
-        <ColumnaPrincipal>
+        <ColumnaPrincipal >
             {prestacion.medico}
             {prestacion.especialidad}
             {`Lugar: ${prestacion.lugar}`}

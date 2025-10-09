@@ -23,9 +23,9 @@ function TurnosCard(props) {
     `;
 
   return (
-    <MarcoCard estilo={cardStyle}>
+    <MarcoCard estilo={cardStyle} >
       {/*columna datos del turno*/}
-      <ColumnaPrincipal>
+      <ColumnaPrincipal >
         {turno.especialidad}
         {`Dr. ${turno.profesional}`}
         {formatFecha(turno.fecha)}

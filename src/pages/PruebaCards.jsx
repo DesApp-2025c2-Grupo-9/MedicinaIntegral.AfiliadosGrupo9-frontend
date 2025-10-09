@@ -117,10 +117,6 @@ function PruebaCards() {
     direccion: 'Arias 2030, Castelar',
     telefono: '1134759678'
   }
-
-
-
-
   return (
     <div className='grid grid-cols-auto grid-rows-2 '>
       <div className='col-start-1 border-2 p-2'>

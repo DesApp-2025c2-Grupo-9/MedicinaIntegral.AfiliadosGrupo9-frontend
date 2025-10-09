@@ -10,11 +10,12 @@ import { format } from 'date-fns';
 import { useDeleteReintegro } from '../../../services/queries';
 import Swal from 'sweetalert2';
 
+import { useState } from "react";
 function ReintegroCard(props) {
   //Estilo de la card
   const { mutateAsync } = useDeleteReintegro();
 
-  let cardStyle = ` grid-cols-2 max-w-md mx-auto`;
+  let cardStyle = ` grid-cols-2 `;
 
   let reintegro = props.reintegro;
 
@@ -49,22 +50,21 @@ function ReintegroCard(props) {
       console.log(error);
     }
   };
-
   return (
-    <MarcoCard estilo={cardStyle}>
-      <ColumnaPrincipal>
+    <MarcoCard estilo={cardStyle} estado = {reintegro.estado}>
+      <ColumnaPrincipal >
         {reintegro.especialidad}
+        
         {`Dr. ${reintegro.medico}`}
-        {`Fecha de la prestación ${format(reintegro.fecha, 'dd/MM/yyyy')}`}
-        {reintegro.lugar}
-        {reintegro.valor}
+        {`Fecha de la prestación ${format(reintegro.fechaDePrestacion, 'dd/MM/yyyy')}`}
+        {`$${reintegro.factura.valorTotal}`}
+        {reintegro.lugarDeAtencion}
       </ColumnaPrincipal>
       {/**Columna dinámica con opciones o información del trámite */}
       <div className='grid grid-rows-4 justify-items-end relative'>
-        <EstadoCard
-          estado={reintegro.estado}
-          dashboard={props.dashboard}
-        />
+        
+        
+        
         {/*El estilo del estado es dinámico si está o no en el dashboard*/}
         {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
           <TipoDeTramite tipo={'Reintegro'} />
@@ -77,14 +77,15 @@ function ReintegroCard(props) {
                 <BotonPapelera
                   posicion={4}
                   onClick={deleteReintegro}
-                />
+                  />
               </>
             ) : (
               <BotonObservaciones />
             )}
           </>
         )}
-      </div>
+        </div>
+      
     </MarcoCard>
   );
 }
