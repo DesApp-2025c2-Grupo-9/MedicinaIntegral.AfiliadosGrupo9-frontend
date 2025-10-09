@@ -3,7 +3,6 @@ import Button from '../components/Button'
 import { AfiliadoCard } from "../components/cards"
 import { useState } from "react"
 import ModalRegistrarCBU from "../components/ModalRegistrarCBU/ModalRegistrarCBU"
-import ListaCbus from "../components/ListaCbus"
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 
@@ -31,13 +30,13 @@ function MiCuenta() {
           cuil : '20131231250',
           nombre : 'Jane',
           apellido : 'Doe',
-          cbu : '1234567890123456789012'
+          cbu : '12345678901123456789012'
         },{
           tipoDeCuenta : 'Cuenta corriente',
           cuil : '20131231250',
           nombre : 'Jane',
           apellido : 'Doe',
-          cbu : '1234567890123456789033'
+          cbu : '2323232323232323232323'
         }]
   }
   const grupoFamiliar = [
@@ -56,13 +55,13 @@ function MiCuenta() {
           cuil : '20131231250',
           nombre : 'Clara',
           apellido : 'Doe',
-          cbu : '1234567890123456789444'
+          cbu : '7878787878787878787878'
         },{
           tipoDeCuenta : 'Cuenta corriente',
           cuil : '20131231250',
           nombre : 'Clara',
           apellido : 'Doe',
-          cbu : '1234567890123456789111'
+          cbu : '9898989898989898989898'
         }
     ]
     }, {
@@ -82,11 +81,12 @@ function MiCuenta() {
     ...obtenerCBU(afiliado)
   ]);
 
-  function agregarNuevoCBU(nombreCompleto, cbu) {
+  function agregarNuevoCBU(nombreCompleto, cbu) { //agregué
   console.log("Nuevo CBU registrado:", nombreCompleto, cbu);
   setCbusGrupoFamiliar(prev => [...prev, [nombreCompleto, cbu]]);
 
-    Swal.fire({
+
+    Swal.fire({  //agregue alerta cuando se registra un cbu
     title: 'Registro exitoso',
     text: 'El CBU fue registrado correctamente',
     icon: 'success',
