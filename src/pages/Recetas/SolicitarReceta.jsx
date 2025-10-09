@@ -4,20 +4,14 @@ import Button from '../../components/Button'
 import InputContainer from "../../components/InputContainer";
 import Select from "../../components/Select";
 import { useForm } from "react-hook-form";
-import {z} from 'zod'
+import  {recetaSchema}  from "../../schema/recetaSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-//Esquema de solicitud utilizando zod
-const solicitudSchema = z.object({
-  afiliado: z.string(),
-  medicamento : z.string(),
-  cantidad : z.coerce.number(),
-  presentacion : z.string(),
-  observaciones : z.string().optional()
-})
+
 function SolicitarReceta() {
+  const solicitudSchema = recetaSchema
 
   //Se inicia el form con el resolver de zod
   const {
@@ -35,9 +29,8 @@ function SolicitarReceta() {
     }
   })
   const navigate = useNavigate()
-
+  
   const onSubmit = () => {
-    
     Swal.fire({
             title: 'Solicitud enviada',
             text: 'Su solicitud se envió correctamente, puede verla en "Ver Recetas',
@@ -54,36 +47,49 @@ function SolicitarReceta() {
             navigate('/recetas/ver-recetas')
           })
   }
+    return (
 
-
-  return (
     <Form
       onSubmit={handleSubmit(onSubmit)}
     >
-      {/*Dropdown afiliado */}
+      {/*Dropdown afiliado - Modificar para que aparezca el nro de afiliado tambien*/}
       <Select
-      {...register('paraAfiliado')}
-        id='paraAfiliado'
+      {...register('nroAfiliado')}
+        id='nroAfiliado'
         label='Para afiliado:'
         placeholder='Seleccionar afiliado'
-        options={['Carolina Benitez', 'John Doe', 'Jane Doe']}
+        options={['Carolina Benitez', 'John Doe', 'Jane Doe']}/*Modificar esto */
         errorMsg={errors.paraAfiliado?.message}
       />
       {/*Input medicamento - Input Cantidad */}
       <InputContainer>
         <Input 
+        {...register('medicamento')}
         label={'Medicamento'}
-        placeholder={'Ingresar Medicamento'} />
+        placeholder={'Ingresar Medicamento'}
+        errorMsg={errors.medicamento?.message}
+        />
         <Input 
+        {...register("cantidad", {valueAsNumber: true})}
         label={'Cantidad'}
         placeholder = {'Ingrese cantidad'}
+        errorMsg={errors.cantidad?.message}
         />
       </InputContainer>
       {/*InputPresentación */}
-      <Input label={'Presentación'}
-      placeholder= {'Ingrese la presentación'}/>
+      <Input 
+      {...register('presentacion')}
+      label={'Presentación'}
+      placeholder= {'Ingrese la presentación'}
+      errorMsg={errors.presentacion?.message}
+      />
+      
       {/*Input observaciones*/}
-      <Input label={'Observaciones'}/>
+      <Input 
+      {...register('observaciones')}
+      label={'Observaciones'}
+      errorMsg={errors.observaciones?.message}
+      />
       <Button
         type='submit'
         state = {isSubmitting ? 'disabled' : 'active'}

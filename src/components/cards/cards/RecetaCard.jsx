@@ -33,14 +33,7 @@ function RecetaCard(props) {
           ) : <>
             {/**Si no es card de dashboard */}
             <UsuarioActual />
-            {receta.estado == "pendiente" ? (
-              <>
-                <BotonEditar posicion={campos.length + 1} />
-                <BotonPapelera posicion={campos.length + 2} />
-              </>
-            ) : (
-              <BotonObservaciones />
-            )}
+            
             {receta.estado !== 'pendiente' ? (
               <BotonObservaciones/>
             ): (<></>)

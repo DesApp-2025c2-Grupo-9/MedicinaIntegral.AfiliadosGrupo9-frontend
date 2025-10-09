@@ -51,7 +51,7 @@ function ReintegroCard(props) {
     }
   };
   return (
-    <MarcoCard estilo={cardStyle} estado = {reintegro.estado}>
+    <MarcoCard estilo={cardStyle} estado = {reintegro.estado} deleteAction = {deleteReintegro}>
       <ColumnaPrincipal >
         {reintegro.especialidad}
         
@@ -71,17 +71,10 @@ function ReintegroCard(props) {
         ) : (
           <>
             <UsuarioActual paciente={reintegro.paraAfiliado} />
-            {reintegro.estado == 'Pendiente' ? (
-              <>
-                <BotonEditar posicion={3} />
-                <BotonPapelera
-                  posicion={4}
-                  onClick={deleteReintegro}
-                  />
-              </>
-            ) : (
+            {reintegro.estado !== 'pendiente' ? (
               <BotonObservaciones />
-            )}
+              
+            ) : <></>}
           </>
         )}
         </div>

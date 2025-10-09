@@ -35,12 +35,14 @@ function TurnosCard(props) {
       </ColumnaPrincipal>
       {/*Columna derecha si tiene turno asignado*/}
       {paciente ? (
-        <div className="grid grid-rows-4">
+        <div className="grid grid-rows-4 justify-end">
           <UsuarioActual />
+          <div className="row-start-4">
+
           <BotonPapelera
             onClick={papeleraOnClick}
-            posicion={campos}
-          />
+            />
+            </div>
         </div>
       ) : (
         <></>
