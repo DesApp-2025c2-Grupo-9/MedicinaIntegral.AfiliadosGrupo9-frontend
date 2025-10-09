@@ -5,6 +5,7 @@ import BotonEditar from "./cardComponents/BotonEditar";
 import BotonObservaciones from "./cardComponents/BotonObservaciones";
 import MarcoCard from "./cardComponents/MarcoCard";
 import TipoDeTramite from "./cardComponents/TipoDeTramite";
+import BotonDescargar from './cardComponents/BotonDescargar'
 function RecetaCard(props) {
   let receta = props.receta;
   //Los campos que se van a cargar del medicamento
@@ -40,6 +41,15 @@ function RecetaCard(props) {
             }
           </>
         }
+        {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
+          {receta.estado == 'pendiente'? (
+            <div className="flex items-baseline-last justify-end row-start-4">
+              <BotonDescargar />
+              <BotonEditar />
+              <BotonPapelera />
+            </div>
+          ): <></> 
+          }
       </div>
     </MarcoCard>
   );

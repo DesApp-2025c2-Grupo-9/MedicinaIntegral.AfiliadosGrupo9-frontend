@@ -7,17 +7,18 @@ function BotonPapelera(props) {
     <div >
       <button
         type='button'
-        className='flex flex-row
-                text-gray-600
-                hover:bg-red-100
-                hover:text-red-800
-                rounded-tr-xl
-                p-1 justify-end cursor-pointer
-                transition-colors
-                '
+       className="flex flex-row
+        text-gray-600
+        hover:bg-red-100
+        hover:text-red-800
+        p-1
+        px-3 justify-end cursor-pointer text-sm transition-colors
+        rounded-full
+         bg-red-50  border-s-gray-900 shadow-2xs 
+         " 
         onClick={props.onClick}
       >
-        <span className='text-sm'>Eliminar</span>
+        <span className='text-sm'></span>
         <span className='w-5 h-4'>{icons.papelera}</span>
       </button>
     </div>

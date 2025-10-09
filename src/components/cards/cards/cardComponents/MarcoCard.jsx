@@ -10,8 +10,6 @@ function MarcoCard(props) {
     setdetalleOn,//useState para mostrar/ocultar detalle
     detalleOn,//detalle oculto/visible
     mostrarDetalle = false, //Por defecto no se muestra una pestaña para detalle
-    deleteAction,
-    editAction
   } = props
 
   const estilos = {
@@ -39,14 +37,7 @@ function MarcoCard(props) {
       estado ? (
         <div className="flex text-black items-center justify-between px-1">{/*Si se manda un estado se carga esta parte */}
           <p className="px-2">{estado.charAt(0).toUpperCase() + estado.slice(1)}</p>
-          {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
-          {estado == 'pendiente'? (
-            <div className="flex items-center justify-between bg-amber-100  border-s-gray-900 shadow-2xs border-t-1 border-x-1 rounded-t-xl">
-              <BotonEditar onClick={editAction}/>
-              <BotonPapelera onClick = {deleteAction}/>
-            </div>
-          ): <></> 
-          }
+          
 
 
 
@@ -60,6 +51,7 @@ function MarcoCard(props) {
       <div className={`grid p-3 bg-blanco-principal rounded-b-xl  border border-gris-border ${estilo}`}>
         {/*Aca dentro va la card */}
         {children}
+      
       </div>
     </div>
   );

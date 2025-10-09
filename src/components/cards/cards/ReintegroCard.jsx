@@ -3,14 +3,12 @@ import UsuarioActual from './cardComponents/UsuarioActual';
 import BotonEditar from './cardComponents/BotonEditar';
 import BotonPapelera from './cardComponents/BotonPapelera';
 import BotonObservaciones from './cardComponents/BotonObservaciones';
-import EstadoCard from './cardComponents/EstadoCard';
 import MarcoCard from './cardComponents/MarcoCard';
 import TipoDeTramite from './cardComponents/TipoDeTramite';
 import { format } from 'date-fns';
 import { useDeleteReintegro } from '../../../services/queries';
 import Swal from 'sweetalert2';
 
-import { useState } from "react";
 function ReintegroCard(props) {
   //Estilo de la card
   const { mutateAsync } = useDeleteReintegro();
@@ -18,6 +16,11 @@ function ReintegroCard(props) {
   let cardStyle = ` grid-cols-2 `;
 
   let reintegro = props.reintegro;
+
+  const editarReintegro = () => {
+    //Editar reintegro
+    alert('Boton editar reintegro')
+  }
 
   const deleteReintegro = async () => {
     try {
@@ -51,7 +54,7 @@ function ReintegroCard(props) {
     }
   };
   return (
-    <MarcoCard estilo={cardStyle} estado = {reintegro.estado} deleteAction = {deleteReintegro}>
+    <MarcoCard estilo={cardStyle} estado = {reintegro.estado}>
       <ColumnaPrincipal >
         {reintegro.especialidad}
         
@@ -77,8 +80,15 @@ function ReintegroCard(props) {
             ) : <></>}
           </>
         )}
+        {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
+          {reintegro.estado == 'pendiente'? (
+            <div className="flex items-baseline-last justify-end row-start-4">
+              <BotonEditar onClick = {editarReintegro}/>
+              <BotonPapelera onClick = {deleteReintegro}/>
+            </div>
+          ): <></> 
+          }
         </div>
-      
     </MarcoCard>
   );
 }
