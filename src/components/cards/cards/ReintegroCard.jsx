@@ -54,11 +54,11 @@ function ReintegroCard(props) {
     <MarcoCard estilo={cardStyle} estado = {reintegro.estado}>
       <ColumnaPrincipal >
         {reintegro.especialidad}
-        {''/**Provisorio */}
+        
         {`Dr. ${reintegro.medico}`}
-        {`Fecha de la prestación ${format(reintegro.fecha, 'dd/MM/yyyy')}`}
-        {reintegro.valor}
-        {reintegro.lugar}
+        {`Fecha de la prestación ${format(reintegro.fechaDePrestacion, 'dd/MM/yyyy')}`}
+        {`$${reintegro.factura.valorTotal}`}
+        {reintegro.lugarDeAtencion}
       </ColumnaPrincipal>
       {/**Columna dinámica con opciones o información del trámite */}
       <div className='grid grid-rows-4 justify-items-end relative'>

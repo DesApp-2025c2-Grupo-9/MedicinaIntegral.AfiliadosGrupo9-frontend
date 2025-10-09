@@ -11,7 +11,7 @@ function VerRecetas() {
     cantidad: '2 cajas',
     presentacion: 'Pastillas',
     detalleMedicamento: '30 unidades por caja',
-    estado: 'Pendiente'
+    estado: 'pendiente'
   },
   {
     idReceta: 2,
@@ -19,7 +19,7 @@ function VerRecetas() {
     cantidad: '2 cajas',
     presentacion: 'Pastillas',
     detalleMedicamento: '30 unidades por caja',
-    estado: 'Pendiente'
+    estado: 'pendiente'
   },
   {
     idReceta: 3,
@@ -27,7 +27,7 @@ function VerRecetas() {
     cantidad: '2 cajas',
     presentacion: 'Pastillas',
     detalleMedicamento: '30 unidades por caja',
-    estado: 'Rechazado'
+    estado: 'rechazado'
   },
   {
     idReceta: 4,
@@ -35,13 +35,13 @@ function VerRecetas() {
     cantidad: '2 cajas',
     presentacion: 'Pastillas',
     detalleMedicamento: '30 unidades por caja',
-    estado: 'Aceptado'
+    estado: 'aceptado'
   }
   ]
 
   
   return (
-    <div className="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-2">
       {recetas.map(
         (receta, idReceta) => (
           <RecetaCard receta={receta} key={idReceta} />
