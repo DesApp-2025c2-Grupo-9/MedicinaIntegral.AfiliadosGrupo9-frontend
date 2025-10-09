@@ -3,11 +3,17 @@ import Button from '../components/Button'
 import { AfiliadoCard } from "../components/cards"
 import { useState } from "react"
 import ModalRegistrarCBU from "../components/ModalRegistrarCBU/ModalRegistrarCBU"
-import ListaCbus from "../components/ListaCbus"
+import Select from 'react-select';
+import Swal from 'sweetalert2';
+
 
 
 function MiCuenta() {
   const [CBUModalOnOf, setCBUModalOnOf] = useState(false)
+  const [selectedCBU, setSelectedCBU] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [nuevoCbu, setNuevoCbu] = useState("");
 
   const afiliado = {
     nroAfiliado: '1234567-01',
@@ -24,13 +30,13 @@ function MiCuenta() {
           cuil : '20131231250',
           nombre : 'Jane',
           apellido : 'Doe',
-          cbu : '1234567890123456789012'
+          cbu : '12345678901123456789012'
         },{
           tipoDeCuenta : 'Cuenta corriente',
           cuil : '20131231250',
           nombre : 'Jane',
           apellido : 'Doe',
-          cbu : '1234567890123456789033'
+          cbu : '2323232323232323232323'
         }]
   }
   const grupoFamiliar = [
@@ -49,13 +55,13 @@ function MiCuenta() {
           cuil : '20131231250',
           nombre : 'Clara',
           apellido : 'Doe',
-          cbu : '1234567890123456789444'
+          cbu : '7878787878787878787878'
         },{
           tipoDeCuenta : 'Cuenta corriente',
           cuil : '20131231250',
           nombre : 'Clara',
           apellido : 'Doe',
-          cbu : '1234567890123456789111'
+          cbu : '9898989898989898989898'
         }
     ]
     }, {
@@ -70,10 +76,32 @@ function MiCuenta() {
     }
   ]
 
-  const cbusGrupoFamiliar = [
-    ...grupoFamiliar.flatMap(x => obtenerCBU(x)),
+  const [cbusGrupoFamiliar, setCbusGrupoFamiliar] = useState([
+    ...grupoFamiliar.flatMap(obtenerCBU),
     ...obtenerCBU(afiliado)
-  ]
+  ]);
+
+  function agregarNuevoCBU(nombreCompleto, cbu) { //agregué
+  console.log("Nuevo CBU registrado:", nombreCompleto, cbu);
+  setCbusGrupoFamiliar(prev => [...prev, [nombreCompleto, cbu]]);
+
+
+    Swal.fire({  //agregue alerta cuando se registra un cbu
+    title: 'Registro exitoso',
+    text: 'El CBU fue registrado correctamente',
+    icon: 'success',
+    confirmButtonText: 'Aceptar',
+    width: '400px',
+    customClass: {
+      popup: 'swal-popup-small',
+      title: 'swal-title-small',
+      confirmButton: 'swal-button-small'
+    }
+  });
+
+
+
+  }
 
   function obtenerCBU (afiliado) {
     return afiliado.cbus.map(cbu => [`${cbu.nombre} ${cbu.apellido}`, cbu.cbu])
@@ -97,13 +125,28 @@ function MiCuenta() {
             )
           }
         </div>
-      </div>
-      <div>
-        <SectionTitle>CBUs Registrados</SectionTitle>
-        <ListaCbus listaCbus={cbusGrupoFamiliar}/>
-        <Button onClick={()=> {setCBUModalOnOf(!CBUModalOnOf)}}>Registrar nuevo CBU</Button>
-      </div>
-      {CBUModalOnOf && <ModalRegistrarCBU isOpen={CBUModalOnOf} setIsOpen={setCBUModalOnOf}/>}
+    </div>
+      <SectionTitle>CBUs Registrados</SectionTitle>
+        <div className="flex items-center gap-4 mt-4">
+          
+          <Select
+            options={cbusGrupoFamiliar.map(([nombreCompleto, cbu]) => ({
+              label: `${nombreCompleto} - ${cbu}`,
+              value: cbu
+            }))}
+            onChange={(selectedOption) => setSelectedCBU(selectedOption.value)}
+            className="w-100 max-w-xl"
+            placeholder="Seleccioná un CBU..."
+          />
+          <Button onClick={()=> {setCBUModalOnOf(!CBUModalOnOf)}}>Registrar nuevo CBU</Button>
+        </div>
+      {CBUModalOnOf && (
+      <ModalRegistrarCBU
+        isOpen={CBUModalOnOf}
+        setIsOpen={setCBUModalOnOf}
+        onRegistrarCBU={agregarNuevoCBU}
+      />
+)}
 
     </div>
   )
