@@ -5,6 +5,7 @@ import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal";
 import UsuarioActual from "./cardComponents/UsuarioActual";
 import MarcoCard from "./cardComponents/MarcoCard";
 import TipoDeTramite from "./cardComponents/TipoDeTramite";
+import {format} from 'date-fns'
 
 function AutorizacionCard(props) {
   const autorizacion = props.autorizacion;
@@ -22,8 +23,8 @@ function AutorizacionCard(props) {
     <MarcoCard estilo={cardStyle} estado={autorizacion.estado}>
       <ColumnaPrincipal>
         {autorizacion.especialidad}
-        {`Dr. ${autorizacion.medico}`}
-        {`Fecha prevista ${formatFecha(autorizacion.fecha)}`}
+        {`Dr. ${autorizacion.medicoSolicitante}`}
+        {`Fecha prevista ${formatFecha(autorizacion.fechaSolicitud)}`}
         {autorizacion.lugar}
         {`Dias de internación: ${autorizacion.diasInternacion} días`}
       </ColumnaPrincipal>
