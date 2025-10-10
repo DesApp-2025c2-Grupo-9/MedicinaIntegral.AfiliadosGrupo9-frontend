@@ -9,8 +9,23 @@ import BotonDescargar from './cardComponents/BotonDescargar'
 function RecetaCard(props) {
   let receta = props.receta;
   //Los campos que se van a cargar del medicamento
-  const campos = 2;//Dos campos ademas de titulo y subitulo
   const cardStyle = "grid-cols-2";
+
+  const descargarReceta = () => {
+    alert('DescargarReceta')
+  }
+
+  const observaciones = () => {
+    alert('Observaciones')
+  }
+
+  const editarReceta = () => {
+    alert('EditarReceta')
+  }
+
+  const eliminarReceta = () => {
+    alert('eliminarReceta')
+  }
 
 
   return (
@@ -36,7 +51,12 @@ function RecetaCard(props) {
             <UsuarioActual />
             
             {receta.estado !== 'pendiente' ? (
-              <BotonObservaciones/>
+              <div className="flex row-start-4">
+              
+              <BotonDescargar onClick={descargarReceta}/>
+              <BotonObservaciones onClick={observaciones}/>
+            
+            </div>
             ): (<></>)
             }
           </>
@@ -44,9 +64,9 @@ function RecetaCard(props) {
         {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
           {receta.estado == 'pendiente'? (
             <div className="flex items-baseline-last justify-end row-start-4">
-              <BotonDescargar />
-              <BotonEditar />
-              <BotonPapelera />
+              <BotonDescargar onClick={descargarReceta}/>
+              <BotonEditar onClick={editarReceta}/>
+              <BotonPapelera onClick={eliminarReceta} />
             </div>
           ): <></> 
           }

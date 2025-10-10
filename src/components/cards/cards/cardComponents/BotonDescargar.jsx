@@ -1,5 +1,5 @@
 import { icons } from "../../../../utils/icons";
-function BotonEditar(props) {
+function BotonDescargar(props) {
   
  
   return (
@@ -17,10 +17,10 @@ function BotonEditar(props) {
         onClick={props.onClick}
       >
         <span></span>
-        <span className="w-5 h-4">{icons.volver}</span>
+        <span className="w-5 h-4">{icons.descargas}</span>
       </button>
     </div>
   );
 }
 
-export default BotonEditar;
+export default BotonDescargar;
