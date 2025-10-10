@@ -18,6 +18,7 @@ const nuevoReintegroSchema = reintegroSchema.pick({
 });
 
 function NuevoReintegroForm() {
+  const fechaActual = new Date().toISOString().split('T')[0];
   const navigate = useNavigate();
   const { data, setData } = useNuevoReintegroStore(state => state);
   const {
@@ -62,6 +63,7 @@ function NuevoReintegroForm() {
           type='date'
           id='fechaDePrestacion'
           label='Fecha de la prestación:'
+          max={fechaActual}
           errorMsg={errors.fechaDePrestacion?.message}
         />
         <Select
@@ -69,7 +71,7 @@ function NuevoReintegroForm() {
           id='especialidad'
           label='Especialidad:'
           placeholder='Seleccionar especialidad'
-          options={['Lorem', 'Ipsum', 'Dolor', 'Sit']}
+          options={['Lorem', 'Ipsum', 'Dolor', 'Sit', 'Medicina General']}
           errorMsg={errors.especialidad?.message}
         />
       </InputContainer>
