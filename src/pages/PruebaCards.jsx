@@ -165,7 +165,7 @@ function PruebaCards() {
         <div className='col-start-2'>
 
         <h1>Reintegro rechazado/observado</h1>
-        <ReintegroCard reintegro={reintegroObservadoRechazado} dashboard = {true}/>
+        <ReintegroCard reintegro={reintegroPendiente} dashboard = {true}/>
         </div>
         <div>
 

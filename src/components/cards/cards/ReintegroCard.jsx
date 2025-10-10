@@ -75,13 +75,16 @@ function ReintegroCard(props) {
           <>
             <UsuarioActual paciente={reintegro.paraAfiliado} />
             {reintegro.estado !== 'pendiente' ? (
-              <BotonObservaciones />
+              <div className='row-start-4'>
+
+                <BotonObservaciones />
+              </div>
               
             ) : <></>}
           </>
         )}
         {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
-          {reintegro.estado == 'pendiente'? (
+          {reintegro.estado == 'pendiente' && props.dashboard == false? (
             <div className="flex items-baseline-last justify-end row-start-4">
               <BotonEditar onClick = {editarReintegro}/>
               <BotonPapelera onClick = {deleteReintegro}/>

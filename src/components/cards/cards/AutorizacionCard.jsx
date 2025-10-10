@@ -19,39 +19,38 @@ function AutorizacionCard(props) {
   }
 
   return (
-    <MarcoCard estilo={cardStyle} estado ={autorizacion.estado}>
+    <MarcoCard estilo={cardStyle} estado={autorizacion.estado}>
       <ColumnaPrincipal>
         {autorizacion.especialidad}
         {`Dr. ${autorizacion.medico}`}
         {`Fecha prevista ${formatFecha(autorizacion.fecha)}`}
         {autorizacion.lugar}
-        {`Dias de internación: ${autorizacion.diasInternacion} días`} 
+        {`Dias de internación: ${autorizacion.diasInternacion} días`}
       </ColumnaPrincipal>
       <div className="grid grid-rows-4 justify-items-end col-start-2">
         {//Si es card de dashboard
           props.dashboard ? (
-            <div>
+            
               <TipoDeTramite tipo={'Autorización'} />
-            </div>
+            
           ) ://Si no es de dashboard
-            <>
+            < >
               <UsuarioActual />
               {autorizacion.estado !== "pendiente" ? (
+                <div className="row-start-4">
                   <BotonObservaciones />
-              ) : (
-                <>
-                </>
-              )}
+                </div>
+              ) : <>  </>}
             </>
         }
         {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
-          {autorizacion.estado == 'pendiente'? (
-            <div className="flex items-baseline-last justify-end row-start-4 col-start-1">
-              <BotonEditar onClick={editarAutorizacion}/>
-              <BotonPapelera onClick={eliminarAutorizacion}/>
-            </div>
-          ): <></> 
-          }
+        {autorizacion.estado == 'pendiente' && props.dashboard == false ? (
+          <div className="flex items-baseline-last justify-end row-start-4 col-start-1">
+            <BotonEditar onClick={editarAutorizacion} />
+            <BotonPapelera onClick={eliminarAutorizacion} />
+          </div>
+        ) : <></>
+        }
       </div>
     </MarcoCard>
   );
