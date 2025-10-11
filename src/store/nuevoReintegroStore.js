@@ -3,10 +3,10 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 export const useNuevoReintegroStore = create(
   persist(
-    (set) => ({
+    set => ({
       data: {},
-      setData: (value) => {
-        set({ data: value })
+      setData: value => {
+        set({ data: value });
       }
     }),
     {

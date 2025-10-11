@@ -7,6 +7,9 @@ import InputContainer from '../components/InputContainer';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
+import TwoButtons from '../components/TwoButtons';
+import { addDays, format } from 'date-fns';
+import { useEditReintegroHandler } from '../hooks/useEditReintegroHandler';
 
 const nuevoReintegroSchema = reintegroSchema.pick({
   paraAfiliado: true,
@@ -16,9 +19,10 @@ const nuevoReintegroSchema = reintegroSchema.pick({
   lugarDeAtencion: true
 });
 
-function NuevoReintegroForm({ className, onSubmit }) {
+function EditReintegroForm({ className, reintegro = {}, cancelBtnOnClick }) {
   const fechaActual = new Date().toISOString().split('T')[0];
-  const data = useNuevoReintegroStore(state => state.data);
+  const { data, setData } = useNuevoReintegroStore(state => state);
+  const { onSubmit } = useEditReintegroHandler();
   const {
     register,
     handleSubmit,
@@ -26,11 +30,11 @@ function NuevoReintegroForm({ className, onSubmit }) {
   } = useForm({
     resolver: zodResolver(nuevoReintegroSchema),
     defaultValues: {
-      paraAfiliado: data?.paraAfiliado,
-      fechaDePrestacion: data?.fechaDePrestacion,
-      especialidad: data?.especialidad,
-      medico: data?.medico,
-      lugarDeAtencion: data?.lugarDeAtencion
+      paraAfiliado: data?.paraAfiliado ?? reintegro.paraAfiliado,
+      fechaDePrestacion: data?.fechaDePrestacion ?? format(addDays(reintegro.fechaDePrestacion, 1), 'yyyy-MM-dd'),
+      especialidad: data?.especialidad ?? reintegro.especialidad,
+      medico: data?.medico ?? reintegro.medico,
+      lugarDeAtencion: data?.lugarDeAtencion ?? reintegro.lugarDeAtencion
     }
   });
 
@@ -86,15 +90,26 @@ function NuevoReintegroForm({ className, onSubmit }) {
         />
       </InputContainer>
 
-      <Button
-        type='submit'
-        state={isSubmitting ? 'disabled' : 'active'}
-        disabled={isSubmitting}
-        className='ml-auto'
-      >
-        {isSubmitting ? 'Cargando...' : 'Siguiente'}
-      </Button>
+      <TwoButtons className='ml-auto'>
+        <Button
+          type='button'
+          style='outln'
+          onClick={() => {
+            setData({});
+            cancelBtnOnClick();
+          }}
+        >
+          Cancelar
+        </Button>
+        <Button
+          type='submit'
+          state={isSubmitting ? 'disabled' : 'active'}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Cargando...' : 'Siguiente'}
+        </Button>
+      </TwoButtons>
     </Form>
   );
 }
-export default NuevoReintegroForm;
+export default EditReintegroForm;
