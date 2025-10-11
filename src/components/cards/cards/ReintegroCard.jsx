@@ -18,6 +18,7 @@ import EditReintegroForm from '../../../pages/EditReintegroForm';
 import EditDatosFacturaReintegroForm from '../../../pages/EditDatosFacturaReintegroForm';
 
 function ReintegroCard(props) {
+  const dashboard = props.dashboard || false;
   const reintegro = props.reintegro;
   const { mutateAsync } = useDeleteReintegro();
   const { currentStep, setCurrentStep } = useEditReintegroStep();
@@ -100,6 +101,7 @@ function ReintegroCard(props) {
           )}
         </div>
       )}
+      
       <MarcoCard
         estilo={cardStyle}
         estado={reintegro.estado}
@@ -139,6 +141,7 @@ function ReintegroCard(props) {
           }
         </div>
     </MarcoCard>
+    </>
   );
 }
 
