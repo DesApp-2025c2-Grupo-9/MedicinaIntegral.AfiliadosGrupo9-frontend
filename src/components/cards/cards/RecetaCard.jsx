@@ -6,13 +6,48 @@ import BotonObservaciones from "./cardComponents/BotonObservaciones";
 import MarcoCard from "./cardComponents/MarcoCard";
 import TipoDeTramite from "./cardComponents/TipoDeTramite";
 import BotonDescargar from './cardComponents/BotonDescargar'
+import capitalize from '../../../utils/capitalize'
+import logo from '../../../assets/img/med_integral_logo.png'
+import {jsPDF} from 'jspdf'
 function RecetaCard(props) {
   let receta = props.receta;
   //Los campos que se van a cargar del medicamento
   const cardStyle = "grid-cols-2";
 
   const descargarReceta = () => {
-    alert('DescargarReceta')
+    let y = 10
+    //Generar el pdf
+    const doc = new jsPDF({format: 'a5'});
+
+    //Marca de agua
+    doc.addImage(logo, "PNG", 100,10,40,40);
+    //Titulo principal
+    doc.setFontSize(20)
+    doc.text("Medicina Integral", 10, y)
+    //Titulo
+    doc.setFontSize(16);
+    doc.text("Receta médica", 10, y+=10)
+    //Datos
+    doc.setFontSize(12)
+    doc.text(`Nro de afiliado: ${receta.nroAfiliado}`, 10, y+=10)
+    doc.text(`Medicamento: ${receta.medicamento}`,10, y+=10)
+    doc.text(`Cantidad: ${receta.cantidad}`,10, y+=10)
+    doc.text(`Presentación: ${receta.presentacion}`,10, y+=10)
+    doc.text(`Estado: ${capitalize(receta.estado)}`,10, y+=10)
+    //Si la receta tiene observaciones agregarlas
+    if (receta.observaciones && receta.observaciones.length > 0){
+      doc.text("Observaciones:",10, y+=10);
+      receta.observaciones.forEach((observacion, index) => {
+        const y = 100 + index*10;
+        doc.text(
+          `- Emisor: ${observacion.emisor} | ${observacion.descripcion} | ${new Date(observacion.fecha).toLocaleDateString()}`, 10, y
+        )
+      })
+    }else(
+      doc.text("Observaciones: Sin observaciones", 10, y+=10)
+    )
+    doc.save(`Receta.pdf`)
+    console.log('Boton para descargar apretado')
   }
 
   const observaciones = () => {

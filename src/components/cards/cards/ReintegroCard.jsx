@@ -16,6 +16,7 @@ function ReintegroCard(props) {
   const { mutateAsync } = useDeleteReintegro();
   const cardStyle = ` grid-cols-2 `;
   const reintegro = props.reintegro;
+  const dashboard = props.dashboard || false
   const fechaDePrestacion = format(reintegro.fechaDePrestacion, 'dd/MM/yyyy');
   const valorTotal = pesosArg.format(reintegro.factura.valorTotal);
 
@@ -68,7 +69,6 @@ function ReintegroCard(props) {
       console.log(error);
     }
   };
-  console.log(reintegro.estado)
   return (
     <MarcoCard
       estilo={cardStyle}
@@ -100,7 +100,7 @@ function ReintegroCard(props) {
           </>
         )}
         {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
-          {reintegro.estado == 'pendiente' && props.dashboard == false? (//El estado está en minuscula
+          {reintegro.estado == 'pendiente' && dashboard == false? (//El estado está en minuscula
             <div className="flex items-baseline-last justify-end row-start-4">
               <BotonEditar onClick = {editarReintegro}/>
               <BotonPapelera onClick = {deleteReintegro}/>

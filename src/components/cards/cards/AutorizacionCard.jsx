@@ -9,6 +9,7 @@ import {format} from 'date-fns'
 
 function AutorizacionCard(props) {
   const autorizacion = props.autorizacion;
+  const dashboard = props.dashboard || false;
   let cardStyle = `grid-cols-2`;
 
   const editarAutorizacion = () => {
@@ -45,7 +46,7 @@ function AutorizacionCard(props) {
             </>
         }
         {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
-        {autorizacion.estado == 'pendiente' && props.dashboard == false ? (
+        {autorizacion.estado == 'pendiente' && dashboard == false ? (
           <div className="flex items-baseline-last justify-end row-start-4 col-start-1">
             <BotonEditar onClick={editarAutorizacion} />
             <BotonPapelera onClick={eliminarAutorizacion} />

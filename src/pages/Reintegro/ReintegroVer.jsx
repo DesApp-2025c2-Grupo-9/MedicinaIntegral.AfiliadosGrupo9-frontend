@@ -24,7 +24,7 @@ function ReintegroVer() {
           <ReintegroCard
             key={r.id}
             reintegro={r}
-            dashboard = {false}//Para que aparezcan los botones de eliminar y editar se agregó esto
+            
           />
         ))}
       </div>
