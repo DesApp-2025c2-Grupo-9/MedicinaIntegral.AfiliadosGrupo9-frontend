@@ -47,7 +47,6 @@ function RecetaCard(props) {
       doc.text("Observaciones: Sin observaciones", 10, y+=10)
     )
     doc.save(`Receta.pdf`)
-    console.log('Boton para descargar apretado')
   }
 
   const observaciones = () => {
