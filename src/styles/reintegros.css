@@ -1,0 +1,20 @@
+.reintegros-cancel-button {
+  background-color: white;
+  color: #dc143c;
+  border: solid 1px #dc143c;
+  order: -1;
+  border-radius: 8px;
+
+  &:hover {
+    background-color: #dc143c;
+    color: white;
+  }
+}
+
+.reintegros-confirm-button {
+  border-radius: 8px;
+
+  &:hover {
+    background-color: #89ff89;
+  }
+}

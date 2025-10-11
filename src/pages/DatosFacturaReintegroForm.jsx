@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import Form from '../components/Form';
 import InputContainer from '../components/InputContainer';
-import { reintegroSchema } from '../schema/reintegroSchema';
+import { ERROR_MESSAGES, reintegroSchema } from '../schema/reintegroSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '../components/Input';
 import Select from '../components/Select';
@@ -13,14 +13,32 @@ import Swal from 'sweetalert2';
 import { useCreateReintegro } from '../services/queries';
 import TwoButtons from '../components/TwoButtons';
 
-const datosFacturaReintegroSchema = reintegroSchema.pick({
-  factura: true,
-  formaDePago: true,
-  cbu: true,
-  observaciones: true
-});
+const datosFacturaReintegroSchema = reintegroSchema
+  .pick({
+    factura: true,
+    formaDePago: true,
+    cbu: true,
+    observaciones: true
+  })
+  .refine(
+    data => {
+      if (data.formaDePago === 'Transferencia') {
+        return data.cbu?.length === 22;
+      } else {
+        return true;
+      }
+    },
+    {
+      error: iss => {
+        const message = iss.input.cbu?.length > 0 ? ERROR_MESSAGES.CBU.LENGTH : ERROR_MESSAGES.CBU.REQUIRED;
+        return message;
+      },
+      path: ['cbu']
+    }
+  );
 
 function DatosFacturaReintegroForm() {
+  const fechaActual = new Date().toISOString().split('T')[0];
   const { mutateAsync } = useCreateReintegro();
   const { data, setData } = useNuevoReintegroStore(state => state);
   const {
@@ -32,6 +50,7 @@ function DatosFacturaReintegroForm() {
     resolver: zodResolver(datosFacturaReintegroSchema)
   });
   const navigate = useNavigate();
+  const formaDePago = watch('formaDePago');
 
   useEffect(() => {
     if (!useNuevoReintegroStore.persist.hasHydrated) return;
@@ -41,8 +60,6 @@ function DatosFacturaReintegroForm() {
       navigate('/reintegros/solicitar-reintegro');
     }
   }, [data, navigate, isSubmitSuccessful]);
-
-  const formaDePago = watch('formaDePago');
 
   const onSubmit = async inputData => {
     try {
@@ -80,14 +97,19 @@ function DatosFacturaReintegroForm() {
           type='date'
           id='factura.fecha'
           label='Fecha:'
+          max={fechaActual}
           errorMsg={errors.factura?.fecha?.message}
         />
         <Input
           {...register('factura.cuit')}
           type='text'
           id='factura.cuit'
-          label='CUIT:'
+          label='CUIT (sin guiones):'
           placeholder='Ingresar CUIT'
+          maxLength='11'
+          onInput={e => {
+            e.target.value = e.target.value.replace(/\D/g, ''); // elimina todo lo que no sea número
+          }}
           errorMsg={errors.factura?.cuit?.message}
         />
       </InputContainer>
@@ -99,6 +121,11 @@ function DatosFacturaReintegroForm() {
           id='factura.valorTotal'
           label='Valor total en pesos ARS:'
           placeholder='Ingresar valor'
+          onKeyDown={e => {
+            if (e.key === '-' || e.key === 'e') {
+              e.preventDefault();
+            }
+          }}
           errorMsg={errors.factura?.valorTotal?.message}
         />
         <Input
@@ -123,10 +150,14 @@ function DatosFacturaReintegroForm() {
         {formaDePago === 'Transferencia' ? (
           <Input
             {...register('cbu')}
-            type='number'
+            type='text'
             id='cbu'
             label='CBU:'
             placeholder='Ingresar CBU'
+            maxLength='22'
+            onInput={e => {
+              e.target.value = e.target.value.replace(/\D/g, ''); // elimina todo lo que no sea número
+            }}
             errorMsg={errors.cbu?.message}
           />
         ) : (
