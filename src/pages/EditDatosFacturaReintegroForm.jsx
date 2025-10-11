@@ -6,10 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '../components/Input';
 import Select from '../components/Select';
 import Button from '../components/Button';
-import { useNavigate } from 'react-router-dom';
 import TwoButtons from '../components/TwoButtons';
-import { useFormRedirect } from '../hooks/useFormRedirect';
 import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
+import { addDays, format } from 'date-fns';
+import capitalize from '../utils/capitalize';
 
 const datosFacturaReintegroSchema = reintegroSchema
   .pick({
@@ -35,34 +35,30 @@ const datosFacturaReintegroSchema = reintegroSchema
     }
   );
 
-function DatosFacturaReintegroForm({ className, onSubmit }) {
+function EditDatosFacturaReintegroForm({ className, onSubmit, reintegro = {}, cancelBtnOnClick }) {
   const fechaActual = new Date().toISOString().split('T')[0];
-  const setData = useNuevoReintegroStore(state => state.setData);
-  const data = useNuevoReintegroStore(state => state.data);
+  const { data, setData } = useNuevoReintegroStore(state => state);
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
     watch
   } = useForm({
     resolver: zodResolver(datosFacturaReintegroSchema),
     defaultValues: {
       factura: {
-        fecha: data?.factura?.fecha,
-        cuit: data?.factura?.cuit,
-        valorTotal: data?.factura?.valorTotal,
-        personaAFacturar: data?.factura?.personaAFacturar
+        fecha: data?.factura?.fecha ?? format(addDays(reintegro.factura?.fecha, 1), 'yyyy-MM-dd'),
+        cuit: data?.factura?.cuit ?? reintegro.factura?.cuit,
+        valorTotal: data?.factura?.valorTotal ?? reintegro.factura?.valorTotal,
+        personaAFacturar: data?.factura?.personaAFacturar ?? reintegro.factura?.personaAFacturar
       },
-      formaDePago: data?.formaDePago,
-      cbu: data?.cbu,
-      observaciones: data?.observaciones
+      formaDePago: data?.formaDePago ?? capitalize(reintegro.formaDePago),
+      cbu: data?.cbu ?? reintegro.cbu,
+      observaciones: data?.observaciones ?? reintegro.observaciones
     }
   });
-  const navigate = useNavigate();
   const formaDePago = watch('formaDePago');
   const formValues = watch();
-
-  useFormRedirect(isSubmitSuccessful);
 
   return (
     <Form
@@ -155,9 +151,8 @@ function DatosFacturaReintegroForm({ className, onSubmit }) {
       <TwoButtons className='ml-auto'>
         <Button
           onClick={() => {
-            console.log({ ...data, ...formValues });
             setData({ ...data, ...formValues });
-            navigate(-1);
+            cancelBtnOnClick();
           }}
           type='button'
           style='outln'
@@ -169,10 +164,10 @@ function DatosFacturaReintegroForm({ className, onSubmit }) {
           state={isSubmitting ? 'disabled' : 'active'}
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Cargando...' : 'Confirmar solicitud'}
+          {isSubmitting ? 'Cargando...' : 'Confirmar'}
         </Button>
       </TwoButtons>
     </Form>
   );
 }
-export default DatosFacturaReintegroForm;
+export default EditDatosFacturaReintegroForm;

@@ -10,10 +10,12 @@ export const createReintegro = async body => {
   return res.data;
 };
 
-export const updateReintegro = async () => {};
+export const updateReintegro = async body => {
+  const res = await axios.put(`api/reintegros/${body.id}`, body.data);
+  return res.data;
+};
 
 export const deleteReintegro = async id => {
   const res = await axios.delete(`api/reintegros/${id}`);
-  console.log(res.data)
   return res.data;
 };

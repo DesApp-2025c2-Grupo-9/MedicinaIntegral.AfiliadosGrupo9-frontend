@@ -5,20 +5,28 @@ import BotonPapelera from './cardComponents/BotonPapelera';
 import BotonObservaciones from './cardComponents/BotonObservaciones';
 import MarcoCard from './cardComponents/MarcoCard';
 import TipoDeTramite from './cardComponents/TipoDeTramite';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
+// import { formatInTimeZone } from 'date-fns-tz';
 import { useDeleteReintegro } from '../../../services/queries';
 import Swal from 'sweetalert2';
 import capitalize from '../../../utils/capitalize';//El capitalize no se está usando porque el esatdo viene en minuscula igual que el comparador
 import pesosArg from '../../../utils/pesosArg';
+import { useState } from 'react';
+import { useEditReintegroStep } from '../../../store/editReintegroStepStore';
+import { useEditDatosFacturaHandler } from '../../../hooks/useEditDatosFacturaHandler';
+import EditReintegroForm from '../../../pages/EditReintegroForm';
+import EditDatosFacturaReintegroForm from '../../../pages/EditDatosFacturaReintegroForm';
 
 function ReintegroCard(props) {
-  //Estilo de la card
-  const { mutateAsync } = useDeleteReintegro();
-  const cardStyle = ` grid-cols-2 `;
   const reintegro = props.reintegro;
-  const dashboard = props.dashboard || false
-  const fechaDePrestacion = format(reintegro.fechaDePrestacion, 'dd/MM/yyyy');
+  const { mutateAsync } = useDeleteReintegro();
+  const { currentStep, setCurrentStep } = useEditReintegroStep();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { onSubmit: editDatosFactura } = useEditDatosFacturaHandler(reintegro, setIsModalOpen);
+  const fechaDePrestacion = format(addDays(reintegro.fechaDePrestacion, 1), 'dd/MM/yyyy');
   const valorTotal = pesosArg.format(reintegro.factura.valorTotal);
+  //Estilo de la card
+  const cardStyle = 'grid-cols-2';
 
   const editarReintegro = () => {
     //Editar reintegro
@@ -69,13 +77,35 @@ function ReintegroCard(props) {
       console.log(error);
     }
   };
+
   return (
-    <MarcoCard
-      estilo={cardStyle}
-      estado={reintegro.estado}
-    >
-      <ColumnaPrincipal>
-        {reintegro.especialidad}
+    <>
+      {isModalOpen && (
+        <div className='bg-negro-translucido fixed top-0 left-0 w-dvw h-dvh z-10 flex items-center justify-center'>
+          {currentStep === 1 ? (
+            <EditReintegroForm
+              className='w-full'
+              reintegro={reintegro}
+              cancelBtnOnClick={() => setIsModalOpen(false)}
+            />
+          ) : (
+            currentStep === 2 && (
+              <EditDatosFacturaReintegroForm
+                className='w-full max-h-[calc(100dvh-40px)] overflow-y-scroll scroll-hidden'
+                reintegro={reintegro}
+                cancelBtnOnClick={() => setCurrentStep(1)}
+                onSubmit={editDatosFactura}
+              />
+            )
+          )}
+        </div>
+      )}
+      <MarcoCard
+        estilo={cardStyle}
+        estado={reintegro.estado}
+      >
+        <ColumnaPrincipal>
+          {reintegro.especialidad}
 
         {`Dr. ${reintegro.medico}`}
         {`Fecha de la prestación: ${fechaDePrestacion}`}
