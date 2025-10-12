@@ -24,6 +24,7 @@ function ReintegroVer() {
           <ReintegroCard
             key={r.id}
             reintegro={r}
+            
           />
         ))}
       </div>

@@ -9,9 +9,9 @@ function TurnosCard(props) {
 
   let turno = props.turno; //El turno con el que se va a cargar la primera columna
   let paciente = props.paciente; //Flag  paciente
-  const papeleraOnClick = () => {
+  const deleteTurno = () => {
     //Lógica a aplicar al apretar la papelera
-    alert("Boton apretado");
+    alert("deleteTurno");
   };
 
   const campos = 4; //4 campos sin contar titulo y subtitulo
@@ -35,12 +35,14 @@ function TurnosCard(props) {
       </ColumnaPrincipal>
       {/*Columna derecha si tiene turno asignado*/}
       {paciente ? (
-        <div className="grid grid-rows-4">
+        <div className="grid grid-rows-4 justify-end">
           <UsuarioActual />
+          <div className="row-start-4 justify-self-end">
+
           <BotonPapelera
-            onClick={papeleraOnClick}
-            posicion={campos}
-          />
+            onClick={deleteTurno}
+            />
+            </div>
         </div>
       ) : (
         <></>

@@ -18,6 +18,8 @@ import VerRecetas from './pages/Recetas/VerRecetas';
 import SolicitarReceta from './pages/Recetas/SolicitarReceta';
 import { useNewReintegroHandler } from './hooks/useNewReintegroHandler';
 import { useNewDatosFacturaHandler } from './hooks/useNewDatosFacturaHandler';
+import VerAutorizaciones from './pages/Autorizaciones/VerAutorizaciones';
+import SolicitarAutorizacion from './pages/Autorizaciones/SolicitarAutorizacion';
 
 export function AppRouter() {
   const { onSubmit: newReintegro } = useNewReintegroHandler();
@@ -54,8 +56,8 @@ export function AppRouter() {
         </Route>
 
         <Route path='/autorizaciones' element={<AutorizacionesLayout />}>
-          <Route path='ver-autorizaciones' element={<h3>Ver autorizaciones.</h3>} />
-          <Route path='solicitar-autorizacion' element={<h3>Solicitar nueva autorización.</h3>} />
+          <Route path='ver-autorizaciones' element={<VerAutorizaciones/>} />
+          <Route path='solicitar-autorizacion' element={<SolicitarAutorizacion/>} />
         </Route>
 
         <Route path='/cartilla-medica' element={<h3>Cartilla Médica.</h3>} />

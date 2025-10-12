@@ -1,9 +1,16 @@
 import RecetaCard from "../../components/cards/cards/RecetaCard";
 import { useStateFilter } from "../../store/stateFilter"
+import FiltroEstados from '../../components/FiltroEstados'
+import { useGetRecetasFamilia } from "../../services/recetasQueries";
 
 
 function VerRecetas() {
-  const { filterState } = useStateFilter();
+  const { state } = useStateFilter();
+  //Llamada a la API
+  //Obtener el nro de afiliado general del grupo familiar/Usuario
+  //const nroGrupoFamiliar = provider
+  //const {data,error, isLoading} = useGetRecetaFamilia(nroGrupoFamiliar);
+  //const recetas = data?.data
 
   const recetas = [{
     idReceta: 1,
@@ -38,16 +45,22 @@ function VerRecetas() {
     estado: 'aceptado'
   }
   ]
-
+  
+  const recetasFiltradas = recetas?.filter(
+    receta => state.includes(receta.estado) || state === 'Todos'
+  )
   
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-2">
-      {recetas.map(
+    <div className="flex flex-col items-end gap-3 relative">
+      <FiltroEstados className='sm:absolute -top-11 mr-auto'/>
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-2 w-full">
+      {recetasFiltradas.map(
         (receta, idReceta) => (
           <RecetaCard receta={receta} key={idReceta} />
         )
       )}
     </div>
+      </div>
   )
 }
 

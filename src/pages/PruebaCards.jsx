@@ -16,7 +16,7 @@ function PruebaCards() {
     cantidad: '2 cajas',
     presentacion: 'Pastillas',
     detalleMedicamento: '30 unidades por caja',
-    estado: 'Pendiente'
+    estado: 'pendiente'
   }
   const recetaAceptada = {
     medicamento: 'Loplac 50mg',
@@ -24,44 +24,50 @@ function PruebaCards() {
     cantidad: 2,
     presentacion: 'Pastillas',//tipo
     detalleMedicamento: '30 unidades por caja',
-    estado: 'Aceptado'
+    estado: 'aceptado'
   }
   const recetaObservadaRechazada = {
     medicamento: 'Loplac 50mg',
     cantidad: '2 cajas',
     presentacion: 'Pastillas',
     detalleMedicamento: '30 unidades por caja',
-    estado: 'Rechazado'
+    estado: 'rechazado'
   }
   const reintegroPendiente ={
-    fecha: new Date("1969-12-31T17:00:00"),
-    integrante : 'Mary Jane',
+    fechaDePrestacion: new Date("1969-12-31T17:00:00"),
+    paraAfiliado : 'Mary Jane',
     medico : 'Merlina Addams',
     especialidad : 'Oftalmologia',
-    lugar : 'Centro Medicina Integral',
-    valor : '$130.000,00',
+    lugarDeAtencion : 'Centro Medicina Integral',
+    factura :{
+      valorTotal : '130.000'
+    },
     formaDePago: 'Efectivo',
-    estado : 'Pendiente'
+    estado : 'pendiente'
   }
   const reintegroObservadoRechazado ={
-    fecha: new Date("1969-12-31T17:00:00"),
-    integrante : 'Mary Jane',
+    fechaDePrestacion: new Date("1969-12-31T17:00:00"),
+    paraAfiliado : 'Mary Jane',
     medico : 'Merlina Addams',
     especialidad : 'Oftalmologia',
-    lugar : 'Centro Medicina Integral',
-    valor : '$130.000,00',
+    lugarDeAtencion : 'Centro Medicina Integral',
+    factura :{
+      valorTotal : '130.000'
+    },
     formaDePago: 'Efectivo',
-    estado: 'Rechazado'
+    estado: 'rechazado'
   }
   const reintegroAceptado ={
-    fecha: new Date("1969-12-31T17:00:00"),
-    integrante : 'Mary Jane',
+    fechaDePrestacion: new Date("1969-12-31T17:00:00"),
+    paraAfiliado : 'Mary Jane',
     medico : 'Merlina Addams',
     especialidad : 'Oftalmologia',
-    lugar : 'Centro Medicina Integral',
-    valor : '$130.000,00',
+    lugarDeAtencion : 'Centro Medicina Integral',
+    factura :{
+      valorTotal : '130.000'
+    },
     formaDePago: 'Efectivo',
-    estado: 'Aceptado'
+    estado: 'aceptado'
   }
   const autorizacionPendiente = {
     especialidad : "Oftalmologia",
@@ -70,7 +76,7 @@ function PruebaCards() {
     lugar : 'Centro Medicina Integral',
     direccion : 'Arias 2030, Castelar',
     diasInternacion : 5,
-    estado : 'Pendiente'
+    estado : 'pendiente'
   }
   const autorizacionObservadoRechazado = {
     especialidad : "Oftalmologia",
@@ -79,7 +85,7 @@ function PruebaCards() {
     lugar : 'Centro Medicina Integral',
     direccion : 'Arias 2030, Castelar',
     diasInternacion : 5,
-    estado : 'Rechazado'
+    estado : 'rechazado'
   }
   const autorizacionAceptado = {
     especialidad : "Oftalmologia",
@@ -88,7 +94,7 @@ function PruebaCards() {
     lugar : 'Centro Medicina Integral',
     direccion : 'Arias 2030, Castelar',
     diasInternacion : 5,
-    estado : 'Aceptado'
+    estado : 'aceptado'
   }
   const afiliado01 = {
     nroAfiliado : '1234567-01',
@@ -159,7 +165,7 @@ function PruebaCards() {
         <div className='col-start-2'>
 
         <h1>Reintegro rechazado/observado</h1>
-        <ReintegroCard reintegro={reintegroObservadoRechazado} dashboard = {true}/>
+        <ReintegroCard reintegro={reintegroPendiente} dashboard = {true}/>
         </div>
         <div>
 
