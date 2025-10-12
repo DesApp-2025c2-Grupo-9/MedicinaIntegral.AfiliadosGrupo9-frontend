@@ -1,10 +1,16 @@
 import RecetaCard from "../../components/cards/cards/RecetaCard";
 import { useStateFilter } from "../../store/stateFilter"
 import FiltroEstados from '../../components/FiltroEstados'
+import { useGetRecetasFamilia } from "../../services/recetasQueries";
 
 
 function VerRecetas() {
   const { state } = useStateFilter();
+  //Llamada a la API
+  //Obtener el nro de afiliado general del grupo familiar/Usuario
+  //const nroGrupoFamiliar = provider
+  //const {data,error, isLoading} = useGetRecetaFamilia(nroGrupoFamiliar);
+  //const recetas = data?.data
 
   const recetas = [{
     idReceta: 1,
