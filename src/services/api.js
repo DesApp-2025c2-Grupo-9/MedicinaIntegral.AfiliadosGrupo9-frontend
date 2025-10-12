@@ -1,5 +1,6 @@
 import axios from '../api/axios';
 
+// Reintegros
 export const getReintegros = async () => {
   const res = await axios.get('api/reintegros');
   return res.data;
@@ -17,5 +18,11 @@ export const updateReintegro = async body => {
 
 export const deleteReintegro = async id => {
   const res = await axios.delete(`api/reintegros/${id}`);
+  return res.data;
+};
+
+// Especialidades
+export const getEspecialidades = async () => {
+  const res = await axios.get('api/especialidades');
   return res.data;
 };

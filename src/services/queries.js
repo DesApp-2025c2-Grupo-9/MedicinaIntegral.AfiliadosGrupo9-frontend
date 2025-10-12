@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createReintegro, deleteReintegro, getReintegros, updateReintegro } from './api';
+import { createReintegro, deleteReintegro, getEspecialidades, getReintegros, updateReintegro } from './api';
 
 // Reintegros
 export function useGetReintegros() {
@@ -39,5 +39,13 @@ export function useDeleteReintegro() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reintegros'] });
     }
+  });
+}
+
+// Especialidades
+export function useGetEspecialidades() {
+  return useQuery({
+    queryKey: ['especialidades'],
+    queryFn: getEspecialidades
   });
 }
