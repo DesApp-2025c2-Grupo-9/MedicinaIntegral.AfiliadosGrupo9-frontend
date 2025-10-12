@@ -15,6 +15,7 @@ function BotonDescargar(props) {
          bg-green-50  border-s-gray-900 shadow-2xs
          " 
         onClick={props.onClick}
+        title="Descargar"
       >
         <span></span>
         <span className="w-5 h-4">{icons.descargas}</span>

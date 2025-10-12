@@ -17,6 +17,7 @@ function BotonPapelera(props) {
          bg-red-50  border-s-gray-900 shadow-2xs 
          " 
         onClick={props.onClick}
+        title='Eliminar'
       >
         <span className='text-sm'></span>
         <span className='w-5 h-4'>{icons.papelera}</span>

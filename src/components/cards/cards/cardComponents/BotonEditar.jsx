@@ -15,6 +15,7 @@ function BotonEditar(props) {
          bg-blue-50  border-s-gray-900 shadow-2xs
          " 
         onClick={props.onClick}
+        title="Editar"
       >
         <span></span>
         <span className="w-5 h-4">{icons.editar}</span>
