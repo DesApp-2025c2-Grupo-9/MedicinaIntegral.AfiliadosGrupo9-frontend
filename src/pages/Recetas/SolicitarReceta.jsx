@@ -8,6 +8,8 @@ import  {recetaSchema}  from "../../schema/recetaSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { result } from "lodash";
+import { formToJSON } from "axios";
 
 
 function SolicitarReceta() {
@@ -21,7 +23,7 @@ function SolicitarReceta() {
   } = useForm({
     resolver: zodResolver(solicitudSchema),
     defaultValues : {
-      afiliado : '',
+      nroAfiliado : '',
       medicamento : '',
       cantidad :0,
       presentacion : '',
@@ -30,27 +32,37 @@ function SolicitarReceta() {
   })
   const navigate = useNavigate()
   
-  const onSubmit = () => {
+  const onSubmit = (formData) => {
     Swal.fire({
-            title: 'Solicitud enviada',
-            text: 'Su solicitud se envió correctamente, puede verla en "Ver Recetas',
-            icon: 'success',
+            title: 'Confirmacion de solicitud',
+            html: `
+            <p>Está a punto de solicitar una receta con los siguientes datos:</p>
+            <br/>
+            <p>Medicamento: ${formData.medicamento}</p>
+            <p>Presentación: ${formData.presentacion} </p>
+            <p>Cantidad: ${formData.cantidad}</p>
+            `,
+            
+            icon: 'question',
             confirmButtonText: 'Aceptar',
-            draggable: true,
-            width: '400px',
-            customClass: {
-              popup: 'swal-popup-small',
-              title: 'swal-title-small',
-              confirmButton: 'swal-button-small'
-            }
-          }).then(() => {
-            navigate('/recetas/ver-recetas')
-          })
-  }
-    return (
+            showCancelButton: true,
+            width: '400px'
+          }).then((result) => {
+            if(result.isConfirmed) {
+              //Insertar tryCatch con lógica para crear la receta
 
+              Swal.fire({
+                title: 'Enviado',
+                text: 'Su receta se ha enviado correctamente, puede encontrarla en "Ver Recetas"',
+                icon: "success"
+              })
+            navigate('/recetas/ver-recetas')
+            }
+          })
+      }
+  return (
     <Form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit((onSubmit))}
     >
       {/*Dropdown afiliado - Modificar para que aparezca el nro de afiliado tambien*/}
       <Select
@@ -67,10 +79,15 @@ function SolicitarReceta() {
         {...register('medicamento')}
         label={'Medicamento'}
         placeholder={'Ingresar Medicamento'}
+        maxLength={50}
         errorMsg={errors.medicamento?.message}
         />
         <Input 
         {...register("cantidad", {valueAsNumber: true})}
+        type= 'number'
+        min = {1}
+        max = {10}
+        maxLength={2}
         label={'Cantidad'}
         placeholder = {'Ingrese cantidad'}
         errorMsg={errors.cantidad?.message}
@@ -80,6 +97,7 @@ function SolicitarReceta() {
       <Input 
       {...register('presentacion')}
       label={'Presentación'}
+      maxLength={50}
       placeholder= {'Ingrese la presentación'}
       errorMsg={errors.presentacion?.message}
       />
@@ -89,6 +107,7 @@ function SolicitarReceta() {
       {...register('observaciones')}
       label={'Observaciones'}
       errorMsg={errors.observaciones?.message}
+      maxLength={100}
       />
       <Button
         type='submit'

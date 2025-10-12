@@ -6,8 +6,8 @@ function Select({ id, label, placeholder='Placeholder', errorMsg, options=['John
   return (
     <div className='flex self-stretch flex-col items-start gap-2 w-full'>
       { label && <label htmlFor={id} className='text-base font-bold w-fit select-none'>{label}</label> }
-      <select id={id} name={id} className={baseStyles} defaultValue={placeholder} {...props}>
-        <option disabled className={twMerge(baseStyles, 'bg-gris-border border-0 rounded-none')}>{placeholder}</option>
+      <select id={id} name={id} className={baseStyles} defaultValue="" {...props}>
+        <option value="" disabled className={twMerge(baseStyles, 'bg-gris-border border-0 rounded-none')}>{placeholder}</option>
         {
           options.map((option, index) =>
             <option key={index} value={option} className={twMerge(baseStyles, 'hover:bg-menta-100 border-0 border-t rounded-none')}>
