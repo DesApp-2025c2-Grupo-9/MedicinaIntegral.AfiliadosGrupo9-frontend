@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { getEspecialidades } from '../services/api';
 
 export const ERROR_MESSAGES = {
   PARA_AFILIADO: {
@@ -52,6 +53,8 @@ export const ERROR_MESSAGES = {
   }
 };
 
+const especialidadesRes = await getEspecialidades();
+
 export const reintegroSchema = z.object({
   paraAfiliado: z.literal(['Carolina Benitez', 'John Doe', 'Jane Doe'], ERROR_MESSAGES.PARA_AFILIADO.REQUIRED),
   fechaDePrestacion: z.iso.date({ error: iss => (!iss.input ? ERROR_MESSAGES.FECHA_DE_PRESTACION.REQUIRED : ERROR_MESSAGES.FECHA_DE_PRESTACION.INVALID_FORMAT) }).refine(
@@ -62,7 +65,7 @@ export const reintegroSchema = z.object({
     },
     { error: ERROR_MESSAGES.FECHA_DE_PRESTACION.FUTURE_DATE }
   ),
-  especialidad: z.literal(['Lorem', 'Ipsum', 'Dolor', 'Sit', 'Medicina General'], { error: ERROR_MESSAGES.ESPECIALIDAD.REQUIRED }),
+  especialidad: z.literal(especialidadesRes.data, ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
   medico: z
     .string()
     .trim()

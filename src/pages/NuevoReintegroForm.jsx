@@ -7,6 +7,7 @@ import InputContainer from '../components/InputContainer';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
+import { useGetEspecialidades } from '../services/queries';
 
 const nuevoReintegroSchema = reintegroSchema.pick({
   paraAfiliado: true,
@@ -17,6 +18,7 @@ const nuevoReintegroSchema = reintegroSchema.pick({
 });
 
 function NuevoReintegroForm({ className, onSubmit }) {
+  const { data: especialidadesRes, error, isLoading } = useGetEspecialidades();
   const fechaActual = new Date().toISOString().split('T')[0];
   const data = useNuevoReintegroStore(state => state.data);
   const {
@@ -33,6 +35,9 @@ function NuevoReintegroForm({ className, onSubmit }) {
       lugarDeAtencion: data?.lugarDeAtencion
     }
   });
+
+  if (isLoading) return <p>Cargando...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <Form
@@ -62,7 +67,7 @@ function NuevoReintegroForm({ className, onSubmit }) {
           id='especialidad'
           label='Especialidad:'
           placeholder='Seleccionar especialidad'
-          options={['Lorem', 'Ipsum', 'Dolor', 'Sit', 'Medicina General']}
+          options={especialidadesRes?.data}
           errorMsg={errors.especialidad?.message}
         />
       </InputContainer>
