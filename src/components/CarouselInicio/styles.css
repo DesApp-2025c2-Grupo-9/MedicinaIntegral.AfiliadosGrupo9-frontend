@@ -1,0 +1,18 @@
+.slick-arrow.slick-prev::before, .slick-arrow.slick-next::before {
+    color: rgb(124, 124, 124);
+    font-size: 28px;    
+    display: none;
+    @media (width >= 48rem) {
+        display: block;
+    }
+}
+
+.slick-arrow.slick-prev::before {
+    content: "❮";
+    padding-right: 2px;
+}
+
+.slick-arrow.slick-next::before {
+    content: "❯";
+    padding-left: 2px;
+}
