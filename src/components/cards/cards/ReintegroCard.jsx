@@ -6,10 +6,8 @@ import BotonObservaciones from './cardComponents/BotonObservaciones';
 import MarcoCard from './cardComponents/MarcoCard';
 import TipoDeTramite from './cardComponents/TipoDeTramite';
 import { format, addDays } from 'date-fns';
-// import { formatInTimeZone } from 'date-fns-tz';
 import { useDeleteReintegro } from '../../../services/queries';
 import Swal from 'sweetalert2';
-import capitalize from '../../../utils/capitalize';//El capitalize no se está usando porque el esatdo viene en minuscula igual que el comparador
 import pesosArg from '../../../utils/pesosArg';
 import { useState } from 'react';
 import { useEditReintegroStep } from '../../../store/editReintegroStepStore';
@@ -28,11 +26,6 @@ function ReintegroCard(props) {
   const valorTotal = pesosArg.format(reintegro.factura.valorTotal);
   //Estilo de la card
   const cardStyle = 'grid-cols-2';
-
-  const editarReintegro = () => {
-    //Editar reintegro
-    alert('Boton editar reintegro')
-  }
 
   const deleteReintegro = async () => {
     try {
@@ -101,7 +94,7 @@ function ReintegroCard(props) {
           )}
         </div>
       )}
-      
+
       <MarcoCard
         estilo={cardStyle}
         estado={reintegro.estado}
@@ -109,38 +102,39 @@ function ReintegroCard(props) {
         <ColumnaPrincipal>
           {reintegro.especialidad}
 
-        {`Dr. ${reintegro.medico}`}
-        {`Fecha de la prestación: ${fechaDePrestacion}`}
-        {valorTotal}
-        {reintegro.lugarDeAtencion}
-      </ColumnaPrincipal>
-      {/**Columna dinámica con opciones o información del trámite */}
-      <div className='grid grid-rows-4 justify-items-end relative'>
-        {/*El estilo del estado es dinámico si está o no en el dashboard*/}
-        {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
-          <TipoDeTramite tipo={'Reintegro'} />
-        ) : (
-          <>
-            <UsuarioActual paciente={reintegro.paraAfiliado} />
-            {reintegro.estado !== 'pendiente' ? (//el estado está en minuscula
-              <div className='row-start-4'>
-
-                <BotonObservaciones />
-              </div>
-              
-            ) : <></>}
-          </>
-        )}
-        {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
-          {reintegro.estado == 'pendiente' && dashboard == false? (//El estado está en minuscula
-            <div className="flex items-baseline-last justify-end row-start-4">
-              <BotonEditar onClick = {editarReintegro}/>
-              <BotonPapelera onClick = {deleteReintegro}/>
+          {`Dr. ${reintegro.medico}`}
+          {`Fecha de la prestación: ${fechaDePrestacion}`}
+          {valorTotal}
+          {reintegro.lugarDeAtencion}
+        </ColumnaPrincipal>
+        {/**Columna dinámica con opciones o información del trámite */}
+        <div className='grid grid-rows-4 justify-items-end relative'>
+          {/*El estilo del estado es dinámico si está o no en el dashboard*/}
+          {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
+            <TipoDeTramite tipo={'Reintegro'} />
+          ) : (
+            <>
+              <UsuarioActual paciente={reintegro.paraAfiliado} />
+              {reintegro.estado !== 'pendiente' ? ( //el estado está en minuscula
+                <div className='row-start-4'>
+                  <BotonObservaciones />
+                </div>
+              ) : (
+                <></>
+              )}
+            </>
+          )}
+          {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
+          {reintegro.estado == 'pendiente' && dashboard == false ? ( //El estado está en minuscula
+            <div className='flex items-baseline-last justify-end row-start-4'>
+              <BotonEditar onClick={() => setIsModalOpen(true)} />
+              <BotonPapelera onClick={deleteReintegro} />
             </div>
-          ): <></> 
-          }
+          ) : (
+            <></>
+          )}
         </div>
-    </MarcoCard>
+      </MarcoCard>
     </>
   );
 }
