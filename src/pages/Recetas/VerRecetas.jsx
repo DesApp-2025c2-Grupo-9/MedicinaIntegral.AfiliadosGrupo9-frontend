@@ -1,7 +1,7 @@
 import RecetaCard from "../../components/cards/cards/RecetaCard";
 import { useStateFilter } from "../../store/stateFilter"
 import FiltroEstados from '../../components/FiltroEstados'
-import { useGetRecetasFamilia } from "../../services/recetasQueries";
+import { useGetRecetasFamilia, useGetRecetas } from "../../services/recetasQueries";
 
 
 function VerRecetas() {
@@ -12,39 +12,46 @@ function VerRecetas() {
   //const {data,error, isLoading} = useGetRecetaFamilia(nroGrupoFamiliar);
   //const recetas = data?.data
 
-  const recetas = [{
-    idReceta: 1,
-    medicamento: 'Loplac 50mg',
-    cantidad: '2 cajas',
-    presentacion: 'Pastillas',
-    detalleMedicamento: '30 unidades por caja',
-    estado: 'pendiente'
-  },
-  {
-    idReceta: 2,
-    medicamento: 'Loplac 50mg',
-    cantidad: '2 cajas',
-    presentacion: 'Pastillas',
-    detalleMedicamento: '30 unidades por caja',
-    estado: 'pendiente'
-  },
-  {
-    idReceta: 3,
-    medicamento: 'Loplac 50mg',
-    cantidad: '2 cajas',
-    presentacion: 'Pastillas',
-    detalleMedicamento: '30 unidades por caja',
-    estado: 'rechazado'
-  },
-  {
-    idReceta: 4,
-    medicamento: 'Loplac 50mg',
-    cantidad: '2 cajas',
-    presentacion: 'Pastillas',
-    detalleMedicamento: '30 unidades por caja',
-    estado: 'aceptado'
-  }
-  ]
+  //Usar la seed
+  const {data, error, isLoading} = useGetRecetas();
+  const recetas = data?.data
+
+  if (isLoading) return <p>Cargando...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  // const recetas = [{
+  //   idReceta: 1,
+  //   medicamento: 'Loplac 50mg',
+  //   cantidad: '2 cajas',
+  //   presentacion: 'Pastillas',
+  //   detalleMedicamento: '30 unidades por caja',
+  //   estado: 'pendiente'
+  // },
+  // {
+  //   idReceta: 2,
+  //   medicamento: 'Loplac 50mg',
+  //   cantidad: '2 cajas',
+  //   presentacion: 'Pastillas',
+  //   detalleMedicamento: '30 unidades por caja',
+  //   estado: 'pendiente'
+  // },
+  // {
+  //   idReceta: 3,
+  //   medicamento: 'Loplac 50mg',
+  //   cantidad: '2 cajas',
+  //   presentacion: 'Pastillas',
+  //   detalleMedicamento: '30 unidades por caja',
+  //   estado: 'rechazado'
+  // },
+  // {
+  //   idReceta: 4,
+  //   medicamento: 'Loplac 50mg',
+  //   cantidad: '2 cajas',
+  //   presentacion: 'Pastillas',
+  //   detalleMedicamento: '30 unidades por caja',
+  //   estado: 'aceptado'
+  // }
+  // ]
   
   const recetasFiltradas = recetas?.filter(
     receta => state.includes(receta.estado) || state === 'Todos'

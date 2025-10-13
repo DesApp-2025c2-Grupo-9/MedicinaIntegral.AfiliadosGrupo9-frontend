@@ -1,7 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from '../api/axios'
 
-//Get Recetas
+//Get all Recetas para probar
+const getRecetas = async () => {
+    const res = await axios.get(
+        `api/recetas`
+    )
+    return res.data
+}
+
+export function useGetRecetas () {
+    return useQuery({
+        queryKey: ['recetas'],
+        queryFn: getRecetas
+    })
+}
+
 
 //Recetas del grupo familiar
 const getRecetasFamilia = async nroAfiliadoParcial => {
