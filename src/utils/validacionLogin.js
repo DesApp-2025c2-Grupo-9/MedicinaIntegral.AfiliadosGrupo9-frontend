@@ -1,4 +1,3 @@
-
 export const validacionLogin = (usuario, clave) => {
   if (!usuario || !clave) {
     return 'Por favor, complete todos los campos.';
@@ -12,5 +11,5 @@ export const validacionLogin = (usuario, clave) => {
     return 'La contraseña no es válida.';
   }
 
-  return ''; 
+  return '';
 };

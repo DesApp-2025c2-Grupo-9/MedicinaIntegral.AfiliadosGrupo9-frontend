@@ -8,6 +8,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
 import { useGetEspecialidades } from '../services/queries';
+import { useNewReintegroHandler } from '../hooks/useNewReintegroHandler';
 
 const nuevoReintegroSchema = reintegroSchema.pick({
   paraAfiliado: true,
@@ -17,8 +18,9 @@ const nuevoReintegroSchema = reintegroSchema.pick({
   lugarDeAtencion: true
 });
 
-function NuevoReintegroForm({ className, onSubmit }) {
+function NuevoReintegroForm({ className }) {
   const { data: especialidadesRes, error, isLoading } = useGetEspecialidades();
+  const { onSubmit } = useNewReintegroHandler();
   const fechaActual = new Date().toISOString().split('T')[0];
   const data = useNuevoReintegroStore(state => state.data);
   const {

@@ -2,10 +2,12 @@ import Swal from 'sweetalert2';
 import { useCreateReintegro } from '../services/queries';
 import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
 import { useNavigate } from 'react-router-dom';
+import useAxiosPrivate from './useAxiosPrivate';
 
 export const useNewDatosFacturaHandler = () => {
   const { data } = useNuevoReintegroStore(state => state);
-  const { mutateAsync } = useCreateReintegro();
+  const axiosPrivate = useAxiosPrivate();
+  const { mutateAsync } = useCreateReintegro(axiosPrivate);
   const navigate = useNavigate();
 
   const onSubmit = async inputData => {

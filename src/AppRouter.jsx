@@ -16,16 +16,10 @@ import RecetasLayout from './layout/RecetasLayout';
 import AutorizacionesLayout from './layout/AutorizacionesLayout';
 import VerRecetas from './pages/Recetas/VerRecetas';
 import SolicitarReceta from './pages/Recetas/SolicitarReceta';
-import { useNewReintegroHandler } from './hooks/useNewReintegroHandler';
-import { useNewDatosFacturaHandler } from './hooks/useNewDatosFacturaHandler';
 import VerAutorizaciones from './pages/Autorizaciones/VerAutorizaciones';
 import SolicitarAutorizacion from './pages/Autorizaciones/SolicitarAutorizacion';
 
 export function AppRouter() {
-  const { onSubmit: newReintegro } = useNewReintegroHandler();
-  const { onSubmit: newDatosFactura } = useNewDatosFacturaHandler();
-
-
   return (
     <Routes>
       {/* Rutas públicas */}
@@ -46,8 +40,8 @@ export function AppRouter() {
 
         <Route path='/reintegros' element={<ReintegrosLayout />}>
           <Route path='historial-reintegros' element={<ReintegroVer />} />
-          <Route path='solicitar-reintegro' element={<NuevoReintegroForm onSubmit={newReintegro} />} />
-          <Route path='datos-factura' element={<DatosFacturaReintegroForm onSubmit={newDatosFactura} />} />
+          <Route path='solicitar-reintegro' element={<NuevoReintegroForm />} />
+          <Route path='datos-factura' element={<DatosFacturaReintegroForm />} />
         </Route>
 
         <Route path='/recetas' element={<RecetasLayout />}>

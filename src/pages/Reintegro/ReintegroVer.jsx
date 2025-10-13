@@ -4,10 +4,12 @@ import FiltroEstados from '../../components/FiltroEstados';
 import { useStateFilter } from '../../store/stateFilter';
 import { useGetReintegros } from '../../services/queries';
 import { capitalize } from 'lodash';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 function ReintegroVer() {
   const { state } = useStateFilter();
-  const { data, error, isLoading } = useGetReintegros();
+  const axiosPrivate = useAxiosPrivate();
+  const { data, error, isLoading } = useGetReintegros(axiosPrivate);
 
   const reintegros = data?.data;
 
