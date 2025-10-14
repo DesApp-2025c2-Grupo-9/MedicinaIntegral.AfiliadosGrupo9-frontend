@@ -18,7 +18,7 @@ export const logout = async () => {
 };
 
 // Afiliados
-export const getAfiliado = async axiosClient => {
+export const getAfiliado = async axiosClient => { // 1. Recibe un cliente de axios por parámetro
   const res = await axiosClient.get('api/afiliados');
   return res.data;
 };

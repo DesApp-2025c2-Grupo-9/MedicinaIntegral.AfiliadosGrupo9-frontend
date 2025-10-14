@@ -16,7 +16,7 @@ export function useLogin() {
 }
 
 // Afiliados
-export function useGetAfiliado(axiosClient) {
+export function useGetAfiliado(axiosClient) { // 2. useGetAfiliado recibe un cliente de axios por parámetro y se lo pasa a la función que hará getAfiliado la petición
   return useQuery({
     queryKey: ['afiliado'],
     queryFn: () => getAfiliado(axiosClient)
