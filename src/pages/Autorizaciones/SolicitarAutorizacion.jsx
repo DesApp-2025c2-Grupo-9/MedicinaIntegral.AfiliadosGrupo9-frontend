@@ -106,6 +106,9 @@ function SolicitarAutorizacion() {
         id='diasDeInternacion'
         label= 'Días de internación'
         placeholder= 'Seleccionar cantidad de días'
+        type = 'number'
+        min = {1}
+        required = {true}
         errorMsg={errors.diasDeInternacion?.message}
       />
       </InputContainer>

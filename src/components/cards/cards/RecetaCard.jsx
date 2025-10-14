@@ -77,14 +77,11 @@ function RecetaCard(props) {
     `
   }).join("")
   const verObservaciones = () => {
-
     Swal.fire({
       title: "Observaciones",
       html: observacionesHTML || '<p>No hay observaciones para esta receta</p>',
       confirmButtonText: "Cerrar"
     })
-
-
   }
 
   const eliminarReceta = () => {

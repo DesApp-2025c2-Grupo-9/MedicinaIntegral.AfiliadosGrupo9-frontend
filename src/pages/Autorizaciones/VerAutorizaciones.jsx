@@ -1,11 +1,18 @@
 import AutorizacionCard from '../../components/cards/cards/AutorizacionCard'
 import { useStateFilter } from "../../store/stateFilter"
 import FiltroEstados from "../../components/FiltroEstados"
+import { useGetAllAutorizaciones } from '../../services/autorizacionesQueries';
 
 function VerAutorizaciones() {
     const {state} = useStateFilter();
 
-    const autorizaciones = [
+    const {data, error, isLoading} = useGetAllAutorizaciones();
+    const autorizaciones = data?.data
+
+    if (isLoading) return <p>Cargando...</p>;
+    if (error) return <p>Error: {error}</p>
+
+    const autorizacionesHard = [
         {   idAutorizacion : 1,
             nroAfiliado : 123123123,
             fechaSolicitud : new Date("1969-12-31T17:00:00"),
