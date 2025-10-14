@@ -1,3 +1,4 @@
+import { logout } from '../../services/api';
 import { useUserStore } from '../../store/userStore';
 import { icons } from '../../utils/icons';
 import { useNavigate } from 'react-router-dom';
@@ -5,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 function LogoutButton() {
   const { setUser } = useUserStore(state => state);
   const navigate = useNavigate();
-  const handleClick = () => {
+  const handleClick = async () => {
+    await logout();
     setUser({});
     navigate('/login');
   };

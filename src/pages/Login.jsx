@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './login.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { validacionLogin } from '../utils/validacionLogin';
 import OcultarClave from '../components/OcultarClave/ocultarClave';
 import { useLogin } from '../services/queries';
@@ -14,6 +14,8 @@ const Login = () => {
   const { setUser } = useUserStore(state => state);
   const navigate = useNavigate();
   const { mutateAsync } = useLogin();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -30,7 +32,7 @@ const Login = () => {
       });
       setError('');
       setUser({ accessToken: data?.accessToken });
-      navigate('/');
+      navigate(from, { replace: true });
     } catch (error) {
       console.log(error);
     }

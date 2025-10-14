@@ -4,16 +4,22 @@ import clsx from 'clsx';
 import { icons } from '../../utils/icons';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { useGetAfiliado } from '../../services/queries';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function AvatarAfiliado({ className }) {
   const axiosPrivate = useAxiosPrivate();
   const { data, error, isLoading } = useGetAfiliado(axiosPrivate);
   const [isOpen, setIsOpen] = useState(false);
-  const afiliado = data?.data;
-  const inicialesUser = afiliado?.nombre?.charAt(0) + afiliado?.apellido?.charAt(0);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   if (isLoading) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) {
+    navigate('/login', { state: { from: location }, replace: true });
+  }
+
+  const afiliado = data?.data;
+  const inicialesUser = afiliado?.nombre?.charAt(0) + afiliado?.apellido?.charAt(0);
 
   return (
     <div className={`relative flex flex-col justify-center items-start lg:items-end gap-2 w-60 ${className}`}>

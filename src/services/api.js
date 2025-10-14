@@ -8,7 +8,12 @@ export const register = async body => {
 
 // Sesión
 export const login = async body => {
-  const res = await axios.post('api/auth/login', body);
+  const res = await axios.post('api/auth/login', body, { withCredentials: true });
+  return res.data;
+};
+
+export const logout = async () => {
+  const res = await axios.get('api/auth/logout', { withCredentials: true });
   return res.data;
 };
 

@@ -53,7 +53,7 @@ export const ERROR_MESSAGES = {
   }
 };
 
-// const especialidadesRes = await getEspecialidades();
+const especialidadesRes = await getEspecialidades();
 
 export const reintegroSchema = z.object({
   paraAfiliado: z.literal(['Carolina Benitez', 'John Doe', 'Jane Doe'], ERROR_MESSAGES.PARA_AFILIADO.REQUIRED),
@@ -65,8 +65,8 @@ export const reintegroSchema = z.object({
     },
     { error: ERROR_MESSAGES.FECHA_DE_PRESTACION.FUTURE_DATE }
   ),
-  // especialidad: z.literal(especialidadesRes.data, ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
-  especialidad: z.literal(['Lorem', 'Ipsum', 'Dolor', 'Sit', 'Medicina General'], ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
+  especialidad: z.literal(especialidadesRes.data, ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
+  // especialidad: z.literal(['Lorem', 'Ipsum', 'Dolor', 'Sit', 'Medicina General'], ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
   medico: z
     .string()
     .trim()
