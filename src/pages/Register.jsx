@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
-import { validacionRegistro } from '../utils/validacionRegistro'; 
+import { validacionRegistro } from '../utils/validacionRegistro';
 import OcultarClave from '../components/OcultarClave/ocultarClave';
+import { useRegister } from '../services/queries';
 
 const Register = () => {
   const [usuario, setUsuario] = useState('');
@@ -10,22 +11,24 @@ const Register = () => {
   const [confirmarClave, setConfirmarClave] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { mutateAsync } = useRegister();
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-
-    /*aca hay validaciones*/ 
+    try {
+      /*aca hay validaciones*/
       const mensajeError = validacionRegistro(usuario, clave, confirmarClave);
       if (mensajeError) {
         setError(mensajeError);
         return;
       }
-    
+      const data = await mutateAsync({
+        nroDocumento: usuario,
+        password: clave,
+        confirmPassword: confirmarClave
+      });
+      console.log(data);
       setError('');
-      console.log('Usuario:', usuario);
-      console.log('Contraseña:', clave);
-      navigate('/');
-
       Swal.fire({
         title: 'Registro exitoso',
         text: 'Su cuenta fue creada correctamente',
@@ -39,9 +42,11 @@ const Register = () => {
           confirmButton: 'swal-button-small'
         }
       }).then(() => {
-      navigate('/');
-    });
-    
+        navigate('/login');
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -50,43 +55,43 @@ const Register = () => {
         <h1 className='bienvenida'>Registrate</h1>
 
         <form onSubmit={handleSubmit}>
-
           <label htmlFor='documento-register'>Ingrese su número de documento:</label>
-          
+
           <input
             id='documento-register'
-            type="text"
-            placeholder="ej: 12345678"
+            type='text'
+            placeholder='ej: 12345678'
             value={usuario}
             maxLength={8}
             onChange={e => {
-              const valor = e.target.value; 
+              const valor = e.target.value;
               if (/^\d*$/.test(valor)) {
-              setUsuario(valor);
+                setUsuario(valor);
               }
-              
-          }
-        }
+            }}
           />
           <label htmlFor='contraseña-register'>Elija una contraseña:</label>
-          
-            <OcultarClave
-              id='contraseña-register'
-              type='password'
-              placeholder='ej: ******'
-              value={clave}
-              onChange={e => setClave(e.target.value)}
-            />
-            <label className='contraseña-confirm'>Confirme su contraseña:</label>
-            <OcultarClave
-              id='contraseña-confirm'
-              type='password'
-              placeholder='ej: ******'
-              value={confirmarClave}
-              onChange={e => setConfirmarClave(e.target.value)}
-              
-            />
-          
+
+          <OcultarClave
+            id='contraseña-register'
+            type='password'
+            placeholder='ej: ******'
+            value={clave}
+            onChange={e => setClave(e.target.value)}
+          />
+          <label
+            htmlFor='contraseña-confirm'
+            className='contraseña-confirm'
+          >
+            Confirme su contraseña:
+          </label>
+          <OcultarClave
+            id='contraseña-confirm'
+            type='password'
+            placeholder='ej: ******'
+            value={confirmarClave}
+            onChange={e => setConfirmarClave(e.target.value)}
+          />
 
           {error && <p className='error'>{error}</p>}
           <button type='submit'>Registrarse</button>

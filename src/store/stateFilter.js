@@ -1,6 +1,6 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
-export const useStateFilter = create((set) => ({
+export const useStateFilter = create(set => ({
   state: 'Todos',
-  updateState: (newState) => set({ state: newState }),
-}))
+  updateState: newState => set({ state: newState })
+}));

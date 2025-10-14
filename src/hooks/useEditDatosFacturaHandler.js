@@ -2,11 +2,13 @@ import Swal from 'sweetalert2';
 import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
 import { useUpdateReintegro } from '../services/queries';
 import { useEditReintegroStep } from '../store/editReintegroStepStore';
+import useAxiosPrivate from './useAxiosPrivate';
 
 export const useEditDatosFacturaHandler = (reintegro, setIsModalOpen) => {
   const { data, setData } = useNuevoReintegroStore(state => state);
   const { setCurrentStep } = useEditReintegroStep();
-  const { mutateAsync } = useUpdateReintegro();
+  const axiosPrivate = useAxiosPrivate();
+  const { mutateAsync } = useUpdateReintegro(axiosPrivate);
 
   const onSubmit = async inputData => {
     try {

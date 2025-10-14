@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import TwoButtons from '../components/TwoButtons';
 import { useFormRedirect } from '../hooks/useFormRedirect';
 import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
+import { useNewDatosFacturaHandler } from '../hooks/useNewDatosFacturaHandler';
 
 const datosFacturaReintegroSchema = reintegroSchema
   .pick({
@@ -35,8 +36,9 @@ const datosFacturaReintegroSchema = reintegroSchema
     }
   );
 
-function DatosFacturaReintegroForm({ className, onSubmit }) {
+function DatosFacturaReintegroForm({ className }) {
   const fechaActual = new Date().toISOString().split('T')[0];
+  const { onSubmit } = useNewDatosFacturaHandler();
   const setData = useNuevoReintegroStore(state => state.setData);
   const data = useNuevoReintegroStore(state => state.data);
   const {

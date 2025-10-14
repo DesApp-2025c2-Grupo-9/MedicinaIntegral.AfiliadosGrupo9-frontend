@@ -16,16 +16,11 @@ import RecetasLayout from './layout/RecetasLayout';
 import AutorizacionesLayout from './layout/AutorizacionesLayout';
 import VerRecetas from './pages/Recetas/VerRecetas';
 import SolicitarReceta from './pages/Recetas/SolicitarReceta';
-import { useNewReintegroHandler } from './hooks/useNewReintegroHandler';
-import { useNewDatosFacturaHandler } from './hooks/useNewDatosFacturaHandler';
 import VerAutorizaciones from './pages/Autorizaciones/VerAutorizaciones';
 import SolicitarAutorizacion from './pages/Autorizaciones/SolicitarAutorizacion';
+import RequireAuth from './components/RequireAuth';
 
 export function AppRouter() {
-  const { onSubmit: newReintegro } = useNewReintegroHandler();
-  const { onSubmit: newDatosFactura } = useNewDatosFacturaHandler();
-
-
   return (
     <Routes>
       {/* Rutas públicas */}
@@ -34,33 +29,36 @@ export function AppRouter() {
         <Route path='/login' element={<Login />} />
       </Route>
 
+
       {/* Rutas protegidas */}
-      <Route element={<MainLayout />}>
-        <Route path='/' element={<Inicio />} />
-        <Route path='/mi-cuenta' element={<MiCuenta />} />
+      <Route element={<RequireAuth />}>
+        <Route element={<MainLayout />}>
+          <Route path='/' element={<Inicio />} />
+          <Route path='/mi-cuenta' element={<MiCuenta />} />
 
-        <Route path='/turnos' element={<TurnosLayout />}>
-          <Route path='turnos-reservados' element={<h3>Ver turnos reservados.</h3>} />
-          <Route path='solicitar-turno' element={<h3>Turnos.</h3>} />
+          <Route path='/turnos' element={<TurnosLayout />}>
+            <Route path='turnos-reservados' element={<h3>Ver turnos reservados.</h3>} />
+            <Route path='solicitar-turno' element={<h3>Turnos.</h3>} />
+          </Route>
+
+          <Route path='/reintegros' element={<ReintegrosLayout />}>
+            <Route path='historial-reintegros' element={<ReintegroVer />} />
+            <Route path='solicitar-reintegro' element={<NuevoReintegroForm />} />
+            <Route path='datos-factura' element={<DatosFacturaReintegroForm />} />
+          </Route>
+
+          <Route path='/recetas' element={<RecetasLayout />}>
+            <Route path='ver-recetas' element={<VerRecetas/>} />
+            <Route path='solicitar-receta' element={<SolicitarReceta/>} />
+          </Route>
+
+          <Route path='/autorizaciones' element={<AutorizacionesLayout />}>
+            <Route path='ver-autorizaciones' element={<VerAutorizaciones/>} />
+            <Route path='solicitar-autorizacion' element={<SolicitarAutorizacion/>} />
+          </Route>
+
+          <Route path='/cartilla-medica' element={<h3>Cartilla Médica.</h3>} />
         </Route>
-
-        <Route path='/reintegros' element={<ReintegrosLayout />}>
-          <Route path='historial-reintegros' element={<ReintegroVer />} />
-          <Route path='solicitar-reintegro' element={<NuevoReintegroForm onSubmit={newReintegro} />} />
-          <Route path='datos-factura' element={<DatosFacturaReintegroForm onSubmit={newDatosFactura} />} />
-        </Route>
-
-        <Route path='/recetas' element={<RecetasLayout />}>
-          <Route path='ver-recetas' element={<VerRecetas/>} />
-          <Route path='solicitar-receta' element={<SolicitarReceta/>} />
-        </Route>
-
-        <Route path='/autorizaciones' element={<AutorizacionesLayout />}>
-          <Route path='ver-autorizaciones' element={<VerAutorizaciones/>} />
-          <Route path='solicitar-autorizacion' element={<SolicitarAutorizacion/>} />
-        </Route>
-
-        <Route path='/cartilla-medica' element={<h3>Cartilla Médica.</h3>} />
       </Route>
 
       {/* Catch all */}

@@ -1,39 +1,42 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import './login.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { validacionLogin } from '../utils/validacionLogin';
 import OcultarClave from '../components/OcultarClave/ocultarClave';
-
+import { useLogin } from '../services/queries';
+import { useUserStore } from '../store/userStore';
 
 const Login = () => {
   const [usuario, setUsuario] = useState('');
   const [clave, setClave] = useState('');
   const [error, setError] = useState('');
-  const { setUser } = useContext(UserContext);
+  // const { setUser } = useContext(UserContext);
+  const { setUser } = useUserStore(state => state);
   const navigate = useNavigate();
-  const [mostrarClave, setMostrarClave] = useState(false);
+  const { mutateAsync } = useLogin();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
-
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-
-    /*aca hay validaciones*/ 
-    const mensajeError = validacionLogin(usuario, clave);
-    if (mensajeError) {
-    setError(mensajeError);
-    return;
+    try {
+      /*aca hay validaciones*/
+      const mensajeError = validacionLogin(usuario, clave);
+      if (mensajeError) {
+        setError(mensajeError);
+        return;
+      }
+      const data = await mutateAsync({
+        nroDocumento: usuario,
+        password: clave
+      });
+      setError('');
+      setUser({ accessToken: data?.accessToken });
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.log(error);
     }
-
-    setError('');
-    console.log('Usuario:', usuario);
-    console.log('Contraseña:', clave);
-
-    setUser({ documento: usuario });
-
-    navigate('/');
-    
-  }; 
+  };
 
   return (
     <div className='login-container'>
@@ -49,23 +52,22 @@ const Login = () => {
             maxLength={8}
             value={usuario}
             onChange={e => {
-              const valor = e.target.value; 
+              const valor = e.target.value;
               if (/^\d*$/.test(valor)) {
-              setUsuario(valor);
-            }
-          }
-            }
+                setUsuario(valor);
+              }
+            }}
           />
           <label htmlFor='contraseña-login'>Ingrese su contraseña:</label>
-          
-            <OcultarClave
-              id='contraseña-login'
-              type={mostrarClave ? 'text' : 'password'}
-              placeholder='ej:******'
-              value={clave}
-              onChange={e => setClave(e.target.value)}
-            /> 
-          
+
+          <OcultarClave
+            id='contraseña-login'
+            type='password'
+            placeholder='ej: ******'
+            value={clave}
+            onChange={e => setClave(e.target.value)}
+          />
+
           {error && <p className='error'>{error}</p>}
           <button type='submit'>Ingresar</button>
         </form>

@@ -66,6 +66,7 @@ export const reintegroSchema = z.object({
     { error: ERROR_MESSAGES.FECHA_DE_PRESTACION.FUTURE_DATE }
   ),
   especialidad: z.literal(especialidadesRes.data, ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
+  // especialidad: z.literal(['Lorem', 'Ipsum', 'Dolor', 'Sit', 'Medicina General'], ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
   medico: z
     .string()
     .trim()

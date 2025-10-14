@@ -10,6 +10,7 @@ import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
 import TwoButtons from '../components/TwoButtons';
 import { addDays, format } from 'date-fns';
 import { useEditReintegroHandler } from '../hooks/useEditReintegroHandler';
+import { useGetEspecialidades } from '../services/queries';
 
 const nuevoReintegroSchema = reintegroSchema.pick({
   paraAfiliado: true,
@@ -20,6 +21,7 @@ const nuevoReintegroSchema = reintegroSchema.pick({
 });
 
 function EditReintegroForm({ className, reintegro = {}, cancelBtnOnClick }) {
+  const { data: especialidadesRes, error, isLoading } = useGetEspecialidades();
   const fechaActual = new Date().toISOString().split('T')[0];
   const { data, setData } = useNuevoReintegroStore(state => state);
   const { onSubmit } = useEditReintegroHandler();
@@ -37,6 +39,9 @@ function EditReintegroForm({ className, reintegro = {}, cancelBtnOnClick }) {
       lugarDeAtencion: data?.lugarDeAtencion ?? reintegro.lugarDeAtencion
     }
   });
+
+  if (isLoading) return <p>Cargando...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <Form
@@ -66,7 +71,7 @@ function EditReintegroForm({ className, reintegro = {}, cancelBtnOnClick }) {
           id='especialidad'
           label='Especialidad:'
           placeholder='Seleccionar especialidad'
-          options={['Lorem', 'Ipsum', 'Dolor', 'Sit', 'Medicina General']}
+          options={especialidadesRes?.data}
           errorMsg={errors.especialidad?.message}
         />
       </InputContainer>
