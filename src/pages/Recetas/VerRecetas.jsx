@@ -1,10 +1,16 @@
 import RecetaCard from "../../components/cards/cards/RecetaCard";
 import { useStateFilter } from "../../store/stateFilter"
 import FiltroEstados from '../../components/FiltroEstados'
-import { useGetRecetasFamilia } from "../../services/recetasQueries";
+import { useGetRecetas } from "../../services/recetasQueries";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 
 function VerRecetas() {
+  const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
+  const location = useLocation();
   const { state } = useStateFilter();
   //Llamada a la API
   //Obtener el nro de afiliado general del grupo familiar/Usuario
@@ -12,49 +18,30 @@ function VerRecetas() {
   //const {data,error, isLoading} = useGetRecetaFamilia(nroGrupoFamiliar);
   //const recetas = data?.data
 
-  const recetas = [{
-    idReceta: 1,
-    medicamento: 'Loplac 50mg',
-    cantidad: '2 cajas',
-    presentacion: 'Pastillas',
-    detalleMedicamento: '30 unidades por caja',
-    estado: 'pendiente'
-  },
-  {
-    idReceta: 2,
-    medicamento: 'Loplac 50mg',
-    cantidad: '2 cajas',
-    presentacion: 'Pastillas',
-    detalleMedicamento: '30 unidades por caja',
-    estado: 'pendiente'
-  },
-  {
-    idReceta: 3,
-    medicamento: 'Loplac 50mg',
-    cantidad: '2 cajas',
-    presentacion: 'Pastillas',
-    detalleMedicamento: '30 unidades por caja',
-    estado: 'rechazado'
-  },
-  {
-    idReceta: 4,
-    medicamento: 'Loplac 50mg',
-    cantidad: '2 cajas',
-    presentacion: 'Pastillas',
-    detalleMedicamento: '30 unidades por caja',
-    estado: 'aceptado'
+  //Usar la seed
+  const {data, error, isLoading} = useGetRecetas(axiosPrivate);
+  const recetas = data?.data || [];
+
+  if (isLoading) return <p>Cargando...</p>;
+  if (error) {
+    if (error?.response?.status === 401) {
+      navigate('/login', { state: { from: location }, replace: true });
+      return null;
+    }
+    return <p>Error: {JSON.stringify(error)}</p>;
   }
-  ]
+
+
   
-  const recetasFiltradas = recetas?.filter(
-    receta => state.includes(receta.estado) || state === 'Todos'
-  )
+  const recetasFiltradas = state === 'Todos'
+    ? recetas
+    : recetas.filter(receta => Array.isArray(state) ? state.includes(receta.estado) : receta.estado === state);
   
   return (
     <div className="flex flex-col items-end gap-3 relative">
       <FiltroEstados className='sm:absolute -top-11 mr-auto'/>
     <div className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-2 w-full">
-      {recetasFiltradas.map(
+      {recetasFiltradas?.map(
         (receta, idReceta) => (
           <RecetaCard receta={receta} key={idReceta} />
         )

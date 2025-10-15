@@ -63,7 +63,7 @@ function SolicitarAutorizacion() {
         label='Para afiliado:'
         placeholder='Seleccionar afiliado'
         options={['Carolina Benitez', 'John Doe', 'Jane Doe']}
-        errorMsg={errors.paraAfiliado?.message}
+        errorMsg={errors.nroAfiliado?.message}
       />
         <Input 
           {...register('fechaSolicitud')}
@@ -71,7 +71,7 @@ function SolicitarAutorizacion() {
           id='fechaSolicitud'
           label= 'Fecha prevista'
           min={fechaActual}
-          errormsg={errors.fechaSolicitud?.message}
+          errorMsg={errors.fechaSolicitud?.message}
         />
       </InputContainer>
 
@@ -82,14 +82,14 @@ function SolicitarAutorizacion() {
         label='Especialidad:'
         placeholder='Seleccionar Especialidad'
         options={['Oftalmología', 'Traumatología', 'Kinesiología']}/*Modificar esto */
-        errorMsg={errors.medicamento?.message}
+        errorMsg={errors.especialidad?.message}
         />
         <Select 
-        {...register("medicoSolicitante", {valueAsNumber: true})}
+        {...register("medicoSolicitante")}
         label='Médico:'
         placeholder = 'Seleccionar médico'
         options={['Carolina Benitez', 'John Doe', 'Jane Doe']}/*Modificar esto */
-        errorMsg={errors.cantidad?.message}
+        errorMsg={errors.medicoSolicitante?.message}
         />
       </InputContainer>
       {/*Input Lugar de prestación - Input dias de internación */}
@@ -106,6 +106,8 @@ function SolicitarAutorizacion() {
         id='diasDeInternacion'
         label= 'Días de internación'
         placeholder= 'Seleccionar cantidad de días'
+        type = 'number'
+        min = {1}
         errorMsg={errors.diasDeInternacion?.message}
       />
       </InputContainer>
