@@ -21,7 +21,6 @@ function VerRecetas() {
   //Usar la seed
   const {data, error, isLoading} = useGetRecetas(axiosPrivate);
   const recetas = data?.data || [];
-  console.log(recetas)
 
   if (isLoading) return <p>Cargando...</p>;
   if (error) {
@@ -34,9 +33,9 @@ function VerRecetas() {
 
 
   
-  const recetasFiltradas = recetas//?.filter(
-  //   receta => state.includes(receta.estado) || state === 'Todos'
-  // )
+  const recetasFiltradas = state === 'Todos'
+    ? recetas
+    : recetas.filter(receta => Array.isArray(state) ? state.includes(receta.estado) : receta.estado === state);
   
   return (
     <div className="flex flex-col items-end gap-3 relative">
