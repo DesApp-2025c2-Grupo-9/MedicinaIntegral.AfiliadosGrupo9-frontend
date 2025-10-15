@@ -1,18 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from '../api/axios'
+import axios, { axiosPrivate } from '../api/axios'
 
 //Get All para cargar las cards
 
-const getAllAutorizaciones = async () => {
-    const res = await axios.get(
+const getAllAutorizaciones = async axiosPrivate => {
+    const res = await axiosPrivate.get(
         'api/autorizaciones'
     )
     return res.data
 }
 
-export function useGetAllAutorizaciones () {
+export function useGetAllAutorizaciones (axiosPrivate) {
     return useQuery({
         queryKey: ['autorizaciones'],
-        queryFn: getAllAutorizaciones
+        queryFn: () => getAllAutorizaciones(axiosPrivate)
     })
 }
+

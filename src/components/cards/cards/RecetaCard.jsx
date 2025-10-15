@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import { useState } from "react";
 import EditarReceta from "../../../pages/Recetas/EditarReceta";
 function RecetaCard(props) {
+  
   let receta = props.receta;
   const [modalEditarOpen, setModalEditarOpen] = useState(false);
 
@@ -66,22 +67,25 @@ function RecetaCard(props) {
     })
   }
 
-  const observacionesHTML = receta.observaciones.map((observacion) => {
-    const fecha = new Date(observacion.fecha).toLocaleDateString("es-AR")
-    return `
-      <div style= 'text-align:left'>
-        <p><strong>Emisor: </strong> ${observacion.emisor}</p>
-        <p><strong>Descripción:</strong> ${observacion.descripcion}</p>
-        <p><strong>Fecha:</strong> ${fecha}</p>
-      </div>
-    `
-  }).join("")
+  const observacionesHTML = Array.isArray(receta.observaciones)
+  ? receta.observaciones.map((observacion) => {
+      const fecha = new Date(observacion.fecha).toLocaleDateString("es-AR");
+      return `
+        <div style='text-align:left; margin-bottom:10px'>
+          <p><strong>Emisor: </strong>${observacion.emisor}</p>
+          <p><strong>Descripción: </strong>${observacion.descripcion}</p>
+          <p><strong>Fecha: </strong>${fecha}</p>
+        </div>
+      `;
+    }).join("")
+  : "";
+
   const verObservaciones = () => {
     Swal.fire({
-      title: "Observaciones",
-      html: observacionesHTML || '<p>No hay observaciones para esta receta</p>',
-      confirmButtonText: "Cerrar"
-    })
+  title: "Observaciones",
+  html: observacionesHTML || '<p>No hay observaciones para esta receta</p>',
+  confirmButtonText: "Cerrar"
+});
   }
 
   const eliminarReceta = () => {

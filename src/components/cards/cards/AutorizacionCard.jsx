@@ -12,7 +12,8 @@ function AutorizacionCard(props) {
   const dashboard = props.dashboard || false;
   let cardStyle = `grid-cols-2`;
 
-    const observacionesHTML = autorizacion.observaciones.map((observacion) => {
+    const observacionesHTML = Array.isArray(autorizacion.observaciones)?
+    autorizacion.observaciones.map((observacion) => {
       const fecha = new Date(observacion.fecha).toLocaleDateString("es-AR")
       return `
         <div style= 'text-align:left'>
@@ -21,7 +22,7 @@ function AutorizacionCard(props) {
           <p><strong>Fecha:</strong> ${fecha}</p>
         </div>
       `
-    }).join("")
+    }).join(""): '';
     const verObservaciones = () => {
       Swal.fire({
         title: "Observaciones",
