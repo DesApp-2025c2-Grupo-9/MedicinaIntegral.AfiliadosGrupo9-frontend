@@ -29,7 +29,7 @@ function AutorizacionCard(props) {
   const verObservaciones = () => {
     Swal.fire({
       title: "Observaciones",
-      html: observacionesHTML || '<p>No hay observaciones para esta receta</p>',
+      html: observacionesHTML || '<p>No hay observaciones para esta autorización</p>',
       confirmButtonText: "Cerrar"
     })
   }
