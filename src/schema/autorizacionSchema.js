@@ -33,26 +33,26 @@ const especialidadesRes = await getEspecialidades();
 
 //Esquema de solicitud utilizando zod
 export const  autorizacionSchema = z.object({
-  nroAfiliado: z.literal(['Carolina Benitez', 'John Doe', 'Jane Doe'], ERROR_MESSAGES.NRO_AFILIADO.REQUIRED),
-  fechaSolicitud: z.coerce
-  .date({
-    invalid_type_error: ERROR_MESSAGES.FECHA_SOLICITUD.INVALID_FORMAT,
+  nroAfiliado: z.enum(['Carolina Benitez', 'John Doe', 'Jane Doe'], ERROR_MESSAGES.NRO_AFILIADO.REQUIRED),
+  fechaSolicitud: z.string({
     required_error: ERROR_MESSAGES.FECHA_SOLICITUD.REQUIRED,
   })
+  .min(1, ERROR_MESSAGES.FECHA_SOLICITUD.REQUIRED)
+  .transform((val) => new Date(val))
   .refine(
     (val) => {
       const hoy = new Date();
-      hoy.setHours(0, 0, 0, 0); // limpiar hora para comparar solo fechas
-      return val >= hoy; // debe ser hoy o posterior
+      hoy.setHours(0,0,0,0);
+      return val >= hoy;
     },
-    { message: ERROR_MESSAGES.FECHA_SOLICITUD.PAST_DATE }
+    {message: ERROR_MESSAGES.FECHA_SOLICITUD.PAST_DATE}
   ),
-  especialidad : z.literal(especialidadesRes.data, ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
-  medicoSolicitante : z
-      .string()
-      .trim()
-      .min(1, ERROR_MESSAGES.MEDICO_SOLICITANTE.REQUIRED)
-      .regex(/^[^0-9]*$/, ERROR_MESSAGES.MEDICO_SOLICITANTE.INVALID_FORMAT),
+  especialidad : z.enum(especialidadesRes.data, ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
+  medicoSolicitante : z.enum(['Carolina Benitez', 'John Doe', 'Jane Doe'], ERROR_MESSAGES.MEDICO_SOLICITANTE.REQUIRED),
+      // .string()
+      // .trim()
+      // .min(1, ERROR_MESSAGES.MEDICO_SOLICITANTE.REQUIRED)
+      // .regex(/^[^0-9]*$/, ERROR_MESSAGES.MEDICO_SOLICITANTE.INVALID_FORMAT),
   lugarAtencion : z.string().trim().min(1, ERROR_MESSAGES.LUGAR_DE_ATENCION.REQUIRED),
   diasDeInternacion : z.coerce.number().positive(ERROR_MESSAGES.DIAS_DE_INTERNACION.NEGATIVE),
   observaciones : z.string().optional()
