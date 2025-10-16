@@ -81,10 +81,10 @@ export function useDeleteReintegro() {
 
 // Especialidades
 export function useGetEspecialidades() {
-  const axiosPrivate = useAxiosPrivate();
+  // const axiosPrivate = useAxiosPrivate();
 
   return useQuery({
     queryKey: ['especialidades'],
-    queryFn: () => getEspecialidades(axiosPrivate)
+    queryFn: () => getEspecialidades()
   });
 }

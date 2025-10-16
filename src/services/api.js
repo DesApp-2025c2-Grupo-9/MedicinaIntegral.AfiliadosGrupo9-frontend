@@ -50,7 +50,7 @@ export const deleteReintegro = async (axiosClient, id) => {
 };
 
 // Especialidades
-export const getEspecialidades = async axiosClient => {
-  const res = await axiosClient.get('api/especialidades');
+export const getEspecialidades = async () => {
+  const res = await axios.get('api/especialidades');
   return res.data;
 };
