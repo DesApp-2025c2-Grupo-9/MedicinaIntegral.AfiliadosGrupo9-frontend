@@ -2,8 +2,8 @@ import { useEditReintegroStep } from '../store/editReintegroStepStore';
 import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
 
 export const useEditReintegroHandler = () => {
-  const { data, setData } = useNuevoReintegroStore();
   const { setCurrentStep } = useEditReintegroStep(state => state);
+  const { data, setData } = useNuevoReintegroStore();
 
   const onSubmit = inputData => {
     setData({ ...data, ...inputData });

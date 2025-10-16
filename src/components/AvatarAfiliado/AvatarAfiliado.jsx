@@ -1,26 +1,39 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ListaFamiliares from './ListaFamiliares';
 import clsx from 'clsx';
 import { icons } from '../../utils/icons';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import { useGetAfiliado } from '../../services/queries';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useGetAfiliado /* useGetAfiliadoPublic */ } from '../../services/queries';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useUserStore } from '../../store/userStore';
 
 function AvatarAfiliado({ className }) {
-  const axiosPrivate = useAxiosPrivate();
-  const { data, error, isLoading } = useGetAfiliado(axiosPrivate); // 3. Le pasamos el cliente axiosPrivate por parámetro; este axiosPrivate se encarga del manejo de los tokens de sesión en los cuales están encriptados nroDocumento y lista de familiares permitidos; al ser de la sesión, se lo usa en todos los lugares en donde debamos hacer peticiones de cualquier tipo al backend (las excepciones son las peticiones de register y login, que ocurren previo a que exista una sesión)
+  // const { data, error, isLoading } = useGetAfiliadoPublic();
+  const { user, setUser } = useUserStore(state => state);
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
+  const { data, error, isLoading, isError } = useGetAfiliado();
 
-  if (isLoading) return <p>Cargando...</p>;
-  if (error) {
-    // 4. Cualquier error que ocurra por un token vencido (401), lo manejamos en un condicional; si existiese error por una sesión expirada, el usuario es redirigido al login para volver a autenticarse
-    error.status === 401 ? navigate('/login', { state: { from: location }, replace: true }) : <p>Error: {JSON.stringify(error)}</p>;
+  useEffect(() => {
+    setUser({ ...user, grupoFamiliar: data?.data.grupoFamiliar });
+  }, [setUser, data]);
+
+  if (isLoading) return <div>Cargando...</div>;
+  if (isError && error.status === 401) {
+    // Si el refresh token está vencido (401), redirigimos a /login para autenticarse
+    return (
+      <Navigate
+        to='/login'
+        state={{ from: location }}
+        replace
+      />
+    );
   }
+  if (isError) return <div>Error: {error.message}</div>;
 
   const afiliado = data?.data;
   const inicialesUser = afiliado?.nombre?.charAt(0) + afiliado?.apellido?.charAt(0);
+
+  // setUser({ ...user, grupoFamiliar: afiliado.grupoFamiliar });
 
   return (
     <div className={`relative flex flex-col justify-center items-start lg:items-end gap-2 w-60 ${className}`}>

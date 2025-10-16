@@ -6,7 +6,6 @@ export const useNewReintegroHandler = () => {
   const navigate = useNavigate();
 
   const onSubmit = inputData => {
-    console.log({ ...data, ...inputData });
     setData({ ...data, ...inputData });
     navigate('/reintegros/datos-factura');
   };
