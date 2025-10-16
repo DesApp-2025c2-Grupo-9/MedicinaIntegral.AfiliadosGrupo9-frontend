@@ -29,7 +29,6 @@ export function AppRouter() {
         <Route path='/login' element={<Login />} />
       </Route>
 
-
       {/* Rutas protegidas */}
       <Route element={<RequireAuth />}>
         <Route element={<MainLayout />}>

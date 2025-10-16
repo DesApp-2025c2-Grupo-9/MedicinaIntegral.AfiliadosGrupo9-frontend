@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { getEspecialidades } from '../services/api';
 
 export const ERROR_MESSAGES = {
   PARA_AFILIADO: {
@@ -53,49 +52,25 @@ export const ERROR_MESSAGES = {
   }
 };
 
-const especialidadesRes = await getEspecialidades();
-
-export const reintegroSchema = z.object({
-  paraAfiliado: z.literal(['Carolina Benitez', 'John Doe', 'Jane Doe'], ERROR_MESSAGES.PARA_AFILIADO.REQUIRED),
-  fechaDePrestacion: z.iso.date({ error: iss => (!iss.input ? ERROR_MESSAGES.FECHA_DE_PRESTACION.REQUIRED : ERROR_MESSAGES.FECHA_DE_PRESTACION.INVALID_FORMAT) }).refine(
-    val => {
-      const fechaIngresada = new Date(val);
-      const hoy = new Date();
-      return fechaIngresada <= hoy; // Si es false, el valor ingresado no es válido.
-    },
-    { error: ERROR_MESSAGES.FECHA_DE_PRESTACION.FUTURE_DATE }
-  ),
-  especialidad: z.literal(especialidadesRes.data, ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
-  // especialidad: z.literal(['Lorem', 'Ipsum', 'Dolor', 'Sit', 'Medicina General'], ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
-  medico: z
-    .string()
-    .trim()
-    .min(1, ERROR_MESSAGES.MEDICO.REQUIRED)
-    .regex(/^[^0-9]*$/, ERROR_MESSAGES.MEDICO.INVALID_FORMAT),
-  lugarDeAtencion: z.string().trim().min(1, ERROR_MESSAGES.LUGAR_DE_ATENCION.REQUIRED),
-  factura: z.object({
-    fecha: z.iso.date({ error: iss => (!iss.input ? ERROR_MESSAGES.FECHA_FACTURA.REQUIRED : ERROR_MESSAGES.FECHA_FACTURA.INVALID_FORMAT) }).refine(
+export const useReintegroSchema = data => {
+  const reintegroSchema = z.object({
+    paraAfiliado: z.literal(data.listaAfiliados, ERROR_MESSAGES.PARA_AFILIADO.REQUIRED),
+    fechaDePrestacion: z.iso.date({ error: iss => (!iss.input ? ERROR_MESSAGES.FECHA_DE_PRESTACION.REQUIRED : ERROR_MESSAGES.FECHA_DE_PRESTACION.INVALID_FORMAT) }).refine(
       val => {
         const fechaIngresada = new Date(val);
         const hoy = new Date();
         return fechaIngresada <= hoy; // Si es false, el valor ingresado no es válido.
       },
-      { error: ERROR_MESSAGES.FECHA_FACTURA.FUTURE_DATE }
+      { error: ERROR_MESSAGES.FECHA_DE_PRESTACION.FUTURE_DATE }
     ),
-    cuit: z
+    especialidad: z.literal(data.listaEspecialidades, ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
+    medico: z
       .string()
       .trim()
-      .regex(/^[0-9]+$/, ERROR_MESSAGES.CUIT.REQUIRED)
-      .min(11, ERROR_MESSAGES.CUIT.INVALID_LENGTH)
-      .max(11, ERROR_MESSAGES.CUIT.INVALID_LENGTH),
-    valorTotal: z.coerce.number().positive(ERROR_MESSAGES.VALOR_TOTAL.NEGATIVE),
-    personaAFacturar: z
-      .string()
-      .trim()
-      .min(1, ERROR_MESSAGES.PERSONA_FACTURADA.REQUIRED)
-      .regex(/^[^0-9]*$/, ERROR_MESSAGES.PERSONA_FACTURADA.INVALID_FORMAT)
-  }),
-  formaDePago: z.literal(['Cheque', 'Efectivo', 'Transferencia'], ERROR_MESSAGES.FORMA_DE_PAGO.REQUIRED),
-  cbu: z.string().optional(),
-  observaciones: z.string().optional()
-});
+      .min(1, ERROR_MESSAGES.MEDICO.REQUIRED)
+      .regex(/^[^0-9]*$/, ERROR_MESSAGES.MEDICO.INVALID_FORMAT),
+    lugarDeAtencion: z.string().trim().min(1, ERROR_MESSAGES.LUGAR_DE_ATENCION.REQUIRED)
+  });
+
+  return { reintegroSchema };
+};

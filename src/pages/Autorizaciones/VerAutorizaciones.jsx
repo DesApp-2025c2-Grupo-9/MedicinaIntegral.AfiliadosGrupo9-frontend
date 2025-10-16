@@ -4,6 +4,7 @@ import FiltroEstados from "../../components/FiltroEstados"
 import { useGetAllAutorizaciones } from '../../services/autorizacionesQueries';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { capitalize } from 'lodash';
 
 function VerAutorizaciones() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function VerAutorizaciones() {
   }
 
   const autorizacionesFiltradas = autorizaciones?.filter(
-    autorizacion => state.includes(autorizacion.estado) || state == 'Todos'
+    autorizacion => state.includes(capitalize(autorizacion.estado)) || state == 'Todos'
   )
   return (
     <div className="flex flex-col items-end gap-3 relative">

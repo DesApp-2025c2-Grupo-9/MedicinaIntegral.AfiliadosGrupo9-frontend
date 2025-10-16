@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form';
 import Form from '../components/Form';
-import { reintegroSchema } from '../schema/reintegroSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Select from '../components/Select';
 import InputContainer from '../components/InputContainer';
@@ -9,26 +8,24 @@ import Button from '../components/Button';
 import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
 import { useGetEspecialidades } from '../services/queries';
 import { useNewReintegroHandler } from '../hooks/useNewReintegroHandler';
-
-const nuevoReintegroSchema = reintegroSchema.pick({
-  paraAfiliado: true,
-  fechaDePrestacion: true,
-  especialidad: true,
-  medico: true,
-  lugarDeAtencion: true
-});
+import { useUserStore } from '../store/userStore';
+import { useReintegroSchema } from '../hooks/useReintegroSchema';
 
 function NuevoReintegroForm({ className }) {
-  const { data: especialidadesRes, error, isLoading } = useGetEspecialidades();
+  const { data: especialidadesRes, error, isLoading, isError } = useGetEspecialidades();
   const { onSubmit } = useNewReintegroHandler();
   const fechaActual = new Date().toISOString().split('T')[0];
+  const { user } = useUserStore(state => state);
+  const listaAfiliados = user.grupoFamiliar?.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
   const data = useNuevoReintegroStore(state => state.data);
+  const { reintegroSchema } = useReintegroSchema({ listaAfiliados, listaEspecialidades: especialidadesRes?.data });
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm({
-    resolver: zodResolver(nuevoReintegroSchema),
+    resolver: zodResolver(reintegroSchema),
     defaultValues: {
       paraAfiliado: data?.paraAfiliado,
       fechaDePrestacion: data?.fechaDePrestacion,
@@ -38,8 +35,8 @@ function NuevoReintegroForm({ className }) {
     }
   });
 
-  if (isLoading) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (isLoading) return <div>Cargando...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
 
   return (
     <Form
@@ -51,7 +48,7 @@ function NuevoReintegroForm({ className }) {
         id='paraAfiliado'
         label='Para afiliado:'
         placeholder='Seleccionar afiliado'
-        options={['Carolina Benitez', 'John Doe', 'Jane Doe']}
+        options={listaAfiliados}
         errorMsg={errors.paraAfiliado?.message}
       />
 

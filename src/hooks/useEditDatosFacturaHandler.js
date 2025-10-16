@@ -2,13 +2,11 @@ import Swal from 'sweetalert2';
 import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
 import { useUpdateReintegro } from '../services/queries';
 import { useEditReintegroStep } from '../store/editReintegroStepStore';
-import useAxiosPrivate from './useAxiosPrivate';
 
 export const useEditDatosFacturaHandler = (reintegro, setIsModalOpen) => {
   const { data, setData } = useNuevoReintegroStore(state => state);
   const { setCurrentStep } = useEditReintegroStep();
-  const axiosPrivate = useAxiosPrivate();
-  const { mutateAsync } = useUpdateReintegro(axiosPrivate);
+  const { mutateAsync } = useUpdateReintegro();
 
   const onSubmit = async inputData => {
     try {
@@ -23,10 +21,7 @@ export const useEditDatosFacturaHandler = (reintegro, setIsModalOpen) => {
       setCurrentStep(3);
       setIsModalOpen(false);
       Swal.fire({
-        html: `
-        La solicitud fue actualizada correctamente.<br/>
-        N° de gestión: 1234
-      `,
+        text: 'La solicitud de reintegro fue actualizada correctamente.',
         icon: 'success',
         confirmButtonText: 'Continuar',
         confirmButtonColor: '#00ab01'

@@ -4,20 +4,24 @@ import FiltroEstados from '../../components/FiltroEstados';
 import { useStateFilter } from '../../store/stateFilter';
 import { useGetReintegros } from '../../services/queries';
 import { capitalize } from 'lodash';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 function ReintegroVer() {
   const { state } = useStateFilter();
-  const axiosPrivate = useAxiosPrivate();
-  const { data, error, isLoading } = useGetReintegros(axiosPrivate);
-  const navigate = useNavigate();
   const location = useLocation();
+  const { data, error, isLoading, isError } = useGetReintegros();
 
-  if (isLoading) return <p>Cargando...</p>;
-  if (error) {
-    navigate('/login', { state: { from: location }, replace: true });
+  if (isLoading) return <div>Cargando...</div>;
+  if (isError && error.status === 401) {
+    return (
+      <Navigate
+        to='/login'
+        state={{ from: location }}
+        replace
+      />
+    );
   }
+  if (isError) return <div>Error: {error.message}</div>;
 
   const reintegros = data?.data;
   const reintegrosFiltrados = reintegros?.filter(r => state.includes(capitalize(r.estado)) || state === 'Todos');

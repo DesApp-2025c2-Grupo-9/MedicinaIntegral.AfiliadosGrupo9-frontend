@@ -4,7 +4,7 @@ import FiltroEstados from '../../components/FiltroEstados'
 import { useGetRecetas } from "../../services/recetasQueries";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import { capitalize } from 'lodash';
 
 
 function VerRecetas() {
@@ -33,9 +33,7 @@ function VerRecetas() {
 
 
   
-  const recetasFiltradas = state === 'Todos'
-    ? recetas
-    : recetas.filter(receta => Array.isArray(state) ? state.includes(receta.estado) : receta.estado === state);
+  const recetasFiltradas = recetas?.filter(receta => state.includes(capitalize(receta.estado)) || state == 'Todos');
   
   return (
     <div className="flex flex-col items-end gap-3 relative">

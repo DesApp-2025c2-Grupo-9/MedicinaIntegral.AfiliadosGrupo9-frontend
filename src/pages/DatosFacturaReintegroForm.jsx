@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import Form from '../components/Form';
 import InputContainer from '../components/InputContainer';
-import { ERROR_MESSAGES, reintegroSchema } from '../schema/reintegroSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '../components/Input';
 import Select from '../components/Select';
@@ -11,43 +10,22 @@ import TwoButtons from '../components/TwoButtons';
 import { useFormRedirect } from '../hooks/useFormRedirect';
 import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
 import { useNewDatosFacturaHandler } from '../hooks/useNewDatosFacturaHandler';
-
-const datosFacturaReintegroSchema = reintegroSchema
-  .pick({
-    factura: true,
-    formaDePago: true,
-    cbu: true,
-    observaciones: true
-  })
-  .refine(
-    data => {
-      if (data.formaDePago === 'Transferencia') {
-        return data.cbu?.length === 22;
-      } else {
-        return true;
-      }
-    },
-    {
-      error: iss => {
-        const message = iss.input.cbu?.length > 0 ? ERROR_MESSAGES.CBU.LENGTH : ERROR_MESSAGES.CBU.REQUIRED;
-        return message;
-      },
-      path: ['cbu']
-    }
-  );
+import { useDatosFacturaSchema } from '../hooks/useDatosFacturaSchema';
 
 function DatosFacturaReintegroForm({ className }) {
   const fechaActual = new Date().toISOString().split('T')[0];
   const { onSubmit } = useNewDatosFacturaHandler();
   const setData = useNuevoReintegroStore(state => state.setData);
   const data = useNuevoReintegroStore(state => state.data);
+  const { datosFacturaSchema } = useDatosFacturaSchema();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isSubmitSuccessful },
     watch
   } = useForm({
-    resolver: zodResolver(datosFacturaReintegroSchema),
+    resolver: zodResolver(datosFacturaSchema),
     defaultValues: {
       factura: {
         fecha: data?.factura?.fecha,
