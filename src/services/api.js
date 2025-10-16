@@ -1,4 +1,4 @@
-import axios, { axiosPrivate } from '../api/axios';
+import axios from '../api/axios';
 
 // Registro
 export const register = async body => {
@@ -18,10 +18,15 @@ export const logout = async () => {
 };
 
 // Afiliados
-export const getAfiliado = async axiosClient => { // 1. Recibe un cliente de axios por parámetro
+export const getAfiliado = async axiosClient => {
   const res = await axiosClient.get('api/afiliados');
   return res.data;
 };
+
+/* export const getAfiliadoPublic = async () => {
+  const res = await axios.get('api/afiliados');
+  return res.data;
+}; */
 
 // Reintegros
 export const getReintegros = async axiosClient => {
@@ -45,7 +50,7 @@ export const deleteReintegro = async (axiosClient, id) => {
 };
 
 // Especialidades
-export const getEspecialidades = async () => {
-  const res = await axiosPrivate.get('api/especialidades');
+export const getEspecialidades = async axiosClient => {
+  const res = await axiosClient.get('api/especialidades');
   return res.data;
 };

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createReintegro, deleteReintegro, getAfiliado, getEspecialidades, getReintegros, login, register, updateReintegro } from './api';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 // Registro
 export function useRegister() {
@@ -16,48 +17,62 @@ export function useLogin() {
 }
 
 // Afiliados
-export function useGetAfiliado(axiosClient) { // 2. useGetAfiliado recibe un cliente de axios por parámetro y se lo pasa a la función que hará getAfiliado la petición
+export function useGetAfiliado() {
+  const axiosPrivate = useAxiosPrivate();
+
   return useQuery({
     queryKey: ['afiliado'],
-    queryFn: () => getAfiliado(axiosClient)
+    queryFn: () => getAfiliado(axiosPrivate)
   });
 }
+
+/* export function useGetAfiliadoPublic() {
+  return useQuery({
+    queryKey: ['afiliado'],
+    queryFn: getAfiliadoPublic
+  });
+} */
 
 // Reintegros
-export function useGetReintegros(axiosClient) {
+export function useGetReintegros() {
+  const axiosPrivate = useAxiosPrivate();
+
   return useQuery({
     queryKey: ['reintegros'],
-    queryFn: () => getReintegros(axiosClient)
+    queryFn: () => getReintegros(axiosPrivate)
   });
 }
 
-export function useCreateReintegro(axiosClient) {
+export function useCreateReintegro() {
+  const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: data => createReintegro(axiosClient, data),
+    mutationFn: data => createReintegro(axiosPrivate, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reintegros'] });
     }
   });
 }
 
-export function useUpdateReintegro(axiosClient) {
+export function useUpdateReintegro() {
+  const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: data => updateReintegro(axiosClient, data),
+    mutationFn: data => updateReintegro(axiosPrivate, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reintegros'] });
     }
   });
 }
 
-export function useDeleteReintegro(axiosClient) {
+export function useDeleteReintegro() {
+  const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: id => deleteReintegro(axiosClient, id),
+    mutationFn: id => deleteReintegro(axiosPrivate, id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reintegros'] });
     }
@@ -66,8 +81,10 @@ export function useDeleteReintegro(axiosClient) {
 
 // Especialidades
 export function useGetEspecialidades() {
+  const axiosPrivate = useAxiosPrivate();
+
   return useQuery({
     queryKey: ['especialidades'],
-    queryFn: getEspecialidades
+    queryFn: () => getEspecialidades(axiosPrivate)
   });
 }

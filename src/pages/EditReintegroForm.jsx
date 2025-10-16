@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form';
 import Form from '../components/Form';
-import { reintegroSchema } from '../schema/reintegroSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Select from '../components/Select';
 import InputContainer from '../components/InputContainer';
@@ -11,26 +10,24 @@ import TwoButtons from '../components/TwoButtons';
 import { addDays, format } from 'date-fns';
 import { useEditReintegroHandler } from '../hooks/useEditReintegroHandler';
 import { useGetEspecialidades } from '../services/queries';
-
-const nuevoReintegroSchema = reintegroSchema.pick({
-  paraAfiliado: true,
-  fechaDePrestacion: true,
-  especialidad: true,
-  medico: true,
-  lugarDeAtencion: true
-});
+import { useUserStore } from '../store/userStore';
+import { useReintegroSchema } from '../hooks/useReintegroSchema';
 
 function EditReintegroForm({ className, reintegro = {}, cancelBtnOnClick }) {
-  const { data: especialidadesRes, error, isLoading } = useGetEspecialidades();
-  const fechaActual = new Date().toISOString().split('T')[0];
-  const { data, setData } = useNuevoReintegroStore(state => state);
+  const { data: especialidadesRes, error, isLoading, isError } = useGetEspecialidades();
   const { onSubmit } = useEditReintegroHandler();
+  const fechaActual = new Date().toISOString().split('T')[0];
+  const { user } = useUserStore(state => state);
+  const listaAfiliados = user.grupoFamiliar?.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
+  const { data, setData } = useNuevoReintegroStore(state => state);
+  const { reintegroSchema } = useReintegroSchema({ listaAfiliados, listaEspecialidades: especialidadesRes?.data });
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm({
-    resolver: zodResolver(nuevoReintegroSchema),
+    resolver: zodResolver(reintegroSchema),
     defaultValues: {
       paraAfiliado: data?.paraAfiliado ?? reintegro.paraAfiliado,
       fechaDePrestacion: data?.fechaDePrestacion ?? format(addDays(reintegro.fechaDePrestacion, 1), 'yyyy-MM-dd'),
@@ -40,8 +37,8 @@ function EditReintegroForm({ className, reintegro = {}, cancelBtnOnClick }) {
     }
   });
 
-  if (isLoading) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (isLoading) return <div>Cargando...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
 
   return (
     <Form
@@ -53,7 +50,7 @@ function EditReintegroForm({ className, reintegro = {}, cancelBtnOnClick }) {
         id='paraAfiliado'
         label='Para afiliado:'
         placeholder='Seleccionar afiliado'
-        options={['Carolina Benitez', 'John Doe', 'Jane Doe']}
+        options={listaAfiliados}
         errorMsg={errors.paraAfiliado?.message}
       />
 
