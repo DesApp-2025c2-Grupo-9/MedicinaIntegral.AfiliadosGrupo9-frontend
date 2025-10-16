@@ -37,34 +37,18 @@ const Login = () => {
       navigate(from, { replace: true });
     } 
     catch (error) {
-        if (error.response?.status === 404) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Usuario no registrado',
-          text: 'El número de documento que ingresó no está registrado. Cree una cuenta nueva.',
-          confirmButtonText: 'Ir al registro'
-        }).then(result => {
-          if (result.isConfirmed) {
-            navigate('/register');
-          }
-        });
-        }else if (error.response?.status === 401) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Contraseña incorrecta',
-            text: 'Verificá tus datos e intentá nuevamente.'
-          });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error inesperado',
-          text: 'Ocurrió un problema. Intentá más tarde.'
-        });
-      }
+      const mensaje = error.response?.data?.message || 'Ocurrió un problema. Intentá más tarde.';
+
+      Swal.fire({
+        icon: 'warning',
+        title: 'Error al iniciar sesión',
+        text: mensaje,
+        confirmButtonText: 'Aceptar'
+      });
 
       console.log(error);
-    }
-  };
+          }
+        };
 
   return (
     <div className='login-container'>
