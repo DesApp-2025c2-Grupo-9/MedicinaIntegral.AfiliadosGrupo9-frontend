@@ -1,5 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios, {axiosPrivate} from '../api/axios'
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios, { axiosPrivate } from "../api/axios";
 
 //Get all Recetas para probar
 // const getRecetas = async () => {
@@ -16,18 +16,17 @@ import axios, {axiosPrivate} from '../api/axios'
 //     })
 // }
 
-const getRecetas = async axiosPrivate => {
-    const res = await axiosPrivate.get('api/recetas')
-    return res.data;
-}
+const getRecetas = async (axiosPrivate) => {
+  const res = await axiosPrivate.get("api/recetas/grupo-familiar");
+  return res.data;
+};
 
 export function useGetRecetas(axiosPrivate) {
-    return useQuery({
-        queryKey: ['recetas'],
-        queryFn: () => getRecetas(axiosPrivate)
-    })
+  return useQuery({
+    queryKey: ["recetas"],
+    queryFn: () => getRecetas(axiosPrivate),
+  });
 }
-
 
 // //Recetas del grupo familiar
 // const getRecetasFamilia = async nroAfiliadoParcial => {
@@ -42,7 +41,6 @@ export function useGetRecetas(axiosPrivate) {
 //         queryFn: () => getRecetasFamilia(nroAfiliadoParcial)
 //     })
 // }
-
 
 // //create Receta
 // const createReceta = async body => {
@@ -91,10 +89,3 @@ export function useGetRecetas(axiosPrivate) {
 //         }
 //     })
 // }
-
-
-
-
-
-
-
