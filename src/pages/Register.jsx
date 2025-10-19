@@ -50,7 +50,8 @@ const Register = () => {
         customClass: {
           popup: 'swal-popup-small',
           title: 'swal-title-small',
-          confirmButton: 'swal-button-small'
+          confirmButton: 'swal-button-small',
+          confirmButtonColor: "#00ab01"
         }
       }).then(() => {
         navigate('/login');
@@ -60,9 +61,10 @@ const Register = () => {
     if (error?.response?.status === 409) {
       Swal.fire({
         title: 'Usuario ya registrado',
-        text: 'Este número de documento ya se encuentra registrado.',
+        text: 'El número de documento ya se encuentra registrado.',
         icon: 'warning',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: "#00ab01"
       });
     } else {
       console.log(error);
@@ -70,7 +72,8 @@ const Register = () => {
         title: 'Error inesperado',
         text: 'No se pudo completar el registro. Intente más tarde.',
         icon: 'error',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: "#00ab01"
       });
     }
 

@@ -50,7 +50,8 @@ const Login = () => {
         icon: 'warning',
         title: 'Error al iniciar sesión',
         text: mensaje,
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: "#00ab01"
       });
 
       console.log(error);
