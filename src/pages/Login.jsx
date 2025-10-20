@@ -19,6 +19,13 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
 
+
+  const handleClaveChange = (e) => {
+    setClave(e.target.value);
+    if (error) setError('');
+  };
+
+
   const handleSubmit = async e => {
     e.preventDefault();
     try {
@@ -43,7 +50,8 @@ const Login = () => {
         icon: 'warning',
         title: 'Error al iniciar sesión',
         text: mensaje,
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: "#00ab01"
       });
 
       console.log(error);
@@ -67,7 +75,11 @@ const Login = () => {
               const valor = e.target.value;
               if (/^\d*$/.test(valor)) {
                 setUsuario(valor);
+                if (error) setError('');
+
               }
+              
+
             }}
           />
           <label htmlFor='contraseña-login'>Ingrese su contraseña:</label>
@@ -77,7 +89,11 @@ const Login = () => {
             type='password'
             placeholder='ej: ******'
             value={clave}
-            onChange={e => setClave(e.target.value)}
+            onChange={handleClaveChange}
+
+            
+            
+
           />
 
           {error && <p className='error'>{error}</p>}

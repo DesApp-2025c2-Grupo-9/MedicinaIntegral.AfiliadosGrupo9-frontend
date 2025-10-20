@@ -126,7 +126,7 @@
   width: 80%;
   padding: 10px;
   margin-top: 20px;
-  background: #007bff;
+  background: #00ab01;
   color: white;
   border: none;
   border-radius: 5px;
@@ -135,7 +135,7 @@
 }
 
 .login-page button:hover {
-  background: #0056b3;
+  background: #89ff89;
 }
 
 .login-page .error {
@@ -156,7 +156,7 @@
 
 .login-page .footer span {
   font-weight: bold;
-  color: #007bff;
+  color: #00ab01;
 }
 
 .login-page .footer span:hover {
@@ -220,11 +220,11 @@
 .swal-button-small {
   font-size: 16px;
   padding: 10px 24px;
-  background: #007bff;
+  background: #89ff89;
   color: white;
   border-radius: 5px;
 }
 
 .swal-button-small:hover {
-  background: #0056b3;
+  background: #00ab01;
 }

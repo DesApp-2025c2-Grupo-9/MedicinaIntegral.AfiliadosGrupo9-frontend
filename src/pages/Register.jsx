@@ -13,6 +13,17 @@ const Register = () => {
   const navigate = useNavigate();
   const { mutateAsync } = useRegister();
 
+  const handleClaveChange = (e) => {
+    setClave(e.target.value);
+    if (error) setError('');
+  };
+
+  const handleConfirmarClaveChange = (e) => {
+  setConfirmarClave(e.target.value);
+  if (error) setError('');
+};
+
+
   const handleSubmit = async e => {
     e.preventDefault();
     try {
@@ -39,13 +50,33 @@ const Register = () => {
         customClass: {
           popup: 'swal-popup-small',
           title: 'swal-title-small',
-          confirmButton: 'swal-button-small'
+          confirmButton: 'swal-button-small',
+          confirmButtonColor: "#00ab01"
         }
       }).then(() => {
         navigate('/login');
       });
     } catch (error) {
+       // este es el alerta para usuario ya registrado
+    if (error?.response?.status === 409) {
+      Swal.fire({
+        title: 'Usuario ya registrado',
+        text: 'El número de documento ya se encuentra registrado.',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: "#00ab01"
+      });
+    } else {
       console.log(error);
+      Swal.fire({
+        title: 'Error inesperado',
+        text: 'No se pudo completar el registro. Intente más tarde.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: "#00ab01"
+      });
+    }
+
     }
   };
 
@@ -67,6 +98,7 @@ const Register = () => {
               const valor = e.target.value;
               if (/^\d*$/.test(valor)) {
                 setUsuario(valor);
+                if (error) setError('');
               }
             }}
           />
@@ -77,7 +109,7 @@ const Register = () => {
             type='password'
             placeholder='ej: ******'
             value={clave}
-            onChange={e => setClave(e.target.value)}
+            onChange={handleClaveChange}
           />
           <label
             htmlFor='contraseña-confirm'
@@ -90,7 +122,7 @@ const Register = () => {
             type='password'
             placeholder='ej: ******'
             value={confirmarClave}
-            onChange={e => setConfirmarClave(e.target.value)}
+            onChange={handleConfirmarClaveChange}
           />
 
           {error && <p className='error'>{error}</p>}
