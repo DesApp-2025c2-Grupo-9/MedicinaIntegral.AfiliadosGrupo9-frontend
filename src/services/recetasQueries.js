@@ -8,7 +8,6 @@ import axios, { axiosPrivate } from "../api/axios";
 //     )
 //     return res.data
 // }
-
 // export function useGetRecetas () {
 //     return useQuery({
 //         queryKey: ['recetas'],
