@@ -19,6 +19,8 @@ import SolicitarReceta from './pages/Recetas/SolicitarReceta';
 import VerAutorizaciones from './pages/Autorizaciones/VerAutorizaciones';
 import SolicitarAutorizacion from './pages/Autorizaciones/SolicitarAutorizacion';
 import RequireAuth from './components/RequireAuth';
+import SolicitarTurno from './pages/Turnos/SolicitarTurno';
+import VerTurnos from './pages/Turnos/VerTurnos';
 
 export function AppRouter() {
   return (
@@ -36,8 +38,8 @@ export function AppRouter() {
           <Route path='/mi-cuenta' element={<MiCuenta />} />
 
           <Route path='/turnos' element={<TurnosLayout />}>
-            <Route path='turnos-reservados' element={<h3>Ver turnos reservados.</h3>} />
-            <Route path='solicitar-turno' element={<h3>Turnos.</h3>} />
+            <Route path='turnos-reservados' element={<VerTurnos/>} />
+            <Route path='solicitar-turno' element={<SolicitarTurno/>} />
           </Route>
 
           <Route path='/reintegros' element={<ReintegrosLayout />}>

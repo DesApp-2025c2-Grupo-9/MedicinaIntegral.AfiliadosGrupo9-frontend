@@ -39,7 +39,9 @@ function AvatarAfiliado({ className }) {
     <div className={`relative flex flex-col justify-center items-start lg:items-end gap-2 w-60 ${className}`}>
       <div
         onClick={() => {
-          setIsOpen(!isOpen);
+          if(afiliado.grupoFamiliar.length > 1){
+            setIsOpen(!isOpen);
+          }
         }}
         className='flex items-center gap-2 cursor-pointer select-none'
       >
@@ -47,7 +49,10 @@ function AvatarAfiliado({ className }) {
           {inicialesUser}
         </div>
         <p className='uppercase text-center text-xl font-bold text-negro-principal'>{afiliado?.nombre}</p>
-        <div className={clsx('w-[14px] transition-all text-negro-principal', { 'rotate-90': !isOpen, 'rotate-0': isOpen })}>{icons.chevronDown}</div>
+        {/*Si el afiliado no tiene grupo familiar, no se muestra el desplegable */}
+        {afiliado.grupoFamiliar.length > 1 &&
+          <div className={clsx('w-[14px] transition-all text-negro-principal', { 'rotate-90': !isOpen, 'rotate-0': isOpen })}>{icons.chevronDown}</div>
+        }
       </div>
 
       <ListaFamiliares
