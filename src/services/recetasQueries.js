@@ -16,7 +16,7 @@ import axios, { axiosPrivate } from "../api/axios";
 // }
 
 const getRecetas = async (axiosPrivate) => {
-  const res = await axiosPrivate.get("api/recetas/grupo-familiar");
+  const res = await axiosPrivate.get("api/recetas");
   return res.data;
 };
 
@@ -41,21 +41,20 @@ export function useGetRecetas(axiosPrivate) {
 //     })
 // }
 
-// //create Receta
-// const createReceta = async body => {
-//     const res = await axios.post('api/recetas', body)
-//     return res.data;
-// }
-// export function useCreateReceta() {
-//     const queryClient = useQueryClient();
+const createReceta = async (body) => {
+  const res = await axios.post("api/recetas", body);
+  return res.data;
+};
+export function useCreateReceta() {
+  const queryClient = useQueryClient();
 
-//     return useMutation({
-//         mutationFn: createReceta,
-//         onSuccess: () => {
-//             queryClient.invalidateQueries({ queryKey: ['recetas']})
-//         }
-//     })
-// }
+  return useMutation({
+    mutationFn: createReceta,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["recetas"] });
+    },
+  });
+}
 
 // //Patch Receta
 // const updateReceta = async body => {
