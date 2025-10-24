@@ -4,14 +4,23 @@ import Button from '../../components/Button'
 import InputContainer from "../../components/InputContainer";
 import Select from "../../components/Select";
 import { useForm } from "react-hook-form";
-import  {autorizacionSchema}  from "../../schema/autorizacionSchema";
+// import  {autorizacionSchema}  from "../../schema/autorizacionSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-
+import { useUserStore } from '../../store/userStore';
+import { useGetEspecialidades } from '../../services/queries';
+import { useCreateAutorizacion } from '../../services/autorizacionesQueries';
+import { useAutorizacionSchema } from '../../hooks/useAutorizacionSchema';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 function SolicitarAutorizacion() {
-  const solicitudSchema = autorizacionSchema
+  const { data: especialidadesRes, error, isLoading, isError } = useGetEspecialidades();
+  const { user } = useUserStore(state => state);
+  const listaAfiliados = user.grupoFamiliar?.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
+  const { autorizacionSchema } = useAutorizacionSchema({ listaAfiliados, listaEspecialidades: especialidadesRes?.data });
+  const axiosPrivate = useAxiosPrivate();
+  const { mutateAsync } = useCreateAutorizacion(axiosPrivate);
 
   //Se inicia el form con el resolver de zod
   const {
@@ -19,11 +28,12 @@ function SolicitarAutorizacion() {
     handleSubmit,
     formState: {errors, isSubmitting }
   } = useForm({
-    resolver: zodResolver(solicitudSchema),
+    resolver: zodResolver(autorizacionSchema),
     defaultValues : {
-      nroAfiliado : '',
+      paraAfiliado : '',
       fechaSolicitud : '',
-      especialidad :'',
+      especialidad : '',
+      practica : '',
       medicoSolicitante : '',
       lugarAtencion : '',
       diasDeInternacion: 0,
@@ -32,7 +42,9 @@ function SolicitarAutorizacion() {
   })
   const navigate = useNavigate()
   
-  const onSubmit = () => {
+  const onSubmit = async(formData) => {
+    console.log(formData.paraidAfiliado)
+    await mutateAsync(formData);
     Swal.fire({
             title: 'Solicitud enviada',
             text: 'Su solicitud se envió correctamente, puede verla en "Ver Autorizaciones"',
@@ -58,13 +70,13 @@ function SolicitarAutorizacion() {
       {/*Dropdown afiliado - Modificar para que aparezca el nro de afiliado tambien // Fecha prevista*/}
       <InputContainer>
         <Select
-        {...register('nroAfiliado')}
+        {...register('paraAfiliado')}
         id='paraAfiliado'
         label='Para afiliado:'
         placeholder='Seleccionar afiliado'
-        options={['Carolina Benitez', 'John Doe', 'Jane Doe']}
-        errorMsg={errors.nroAfiliado?.message}
-      />
+        options={listaAfiliados}
+        errorMsg={errors.paraAfiliado?.message}
+        />
         <Input 
           {...register('fechaSolicitud')}
           type='date'
@@ -81,17 +93,25 @@ function SolicitarAutorizacion() {
         {...register('especialidad')}
         label='Especialidad:'
         placeholder='Seleccionar Especialidad'
-        options={['Oftalmología', 'Traumatología', 'Kinesiología']}/*Modificar esto */
+        options={especialidadesRes?.data}/*Modificar esto */
         errorMsg={errors.especialidad?.message}
         />
-        <Select 
-        {...register("medicoSolicitante")}
-        label='Médico:'
-        placeholder = 'Seleccionar médico'
-        options={['Carolina Benitez', 'John Doe', 'Jane Doe']}/*Modificar esto */
-        errorMsg={errors.medicoSolicitante?.message}
-        />
+        <Input 
+        {...register("practica")}
+        label="Práctica:"
+        placeholder="Ingresar la práctica"
+        errorMsg={errors.practica?.message}
+        />  
       </InputContainer>
+      <InputContainer>
+        <Input 
+        {...register("medicoSolicitante")}
+        label="Médico:"
+        placeholder="Ingresar el médico"
+        errorMsg={errors.medicoSolicitante?.message}
+        />  
+      </InputContainer>
+       
       {/*Input Lugar de prestación - Input dias de internación */}
       <InputContainer>
       <Input 
