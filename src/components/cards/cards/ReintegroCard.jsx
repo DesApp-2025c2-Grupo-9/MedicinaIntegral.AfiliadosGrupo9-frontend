@@ -13,28 +13,33 @@ import { useEditDatosFacturaHandler } from '../../../hooks/useEditDatosFacturaHa
 import EditReintegroForm from '../../../pages/EditReintegroForm';
 import EditDatosFacturaReintegroForm from '../../../pages/EditDatosFacturaReintegroForm';
 import { useDelReintegro } from '../../../hooks/useDeleteReintegro';
+import ModalObservaciones from '../../ModalObservaciones/ModalObservaciones';
 
 function ReintegroCard(props) {
   const dashboard = props.dashboard || false;
   const reintegro = props.reintegro;
   const { deleteReintegro } = useDelReintegro();
   const { currentStep, setCurrentStep } = useEditReintegroStep();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { onSubmit: editDatosFactura } = useEditDatosFacturaHandler(reintegro, setIsModalOpen);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const { onSubmit: editDatosFactura } = useEditDatosFacturaHandler(reintegro, setIsEditOpen);
   const fechaDePrestacion = format(addDays(reintegro.fechaDePrestacion, 1), 'dd/MM/yyyy');
   const valorTotal = pesosArg.format(reintegro.factura.valorTotal);
   //Estilo de la card
   const cardStyle = 'grid-cols-2';
 
+  const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
+  const observacionPrestador = reintegro?.observaciones?.find(observacion => observacion.rolEmisor === 'Prestador');
+  // const fechaDeObservacion = format(addDays(observacionPrestador?.fecha, 1), 'dd/MM/yyyy');
+
   return (
     <>
-      {isModalOpen && (
+      {isEditOpen && (
         <div className='bg-negro-translucido fixed top-0 left-0 w-dvw h-dvh z-10 flex items-center justify-center'>
           {currentStep === 1 ? (
             <EditReintegroForm
               className='w-full'
               reintegro={reintegro}
-              cancelBtnOnClick={() => setIsModalOpen(false)}
+              cancelBtnOnClick={() => setIsEditOpen(false)}
             />
           ) : (
             currentStep === 2 && (
@@ -48,7 +53,20 @@ function ReintegroCard(props) {
           )}
         </div>
       )}
-
+      <ModalObservaciones
+        open={isObservacionesOpen}
+        onClose={() => setIsObservacionesOpen(false)}
+        nombreUsuario={reintegro.paraAfiliado}
+        headerText='Volver a Reintegros'
+        fechaEnvio={observacionPrestador?.fecha}
+        observacionesTexto={observacionPrestador?.descripcion}
+      />
+      {/* {isObservacionesOpen && (
+        // <div className='bg-negro-translucido fixed top-0 left-0 w-dvw h-dvh z-10 flex items-center justify-center'>
+        <div className='fixed top-0 left-0 w-dvw h-dvh z-10 flex items-center justify-center'>
+          <ModalObservaciones />
+        </div>
+      )} */}
       <MarcoCard
         estilo={cardStyle}
         estado={reintegro.estado}
@@ -71,7 +89,11 @@ function ReintegroCard(props) {
               <UsuarioActual paciente={reintegro.paraAfiliado} />
               {reintegro.estado !== 'pendiente' ? ( //el estado está en minuscula
                 <div className='row-start-4'>
-                  <BotonObservaciones />
+                  <BotonObservaciones
+                    onClick={() => {
+                      setIsObservacionesOpen(true);
+                    }}
+                  />
                 </div>
               ) : (
                 <></>
@@ -81,7 +103,7 @@ function ReintegroCard(props) {
           {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
           {reintegro.estado == 'pendiente' && dashboard == false ? ( //El estado está en minuscula
             <div className='flex items-baseline-last justify-end row-start-4'>
-              <BotonEditar onClick={() => setIsModalOpen(true)} />
+              <BotonEditar onClick={() => setIsEditOpen(true)} />
               <BotonPapelera onClick={() => deleteReintegro(reintegro, fechaDePrestacion, valorTotal)} />
             </div>
           ) : (

@@ -26,13 +26,6 @@ export function useGetAfiliado() {
   });
 }
 
-/* export function useGetAfiliadoPublic() {
-  return useQuery({
-    queryKey: ['afiliado'],
-    queryFn: getAfiliadoPublic
-  });
-} */
-
 // Reintegros
 export function useGetReintegros() {
   const axiosPrivate = useAxiosPrivate();

@@ -16,6 +16,8 @@ function EditDatosFacturaReintegroForm({ className, onSubmit, reintegro = {}, ca
   const { data, setData } = useNuevoReintegroStore(state => state);
   const { datosFacturaSchema } = useDatosFacturaSchema();
 
+  const observacionAfiliado = reintegro.observaciones.find(observacion => observacion.rolEmisor === 'Afiliado');
+
   const {
     register,
     handleSubmit,
@@ -32,7 +34,7 @@ function EditDatosFacturaReintegroForm({ className, onSubmit, reintegro = {}, ca
       },
       formaDePago: data?.formaDePago ?? capitalize(reintegro.formaDePago),
       cbu: data?.cbu ?? reintegro.cbu,
-      observaciones: data?.observaciones ?? reintegro.observaciones
+      observaciones: data?.observaciones ?? observacionAfiliado.descripcion,
     }
   });
   const formaDePago = watch('formaDePago');
