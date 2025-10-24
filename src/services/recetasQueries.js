@@ -1,55 +1,32 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios, { axiosPrivate } from "../api/axios";
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+// import axios, { axiosPrivate } from "../api/axios";
 
-//Get all Recetas para probar
-// const getRecetas = async () => {
-//     const res = await axios.get(
-//         `api/recetas`
-//     )
-//     return res.data
-// }
-// export function useGetRecetas () {
-//     return useQuery({
-//         queryKey: ['recetas'],
-//         queryFn: getRecetas
-//     })
-// }
-
-const getRecetas = async (axiosPrivate) => {
-  const res = await axiosPrivate.get("api/recetas");
+const getRecetas = async (axiosClient) => {
+  const res = await axiosClient.get("api/recetas");
   return res.data;
 };
 
-export function useGetRecetas(axiosPrivate) {
+export function useGetRecetas() {
+  const axiosPrivate = useAxiosPrivate();
+
   return useQuery({
     queryKey: ["recetas"],
     queryFn: () => getRecetas(axiosPrivate),
   });
 }
 
-// //Recetas del grupo familiar
-// const getRecetasFamilia = async nroAfiliadoParcial => {
-//     const res = await axios.get(
-//         `api/recetas/familia/${nroAfiliadoParcial}`
-//     )
-//     return res.data;
-// }
-// export function useGetRecetasFamilia (nroAfiliadoParcial) {
-//     return useQuery({
-//         queryKey: ['recetas'], nroAfiliadoParcial,
-//         queryFn: () => getRecetasFamilia(nroAfiliadoParcial)
-//     })
-// }
-
-const createReceta = async (body) => {
-  const res = await axios.post("api/recetas", body);
+const createReceta = async (axiosClient, body) => {
+  const res = await axiosClient.post("api/recetas", body);
   return res.data;
 };
+
 export function useCreateReceta() {
   const queryClient = useQueryClient();
+  const axiosPrivate = useAxiosPrivate();
 
   return useMutation({
-    mutationFn: createReceta,
+    mutationFn: data => createReceta(axiosPrivate, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recetas"] });
     },
