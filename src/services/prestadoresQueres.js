@@ -19,16 +19,31 @@ export function useGetAllEspecialidades (){
 
 //Obtener las ubicaciones del prestador por especialidad
 
-const getUbicacionesByEspecialidad = async () =>{
+/*
+    La query debajo obitne euna estructura como la siguiente:
+    [
+        {
+            "especialidad": 'Oftalmologia",
+            "localidades": {
+                "Flores": [ //Aca están los médicos
+                {"nombrecompleto" : "Dra. Carolina Duarte", "integraCentroMedico": null},
+                ...
+                ]
+            }
+        },...
+    ]
+*/
+
+const getUbicacionesByEspecialidadMedicos = async () =>{
     const res = await axios.get(
-        `api/prestadores/especialidades/localidades`
+        `api/prestadores/especialidades/localidades/medicos`
     )
     return res.data
 }
-export function useGetUbicacionesByEspecialidad (){
+export function useGetUbicacionesByEspecialidadMedicos (){
     return useQuery({
-        queryKey: ['ubiByEspecialidad'],
-        queryFn: () => getUbicacionesByEspecialidad()
+        queryKey: ['ubiByEspecialidadMedicos'],
+        queryFn: () => getUbicacionesByEspecialidadMedicos()
     })
 }
 
