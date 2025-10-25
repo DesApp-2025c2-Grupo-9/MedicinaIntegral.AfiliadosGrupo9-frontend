@@ -2,17 +2,15 @@ import AutorizacionCard from '../../components/cards/cards/AutorizacionCard'
 import { useStateFilter } from "../../store/stateFilter"
 import FiltroEstados from "../../components/FiltroEstados"
 import { useGetAllAutorizaciones } from '../../services/autorizacionesQueries';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { capitalize } from 'lodash';
 
 function VerAutorizaciones() {
   const navigate = useNavigate();
   const { state } = useStateFilter();
-  const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
 
-  const { data, error, isLoading } = useGetAllAutorizaciones(axiosPrivate);
+  const { data, error, isLoading } = useGetAllAutorizaciones();
   const autorizaciones = data?.data || [];
 
   if (isLoading) return <p>Cargando...</p>;

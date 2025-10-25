@@ -3,7 +3,7 @@ import { getEspecialidades } from '../services/api';
 
 
 const ERROR_MESSAGES = {
-  NRO_AFILIADO: {
+  AFILIADO: {
     REQUIRED: 'Debe seleccionar un afiliado.'
   },
   FECHA_SOLICITUD: {
@@ -33,7 +33,7 @@ const especialidadesRes = await getEspecialidades();
 
 //Esquema de solicitud utilizando zod
 export const  autorizacionSchema = z.object({
-  nroAfiliado: z.enum(['Carolina Benitez', 'John Doe', 'Jane Doe'], ERROR_MESSAGES.NRO_AFILIADO.REQUIRED),
+  nroAfiliado: z.enum(['Carolina Benitez', 'John Doe', 'Jane Doe'], ERROR_MESSAGES.AFILIADO.REQUIRED),
   fechaSolicitud: z.string({
     required_error: ERROR_MESSAGES.FECHA_SOLICITUD.REQUIRED,
   })
