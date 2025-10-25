@@ -8,12 +8,14 @@ import TipoDeTramite from "./cardComponents/TipoDeTramite";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import EditarAutorizacion from "../../../pages/Autorizaciones/EditarAutorizacion";
+import { useDeleteAutorizacion } from '../../../services/autorizacionesQueries';
 
 function AutorizacionCard(props) {
   const [modalEditarOpen, setModalEditarOpen] = useState(false)
   const autorizacion = props.autorizacion;
   const dashboard = props.dashboard || false;
   let cardStyle = `grid-cols-2`;
+  const { mutateAsync } = useDeleteAutorizacion();
 
   const observacionesHTML = Array.isArray(autorizacion.observaciones) ?
     autorizacion.observaciones.map((observacion) => {
@@ -35,31 +37,42 @@ function AutorizacionCard(props) {
   }
 
   const eliminarAutorizacion = () => {
+    
     Swal.fire({
-      title: "Eliminar autorización",
       html: `
-         <div style='display: flex ;justify-content-center'>
-           <div style= 'text-align:left'>
-             <p><strong>Datos de la autorización:</strong><p>
-             <p><strong>Autorizacion para: </strong> ${autorizacion.nroAfiliado}</p>
-             <p><strong>Especialidad:</strong> ${autorizacion.especialidad}<p>
-             <p><strong>Fecha prevista: </strong> ${new Date(autorizacion.fechaSolicitud).toLocaleDateString()}</p>
-             <p><strong>Dias de internación: </strong> ${autorizacion.diasDeInternacion}</p>
-           </div>
-         </div>
+            <p>Está a punto de cancelar la solicitud de autorización:</p><br>
+             <p>Autorizacion para: <b>${autorizacion.paraAfiliado}</b> </p>
+             <p>Especialidad: <b>${autorizacion.especialidad}</b> <p>
+             <p>Practica: <b>${autorizacion.practica}</b><p>
+             <p>Fecha prevista:  <b>${new Date(autorizacion.fechaSolicitud).toLocaleDateString()}</b></p>
+             <p>Dias de internación:  <b>${autorizacion.diasDeInternacion}</b></p><br>
+            <p>¿Desea continuar?</p>
          `,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#27a700ff",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Eliminar"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Eliminada!",
-          text: "Su autorización ha sido eliminada.",
-          icon: "success"
-        });
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#00ab01',
+      cancelButtonColor: '#dc143c',
+      confirmButtonText: 'Confirmar',
+      customClass: {
+          cancelButton: 'modal-cancel-button',
+          confirmButton: 'modal-confirm-button'
+      }
+    }).then(async (result) => {
+      if(result.isConfirmed) {
+        try {
+          const res = await mutateAsync(autorizacion.id);
+          if (result.isConfirmed) {
+            Swal.fire({
+              html: res.message,
+              title: "Eliminada!",
+              text: "Su autorización ha sido eliminada.",
+              icon: "success"
+            });
+          }
+        } catch(err){
+          console.log(err)
+        }
       }
     });
   }
@@ -94,7 +107,7 @@ function AutorizacionCard(props) {
 
             ) ://Si no es de dashboard
               < >
-                <UsuarioActual />
+                <UsuarioActual paciente={autorizacion.paraAfiliado}/>
                 {autorizacion.estado !== "pendiente" ? (
                   <div className="row-start-4">
                     <BotonObservaciones onClick={verObservaciones} />
