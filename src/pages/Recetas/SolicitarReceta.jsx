@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useNewRecetaSchema } from "../../hooks/useNewRecetaSchema";
 import { useUserStore } from "../../store/userStore";
 import { useCreateReceta } from "../../services/recetasQueries";
+import { axiosPrivate } from "../../api/axios";
 
 function SolicitarReceta() {
   // const solicitudSchema = recetaSchema;
@@ -17,8 +18,9 @@ function SolicitarReceta() {
   const listaAfiliados = user.grupoFamiliar?.map(
     (familiar) => `${familiar.nombre} ${familiar.apellido}`
   );
+
   const { recetaSchema } = useNewRecetaSchema({ listaAfiliados });
-  const { mutateAsync } = useCreateReceta();
+  const { mutateAsync } = useCreateReceta(axiosPrivate);
   console.log("Usuario logueado:", JSON.stringify(user, null, 2));
   //Se inicia el form con el resolver de zod
   const {
@@ -27,10 +29,19 @@ function SolicitarReceta() {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(recetaSchema),
+    defaultValues: {
+      paraAfiliado: "",
+      medicamento: "",
+      cantidad: "",
+      presentacion: "",
+      observaciones: "",
+    },
   });
   const navigate = useNavigate();
 
-  const onSubmit = (formData) => {
+  const onSubmit = async (formData) => {
+    console.log(formData.paraidAfiliado);
+    await mutateAsync(formData);
     Swal.fire({
       title: "Confirmacion de solicitud",
       html: `
@@ -44,17 +55,13 @@ function SolicitarReceta() {
       confirmButtonText: "Aceptar",
       showCancelButton: true,
       width: "400px",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        //Insertar tryCatch con lógica para crear la receta
-        await mutateAsync(formData);
-        Swal.fire({
-          title: "Enviado",
-          text: 'Su receta se ha enviado correctamente, puede encontrarla en "Ver Recetas"',
-          icon: "success",
-        });
-        navigate("/recetas/ver-recetas");
-      }
+    }).then(() => {
+      Swal.fire({
+        title: "Enviado",
+        text: 'Su receta se ha enviado correctamente, puede encontrarla en "Ver Recetas"',
+        icon: "success",
+      });
+      navigate("/recetas/ver-recetas");
     });
   };
 
