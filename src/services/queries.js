@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createReintegro, deleteReintegro, getAfiliado, getEspecialidades, getReintegros, login, register, updateReintegro } from './api';
+import { commentReintegroById, createReintegro, deleteReintegro, getAfiliado, getEspecialidades, getReintegros, login, register, updateReintegro } from './api';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 // Registro
@@ -70,6 +70,18 @@ export function useDeleteReintegro() {
       queryClient.invalidateQueries({ queryKey: ['reintegros'] });
     }
   });
+}
+
+export function useCommentReintegroById() {
+  const axiosPrivate = useAxiosPrivate();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: data => commentReintegroById(axiosPrivate, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reintegros'] });
+    }
+  })
 }
 
 // Especialidades

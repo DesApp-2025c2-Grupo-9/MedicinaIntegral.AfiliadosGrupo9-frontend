@@ -34,7 +34,7 @@ function EditDatosFacturaReintegroForm({ className, onSubmit, reintegro = {}, ca
       },
       formaDePago: data?.formaDePago ?? capitalize(reintegro.formaDePago),
       cbu: data?.cbu ?? reintegro.cbu,
-      observaciones: data?.observaciones ?? observacionAfiliado.descripcion,
+      observaciones: data?.observaciones ?? observacionAfiliado?.descripcion,
     }
   });
   const formaDePago = watch('formaDePago');

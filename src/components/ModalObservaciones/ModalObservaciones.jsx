@@ -12,9 +12,10 @@ function ModalObservaciones({
   prefix,
   observacionesTexto,
   headerText = 'Volver a',
-  fechaEnvio
+  fechaEnvio,
+  idTramite,
+  onSubmit
 }) {
-  const [observaciones, setObservaciones] = useState('');
   const [comentario, setComentario] = useState('');
 
   if (!open) return null;
@@ -73,9 +74,9 @@ function ModalObservaciones({
           <Button
             state={comentario ? 'active' : 'disabled'}
             disabled={!comentario}
-            onClick={() => {
-              console.log('Enviar:', { observaciones, comentario });
+            onClick={async () => {
               setComentario('');
+              await onSubmit({ comentario, id: idTramite });
               onClose();
             }}
           >

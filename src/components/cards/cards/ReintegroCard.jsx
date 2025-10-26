@@ -14,6 +14,7 @@ import EditReintegroForm from '../../../pages/EditReintegroForm';
 import EditDatosFacturaReintegroForm from '../../../pages/EditDatosFacturaReintegroForm';
 import { useDelReintegro } from '../../../hooks/useDeleteReintegro';
 import ModalObservaciones from '../../ModalObservaciones/ModalObservaciones';
+import { useCommentReintegro } from '../../../hooks/useCommentReintegro';
 
 function ReintegroCard(props) {
   const dashboard = props.dashboard || false;
@@ -24,12 +25,13 @@ function ReintegroCard(props) {
   const { onSubmit: editDatosFactura } = useEditDatosFacturaHandler(reintegro, setIsEditOpen);
   const fechaDePrestacion = format(addDays(reintegro.fechaDePrestacion, 1), 'dd/MM/yyyy');
   const valorTotal = pesosArg.format(reintegro.factura.valorTotal);
+
   //Estilo de la card
   const cardStyle = 'grid-cols-2';
 
   const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
   const observacionPrestador = reintegro?.observaciones?.find(observacion => observacion.rolEmisor === 'Prestador');
-  // const fechaDeObservacion = format(addDays(observacionPrestador?.fecha, 1), 'dd/MM/yyyy');
+  const { onSubmit: commentReintegro } = useCommentReintegro();
 
   return (
     <>
@@ -60,6 +62,8 @@ function ReintegroCard(props) {
         headerText='Volver a Reintegros'
         fechaEnvio={observacionPrestador?.fecha}
         observacionesTexto={observacionPrestador?.descripcion}
+        idTramite={reintegro.id}
+        onSubmit={commentReintegro}
       />
       {/* {isObservacionesOpen && (
         // <div className='bg-negro-translucido fixed top-0 left-0 w-dvw h-dvh z-10 flex items-center justify-center'>

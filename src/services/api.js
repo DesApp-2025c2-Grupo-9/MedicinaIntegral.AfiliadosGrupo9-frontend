@@ -44,6 +44,11 @@ export const deleteReintegro = async (axiosClient, id) => {
   return res.data;
 };
 
+export const commentReintegroById = async (axiosClient, body) => {
+  const res = await axiosClient.post(`api/reintegros/${body.id}`, body);
+  return res.data;
+}
+
 // Especialidades
 export const getEspecialidades = async () => {
   const res = await axios.get('api/especialidades');
