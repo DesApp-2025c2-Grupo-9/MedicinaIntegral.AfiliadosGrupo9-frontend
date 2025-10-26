@@ -35,21 +35,32 @@ function ModalRegistrarCBU({isOpen, setIsOpen, onRegistrarCBU}) {
     }
 }
     const handleChange = (e) => {
-        const { id, value } = e.target;
+        const { id } = e.target;
+        let valor = e.target.value.replace(/-/g, ''); // quitar guiones para validar
 
-        const soloNumeros = ["nroCBU", "cuilOCuit"]; //esto es para bloquear numeros y letras
-        const soloLetras = ["nombre", "apellido"];
+        // Formateo para nroCBU
+        if (id === "nroCBU") {
+            if (!/^\d*$/.test(valor)) return;
+            if (valor.length > 22) return;
 
-        // Validar campos numéricos
-        if (soloNumeros.includes(id)) {
-            if (!/^\d*$/.test(value)) return;
+            if (valor.length > 8) {
+            valor = `${valor.slice(0, 8)}-${valor.slice(8)}`;
+            }
         }
 
-        // Validar campos de texto
-        if (soloLetras.includes(id)) {
-            if (!/^[a-zA-ZÁÉÍÓÚÑáéíóúñ\s]*$/.test(value)) return;
+        // agrega guiones 
+        if (id === "cuilOCuit") {
+            if (!/^\d*$/.test(valor)) return;
+            if (valor.length > 11) return;
+
+            if (valor.length === 11) {
+            valor = `${valor.slice(0, 2)}-${valor.slice(2, 10)}-${valor.slice(10)}`;
+            } else if (valor.length > 2) {
+            valor = `${valor.slice(0, 2)}-${valor.slice(2)}`;
+            }
         }
-        setRegistro({ ...registro, [id]: value });
+
+        setRegistro({ ...registro, [id]: valor });
 
     };
 
@@ -65,7 +76,7 @@ function ModalRegistrarCBU({isOpen, setIsOpen, onRegistrarCBU}) {
                         label="N° de CBU"
                         placeholder="Ingresar CBU"
                         onChange={handleChange}
-                        maxLength={22}
+                        maxLength={23}
                         value={registro.nroCBU}
                         inputMode="numeric"
 
@@ -105,7 +116,7 @@ function ModalRegistrarCBU({isOpen, setIsOpen, onRegistrarCBU}) {
                             label="CUIL o CUIT"
                             placeholder="Ingresar CUIL o CUIT"
                             onChange={handleChange}
-                            maxLength={11}
+                            maxLength={13}
                             value={registro.cuilOCuit}
                             inputMode="numeric"
                             />
