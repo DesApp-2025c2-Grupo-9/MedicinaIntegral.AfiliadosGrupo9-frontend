@@ -1,4 +1,6 @@
 import axios from '../api/axios';
+import axiosPrivate from '../api/axios';
+
 
 // Registro
 export const register = async body => {
@@ -16,6 +18,13 @@ export const logout = async () => {
   const res = await axios.get('api/auth/logout', { withCredentials: true });
   return res.data;
 };
+
+//Mi cuenta
+export async function obtenerMiCuenta() {
+  const response = await axiosPrivate.get('/api/mi-cuenta');
+  return response.data;
+}
+
 
 // Afiliados
 export const getAfiliado = async axiosClient => {
