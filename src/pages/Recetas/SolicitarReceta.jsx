@@ -11,9 +11,9 @@ import { useNewRecetaSchema } from "../../hooks/useNewRecetaSchema";
 import { useUserStore } from "../../store/userStore";
 import { useCreateReceta } from "../../services/recetasQueries";
 import { axiosPrivate } from "../../api/axios";
+import "../../styles/recetas.css";
 
 function SolicitarReceta() {
-  // const solicitudSchema = recetaSchema;
   const { user } = useUserStore((state) => state);
   const listaAfiliados = user.grupoFamiliar?.map(
     (familiar) => `${familiar.nombre} ${familiar.apellido}`
@@ -22,7 +22,7 @@ function SolicitarReceta() {
   const { recetaSchema } = useNewRecetaSchema({ listaAfiliados });
   const { mutateAsync } = useCreateReceta(axiosPrivate);
   console.log("Usuario logueado:", JSON.stringify(user, null, 2));
-  //Se inicia el form con el resolver de zod
+
   const {
     register,
     handleSubmit,
@@ -43,23 +43,33 @@ function SolicitarReceta() {
     console.log(formData.paraidAfiliado);
     await mutateAsync(formData);
     Swal.fire({
-      title: "Confirmacion de solicitud",
+      title: "Confirmación de solicitud",
       html: `
-            <p>Está a punto de solicitar una receta con los siguientes datos:</p>
-            <br/>
-            <p>Medicamento: ${formData.medicamento}</p>
-            <p>Presentación: ${formData.presentacion} </p>
-            <p>Cantidad: ${formData.cantidad}</p>
-            `,
+    <p>Receta solicitada:</p>
+    <br/>
+    <p>Medicamento: ${formData.medicamento}</p>
+    <p>Presentación: ${formData.presentacion}</p>
+    <p>Cantidad: ${formData.cantidad}</p>
+  `,
       icon: "question",
-      confirmButtonText: "Aceptar",
       showCancelButton: true,
+      confirmButtonText: "Aceptar",
+      cancelButtonText: "Cancelar",
       width: "400px",
+      customClass: {
+        popup: "swal-popup-custom",
+        confirmButton: "swal-btn-confirm",
+        cancelButton: "swal-btn-cancel",
+        icon: "swal-icon-custom",
+      },
     }).then(() => {
       Swal.fire({
         title: "Enviado",
-        text: 'Su receta se ha enviado correctamente, puede encontrarla en "Ver Recetas"',
+        text: "Receta solicitada exitosamente",
         icon: "success",
+        confirmButtonText: "Aceptar",
+        showCancelButton: false,
+        confirmButtonColor: "#00ab01",
       });
       navigate("/recetas/ver-recetas");
     });
@@ -67,7 +77,6 @@ function SolicitarReceta() {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      {/*Dropdown afiliado - Modificar para que aparezca el nro de afiliado tambien*/}
       <Select
         {...register("paraAfiliado")}
         id="paraAfiliado"
