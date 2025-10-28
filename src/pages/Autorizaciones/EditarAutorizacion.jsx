@@ -1,16 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { autorizacionSchema } from "../../schema/autorizacionSchema";
 import Swal from "sweetalert2";
 import Form from "../../components/Form";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import InputContainer from "../../components/InputContainer";
 import Select from "../../components/Select";
+import { useUserStore } from '../../store/userStore';
+import { useGetEspecialidades } from '../../services/queries';
+import { useUpdateAutorizacion } from '../../services/autorizacionesQueries';
+import { useAutorizacionSchema } from '../../hooks/useAutorizacionSchema';
 
 function EditarAutorizacion({ autorizacion, cancelBtnOnClick }) {
-  const navigate = useNavigate();
+  const { data: especialidadesRes, error, isLoading, isError } = useGetEspecialidades();
+  const { user } = useUserStore(state => state);
+  const listaAfiliados = user.grupoFamiliar?.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
+  const { autorizacionSchema } = useAutorizacionSchema({ listaAfiliados, listaEspecialidades: especialidadesRes?.data });
+  const { mutateAsync } = useUpdateAutorizacion(); 
 
   const {
     register,
@@ -19,35 +25,44 @@ function EditarAutorizacion({ autorizacion, cancelBtnOnClick }) {
   } = useForm({
     resolver: zodResolver(autorizacionSchema),
     defaultValues: {
-      nroAfiliado: autorizacion?.nroAfiliado || "",
-      fechaSolicitud: autorizacion?.fechaSolicitud || "",
-      especialidad: autorizacion?.especialidad || "",
-      medicoSolicitante: autorizacion?.medicoSolicitante || "",
-      lugarAtencion: autorizacion?.lugarAtencion || "",
-      diasDeInternacion: autorizacion?.diasDeInternacion || 0,
-      observaciones: autorizacion?.observaciones ?.[0]?.descripcion || "",
+      paraAfiliado: autorizacion?.paraAfiliado || " ",
+      fechaSolicitud: autorizacion?.fechaSolicitud || " ",
+      especialidad: autorizacion?.especialidad || " ",
+      practica: autorizacion?.practica || " ",
+      medicoSolicitante: autorizacion?.medicoSolicitante || " ",
+      lugarAtencion: autorizacion?.lugarAtencion || " ",
+      diasDeInternacion: autorizacion?.diasDeInternacion || " ",
+      observaciones: autorizacion?.observaciones[0]?.descripcion || " ",
     },
   });
+  
+  if (isLoading) return <div>Cargando...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
 
   const onSubmit = (formData) => {
+    console.log(autorizacion?.idAfiliado);
+    console.log(formData);
     Swal.fire({
       title: "Confirmar edición",
       html: `
         <p>¿Desea guardar los cambios en la autorización?</p>
         <br/>
         <p><b>Especialidad: </b> ${formData.especialidad}</p>
+        <p><b>Practica: </b> ${formData.practica}</p>
         <p><b>Médico solicitante: </b> ${formData.medicoSolicitante}</p>
         <p><b>Lugar de atención: </b> ${formData.lugarAtencion}</p>
         <p><b>Días de internación: </b> ${formData.diasDeInternacion}</p>
       `,
       icon: "question",
-      confirmButtonText: "Guardar",
       showCancelButton: true,
       cancelButtonText: "Cancelar",
-    }).then((result) => {
+      confirmButtonText: "Guardar",
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        // Aquí iría la lógica para actualizar la autorización
+        const res = await mutateAsync({ data:formData, id:autorizacion.id });
+
         Swal.fire({
+          html: res.message,
           title: "Autorización actualizada",
           text: "Los cambios se han guardado correctamente.",
           icon: "success",
@@ -64,12 +79,12 @@ function EditarAutorizacion({ autorizacion, cancelBtnOnClick }) {
       {/* Dropdown afiliado + fecha */}
       <InputContainer>
         <Select
-          {...register("nroAfiliado")}
-          id="nroAfiliado"
+          {...register("paraAfiliado")}
+          id="paraAfiliado"
           label="Para afiliado:"
           placeholder="Seleccionar afiliado"
-          options={["Carolina Benitez", "John Doe", "Jane Doe"]}
-          errorMsg={errors.nroAfiliado?.message}
+          options={listaAfiliados}
+          errorMsg={errors.paraAfiliado?.message}
         />
         <Input
           {...register("fechaSolicitud")}
@@ -81,26 +96,34 @@ function EditarAutorizacion({ autorizacion, cancelBtnOnClick }) {
         />
       </InputContainer>
 
-      {/* Especialidad + Médico */}
+      {/* Especialidad + Práctica */}
       <InputContainer>
         <Select
           {...register("especialidad")}
+          id='especialidad'
           label="Especialidad:"
           placeholder="Seleccionar especialidad"
-          options={["Oftalmología", "Traumatología", "Kinesiología"]}
+          options={especialidadesRes?.data}
           errorMsg={errors.especialidad?.message}
         />
-        <Select
-          {...register("medicoSolicitante")}
-          label="Médico:"
-          placeholder="Seleccionar médico"
-          options={["Carolina Benitez", "John Doe", "Jane Doe"]}
-          errorMsg={errors.medicoSolicitante?.message}
+        <Input
+          {...register("practica")}
+          label="Practica:"
+          placeholder="Ingresar la práctica"
+          errorMsg={errors.practica?.message}
         />
       </InputContainer>
-
-      {/* Lugar de atención + Días de internación */}
+       {/* Médico */}
       <InputContainer>
+          <Input 
+            {...register("medicoSolicitante")}
+            label="Médico:"
+            placeholder="Ingresar el médico"
+            errorMsg={errors.medicoSolicitante?.message}
+          />     
+      </InputContainer>
+      {/* Lugar de atención + Días de internación */}
+     <InputContainer>
         <Input
           {...register("lugarAtencion")}
           id="lugarAtencion"

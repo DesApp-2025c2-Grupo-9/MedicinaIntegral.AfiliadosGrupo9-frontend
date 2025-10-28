@@ -103,9 +103,16 @@ function MiCuenta() {
 
   }
 
-  function obtenerCBU (afiliado) {
-    return afiliado.cbus.map(cbu => [`${cbu.nombre} ${cbu.apellido}`, cbu.cbu])
-  }
+  function obtenerCBU(afiliado) {
+  return afiliado.cbus.map(cbu => {
+    const cbuFormateado = cbu.cbu.length > 8
+      ? `${cbu.cbu.slice(0, 8)}-${cbu.cbu.slice(8)}`
+      : cbu.cbu;
+
+    return [`${cbu.nombre} ${cbu.apellido}`, cbuFormateado];
+  });
+}
+
   return (
     <div>
       <div>
@@ -131,7 +138,7 @@ function MiCuenta() {
           
           <Select
             options={cbusGrupoFamiliar.map(([nombreCompleto, cbu]) => ({
-              label: `${nombreCompleto} - ${cbu}`,
+              label: `${nombreCompleto}: ${cbu}`,
               value: cbu
             }))}
             onChange={(selectedOption) => setSelectedCBU(selectedOption.value)}

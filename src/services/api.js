@@ -23,11 +23,6 @@ export const getAfiliado = async axiosClient => {
   return res.data;
 };
 
-/* export const getAfiliadoPublic = async () => {
-  const res = await axios.get('api/afiliados');
-  return res.data;
-}; */
-
 // Reintegros
 export const getReintegros = async axiosClient => {
   const res = await axiosClient.get('api/reintegros');
@@ -45,9 +40,14 @@ export const updateReintegro = async (axiosClient, body) => {
 };
 
 export const deleteReintegro = async (axiosClient, id) => {
-  const res = await axiosClient.delete(`api/reintegros/${id}`);
+  const res = await axiosClient.patch(`api/reintegros/${id}`);
   return res.data;
 };
+
+export const commentReintegroById = async (axiosClient, body) => {
+  const res = await axiosClient.post(`api/reintegros/${body.id}`, body);
+  return res.data;
+}
 
 // Especialidades
 export const getEspecialidades = async () => {
