@@ -1,5 +1,12 @@
 import axios from 'axios';
 
+
+export async function obtenerMiCuenta() {
+  const response = await axiosPrivate.get('/api/mi-cuenta');
+  return response.data;
+}
+
+
 const BASE_URL = 'http://localhost:3000';
 
 export default axios.create({
@@ -19,3 +26,4 @@ axiosPrivate.interceptors.request.use((config) => {
   }
   return config;
 });
+

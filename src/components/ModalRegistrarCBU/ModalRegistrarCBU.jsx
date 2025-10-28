@@ -3,6 +3,7 @@ import Input from '../Input.jsx'
 import Button from '../Button.jsx'
 import { useEffect, useState } from 'react';
 import { validarRegistroCBU } from '../../utils/validarRegistroCBU.js';
+import { registrarCBU } from '../../utils/miCuenta.validator';
 
 
 function ModalRegistrarCBU({isOpen, setIsOpen, onRegistrarCBU}) {
@@ -24,15 +25,29 @@ function ModalRegistrarCBU({isOpen, setIsOpen, onRegistrarCBU}) {
     }
   }, []);
 
-    const handleConfirmar = (e) => {
+    const handleConfirmar = async (e) => {
     e.preventDefault();
     const erroresValidados = validarRegistroCBU(registro); //agregue las validaciones
     setErrores(erroresValidados);
 
-    if (Object.keys(erroresValidados).length === 0) {
+     if (Object.keys(erroresValidados).length === 0) {
+        try {
+        const datosTransformados = {
+            nombre: registro.nombre,
+            apellido: registro.apellido,
+            cbu: registro.nroCBU,
+            tipoDeCuenta: registro.tipoDeCuenta,
+            cuil: registro.cuilOCuit
+        };
+
+        await registrarCBU(datosTransformados);
         onRegistrarCBU(`${registro.nombre} ${registro.apellido}`, registro.nroCBU);
         setIsOpen(false);
-    }
+        } catch (error) {
+        console.error("Error al registrar CBU:", error);
+        }
+  }
+
 }
     const handleChange = (e) => {
         const { id } = e.target;

@@ -18,6 +18,7 @@ function MiCuenta() {
     async function cargarDatos() {
       try {
         const { afiliado, grupoFamiliar } = await obtenerMiCuenta();
+      
         setAfiliado(afiliado);
         setGrupoFamiliar(grupoFamiliar);
 

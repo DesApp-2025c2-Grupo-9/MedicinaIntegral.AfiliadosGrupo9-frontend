@@ -21,7 +21,7 @@ export const logout = async () => {
 
 //Mi cuenta
 export async function obtenerMiCuenta() {
-  const response = await axiosPrivate.get('/api/mi-cuenta');
+  const response = await axiosPrivate.get('/api/auth/mi-cuenta');
   return response.data;
 }
 
