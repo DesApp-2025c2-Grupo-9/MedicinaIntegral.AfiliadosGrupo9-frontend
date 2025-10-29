@@ -27,12 +27,12 @@ export function useGetAfiliado() {
 }
 
 // Reintegros
-export function useGetReintegros() {
+export function useGetReintegros(idAfiliado) {
   const axiosPrivate = useAxiosPrivate();
 
   return useQuery({
-    queryKey: ['reintegros'],
-    queryFn: () => getReintegros(axiosPrivate)
+    queryKey: ['reintegros', { idAfiliado }],
+    queryFn: () => getReintegros(axiosPrivate, idAfiliado)
   });
 }
 
@@ -81,7 +81,7 @@ export function useCommentReintegroById() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reintegros'] });
     }
-  })
+  });
 }
 
 // Especialidades
