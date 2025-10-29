@@ -110,7 +110,7 @@ function Inicio() {
       medicoSolicitante: 'Merlina Addams',
       fechaSolicitud: new Date(),
       lugar: 'Centro Medicina Integral',
-      diasInternacion: 5,
+      diasDeInternacion: 5,
       estado: 'aceptado'
     }
   ];
