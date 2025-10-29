@@ -72,7 +72,6 @@ function RecetaCard(props) {
           const fecha = new Date(observacion.fecha).toLocaleDateString("es-AR");
           return `
             <div style='text-align:left; margin-bottom:10px'>
-              <p><strong>Emisor: </strong>${observacion.emisor}</p>
               <p><strong>Descripción: </strong>${observacion.descripcion}</p>
               <p><strong>Fecha: </strong>${fecha}</p>
             </div>

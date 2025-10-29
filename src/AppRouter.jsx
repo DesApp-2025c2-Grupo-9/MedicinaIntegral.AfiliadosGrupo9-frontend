@@ -20,7 +20,7 @@ import VerAutorizaciones from "./pages/Autorizaciones/VerAutorizaciones";
 import SolicitarAutorizacion from "./pages/Autorizaciones/SolicitarAutorizacion";
 import RequireAuth from "./components/RequireAuth";
 import EditarReceta from "./pages/Recetas/EditarReceta";
-
+import CartillaMedica from "./pages/CartillaMedica";
 export function AppRouter() {
   return (
     <Routes>
@@ -70,7 +70,7 @@ export function AppRouter() {
             />
           </Route>
 
-          <Route path="/cartilla-medica" element={<h3>Cartilla Médica.</h3>} />
+          <Route path="/cartilla-medica" element={<CartillaMedica />} />
         </Route>
       </Route>
 
