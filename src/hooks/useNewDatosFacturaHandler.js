@@ -9,6 +9,8 @@ export const useNewDatosFacturaHandler = () => {
   const navigate = useNavigate();
 
   const onSubmit = async inputData => {
+    const nroGestion = Math.floor(1000 + Math.random() * 9000);
+
     try {
       await mutateAsync({
         ...data,
@@ -18,7 +20,7 @@ export const useNewDatosFacturaHandler = () => {
       Swal.fire({
         html: `
         La solicitud fue enviada correctamente.<br/>
-        N° de gestión: 1234
+        N° de gestión: ${nroGestion}
       `,
         icon: 'success',
         confirmButtonText: 'Continuar',
