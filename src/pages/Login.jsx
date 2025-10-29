@@ -7,7 +7,6 @@ import { useLogin } from '../services/queries';
 import { useUserStore } from '../store/userStore';
 import Swal from 'sweetalert2';
 
-
 const Login = () => {
   const [usuario, setUsuario] = useState('');
   const [clave, setClave] = useState('');
@@ -18,13 +17,10 @@ const Login = () => {
   const { mutateAsync } = useLogin();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
-
-
-  const handleClaveChange = (e) => {
+  const handleClaveChange = e => {
     setClave(e.target.value);
     if (error) setError('');
   };
-
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -40,23 +36,20 @@ const Login = () => {
         password: clave
       });
       setError('');
-      setUser({ accessToken: data?.accessToken });
+      setUser({ accessToken: data?.accessToken, nroDocumento: usuario, idAfiliado: data?.data.idAfiliado });
       navigate(from, { replace: true });
-    } 
-    catch (error) {
+    } catch (error) {
       const mensaje = error.response?.data?.message || 'Ocurrió un problema. Intentá más tarde.';
-
       Swal.fire({
         icon: 'warning',
         title: 'Error al iniciar sesión',
         text: mensaje,
         confirmButtonText: 'Aceptar',
-        confirmButtonColor: "#00ab01"
+        confirmButtonColor: '#00ab01'
       });
-
       console.log(error);
-          }
-        };
+    }
+  };
 
   return (
     <div className='login-container'>
@@ -76,10 +69,7 @@ const Login = () => {
               if (/^\d*$/.test(valor)) {
                 setUsuario(valor);
                 if (error) setError('');
-
               }
-              
-
             }}
           />
           <label htmlFor='contraseña-login'>Ingrese su contraseña:</label>
@@ -90,10 +80,6 @@ const Login = () => {
             placeholder='ej: ******'
             value={clave}
             onChange={handleClaveChange}
-
-            
-            
-
           />
 
           {error && <p className='error'>{error}</p>}

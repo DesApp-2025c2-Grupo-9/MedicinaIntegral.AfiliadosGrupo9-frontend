@@ -9,16 +9,15 @@ import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
 import TwoButtons from '../components/TwoButtons';
 import { addDays, format } from 'date-fns';
 import { useEditReintegroHandler } from '../hooks/useEditReintegroHandler';
-import { useGetEspecialidades } from '../services/queries';
-import { useUserStore } from '../store/userStore';
+import { useGetAfiliado, useGetEspecialidades } from '../services/queries';
 import { useReintegroSchema } from '../hooks/useReintegroSchema';
 
 function EditReintegroForm({ className, reintegro = {}, cancelBtnOnClick }) {
   const { data: especialidadesRes, error, isLoading, isError } = useGetEspecialidades();
   const { onSubmit } = useEditReintegroHandler();
   const fechaActual = new Date().toISOString().split('T')[0];
-  const { user } = useUserStore(state => state);
-  const listaAfiliados = user.grupoFamiliar?.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
+  const { data: afiliadoRes } = useGetAfiliado();
+  const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
   const { data, setData } = useNuevoReintegroStore(state => state);
   const { reintegroSchema } = useReintegroSchema({ listaAfiliados, listaEspecialidades: especialidadesRes?.data });
 
