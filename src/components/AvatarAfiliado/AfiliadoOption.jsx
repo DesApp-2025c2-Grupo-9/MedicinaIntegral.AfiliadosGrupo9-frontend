@@ -1,19 +1,14 @@
 import clsx from 'clsx';
 import { icons } from '../../utils/icons';
 import { useUserStore } from '../../store/userStore';
-// import { useNavigate } from 'react-router-dom';
 
 function AfiliadoOption({ afiliado = { nombre: 'John', apellido: 'Doe' } }) {
   const { user, setUser } = useUserStore(state => state);
-  const isActive = user.idAfiliado === afiliado.id; // Basándonos en la URL actual, definiremos el valor de isActive
-  // const navigate = useNavigate();
+  const isActive = user.idAfiliado === afiliado.id;
 
   const handleClick = () => {
     setUser({ ...user, idAfiliado: afiliado.id });
-    // navigate(0);
   };
-
-  console.log('Soy id actual:', user.idAfiliado);
 
   return (
     <div

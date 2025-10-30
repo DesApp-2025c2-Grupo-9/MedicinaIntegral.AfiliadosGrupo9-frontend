@@ -15,6 +15,7 @@ export const useNewDatosFacturaHandler = () => {
       await mutateAsync({
         ...data,
         ...inputData,
+        nroGestion,
         formaDePago: inputData.formaDePago.toLowerCase()
       });
       Swal.fire({
