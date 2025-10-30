@@ -7,13 +7,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-// import { useUserStore } from '../../store/userStore';
 import { useGetAfiliado, useGetEspecialidades } from '../../services/queries';
 import { useCreateAutorizacion } from '../../services/autorizacionesQueries';
 import { useAutorizacionSchema } from '../../hooks/useAutorizacionSchema';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-function SolicitarAutorizacion() {
+function SolicitarAutorizacion({ className }) {
   const { data: especialidadesRes } = useGetEspecialidades();
   const { data: afiliadoRes } = useGetAfiliado();
   const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
@@ -27,12 +26,14 @@ function SolicitarAutorizacion() {
     handleSubmit,
     formState: {errors, isSubmitting }
   } = useForm({
-    resolver: zodResolver(autorizacionSchema)
+    resolver: zodResolver(autorizacionSchema),
+    defaultValues: {
+      diasDeInternacion: 0
+    }
   })
   const navigate = useNavigate()
-  
+
   const onSubmit = async(formData) => {
-    console.log(formData.paraidAfiliado)
     await mutateAsync(formData);
     Swal.fire({
             title: 'Solicitud enviada',
@@ -55,17 +56,23 @@ function SolicitarAutorizacion() {
 
     <Form
       onSubmit={handleSubmit(onSubmit)}
+      className={`mb-5 max-w-211.5 ${className}`}
     >
       {/*Dropdown afiliado - Modificar para que aparezca el nro de afiliado tambien // Fecha prevista*/}
       <InputContainer>
-        <Select
-        {...register('paraAfiliado')}
-        id='paraAfiliado'
-        label='Para afiliado:'
-        placeholder='Seleccionar afiliado'
-        options={listaAfiliados}
-        errorMsg={errors.paraAfiliado?.message}
-        />
+         {listaAfiliados.length > 1 ? <Select
+          {...register('paraAfiliado')}
+          id='paraAfiliado'
+          label='Para afiliado:'
+          placeholder='Seleccionar afiliado'
+          options={listaAfiliados}
+          errorMsg={errors.paraAfiliado?.message}
+        /> : <Input
+          {...register('paraAfiliado')}
+          value={listaAfiliados[0]}
+          id='paraAfiliado'
+          label='Para afiliado:'
+        />}
         <Input 
           {...register('fechaSolicitud')}
           type='date'
@@ -92,39 +99,42 @@ function SolicitarAutorizacion() {
         errorMsg={errors.practica?.message}
         />  
       </InputContainer>
-      <InputContainer>
+      <div className="w-full md:max-w-[398px]">
         <Input 
-        {...register("medicoSolicitante")}
-        label="Médico:"
-        placeholder="Ingresar el médico"
-        errorMsg={errors.medicoSolicitante?.message}
+          {...register("medicoSolicitante")}
+          label="Médico:"
+          placeholder="Ingresar el médico"
+          errorMsg={errors.medicoSolicitante?.message}
         />  
-      </InputContainer>
+      </div>
        
       {/*Input Lugar de prestación - Input dias de internación */}
       <InputContainer>
       <Input 
         {...register('lugarAtencion')}
         id='lugarAtencion'
-        label= 'Lugar de prestación'
+        label= 'Lugar de prestación:'
         placeholder='Ingresar lugar de prestación'
         errorMsg={errors.lugarAtencion?.message}
       />
       <Input
         {...register('diasDeInternacion')}
         id='diasDeInternacion'
-        label= 'Días de internación'
-        placeholder= 'Seleccionar cantidad de días'
+        label= 'Días de internación:'
+        placeholder= 'Ingresar cantidad de días'
         type = 'number'
-        min = {1}
+        min = {0}
         errorMsg={errors.diasDeInternacion?.message}
       />
       </InputContainer>
       {/*Input observaciones*/}
-      <Input 
-      {...register('observaciones')}
-      label={'Observaciones'}
-      errorMsg={errors.observaciones?.message}
+      <Input
+        {...register('observaciones')}
+        isTextArea
+        id='observaciones'
+        label='Observaciones:'
+        placeholder='Ingrese observaciones (si las hay)'
+        errorMsg={errors.observaciones?.message}
       />
       <Button
         type='submit'

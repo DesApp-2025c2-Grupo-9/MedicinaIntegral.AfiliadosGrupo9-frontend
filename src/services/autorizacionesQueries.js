@@ -3,9 +3,9 @@ import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 //Get All para cargar las cards
 
-const getAllAutorizaciones = async axiosPrivate => {
+const getAllAutorizaciones = async (axiosPrivate, idAfiliado) => {
     const res = await axiosPrivate.get(
-        'api/autorizaciones'
+        `api/autorizaciones/${idAfiliado}`
     )
     return res.data
 }
@@ -32,11 +32,11 @@ const updateAutorizacion = async (axiosPrivate, body) => {
     return res.data
 }
 
-export function useGetAllAutorizaciones () {
+export function useGetAllAutorizaciones (idAfiliado) {
   const axiosPrivate = useAxiosPrivate();
     return useQuery({
         queryKey: ['autorizaciones'],
-        queryFn: () => getAllAutorizaciones(axiosPrivate)
+        queryFn: () => getAllAutorizaciones(axiosPrivate, idAfiliado)
     })
 }
 

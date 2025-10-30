@@ -25,23 +25,21 @@ function EditarAutorizacion({ autorizacion, cancelBtnOnClick }) {
   } = useForm({
     resolver: zodResolver(autorizacionSchema),
     defaultValues: {
-      paraAfiliado: autorizacion?.paraAfiliado || ' ',
-      fechaSolicitud: format(autorizacion?.fechaSolicitud, 'yyyy-MM-dd') || ' ',
-      especialidad: autorizacion?.especialidad || ' ',
-      practica: autorizacion?.practica || ' ',
-      medicoSolicitante: autorizacion?.medicoSolicitante || ' ',
-      lugarAtencion: autorizacion?.lugarAtencion || ' ',
-      diasDeInternacion: autorizacion?.diasDeInternacion || ' ',
-      observaciones: autorizacion?.observaciones[0]?.descripcion || ' '
+      paraAfiliado: autorizacion?.paraAfiliado,
+      fechaSolicitud: format(autorizacion?.fechaSolicitud, 'yyyy-MM-dd'),
+      especialidad: autorizacion?.especialidad,
+      practica: autorizacion?.practica,
+      medicoSolicitante: autorizacion?.medicoSolicitante,
+      lugarAtencion: autorizacion?.lugarAtencion,
+      diasDeInternacion: autorizacion?.diasDeInternacion,
+      observaciones: autorizacion?.observaciones[0]?.descripcion 
     }
   });
-
+  {console.log("Lista de afiliados:", listaAfiliados.length > 1)}
   if (isLoading) return <div>Cargando...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
   const onSubmit = formData => {
-    console.log(autorizacion?.idAfiliado);
-    console.log(formData);
     Swal.fire({
       title: 'Confirmar edición',
       html: `
@@ -78,14 +76,19 @@ function EditarAutorizacion({ autorizacion, cancelBtnOnClick }) {
     <Form onSubmit={handleSubmit(onSubmit)}>
       {/* Dropdown afiliado + fecha */}
       <InputContainer>
-        <Select
+        {listaAfiliados.length > 1 ? <Select
           {...register('paraAfiliado')}
           id='paraAfiliado'
           label='Para afiliado:'
           placeholder='Seleccionar afiliado'
           options={listaAfiliados}
           errorMsg={errors.paraAfiliado?.message}
-        />
+        /> : <Input
+          {...register('paraAfiliado')}
+          value={listaAfiliados[0]}
+          id='paraAfiliado'
+          label='Para afiliado:'
+        />}
         <Input
           {...register('fechaSolicitud')}
           type='date'
@@ -108,35 +111,37 @@ function EditarAutorizacion({ autorizacion, cancelBtnOnClick }) {
         />
         <Input
           {...register('practica')}
-          label='Practica:'
+          label='Práctica:'
           placeholder='Ingresar la práctica'
           errorMsg={errors.practica?.message}
         />
       </InputContainer>
+
       {/* Médico */}
-      <InputContainer>
+      <div className='w-[calc(50% - 16px)]'>
         <Input
           {...register('medicoSolicitante')}
           label='Médico:'
           placeholder='Ingresar el médico'
           errorMsg={errors.medicoSolicitante?.message}
         />
-      </InputContainer>
+      </div>
+
       {/* Lugar de atención + Días de internación */}
       <InputContainer>
         <Input
           {...register('lugarAtencion')}
           id='lugarAtencion'
-          label='Lugar de prestación'
+          label='Lugar de prestación:'
           placeholder='Ingresar lugar de prestación'
           errorMsg={errors.lugarAtencion?.message}
         />
         <Input
           {...register('diasDeInternacion')}
           id='diasDeInternacion'
-          label='Días de internación'
+          label='Días de internación:'
           type='number'
-          min={1}
+          min={0}
           placeholder='Seleccionar cantidad de días'
           errorMsg={errors.diasDeInternacion?.message}
         />
@@ -145,7 +150,9 @@ function EditarAutorizacion({ autorizacion, cancelBtnOnClick }) {
       {/* Observaciones */}
       <Input
         {...register('observaciones')}
-        label='Observaciones'
+        isTextArea
+        id='observaciones'
+        label='Observaciones:'
         placeholder='Ingrese observaciones (si las hay)'
         errorMsg={errors.observaciones?.message}
       />
