@@ -8,34 +8,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useNewRecetaSchema } from "../../hooks/useNewRecetaSchema";
-import { useUserStore } from "../../store/userStore";
 import { useCreateReceta } from "../../services/recetasQueries";
 import { axiosPrivate } from "../../api/axios";
 import "../../styles/recetas.css";
+import { useGetAfiliado } from '../../services/queries';
 
 function SolicitarReceta() {
-  const { user } = useUserStore((state) => state);
-  const listaAfiliados = user.grupoFamiliar?.map(
-    (familiar) => `${familiar.nombre} ${familiar.apellido}`
-  );
-
+  const { data: afiliadoRes } = useGetAfiliado();
+  const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
   const { recetaSchema } = useNewRecetaSchema({ listaAfiliados });
   const { mutateAsync } = useCreateReceta(axiosPrivate);
-  console.log("Usuario logueado:", JSON.stringify(user, null, 2));
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
-    resolver: zodResolver(recetaSchema),
-    defaultValues: {
-      paraAfiliado: "",
-      medicamento: "",
-      cantidad: "",
-      presentacion: "",
-      observaciones: "",
-    },
+    resolver: zodResolver(recetaSchema)
   });
   const navigate = useNavigate();
 

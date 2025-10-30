@@ -1,44 +1,42 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
-import Form from "../../components/Form";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
-import InputContainer from "../../components/InputContainer";
-import Select from "../../components/Select";
-import { useState } from "react";
-import { useUpdateReceta } from "../../services/recetasQueries";
-import { useNewRecetaSchema } from "../../hooks/useNewRecetaSchema";
-import { useUserStore } from "../../store/userStore";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import Swal from 'sweetalert2';
+import Form from '../../components/Form';
+import Input from '../../components/Input';
+import Button from '../../components/Button';
+import InputContainer from '../../components/InputContainer';
+import Select from '../../components/Select';
+import { useState } from 'react';
+import { useUpdateReceta } from '../../services/recetasQueries';
+import { useNewRecetaSchema } from '../../hooks/useNewRecetaSchema';
+// import { useUserStore } from '../../store/userStore';
+import { useGetAfiliado } from '../../services/queries';
 
 function EditarReceta({ receta, cancelBtnOnClick }) {
-  const user = useUserStore((state) => state.user);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const listaAfiliados =
-    user?.grupoFamiliar?.map((f) => `${f.nombre} ${f.apellido}`) || [];
-
+  const { data: afiliadoRes } = useGetAfiliado();
+  const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
   const { recetaSchema } = useNewRecetaSchema({ listaAfiliados });
   const { mutateAsync } = useUpdateReceta();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm({
     resolver: zodResolver(recetaSchema),
     defaultValues: {
-      nroAfiliado: receta?.nroAfiliado,
+      paraAfiliado: receta?.paraAfiliado,
       medicamento: receta?.medicamento,
       cantidad: receta?.cantidad,
       presentacion: receta?.presentacion,
-      observaciones: receta?.observaciones?.[0]?.descripcion || "",
-    },
+      observaciones: receta?.observaciones?.[0]?.descripcion || ''
+    }
   });
 
-  const onSubmit = async (formData) => {
+  const onSubmit = async formData => {
     const result = await Swal.fire({
-      title: "Confirmar edición",
+      title: 'Confirmar edición',
       html: `
         <p>¿Desea guardar los cambios en la receta?</p>
         <br />
@@ -46,10 +44,10 @@ function EditarReceta({ receta, cancelBtnOnClick }) {
         <p><b>Presentación: </b> ${formData.presentacion}</p>
         <p><b>Cantidad: </b> ${formData.cantidad}</p>
       `,
-      icon: "question",
-      confirmButtonText: "Guardar",
+      icon: 'question',
+      confirmButtonText: 'Guardar',
       showCancelButton: true,
-      cancelButtonText: "Cancelar",
+      cancelButtonText: 'Cancelar'
     });
 
     if (!result.isConfirmed) return;
@@ -59,20 +57,20 @@ function EditarReceta({ receta, cancelBtnOnClick }) {
 
       await mutateAsync({
         id: receta.id,
-        data: formData,
+        data: formData
       });
 
       Swal.fire({
-        title: "Receta actualizada",
-        icon: "success",
+        title: 'Receta actualizada',
+        icon: 'success'
       });
 
       cancelBtnOnClick();
     } catch (error) {
       Swal.fire({
-        title: "Error",
-        text: "No se pudo actualizar la receta.",
-        icon: "error",
+        title: 'Error',
+        text: 'No se pudo actualizar la receta.',
+        icon: 'error'
       });
     } finally {
       setIsSubmitting(false);
@@ -81,57 +79,63 @@ function EditarReceta({ receta, cancelBtnOnClick }) {
 
   return (
     <Form
-      onSubmit={(e) => {
-        console.log("Submit detected");
+      onSubmit={e => {
+        console.log('Submit detected');
         handleSubmit(onSubmit)(e);
       }}
     >
       <Select
-        {...register("nroAfiliado")}
-        id="nroAfiliado"
-        label="Para afiliado"
+        {...register('paraAfiliado')}
+        id='paraAfiliado'
+        label='Para afiliado:'
+        placeholder='Seleccionar afiliado'
         options={listaAfiliados}
         errorMsg={errors.nroAfiliado?.message}
       />
 
       <InputContainer>
         <Input
-          {...register("medicamento")}
-          label="Medicamento"
+          {...register('medicamento')}
+          label='Medicamento:'
           errorMsg={errors.medicamento?.message}
         />
         <Input
-          {...register("cantidad", { valueAsNumber: true })}
-          type="number"
+          {...register('cantidad', { valueAsNumber: true })}
+          type='number'
           min={1}
-          label="Cantidad"
+          label='Cantidad:'
           errorMsg={errors.cantidad?.message}
         />
       </InputContainer>
 
       <Input
-        {...register("presentacion")}
-        label="Presentación"
+        {...register('presentacion')}
+        label='Presentación:'
         errorMsg={errors.presentacion?.message}
       />
 
       <Input
-        {...register("observaciones")}
-        label="Observaciones"
+        {...register('observaciones')}
+        label='Observaciones:'
         maxLength={100}
         errorMsg={errors.observaciones?.message}
       />
 
       <InputContainer>
         <Button
-          onClick={handleSubmit(onSubmit)}
-          state={isSubmitting ? "disabled" : "active"}
-          disabled={isSubmitting}
-          className="ml-auto"
+          className='ml-auto'
+          style='outln'
+          onClick={cancelBtnOnClick}
         >
-          Guardar cambios
+          Cancelar
         </Button>
-        <Button onClick={cancelBtnOnClick}>Salir</Button>
+        <Button
+          onClick={handleSubmit(onSubmit)}
+          state={isSubmitting ? 'disabled' : 'active'}
+          disabled={isSubmitting}
+        >
+          Confirmar
+        </Button>
       </InputContainer>
     </Form>
   );

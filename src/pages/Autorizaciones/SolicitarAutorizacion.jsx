@@ -4,20 +4,19 @@ import Button from '../../components/Button'
 import InputContainer from "../../components/InputContainer";
 import Select from "../../components/Select";
 import { useForm } from "react-hook-form";
-// import  {autorizacionSchema}  from "../../schema/autorizacionSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from '../../store/userStore';
-import { useGetEspecialidades } from '../../services/queries';
+// import { useUserStore } from '../../store/userStore';
+import { useGetAfiliado, useGetEspecialidades } from '../../services/queries';
 import { useCreateAutorizacion } from '../../services/autorizacionesQueries';
 import { useAutorizacionSchema } from '../../hooks/useAutorizacionSchema';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 function SolicitarAutorizacion() {
-  const { data: especialidadesRes, error, isLoading, isError } = useGetEspecialidades();
-  const { user } = useUserStore(state => state);
-  const listaAfiliados = user.grupoFamiliar?.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
+  const { data: especialidadesRes } = useGetEspecialidades();
+  const { data: afiliadoRes } = useGetAfiliado();
+  const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
   const { autorizacionSchema } = useAutorizacionSchema({ listaAfiliados, listaEspecialidades: especialidadesRes?.data });
   const axiosPrivate = useAxiosPrivate();
   const { mutateAsync } = useCreateAutorizacion(axiosPrivate);
@@ -28,17 +27,7 @@ function SolicitarAutorizacion() {
     handleSubmit,
     formState: {errors, isSubmitting }
   } = useForm({
-    resolver: zodResolver(autorizacionSchema),
-    defaultValues : {
-      paraAfiliado : '',
-      fechaSolicitud : '',
-      especialidad : '',
-      practica : '',
-      medicoSolicitante : '',
-      lugarAtencion : '',
-      diasDeInternacion: 0,
-      observaciones : '',
-    }
+    resolver: zodResolver(autorizacionSchema)
   })
   const navigate = useNavigate()
   
