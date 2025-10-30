@@ -5,11 +5,13 @@ import { useStateFilter } from '../../store/stateFilter';
 import { useGetReintegros } from '../../services/queries';
 import { capitalize } from 'lodash';
 import { Navigate, useLocation } from 'react-router-dom';
+import { useUserStore } from '../../store/userStore';
 
 function ReintegroVer() {
   const { state } = useStateFilter();
   const location = useLocation();
-  const { data, error, isLoading, isError } = useGetReintegros();
+  const { user } = useUserStore(state => state);
+  const { data, error, isLoading, isError } = useGetReintegros(user.idAfiliado);
 
   if (isLoading) return <div>Cargando...</div>;
   if (isError && error.status === 401) {

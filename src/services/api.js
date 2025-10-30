@@ -24,8 +24,8 @@ export const getAfiliado = async axiosClient => {
 };
 
 // Reintegros
-export const getReintegros = async axiosClient => {
-  const res = await axiosClient.get('api/reintegros');
+export const getReintegros = async (axiosClient, idAfiliado) => {
+  const res = await axiosClient.get(`api/reintegros/${idAfiliado}`);
   return res.data;
 };
 

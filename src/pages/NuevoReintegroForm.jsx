@@ -6,19 +6,18 @@ import InputContainer from '../components/InputContainer';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
-import { useGetEspecialidades } from '../services/queries';
+import { useGetAfiliado, useGetEspecialidades } from '../services/queries';
 import { useNewReintegroHandler } from '../hooks/useNewReintegroHandler';
-import { useUserStore } from '../store/userStore';
 import { useReintegroSchema } from '../hooks/useReintegroSchema';
 
 function NuevoReintegroForm({ className }) {
   const { data: especialidadesRes, error, isLoading, isError } = useGetEspecialidades();
   const { onSubmit } = useNewReintegroHandler();
   const fechaActual = new Date().toISOString().split('T')[0];
-  const { user } = useUserStore(state => state);
-  const listaAfiliados = user.grupoFamiliar?.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
-  const data = useNuevoReintegroStore(state => state.data);
+  const { data: afiliadoRes } = useGetAfiliado();
+  const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
   const { reintegroSchema } = useReintegroSchema({ listaAfiliados, listaEspecialidades: especialidadesRes?.data });
+  const data = useNuevoReintegroStore(state => state.data);
 
   const {
     register,

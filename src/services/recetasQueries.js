@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import useAxiosPrivate from '../hooks/useAxiosPrivate';
-// import axios, { axiosPrivate } from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const getRecetas = async (axiosClient) => {
   const res = await axiosClient.get("api/recetas");
@@ -26,41 +25,40 @@ export function useCreateReceta() {
   const axiosPrivate = useAxiosPrivate();
 
   return useMutation({
-    mutationFn: data => createReceta(axiosPrivate, data),
+    mutationFn: (data) => createReceta(axiosPrivate, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recetas"] });
     },
   });
 }
 
-// //Patch Receta
-// const updateReceta = async body => {
-//     const res = await axios.patch(`api/recetas/${body.id}`, body.data)
-//     return res.data;
-// }
-// export function useUpdateReceta () {
-//     const queryClient = useQueryClient();
+const updateReceta = async (axiosPrivate, body) => {
+  const res = await axiosPrivate.put(`api/recetas/${body.id}`, body.data);
+  return res.data;
+};
+export function useUpdateReceta() {
+  const queryClient = useQueryClient();
+  const axiosPrivate = useAxiosPrivate();
 
-//     return useMutation({
-//         mutationFn: updateReceta,
-//         onSuccess: () => {
-//             queryClient.invalidateQueries({queryKey: ['recetas']})
-//         }
-//     })
-// }
+  return useMutation({
+    mutationFn: (data) => updateReceta(axiosPrivate, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["recetas"] });
+    },
+  });
+}
+const deleteReceta = async (axiosPrivate, id) => {
+  const res = await axiosPrivate.patch(`api/recetas/${id}`, {});
+  return res.data;
+};
+export function useDeleteReceta() {
+  const queryClient = useQueryClient();
+  const axiosPrivate = useAxiosPrivate();
 
-// //Delete Receta
-// const deleteReceta = async id => {
-//     const res = await axios.delete(`api/recetas/${id}`);
-//     return res.data
-// }
-// export function useDeleteReceta() {
-//     const queryClient = useQueryClient();
-
-//     return useMutation({
-//         mutationFn: deleteReceta,
-//         onSuccess: () => {
-//             queryClient.invalidateQueries({queryKey: ['recetas']})
-//         }
-//     })
-// }
+  return useMutation({
+    mutationFn: (id) => deleteReceta(axiosPrivate, id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["recetas"] });
+    },
+  });
+}
