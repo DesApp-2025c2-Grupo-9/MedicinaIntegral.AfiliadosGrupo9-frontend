@@ -47,6 +47,7 @@ function AvatarAfiliado({ className }) {
           'absolute -top-45 opacity-0': !isOpen,
           'top-11 opacity-100': isOpen
         })}
+        onClick={() => setIsOpen(false)}
       />
     </div>
   );

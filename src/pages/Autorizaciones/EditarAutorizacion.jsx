@@ -155,6 +155,7 @@ function EditarAutorizacion({ autorizacion, cancelBtnOnClick }) {
           className='ml-auto'
           onClick={cancelBtnOnClick}
           style='outln'
+          type='button'
         >
           Cancelar
         </Button>

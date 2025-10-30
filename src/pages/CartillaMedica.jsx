@@ -31,8 +31,10 @@ function CartillaMedica() {
     });
   };
 
+  if (loadingEsp || loadingLoc) return <div>Cargando...</div>
+
   return (
-    <div className="p-6">
+    <div className='mb-5'>
       <SectionTitle>Cartilla Médica</SectionTitle>
 
       <Form
@@ -51,12 +53,12 @@ function CartillaMedica() {
               className="mt-1 border border-gray-300 rounded-md p-2 w-full bg-white"
               disabled={loadingLoc}
             >
-              <option value="" className="text-gray-400">
+              <option disabled value="" className="text-gray-400 px-2 py-1">
                 Seleccionar
               </option>
-              <option value="todas">Todas</option>
-              {localidades.map((l) => (
-                <option key={l} value={l}>
+              <option value="todas" className='px-2 py-1'>Todas</option>
+              {localidades?.map((l) => (
+                <option key={l} value={l} className='px-2 py-1'>
                   {l}
                 </option>
               ))}
@@ -74,12 +76,12 @@ function CartillaMedica() {
               className="mt-1 border border-gray-300 rounded-md p-2 w-full bg-white"
               disabled={loadingEsp}
             >
-              <option value="" className="text-gray-400">
+              <option disabled value="" className="text-gray-400 px-2 py-1">
                 Seleccionar
               </option>
-              <option value="todas">Todas</option>
-              {especialidades.map((e) => (
-                <option key={e} value={e}>
+              <option value="todas" className='px-2 py-1'>Todas</option>
+              {especialidades?.data?.map((e) => (
+                <option key={e} value={e} className='px-2 py-1'>
                   {e}
                 </option>
               ))}
@@ -89,7 +91,7 @@ function CartillaMedica() {
           <div className="flex items-end w-full sm:w-auto">
             <button
               type="submit"
-              className="w-full sm:w-auto px-6 py-2 bg-menta-600 text-white rounded-md hover:bg-menta-700 transition-colors"
+              className="cursor-pointer w-full sm:w-auto px-6 py-2 hover:bg-menta-200 bg-menta-600 text-white rounded-md transition-colors"
             >
               Filtrar
             </button>

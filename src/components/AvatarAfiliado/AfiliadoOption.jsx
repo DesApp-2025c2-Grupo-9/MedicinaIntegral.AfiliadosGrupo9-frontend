@@ -2,12 +2,13 @@ import clsx from 'clsx';
 import { icons } from '../../utils/icons';
 import { useUserStore } from '../../store/userStore';
 
-function AfiliadoOption({ afiliado = { nombre: 'John', apellido: 'Doe' } }) {
+function AfiliadoOption({ afiliado = { nombre: 'John', apellido: 'Doe' }, onClick }) {
   const { user, setUser } = useUserStore(state => state);
   const isActive = user.idAfiliado === afiliado.id;
 
   const handleClick = () => {
     setUser({ ...user, idAfiliado: afiliado.id });
+    onClick();
   };
 
   return (

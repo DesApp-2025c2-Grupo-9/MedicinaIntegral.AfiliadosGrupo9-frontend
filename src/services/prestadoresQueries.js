@@ -1,44 +1,44 @@
-import { useQuery } from "@tanstack/react-query";
-import { axiosPrivate } from "../api/axios";
+import { useQuery } from '@tanstack/react-query';
+import { getEspecialidades } from './api';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { getLocalidades, getPrestadores } from './prestadoresService';
 
 // Traer especialidades
 export const useGetEspecialidades = () => {
+  const axiosPrivate = useAxiosPrivate();
+
   return useQuery({
-    queryKey: ["especialidades"],
-    queryFn: async () => {
-      const res = await axiosPrivate.get("/api/enums/especialidades");
-      return res.data;
-    },
+    queryKey: ['especialidades'],
+    queryFn: () => getEspecialidades(axiosPrivate)
   });
 };
 
 // Traer localidades
 export const useGetLocalidades = () => {
+  const axiosPrivate = useAxiosPrivate();
+
   return useQuery({
-    queryKey: ["localidades"],
-    queryFn: async () => {
-      const res = await axiosPrivate.get("/api/enums/localidades");
-      return res.data;
-    },
+    queryKey: ['localidades'],
+    queryFn: () => getLocalidades(axiosPrivate)
   });
 };
 
 // Traer prestadores según filtros
-export const useGetPrestadores = (filters) => {
+export const useGetPrestadores = filters => {
+  const axiosPrivate = useAxiosPrivate();
+
   return useQuery({
-    queryKey: ["prestadores", filters],
-    queryFn: async () => {
+    queryKey: ['prestadores', filters],
+    queryFn: () => getPrestadores(axiosPrivate, filters),
+    /* queryFn: async () => {
       if (!filters) return [];
       const params = new URLSearchParams();
-      if (filters.localidad) params.append("localidad", filters.localidad);
-      if (filters.especialidad)
-        params.append("especialidad", filters.especialidad);
+      if (filters.localidad) params.append('localidad', filters.localidad);
+      if (filters.especialidad) params.append('especialidad', filters.especialidad);
 
-      const res = await axiosPrivate.get(
-        `/api/prestadores?${params.toString()}`
-      );
+      const res = await axiosPrivate.get(`/api/prestadores?${params.toString()}`);
       return res.data;
-    },
-    enabled: !!filters,
+    }, */
+    enabled: !!filters
   });
 };

@@ -123,6 +123,7 @@ function EditarReceta({ receta, cancelBtnOnClick }) {
 
       <InputContainer>
         <Button
+          type='button'
           className='ml-auto'
           style='outln'
           onClick={cancelBtnOnClick}
@@ -130,6 +131,7 @@ function EditarReceta({ receta, cancelBtnOnClick }) {
           Cancelar
         </Button>
         <Button
+          type='submit'
           onClick={handleSubmit(onSubmit)}
           state={isSubmitting ? 'disabled' : 'active'}
           disabled={isSubmitting}
