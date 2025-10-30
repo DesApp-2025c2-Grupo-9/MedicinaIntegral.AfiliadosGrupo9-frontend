@@ -1,6 +1,3 @@
-import BotonEditar from "./BotonEditar";
-import BotonPapelera from "./BotonPapelera";
-
 function MarcoCard(props) {
   //Marco con el estilo por defecto de las cards
 
@@ -17,14 +14,25 @@ function MarcoCard(props) {
       Si el estado es:
         pendiente:  Se carga fondo y pestaña en amarillo
         aceptado:   Se carga fondo y pestaña en verde
-        rechazado:  Se carga fondo y pestaña en azul
+        rechazado:  Se carga fondo y pestaña en rojo
         observado:  Se carga fondo y pestaña en azul
+        analisis: Se carga fondo y pestaña en celeste
     */
     pendiente: 'pt-1 bg-amber-300 shadow-amber-300 shadow rounded-xl m-3',
     aceptado: 'pt-1 bg-green-300 shadow-green-300 shadow rounded-xl m-3',
     rechazado: 'pt-1 bg-red-300 shadow-red-300 shadow rounded-xl m-3',
-    observado: 'pt-1 bg-blue-300 shadow-blue-300 shadow rounded-xl m-3'
+    observado: 'pt-1 bg-blue-300 shadow-blue-300 shadow rounded-xl m-3',
+    analisis: 'pt-1 bg-blue-200 shadow-blue-300 shadow rounded-xl m-3',
   };
+  const mostrarEstado = () => {
+    
+    if(estado == 'analisis'){
+      return 'En analisis'  
+    }else{
+      return estado.charAt(0).toUpperCase() + estado.slice(1)
+    }
+
+  }
 
   const estiloEstado = estilos[estado] || '';
 
@@ -36,7 +44,7 @@ function MarcoCard(props) {
       //Marco de estado de la card opcional 
       estado ? (
         <div className="flex text-black items-center justify-between px-1">{/*Si se manda un estado se carga esta parte */}
-          <p className="px-2">{estado.charAt(0).toUpperCase() + estado.slice(1)}</p>
+          <p className="px-2">{mostrarEstado()}</p>
           
 
 

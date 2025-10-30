@@ -3,14 +3,16 @@ import InputContainer from '../../components/InputContainer'
 import Button from '../../components/Button'
 import TurnosCard from '../../components/cards/cards/TurnosCard'
 import { useUserStore } from '../../store/userStore';
-import { useGetUbicacionesByEspecialidadMedicos } from '../../services/prestadoresQueres';
 import { useState } from 'react';
-import { useGetTurnosFiltrados } from '../../services/turnosQueries';
+import { useGetEspecialidadesConTurno, useGetLocalidades, useGetPrestadores, useGetTurnosFiltrados } from '../../services/turnosQueries';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 function SolicitarTurno() {
   const axiosPrivate = useAxiosPrivate();
+
   const buscarTurnos = useGetTurnosFiltrados(axiosPrivate)
+  const obtenerUbicaciones = useGetLocalidades(axiosPrivate)
+  const obtenerPrestadores = useGetPrestadores(axiosPrivate)
   //Manejo de estados para cargar progresivamente las opciones
   const [especialidadSeleccionadaObj, setEspecialidadSeleccionadaObj] = useState(null)
 
@@ -22,18 +24,14 @@ function SolicitarTurno() {
   
   const { user } = useUserStore(state => state);
   //Datos de los Select
-  const { data: ubisByEspecialidadMedicos = [], isLoading, error } = useGetUbicacionesByEspecialidadMedicos()
-  const especialidades = ubisByEspecialidadMedicos.map ( ubiConEspecialidad => ubiConEspecialidad.especialidad)
-  
-  //ubicaciones dispoinibles
-  const [ubicacionesDisponibles, setubicacionesDisponibles] = useState([])
-  //Médicos disponibles
-  const [medicosDisponibles, setmedicosDisponibles] = useState([])
+    //Especialidades
+  const {data: especialidades = []} = useGetEspecialidadesConTurno()
+    //Ubicaciones
+  const [ubicaciones, setUbicaciones] = useState([])
+    //Médicos
+  const [medicos, setMedicos] = useState([])
 
   const listaAfiliados = user.grupoFamiliar?.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
-
-  if (isLoading) return <p>Cargando especialidades...</p>
-  if (error) return <p>Error al cargar los datos</p>
 
   const handleEspecialidadChange = (e) => {
     const nuevaEspecialidad = e.target.value;
@@ -42,7 +40,12 @@ function SolicitarTurno() {
     );
     setEspecialidadSeleccionada(nuevaEspecialidad);
     setEspecialidadSeleccionadaObj(especialidadObj);
-    setubicacionesDisponibles(Object.keys(especialidadObj?.localidades || {}));
+    //Mutar la lista de ubicaciones
+    obtenerUbicaciones.mutate({
+      especialidad: nuevaEspecialidad, desde: new Date().toISOString()
+    }, {
+      onSuccess: (data) => {setUbicaciones(data)}
+    })
     setUbicacionSeleccionada('');
     setmedicosDisponibles([]);
     setMedicoSeleccionado('')
@@ -51,6 +54,14 @@ function SolicitarTurno() {
   const handleUbicacionChange = (e) => {
     const nuevaUbicacion = e.target.value;
     setUbicacionSeleccionada(nuevaUbicacion);
+    const filters = {especialidadSeleccionada, ubicacionSeleccionada}
+    //Mutar los médicos
+    obtenerPrestadores.mutate({
+      especialidad: especialidadSeleccionada, localidad: nuevaUbicacion, desde: new Date().toISOString()
+    },{
+      onSuccess: (data) => {setMedicos(data)}
+    }
+    )
     const medicos = especialidadSeleccionadaObj?.localidades?.[nuevaUbicacion] || [];
     const opciones = ['Todos', ...medicos.map(m => m.nombreCompleto)];
     setmedicosDisponibles(opciones);
@@ -59,13 +70,13 @@ function SolicitarTurno() {
   };
 
   const cargarTurnos = () => {
-    const params = {
+    const filters = {
       especialidadSeleccionada,
       ubicacionSeleccionada,
       medicoSeleccionado: medicoSeleccionado || undefined,
-      desde: new Date()
+      desde: new Date().toISOString()
     }
-    buscarTurnos.mutate(params,{
+    buscarTurnos.mutate(filters,{
       onSuccess: (data) => {
         setturnos(data)
       }
@@ -91,7 +102,7 @@ function SolicitarTurno() {
           <Select
             placeholder='Seleccionar ubicación'
             label={'Ubicación'}
-            options={ubicacionesDisponibles}
+            options={ubicaciones}
             onChange={handleUbicacionChange}
             disabled={!especialidadSeleccionada}
           />
@@ -100,7 +111,7 @@ function SolicitarTurno() {
           <Select 
             placeholder='Seleccionar profesional' 
             label={'Profesional (opcional)'}
-            options={medicosDisponibles}
+            options={medicos}
             onChange={
               e => {
                 setMedicoSeleccionado(e.target.value)

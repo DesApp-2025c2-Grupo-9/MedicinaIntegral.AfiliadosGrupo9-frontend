@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Pruebas from "./pages/Pruebas";
 import MainLayout from "./layout/MainLayout";
-import PruebaCards from "./pages/PruebaCards";
 import PreLayout from "./layout/PreLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -20,27 +19,6 @@ import VerAutorizaciones from "./pages/Autorizaciones/VerAutorizaciones";
 import SolicitarAutorizacion from "./pages/Autorizaciones/SolicitarAutorizacion";
 import RequireAuth from "./components/RequireAuth";
 import EditarReceta from "./pages/Recetas/EditarReceta";
-import { Route, Routes } from 'react-router-dom';
-import Pruebas from './pages/Pruebas';
-import MainLayout from './layout/MainLayout';
-import PruebaCards from './pages/PruebaCards';
-import PreLayout from './layout/PreLayout';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import ReintegroVer from './pages/Reintegro/ReintegroVer';
-import Inicio from './pages/Inicio';
-import ReintegrosLayout from './layout/ReintegrosLayout';
-import MiCuenta from './pages/MiCuenta';
-import NuevoReintegroForm from './pages/NuevoReintegroForm';
-import DatosFacturaReintegroForm from './pages/DatosFacturaReintegroForm';
-import TurnosLayout from './layout/TurnosLayout';
-import RecetasLayout from './layout/RecetasLayout';
-import AutorizacionesLayout from './layout/AutorizacionesLayout';
-import VerRecetas from './pages/Recetas/VerRecetas';
-import SolicitarReceta from './pages/Recetas/SolicitarReceta';
-import VerAutorizaciones from './pages/Autorizaciones/VerAutorizaciones';
-import SolicitarAutorizacion from './pages/Autorizaciones/SolicitarAutorizacion';
-import RequireAuth from './components/RequireAuth';
 import SolicitarTurno from './pages/Turnos/SolicitarTurno';
 import VerTurnos from './pages/Turnos/VerTurnos';
 
@@ -96,8 +74,6 @@ export function AppRouter() {
 
       {/* Catch all */}
       <Route path="*" element={<h3>Not Found.</h3>} />
-
-      <Route path="/pruebaCards" element={<PruebaCards />} />
       <Route path="/pruebas" element={<Pruebas />} />
     </Routes>
   );
