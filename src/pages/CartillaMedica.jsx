@@ -34,8 +34,8 @@ function CartillaMedica() {
     e.preventDefault();
     if (!filtrosCompletos) return;
     setFilters({
-      especialidad: especialidad === "todas" ? "" : especialidad,
-      localidad: localidad === "todas" ? "" : localidad,
+      especialidad,
+      localidad,
     });
   };
 
@@ -68,11 +68,9 @@ function CartillaMedica() {
               <option value="" disabled hidden>
                 Seleccionar
               </option>
-              <option value="todas" className="px-2 py-1">
-                Todas{" "}
-              </option>
+
               {localidades.map((l, i) => (
-                <option key={`${l}-${i}`} value={l} className="px-2 py-1">
+                <option key={`${l}-${i}`} value={l} className="px-3 py-1">
                   {l}
                 </option>
               ))}
@@ -97,9 +95,7 @@ function CartillaMedica() {
               <option value="" disabled hidden>
                 Seleccionar
               </option>
-              <option value="todas" className="px-2 py-1">
-                Todas
-              </option>
+
               {especialidades?.data?.map((e) => (
                 <option key={e} value={e} className="px-2 py-1">
                   {e}
@@ -113,7 +109,7 @@ function CartillaMedica() {
               type="submit"
               state={filtrosCompletos ? "active" : "disabled"}
               style="fill"
-              className="w-full sm:w-auto py-2 h-[42px]"
+              className="w-full sm:w-auto py-2 min-h-[42px]"
             >
               Buscar
             </Button>
