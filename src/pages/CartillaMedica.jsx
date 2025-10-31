@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SectionTitle from "../components/SectionTitle";
 import Form from "../components/Form";
+import Button from "../components/Button";
 import PrestadorCard from "../components/cards/cards/PrestadorCard";
 import {
   useGetEspecialidades,
@@ -21,20 +22,27 @@ function CartillaMedica() {
     isLoading: loadingPrestadores,
     isFetching,
   } = useGetPrestadores(filters);
+  const filtrosCompletos = especialidad !== "" && localidad !== "";
+  // Resetear filtros al entrar a la página
+  useEffect(() => {
+    setEspecialidad("");
+    setLocalidad("");
+    setFilters(null);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    if (!filtrosCompletos) return;
     setFilters({
       especialidad: especialidad === "todas" ? "" : especialidad,
       localidad: localidad === "todas" ? "" : localidad,
     });
   };
 
-  if (loadingEsp || loadingLoc) return <div>Cargando...</div>
+  //if (loadingEsp || loadingLoc) return <div>Cargando...</div>;
 
   return (
-    <div className='mb-5'>
+    <div className="mb-5">
       <SectionTitle>Cartilla Médica</SectionTitle>
 
       <Form
@@ -50,15 +58,21 @@ function CartillaMedica() {
             <select
               value={localidad}
               onChange={(e) => setLocalidad(e.target.value)}
-              className="mt-1 border border-gray-300 rounded-md p-2 w-full bg-white"
+              className={`
+    mt-1 border border-gray-300 rounded-md p-2 w-full bg-white
+    ${localidad === "" ? "text-gray-400" : "text-black"}
+        hover:border-menta-400 focus:border-menta-600 focus:ring-menta-300 
+  `}
               disabled={loadingLoc}
             >
-              <option disabled value="" className="text-gray-400 px-2 py-1">
+              <option value="" disabled hidden>
                 Seleccionar
               </option>
-              <option value="todas" className='px-2 py-1'>Todas</option>
-              {localidades?.map((l) => (
-                <option key={l} value={l} className='px-2 py-1'>
+              <option value="todas" className="px-2 py-1">
+                Todas{" "}
+              </option>
+              {localidades.map((l, i) => (
+                <option key={`${l}-${i}`} value={l} className="px-2 py-1">
                   {l}
                 </option>
               ))}
@@ -73,15 +87,21 @@ function CartillaMedica() {
             <select
               value={especialidad}
               onChange={(e) => setEspecialidad(e.target.value)}
-              className="mt-1 border border-gray-300 rounded-md p-2 w-full bg-white"
+              className={`
+                  mt-1 border border-gray-300 rounded-md p-2 w-full bg-white
+                  ${especialidad === "" ? "text-gray-400" : "text-black"}
+                  hover:border-menta-400 focus:border-menta-600 focus:ring-menta-300 
+                  `}
               disabled={loadingEsp}
             >
-              <option disabled value="" className="text-gray-400 px-2 py-1">
+              <option value="" disabled hidden>
                 Seleccionar
               </option>
-              <option value="todas" className='px-2 py-1'>Todas</option>
+              <option value="todas" className="px-2 py-1">
+                Todas
+              </option>
               {especialidades?.data?.map((e) => (
-                <option key={e} value={e} className='px-2 py-1'>
+                <option key={e} value={e} className="px-2 py-1">
                   {e}
                 </option>
               ))}
@@ -89,28 +109,37 @@ function CartillaMedica() {
           </div>
 
           <div className="flex items-end w-full sm:w-auto">
-            <button
+            <Button
               type="submit"
-              className="cursor-pointer w-full sm:w-auto px-6 py-2 hover:bg-menta-200 bg-menta-600 text-white rounded-md transition-colors"
+              state={filtrosCompletos ? "active" : "disabled"}
+              style="fill"
+              className="w-full sm:w-auto py-2 h-[42px]"
             >
-              Filtrar
-            </button>
+              Buscar
+            </Button>
           </div>
         </div>
       </Form>
 
       <div className="mt-8">
+        {!filtrosCompletos && (
+          <p className="text-gray-500 text-sm mt-2">
+            Seleccione una localidad y una especialidad para comenzar la
+            búsqueda.
+          </p>
+        )}
+
         {filters && (loadingPrestadores || isFetching) ? (
           <p>Cargando prestadores...</p>
         ) : filters && prestadores.length ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {prestadores.map((p) => (
-              <PrestadorCard key={p._id} prestador={p} />
+            {prestadores.map((p, i) => (
+              <PrestadorCard key={p._id ?? `${p.nombre}-${i}`} prestador={p} />
             ))}
           </div>
         ) : filters ? (
           <p>No se encontraron prestadores con esos filtros.</p>
-        ) : null}{" "}
+        ) : null}
       </div>
     </div>
   );
