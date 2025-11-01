@@ -1,12 +1,10 @@
 //   enums
 export const getEspecialidades = async axiosClient => {
-  await new Promise(res => setTimeout(res, 2000));
   const res = await axiosClient.get('api/enums/especialidades');
   return res.data;
 };
 
 export const getLocalidades = async axiosClient => {
-  await new Promise(res => setTimeout(res, 2000));
   const res = await axiosClient.get('api/enums/localidades');
   return res.data;
 };

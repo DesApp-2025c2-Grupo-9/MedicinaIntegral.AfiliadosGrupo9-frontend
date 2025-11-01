@@ -1,48 +1,50 @@
+import { useReintegroStepOneHandler } from '../hooks/useReintegroStepOneHandler';
+import { useGetAfiliado, useGetEspecialidades } from '../services/queries';
+import { useReintegroStore } from '../store/reintegroStore';
+import { useReintegroStepOneSchema } from '../hooks/useReintegroStepOneSchema';
 import { useForm } from 'react-hook-form';
-import Form from '../components/Form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Form from '../components/Form';
 import Select from '../components/Select';
 import InputContainer from '../components/InputContainer';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
-import TwoButtons from '../components/TwoButtons';
 import { addDays, format } from 'date-fns';
-import { useEditReintegroHandler } from '../hooks/useEditReintegroHandler';
-import { useGetAfiliado, useGetEspecialidades } from '../services/queries';
-import { useReintegroSchema } from '../hooks/useReintegroSchema';
+import TwoButtons from '../components/TwoButtons';
+import { useNavigate } from 'react-router-dom';
 
-function EditReintegroForm({ className, reintegro = {}, cancelBtnOnClick }) {
-  const { data: especialidadesRes, error, isLoading, isError } = useGetEspecialidades();
-  const { onSubmit } = useEditReintegroHandler();
+function ReintegroFormStepOne({ className }) {
+  const navigate = useNavigate();
   const fechaActual = new Date().toISOString().split('T')[0];
-  const { data: afiliadoRes } = useGetAfiliado();
-  const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
-  const { data, setData } = useNuevoReintegroStore(state => state);
-  const { reintegroSchema } = useReintegroSchema({ listaAfiliados, listaEspecialidades: especialidadesRes?.data });
+  const { data: especialidades } = useGetEspecialidades();
+  const { data: afiliados } = useGetAfiliado();
+  const listaEspecialidades = especialidades?.data;
+  const listaAfiliados = afiliados?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
+
+  const reintegro = useReintegroStore(state => state.reintegro);
+  const fechaDePrestacion = reintegro?.fechaDePrestacion ? format(addDays(reintegro?.fechaDePrestacion, 1), 'yyyy-MM-dd') : '';
+  const { reintegroStepOneSchema } = useReintegroStepOneSchema({ listaAfiliados, listaEspecialidades });
+  const { onSubmit } = useReintegroStepOneHandler();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm({
-    resolver: zodResolver(reintegroSchema),
+    resolver: zodResolver(reintegroStepOneSchema),
     defaultValues: {
-      paraAfiliado: data?.paraAfiliado ?? reintegro.paraAfiliado,
-      fechaDePrestacion: data?.fechaDePrestacion ?? format(addDays(reintegro.fechaDePrestacion, 1), 'yyyy-MM-dd'),
-      especialidad: data?.especialidad ?? reintegro.especialidad,
-      medico: data?.medico ?? reintegro.medico,
-      lugarDeAtencion: data?.lugarDeAtencion ?? reintegro.lugarDeAtencion
+      paraAfiliado: reintegro?.paraAfiliado,
+      fechaDePrestacion: fechaDePrestacion,
+      especialidad: reintegro?.especialidad,
+      medico: reintegro?.medico,
+      lugarDeAtencion: reintegro?.lugarDeAtencion
     }
   });
-
-  if (isLoading) return <div>Cargando...</div>;
-  if (isError) return <div>Error: {error.message}</div>;
 
   return (
     <Form
       onSubmit={handleSubmit(onSubmit)}
-      className={`mb-5 max-w-211.5 ${className}`}
+      className={`max-w-211.5 ${className}`}
     >
       <Select
         {...register('paraAfiliado')}
@@ -67,7 +69,7 @@ function EditReintegroForm({ className, reintegro = {}, cancelBtnOnClick }) {
           id='especialidad'
           label='Especialidad:'
           placeholder='Seleccionar especialidad'
-          options={especialidadesRes?.data}
+          options={listaEspecialidades}
           errorMsg={errors.especialidad?.message}
         />
       </InputContainer>
@@ -95,10 +97,7 @@ function EditReintegroForm({ className, reintegro = {}, cancelBtnOnClick }) {
         <Button
           type='button'
           style='outln'
-          onClick={() => {
-            setData({});
-            cancelBtnOnClick();
-          }}
+          onClick={() => navigate('/reintegros/historial-reintegros')}
         >
           Cancelar
         </Button>
@@ -113,4 +112,4 @@ function EditReintegroForm({ className, reintegro = {}, cancelBtnOnClick }) {
     </Form>
   );
 }
-export default EditReintegroForm;
+export default ReintegroFormStepOne;

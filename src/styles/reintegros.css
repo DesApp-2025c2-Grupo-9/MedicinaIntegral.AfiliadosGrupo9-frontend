@@ -4,6 +4,8 @@
   border: solid 1px #dc143c;
   order: -1;
   border-radius: 8px;
+  min-height: 52px;
+  min-width: 160px;
 
   &:hover {
     background-color: #dc143c;
@@ -11,12 +13,23 @@
   }
 }
 
+.reintegros-html {
+  font-size: 16px;
+  color: #3f4041;
+}
+
 .reintegros-confirm-button {
   border-radius: 8px;
+  min-height: 52px;
+  min-width: 160px;
 
   &:hover {
     background-color: #89ff89;
   }
+}
+
+.reintegros-question-icon {
+  color: red;
 }
 
 .scroll-hidden {

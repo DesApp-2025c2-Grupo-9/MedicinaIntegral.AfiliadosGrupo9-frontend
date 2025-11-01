@@ -52,8 +52,8 @@ export const ERROR_MESSAGES = {
   }
 };
 
-export const useReintegroSchema = data => {
-  const reintegroSchema = z.object({
+export const useReintegroStepOneSchema = data => {
+  const reintegroStepOneSchema = z.object({
     paraAfiliado: z.literal(data.listaAfiliados, ERROR_MESSAGES.PARA_AFILIADO.REQUIRED),
     fechaDePrestacion: z.iso.date({ error: iss => (!iss.input ? ERROR_MESSAGES.FECHA_DE_PRESTACION.REQUIRED : ERROR_MESSAGES.FECHA_DE_PRESTACION.INVALID_FORMAT) }).refine(
       val => {
@@ -72,5 +72,5 @@ export const useReintegroSchema = data => {
     lugarDeAtencion: z.string().trim().min(1, ERROR_MESSAGES.LUGAR_DE_ATENCION.REQUIRED)
   });
 
-  return { reintegroSchema };
+  return { reintegroStepOneSchema };
 };

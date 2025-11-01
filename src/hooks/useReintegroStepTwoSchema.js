@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { ERROR_MESSAGES } from './useReintegroSchema';
+import { ERROR_MESSAGES } from './useReintegroStepOneSchema';
 
-export const useDatosFacturaSchema = () => {
-  const datosFacturaSchema = z
+export const useReintegroStepTwoSchema = () => {
+  const reintegroStepTwoSchema = z
     .object({
       factura: z.object({
         fecha: z.iso.date({ error: iss => (!iss.input ? ERROR_MESSAGES.FECHA_FACTURA.REQUIRED : ERROR_MESSAGES.FECHA_FACTURA.INVALID_FORMAT) }).refine(
@@ -47,5 +47,5 @@ export const useDatosFacturaSchema = () => {
       }
     );
 
-  return { datosFacturaSchema };
+  return { reintegroStepTwoSchema };
 };
