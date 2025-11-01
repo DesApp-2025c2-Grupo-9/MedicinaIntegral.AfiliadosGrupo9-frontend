@@ -61,7 +61,7 @@ function ModalObservaciones({
         {/* Comentario prestador */}
         <div className='flex flex-col gap-2 rounded  min-h-[128px]'>
           <Input
-            label='Comentario para el prestador:'
+            label='Comentario:'
             isTextArea={true}
             value={comentario}
             onChange={e => setComentario(e.target.value)}

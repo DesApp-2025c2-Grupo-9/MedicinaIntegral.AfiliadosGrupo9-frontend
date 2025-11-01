@@ -56,7 +56,7 @@ function SolicitarAutorizacion({ className }) {
 
     <Form
       onSubmit={handleSubmit(onSubmit)}
-      className={`mb-5 max-w-211.5 ${className}`}
+      className={`max-w-211.5 ${className}`}
     >
       {/*Dropdown afiliado - Modificar para que aparezca el nro de afiliado tambien // Fecha prevista*/}
       <InputContainer>

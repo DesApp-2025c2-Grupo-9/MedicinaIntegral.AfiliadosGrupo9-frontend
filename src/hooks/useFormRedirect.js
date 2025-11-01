@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
-import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
+import { useReintegroStore } from '../store/reintegroStore';
 import { useNavigate } from 'react-router-dom';
 
 export const useFormRedirect = isSubmitSuccessful => {
-  const { data } = useNuevoReintegroStore(state => state);
+  const reintegro = useReintegroStore(state => state.reintegro);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!useNuevoReintegroStore.persist.hasHydrated) return;
+    if (!useReintegroStore.persist.hasHydrated) return;
 
-    const primerPasoCompleto = data.paraAfiliado && data.fechaDePrestacion && data.especialidad && data.medico && data.lugarDeAtencion;
+    const primerPasoCompleto = reintegro.paraAfiliado && reintegro.fechaDePrestacion && reintegro.especialidad && reintegro.medico && reintegro.lugarDeAtencion;
     if (!primerPasoCompleto && !isSubmitSuccessful) {
       navigate('/reintegros/solicitar-reintegro');
     }
-  }, [data, navigate, isSubmitSuccessful]);
+  }, [reintegro, navigate, isSubmitSuccessful]);
 };

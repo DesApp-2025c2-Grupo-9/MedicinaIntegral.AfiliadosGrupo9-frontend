@@ -1,48 +1,53 @@
 import { useForm } from 'react-hook-form';
-import Form from '../components/Form';
-import InputContainer from '../components/InputContainer';
+import { useReintegroStepTwoSchema } from '../hooks/useReintegroStepTwoSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Input from '../components/Input';
-import Select from '../components/Select';
-import Button from '../components/Button';
+import { useReintegroStore } from '../store/reintegroStore';
+import { useReintegroStepTwoHandler } from '../hooks/useReintegroStepTwoHandler';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/Button';
 import TwoButtons from '../components/TwoButtons';
+import Input from '../components/Input';
+import InputContainer from '../components/InputContainer';
+import Select from '../components/Select';
+import Form from '../components/Form';
+import capitalize from '../utils/capitalize';
+import { addDays, format } from 'date-fns';
 import { useFormRedirect } from '../hooks/useFormRedirect';
-import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
-import { useNewDatosFacturaHandler } from '../hooks/useNewDatosFacturaHandler';
-import { useDatosFacturaSchema } from '../hooks/useDatosFacturaSchema';
 
-function DatosFacturaReintegroForm({ className }) {
+function ReintegroFormStepTwo({ className }) {
   const fechaActual = new Date().toISOString().split('T')[0];
-  const { onSubmit } = useNewDatosFacturaHandler();
-  const setData = useNuevoReintegroStore(state => state.setData);
-  const data = useNuevoReintegroStore(state => state.data);
-  const { datosFacturaSchema } = useDatosFacturaSchema();
+
+  const reintegro = useReintegroStore(state => state.reintegro);
+  const setReintegro = useReintegroStore(state => state.setReintegro);
+  const formaDePago = reintegro?.formaDePago && capitalize(reintegro.formaDePago);
+  const fechaFactura = reintegro?.factura?.fecha && format(addDays(reintegro?.factura?.fecha, 1), 'yyyy-MM-dd');
+  const observacionAfiliado = typeof reintegro?.observaciones === 'object' && reintegro?.observaciones?.find(obs => obs.rolEmisor === 'Afiliado');
+  const { reintegroStepTwoSchema } = useReintegroStepTwoSchema();
+  const { onSubmit } = useReintegroStepTwoHandler();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-    watch
+    watch,
+    formState: { errors, isSubmitting }
   } = useForm({
-    resolver: zodResolver(datosFacturaSchema),
+    resolver: zodResolver(reintegroStepTwoSchema),
     defaultValues: {
       factura: {
-        fecha: data?.factura?.fecha,
-        cuit: data?.factura?.cuit,
-        valorTotal: data?.factura?.valorTotal,
-        personaAFacturar: data?.factura?.personaAFacturar
+        ...reintegro?.factura,
+        fecha: fechaFactura
       },
-      formaDePago: data?.formaDePago,
-      cbu: data?.cbu,
-      observaciones: data?.observaciones
+      formaDePago: formaDePago,
+      cbu: reintegro?.cbu,
+      observaciones: observacionAfiliado?.descripcion ?? reintegro?.observaciones
     }
   });
+
   const navigate = useNavigate();
-  const formaDePago = watch('formaDePago');
+  const formaDePagoInput = watch('formaDePago');
   const formValues = watch();
 
-  useFormRedirect(isSubmitSuccessful);
+  useFormRedirect();
 
   return (
     <Form
@@ -106,7 +111,7 @@ function DatosFacturaReintegroForm({ className }) {
           options={['Cheque', 'Efectivo', 'Transferencia']}
           errorMsg={errors.formaDePago?.message}
         />
-        {formaDePago === 'Transferencia' ? (
+        {formaDePagoInput === 'Transferencia' ? (
           <Input
             {...register('cbu')}
             type='text'
@@ -135,8 +140,7 @@ function DatosFacturaReintegroForm({ className }) {
       <TwoButtons className='ml-auto'>
         <Button
           onClick={() => {
-            console.log({ ...data, ...formValues });
-            setData({ ...data, ...formValues });
+            setReintegro({ ...reintegro, ...formValues });
             navigate(-1);
           }}
           type='button'
@@ -149,10 +153,10 @@ function DatosFacturaReintegroForm({ className }) {
           state={isSubmitting ? 'disabled' : 'active'}
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Cargando...' : 'Confirmar solicitud'}
+          {isSubmitting ? 'Cargando...' : 'Confirmar'}
         </Button>
       </TwoButtons>
     </Form>
   );
 }
-export default DatosFacturaReintegroForm;
+export default ReintegroFormStepTwo;

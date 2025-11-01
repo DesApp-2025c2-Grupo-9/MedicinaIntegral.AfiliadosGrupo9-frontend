@@ -1,5 +1,5 @@
 .slick-arrow.slick-prev::before, .slick-arrow.slick-next::before {
-    color: rgb(124, 124, 124);
+    color: white;
     font-size: 28px;    
     display: none;
     @media (width >= 48rem) {
@@ -15,4 +15,23 @@
 .slick-arrow.slick-next::before {
     content: "❯";
     padding-left: 2px;
+}
+
+.carousel-dots {
+    display: flex;
+    width: fit-content;
+    position: absolute;
+    top: -52px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.carousel-dots li button::before {
+    color: white;
+    opacity: 56%;
+}
+
+.carousel-dots li.slick-active button::before {
+    color: oklch(87.9% 0.169 91.605);
+    opacity: 100%;
 }

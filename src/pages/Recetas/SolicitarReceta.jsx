@@ -65,7 +65,7 @@ function SolicitarReceta() {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form className='max-w-211.5' onSubmit={handleSubmit(onSubmit)}>
       <Select
         {...register("paraAfiliado")}
         id="paraAfiliado"
