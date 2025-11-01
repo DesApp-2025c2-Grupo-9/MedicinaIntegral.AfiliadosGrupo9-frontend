@@ -116,7 +116,7 @@ function Inicio() {
   ];
 
   return (
-    <div className='flex flex-col gap-5'>
+    <div className='flex flex-col gap-5 max-w-[calc(100vw-32px)] lg:max-w-[calc(100dvw-296px)] overflow-x-clip mb-4 lg:mb-5'>
       <div className='flex flex-col gap-2'>
         <SectionTitle>Próximos turnos</SectionTitle>
         <div className='flex flex-wrap items-start self-stretch'>
