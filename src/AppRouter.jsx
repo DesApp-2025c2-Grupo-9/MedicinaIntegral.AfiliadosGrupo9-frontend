@@ -8,8 +8,6 @@ import ReintegroVer from "./pages/Reintegro/ReintegroVer";
 import Inicio from "./pages/Inicio";
 import ReintegrosLayout from "./layout/ReintegrosLayout";
 import MiCuenta from "./pages/MiCuenta";
-import NuevoReintegroForm from "./pages/NuevoReintegroForm";
-import DatosFacturaReintegroForm from "./pages/DatosFacturaReintegroForm";
 import TurnosLayout from "./layout/TurnosLayout";
 import RecetasLayout from "./layout/RecetasLayout";
 import AutorizacionesLayout from "./layout/AutorizacionesLayout";
@@ -22,6 +20,8 @@ import EditarReceta from "./pages/Recetas/EditarReceta";
 import SolicitarTurno from './pages/Turnos/SolicitarTurno';
 import VerTurnos from './pages/Turnos/VerTurnos';
 import CartillaMedica from "./pages/CartillaMedica";
+import ReintegroFormStepOne from './pages/ReintegroFormStepOne';
+import ReintegroFormStepTwo from './pages/ReintegroFormStepTwo';
 export function AppRouter() {
   return (
     <Routes>
@@ -44,14 +44,11 @@ export function AppRouter() {
 
           <Route path="/reintegros" element={<ReintegrosLayout />}>
             <Route path="historial-reintegros" element={<ReintegroVer />} />
-            <Route
-              path="solicitar-reintegro"
-              element={<NuevoReintegroForm />}
-            />
-            <Route
-              path="datos-factura"
-              element={<DatosFacturaReintegroForm />}
-            />
+            <Route path="solicitar-reintegro" element={<ReintegroFormStepOne />} />
+            <Route path="datos-factura" element={<ReintegroFormStepTwo />} />
+
+            <Route path="editar-reintegro" element={<ReintegroFormStepOne />} />
+            <Route path="editar-reintegro/datos-factura" element={<ReintegroFormStepTwo />} />
           </Route>
 
           <Route path="/recetas" element={<RecetasLayout />}>

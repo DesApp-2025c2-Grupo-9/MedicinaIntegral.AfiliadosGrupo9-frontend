@@ -8,23 +8,20 @@ import TipoDeTramite from './cardComponents/TipoDeTramite';
 import { format, addDays } from 'date-fns';
 import pesosArg from '../../../utils/pesosArg';
 import { useState } from 'react';
-import { useEditReintegroStep } from '../../../store/editReintegroStepStore';
-import { useEditDatosFacturaHandler } from '../../../hooks/useEditDatosFacturaHandler';
-import EditReintegroForm from '../../../pages/EditReintegroForm';
-import EditDatosFacturaReintegroForm from '../../../pages/EditDatosFacturaReintegroForm';
 import { useDelReintegro } from '../../../hooks/useDeleteReintegro';
 import ModalObservaciones from '../../ModalObservaciones/ModalObservaciones';
 import { useCommentReintegro } from '../../../hooks/useCommentReintegro';
+import { useNavigate } from 'react-router-dom';
+import { useReintegroStore } from '../../../store/reintegroStore';
 
 function ReintegroCard(props) {
   const dashboard = props.dashboard || false;
   const reintegro = props.reintegro;
   const { deleteReintegro } = useDelReintegro();
-  const { currentStep, setCurrentStep } = useEditReintegroStep();
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const { onSubmit: editDatosFactura } = useEditDatosFacturaHandler(reintegro, setIsEditOpen);
   const fechaDePrestacion = format(addDays(reintegro.fechaDePrestacion, 1), 'dd/MM/yyyy');
   const valorTotal = pesosArg.format(reintegro.factura.valorTotal);
+
+  const navigate = useNavigate();
 
   //Estilo de la card
   const cardStyle = 'grid-cols-2';
@@ -32,29 +29,10 @@ function ReintegroCard(props) {
   const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
   const observacionPrestador = reintegro?.observaciones?.find(observacion => observacion.rolEmisor === 'Prestador');
   const { onSubmit: commentReintegro } = useCommentReintegro();
+  const setReintegro = useReintegroStore(state => state.setReintegro);
 
   return (
     <>
-      {isEditOpen && (
-        <div className='bg-negro-translucido fixed top-0 left-0 w-dvw h-dvh z-10 flex items-center justify-center'>
-          {currentStep === 1 ? (
-            <EditReintegroForm
-              className='w-full'
-              reintegro={reintegro}
-              cancelBtnOnClick={() => setIsEditOpen(false)}
-            />
-          ) : (
-            currentStep === 2 && (
-              <EditDatosFacturaReintegroForm
-                className='w-full max-h-[calc(100dvh-40px)] overflow-y-scroll scroll-hidden'
-                reintegro={reintegro}
-                cancelBtnOnClick={() => setCurrentStep(1)}
-                onSubmit={editDatosFactura}
-              />
-            )
-          )}
-        </div>
-      )}
       <ModalObservaciones
         open={isObservacionesOpen}
         onClose={() => setIsObservacionesOpen(false)}
@@ -65,12 +43,6 @@ function ReintegroCard(props) {
         idTramite={reintegro.id}
         onSubmit={commentReintegro}
       />
-      {/* {isObservacionesOpen && (
-        // <div className='bg-negro-translucido fixed top-0 left-0 w-dvw h-dvh z-10 flex items-center justify-center'>
-        <div className='fixed top-0 left-0 w-dvw h-dvh z-10 flex items-center justify-center'>
-          <ModalObservaciones />
-        </div>
-      )} */}
       <MarcoCard
         estilo={cardStyle}
         estado={reintegro.estado}
@@ -107,7 +79,12 @@ function ReintegroCard(props) {
           {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
           {reintegro.estado == 'pendiente' && dashboard == false ? ( //El estado está en minuscula
             <div className='flex items-baseline-last justify-end row-start-4'>
-              <BotonEditar onClick={() => setIsEditOpen(true)} />
+              <BotonEditar
+                onClick={() => {
+                  setReintegro(reintegro);
+                  navigate('/reintegros/editar-reintegro');
+                }}
+              />
               <BotonPapelera onClick={() => deleteReintegro(reintegro, fechaDePrestacion, valorTotal)} />
             </div>
           ) : (
