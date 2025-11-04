@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { capitalize } from 'lodash';
 import { useUserStore } from '../../store/userStore';
 
+
 function VerAutorizaciones() {
   const navigate = useNavigate();
   const { state } = useStateFilter();

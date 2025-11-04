@@ -15,12 +15,13 @@ import AutorizacionesLayout from "./layout/AutorizacionesLayout";
 import VerRecetas from "./pages/Recetas/VerRecetas";
 import SolicitarReceta from "./pages/Recetas/SolicitarReceta";
 import VerAutorizaciones from "./pages/Autorizaciones/VerAutorizaciones";
-import SolicitarAutorizacion from "./pages/Autorizaciones/SolicitarAutorizacion";
 import RequireAuth from "./components/RequireAuth";
 import EditarReceta from "./pages/Recetas/EditarReceta";
 import CartillaMedica from "./pages/CartillaMedica";
 import ReintegroFormStepOne from './pages/ReintegroFormStepOne';
 import ReintegroFormStepTwo from './pages/ReintegroFormStepTwo';
+import AutorizacionForm from "./pages/Autorizaciones/AutorizacionForm";
+
 export function AppRouter() {
   return (
     <Routes>
@@ -63,7 +64,11 @@ export function AppRouter() {
             <Route path="ver-autorizaciones" element={<VerAutorizaciones />} />
             <Route
               path="solicitar-autorizacion"
-              element={<SolicitarAutorizacion />}
+              element={<AutorizacionForm />}
+            />
+            <Route
+              path="editar-autorizacion"
+              element={<AutorizacionForm />}
             />
           </Route>
 
