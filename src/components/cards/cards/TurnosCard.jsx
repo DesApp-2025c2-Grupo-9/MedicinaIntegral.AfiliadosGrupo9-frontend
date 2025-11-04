@@ -2,57 +2,178 @@ import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal";
 import BotonPapelera from "./cardComponents/BotonPapelera";
 import UsuarioActual from "./cardComponents/UsuarioActual";
 import MarcoCard from "./cardComponents/MarcoCard";
+import { useAnularReserva, useReservarTurno } from "../../../services/turnosQueries";
+import Swal from "sweetalert2";
 function TurnosCard(props) {
   //Recibe en sus props un turno
   //Opcionalmente, si el turno le pertenece al afiliado, se manda el afiliado o una flag
   //  que indique que el turno pertenece al paciente
+  const {
+    mutateAsync: reservar,
+    isLoading: isReservando,
+    isSuccess: isReservado,
+    isError: isErrorReserva
+    
+  } = useReservarTurno();
+  
 
-  let turno = props.turno; //El turno con el que se va a cargar la primera columna
-  let paciente = props.paciente; //Flag  paciente
-  const deleteTurno = () => {
-    //Lógica a aplicar al apretar la papelera
-    alert("deleteTurno");
-  };
+  const { mutateAsync: anularReserva} = useAnularReserva();
+  const turno = props.turno; //El turno con el que se va a cargar la primera columna
+  const paciente = props.paciente; //Flag  paciente
+  const idAfiliadoParaEliminar = props.idAfiliadoParaEliminar
+  const isPast = props.isPast;
   //let ancho = paciente ? "max-w-md min-w-sm" : "w-xs";
-  let cardStyle = `relative overflow-hidden group transition-all duration-300 ${paciente? 'grid-cols-2' : ''}`;
+  let cardStyle = `relative overflow-hidden group transition-all duration-300 ${paciente ? 'grid-cols-2' : ''}`;
+
+
+  const deleteTurno = async () => {
+    //Lógica a aplicar al apretar la papelera
+    const fechaFormateada = formatFecha(turno.fechaTurno)
+    const result = await Swal.fire({
+      title: "Estas a punto de anular el turno?",
+      text: `Para la especialidad ${turno.especialidad} con  ${turno.prestador} el día ${fechaFormateada}`,
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonColor: "#3085d6",
+      confirmButtonColor: "#d33",
+      confirmButtonText: "Anular reserva",
+      cancelButtonText: 'Cancelar'
+    })
+    if (!result.isConfirmed) {
+      return;
+    }
+    try {
+      // Mostramos un modal de "Cargando..."
+      Swal.fire({
+        title: 'Anulando...',
+        text: 'Por favor esperá.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      // 6. LLAMAMOS A LA MUTACIÓN Y ESPERAMOS (await)
+      await anularReserva({
+        idTurno: turno.idTurno,
+        idAfiliado: idAfiliadoParaEliminar
+      });
+
+      // 7. SI 'await' TERMINA BIEN (Éxito):
+      // Tu 'onSuccess' global (el de 'invalidateQueries') se va a disparar solo.
+      // Y acá mostramos el modal de éxito.
+      Swal.fire({
+        title: "Reserva anulada!",
+        text: "Tu reserva ha sido anulada exitosamente.",
+        icon: "success"
+      });
+
+    } catch (error) {
+      // 8. SI 'await' FALLA (Error):
+      console.log('Error en la anulacińo: ', error)
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo anular la reserva del turno.",
+        icon: "error"
+      });
+    }
+  };
+  const reservarTurno = async () => {
+    const fechaFormateada = formatFecha(turno.fechaTurno)
+    const result = await Swal.fire({
+      title: "Estas a punto de reservar el turno?",
+      text: `Para la especialidad ${turno.especialidad} con  ${turno.prestador} el día ${fechaFormateada}`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Reservar!",
+      cancelButtonText: 'Cancelar'
+    })
+    if (!result.isConfirmed) {
+      return;
+    }
+    try {
+      // Mostramos un modal de "Cargando..."
+      Swal.fire({
+        title: 'Reservando...',
+        text: 'Por favor esperá.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      // 6. LLAMAMOS A LA MUTACIÓN Y ESPERAMOS (await)
+      await reservar({
+        idTurno: turno.idTurno,
+        idAfiliado: props.idAfiliadoParaReservar
+      });
+
+      // 7. SI 'await' TERMINA BIEN (Éxito):
+      // Tu 'onSuccess' global (el de 'invalidateQueries') se va a disparar solo.
+      // Y acá mostramos el modal de éxito.
+      Swal.fire({
+        title: "¡Reservado!",
+        text: "Tu turno ha sido reservado exitosamente.",
+        icon: "success"
+      });
+
+    } catch (error) {
+      // 8. SI 'await' FALLA (Error):
+      // La API tiró un error (ej: el turno ya no estaba disponible)
+      console.log('Error en la reserva: ', error)
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo reservar el turno. Es posible que ya haya sido tomado.",
+        icon: "error"
+      });
+    }
+  }
 
   return (
     <MarcoCard estilo={cardStyle} >
       <div className={`transition-all duration-300 group-hover:blur-xxs group-hover:brightness-75 ${paciente || 'grid-cols-2'}`}>
         <div>
 
-        {/*columna datos del turno*/}
-        <ColumnaPrincipal >
-          {paciente && turno.especialidad}
-          {turno.prestador}
-          {formatFecha(turno.fechaTurno)}
-          {turno.lugarAtencion}
-          {turno.direccion}
-          {turno.telefono}
-        </ColumnaPrincipal>
+          {/*columna datos del turno*/}
+          <ColumnaPrincipal >
+            {paciente && turno.especialidad}
+            {turno.prestador}
+            {formatFecha(turno.fechaTurno)}
+            {turno.lugarAtencion}
+            {turno.direccion}
+            {turno.telefono}
+          </ColumnaPrincipal>
         </div>
-        </div>
-        {/*Columna derecha si tiene turno asignado*/}
-        {paciente && (
-          <div className="grid grid-rows-4 justify-end">
-            <UsuarioActual />
-            <div className="row-start-4 justify-self-end">
+      </div>
+      {/*Columna derecha si tiene turno asignado*/}
+      {paciente && (
+        <div className="grid grid-rows-4 justify-end">
+          <UsuarioActual paciente={props.nombrePaciente}/>
+          <div className="row-start-4 justify-self-end">
 
-              <BotonPapelera
-                onClick={deleteTurno}
-              />
-            </div>
+            {!isPast? (
+            <BotonPapelera
+              onClick={deleteTurno}
+            />
+            ): (
+              <span className="text-sm font-bold text-gray-500 p-2">
+                Finalizado
+              </span>
+            )}
           </div>
-        )}
-        {!paciente &&
+        </div>
+      )}
+      {!paciente &&
         <button
-        className="absolute inset-0 flex items-center justify-center text-white font-semibold bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
-        onClick={() => alert('Reservar turno')}
+          className="absolute inset-0 flex items-center justify-center text-white font-semibold bg-green-600/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+          onClick={reservarTurno}
         >
-        ¡Reservar turno!
-      </button>
+          ¡Reservar turno!
+        </button>
       }
-      
+
     </MarcoCard>
   );
 }
