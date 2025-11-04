@@ -6,12 +6,13 @@ import UsuarioActual from "./cardComponents/UsuarioActual";
 import MarcoCard from "./cardComponents/MarcoCard";
 import TipoDeTramite from "./cardComponents/TipoDeTramite";
 import { useState } from "react";
-import EditarAutorizacion from "../../../pages/Autorizaciones/EditarAutorizacion";
 import ModalObservaciones from "../../ModalObservaciones/ModalObservaciones";
 import { useEliminarAutorizacion, useCommentAutorizacion } from "../../../hooks/useAutorizacionPetitions";
+import { useNavigate } from "react-router-dom";
+import { useAutorizacionStore } from "../../../store/autorizacionStore";
 
 function AutorizacionCard(props) {
-  const [modalEditarOpen, setModalEditarOpen] = useState(false)
+  const setAutorizacion = useAutorizacionStore(state => state.setAutorizacion)
   const autorizacion = props.autorizacion;
   const dashboard = props.dashboard || false;
   let cardStyle = `grid-cols-2`;
@@ -19,21 +20,10 @@ function AutorizacionCard(props) {
   const { eliminarAutorizacion } = useEliminarAutorizacion();
   const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
   const observacionPrestador = autorizacion?.observaciones?.find(observacion => observacion.rolEmisor === 'Prestador');
+  const navigate = useNavigate()
 
   return (
     <>
-      {/*Modal Editar */}
-      {
-        modalEditarOpen && (
-          <div className="bg-negro-translucido fixed top-0 left-0 w-dvw h-dvh z-10 flex items-center justify-center">
-            <EditarAutorizacion
-              className='w-full max-w-[600px]'
-              autorizacion={autorizacion}
-              cancelBtnOnClick={() => setModalEditarOpen(false)}
-            />
-          </div>
-        )
-      }
        <ModalObservaciones
         open={isObservacionesOpen}
         onClose={() => setIsObservacionesOpen(false)}
@@ -71,8 +61,11 @@ function AutorizacionCard(props) {
           {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
           {autorizacion.estado == 'pendiente' && dashboard == false ? (
             <div className="flex items-baseline-last justify-end row-start-4 col-start-1">
-              <BotonEditar onClick={() => setModalEditarOpen(true)} />
-              <BotonPapelera onClick={eliminarAutorizacion} />
+              <BotonEditar onClick={() => {
+                  setAutorizacion(autorizacion);
+                  navigate('/autorizaciones/editar-autorizacion');
+                }} />
+              <BotonPapelera onClick={() => eliminarAutorizacion(autorizacion)} />
             </div>
           ) : <></>
           }
