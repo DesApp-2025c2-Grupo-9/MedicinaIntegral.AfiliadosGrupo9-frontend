@@ -1,0 +1,29 @@
+.modal-tramites-cancel-button {
+  background-color: white;
+  color: var(--color-rojo-alerta);
+  border: solid 1px var(--color-rojo-alerta);
+  order: -1;
+  border-radius: 8px;
+  min-height: 52px;
+  min-width: 160px;
+
+  &:hover {
+    background-color: var(--color-rojo-alerta);
+    color: white;
+  }
+}
+
+.modal-tramites-confirm-button {
+  border-radius: 8px;
+  min-height: 52px;
+  min-width: 160px;
+  background: var(--color-menta-600);
+  &:hover {
+    background-color: var(--color-menta-200);
+  }
+}
+
+.modal-tramites-html {
+  font-size: 16px;
+  color: #3f4041;
+}
