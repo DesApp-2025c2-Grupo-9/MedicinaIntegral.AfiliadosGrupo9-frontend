@@ -7,15 +7,25 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import InputContainer from "../../components/InputContainer";
 import Select from "../../components/Select";
-import { useUpdateReceta } from "../../services/recetasQueries";
+import {
+  useGetRecetaById,
+  useUpdateReceta,
+} from "../../services/recetasQueries";
 import { useNewRecetaSchema } from "../../hooks/useNewRecetaSchema";
 import { useGetAfiliado } from "../../services/queries";
+import { useNavigate, useParams } from "react-router-dom";
 
-function EditarReceta({ receta, cancelBtnOnClick }) {
+function EditarReceta() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { data: recetasResponse, isLoading, error } = useGetRecetaById(id);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: afiliadoRes } = useGetAfiliado();
   const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(
     (familiar) => `${familiar.nombre} ${familiar.apellido}`
+  );
+  const recetaActual = recetasResponse?.data?.find(
+    (receta) => receta.id === id
   );
 
   const { recetaSchema } = useNewRecetaSchema({ listaAfiliados });
@@ -28,28 +38,21 @@ function EditarReceta({ receta, cancelBtnOnClick }) {
     reset,
   } = useForm({
     resolver: zodResolver(recetaSchema),
-    defaultValues: {
-      paraAfiliado: receta?.paraAfiliado,
-      medicamento: receta?.medicamento,
-      cantidad: receta?.cantidad,
-      presentacion: receta?.presentacion,
-      observaciones: receta?.observaciones?.[0]?.descripcion || "",
-    },
+    defaultValues: {},
   });
 
-  //Resetear formulario cuando llegue la receta completa
-  /*useEffect(() => {
-    if (receta) {
+  useEffect(() => {
+    if (recetaActual) {
       reset({
-        paraAfiliado: receta.paraAfiliado || "",
-        medicamento: receta.medicamento || "",
-        cantidad: receta.cantidad || 1,
-        presentacion: receta.presentacion || "",
-        observaciones: receta.observaciones?.[0]?.descripcion || "",
+        paraAfiliado: recetaActual.paraAfiliado || "",
+        medicamento: recetaActual.medicamento || "",
+        cantidad: recetaActual.cantidad || 1,
+        presentacion: recetaActual.presentacion || "",
+        observaciones: recetaActual.observaciones?.[0]?.descripcion || "",
       });
     }
-  }, [receta, reset]);
-*/
+  }, [recetaActual, reset]);
+
   const onSubmit = async (formData) => {
     const result = await Swal.fire({
       title: "Confirmar edición",
@@ -69,9 +72,12 @@ function EditarReceta({ receta, cancelBtnOnClick }) {
 
     try {
       setIsSubmitting(true);
-      await mutateAsync({ id: receta.id, data: formData });
+      await mutateAsync({
+        id: recetaActual.id,
+        data: formData,
+      });
       Swal.fire({ title: "Receta actualizada", icon: "success" });
-      cancelBtnOnClick();
+      volverPantallaRecetas();
     } catch (error) {
       Swal.fire({
         title: "Error",
@@ -82,6 +88,17 @@ function EditarReceta({ receta, cancelBtnOnClick }) {
       setIsSubmitting(false);
     }
   };
+
+  if (isLoading) return <p>Cargando...</p>;
+  if (error) {
+    if (error?.response?.status === 401) {
+      navigate("/login", { state: { from: location }, replace: true });
+      return null;
+    }
+    return <p>Error: {JSON.stringify(error)}</p>;
+  }
+
+  const volverPantallaRecetas = () => navigate("/recetas/ver-recetas");
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -127,7 +144,7 @@ function EditarReceta({ receta, cancelBtnOnClick }) {
           type="button"
           className="ml-auto"
           style="outln"
-          onClick={cancelBtnOnClick}
+          onClick={volverPantallaRecetas}
         >
           Cancelar
         </Button>
