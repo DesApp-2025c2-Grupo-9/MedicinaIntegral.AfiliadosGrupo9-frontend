@@ -19,8 +19,8 @@ import SolicitarAutorizacion from "./pages/Autorizaciones/SolicitarAutorizacion"
 import RequireAuth from "./components/RequireAuth";
 import EditarReceta from "./pages/Recetas/EditarReceta";
 import CartillaMedica from "./pages/CartillaMedica";
-import ReintegroFormStepOne from './pages/ReintegroFormStepOne';
-import ReintegroFormStepTwo from './pages/ReintegroFormStepTwo';
+import ReintegroFormStepOne from "./pages/ReintegroFormStepOne";
+import ReintegroFormStepTwo from "./pages/ReintegroFormStepTwo";
 export function AppRouter() {
   return (
     <Routes>
@@ -46,11 +46,17 @@ export function AppRouter() {
 
           <Route path="/reintegros" element={<ReintegrosLayout />}>
             <Route path="historial-reintegros" element={<ReintegroVer />} />
-            <Route path="solicitar-reintegro" element={<ReintegroFormStepOne />} />
+            <Route
+              path="solicitar-reintegro"
+              element={<ReintegroFormStepOne />}
+            />
             <Route path="datos-factura" element={<ReintegroFormStepTwo />} />
 
             <Route path="editar-reintegro" element={<ReintegroFormStepOne />} />
-            <Route path="editar-reintegro/datos-factura" element={<ReintegroFormStepTwo />} />
+            <Route
+              path="editar-reintegro/datos-factura"
+              element={<ReintegroFormStepTwo />}
+            />
           </Route>
 
           <Route path="/recetas" element={<RecetasLayout />}>
