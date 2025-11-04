@@ -14,7 +14,6 @@ function VerRecetas() {
   const { user } = useUserStore((state) => state);
   const { data, error, isLoading } = useGetRecetas(user.idAfiliado);
   const recetas = data?.data || [];
-  console.log(recetas);
   if (isLoading) return <p>Cargando...</p>;
   if (error) {
     if (error?.response?.status === 401) {

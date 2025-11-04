@@ -55,8 +55,10 @@ export function useUpdateReceta() {
 
   return useMutation({
     mutationFn: (data) => updateReceta(axiosPrivate, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["recetas"] });
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["receta", variables.id],
+      });
     },
   });
 }
