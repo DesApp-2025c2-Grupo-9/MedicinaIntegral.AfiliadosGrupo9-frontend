@@ -10,13 +10,15 @@ import TipoDeTramite from "./cardComponents/TipoDeTramite";
 import BotonDescargar from "./cardComponents/BotonDescargar";
 import EditarReceta from "../../../pages/Recetas/EditarReceta";
 import ModalObservaciones from "../../ModalObservaciones/ModalObservaciones";
-import { useDeleteReceta } from "../../../services/recetasQueries";
+//import { useDeleteReceta } from "../../../services/recetasQueries";
+import { useDelReceta } from "../../../hooks/useDeleteReceta";
 import {
   useCommentReceta,
   useDescargarReceta,
 } from "../../../hooks/useRecetaPetitions";
-import { handleDeleteReceta } from "../../../services/recetasHelpers";
+//import { handleDeleteReceta } from "../../../services/recetasHelpers";
 import { useNavigate } from "react-router-dom";
+import "../../../styles/recetas.css";
 
 function RecetaCard(props) {
   const dashboard = props.dashboard || false;
@@ -25,9 +27,9 @@ function RecetaCard(props) {
   const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
   const { onSubmit: commentReceta } = useCommentReceta();
   const { descargarReceta } = useDescargarReceta();
-  const { mutateAsync } = useDeleteReceta();
+  //const { mutateAsync } = useDeleteReceta();
   const navigate = useNavigate();
-
+  const { deleteRecetaHandler } = useDelReceta();
   const observacionPrestador = receta?.observaciones?.find(
     (obs) => obs.rolEmisor === "Prestador"
   );
@@ -40,17 +42,22 @@ function RecetaCard(props) {
       })
     : "Sin fecha";
 
-  // ===== Mostrar modal o Swal según estado =====
   const handleObservacionesClick = () => {
     const estado = receta.estado?.toLowerCase();
     if (estado === "en análisis" || estado === "observado") {
       setIsObservacionesOpen(true);
     } else {
       Swal.fire({
-        title: "Sin observaciones",
-        text: "Esta receta no tiene observaciones disponibles.",
+        text: "No hay observaciones para esta receta.",
         icon: "info",
+        iconColor: "#00ab01",
         confirmButtonText: "Aceptar",
+        customClass: {
+          popup: "p-6",
+
+          htmlContainer: "text-sm text-gray-700",
+          confirmButton: "modal-tramites-confirm-button",
+        },
       });
     }
   };
@@ -98,8 +105,13 @@ function RecetaCard(props) {
               <UsuarioActual paciente={receta.paraAfiliado} />
               {receta.estado !== "pendiente" && (
                 <div className="flex row-start-4">
-                  <BotonDescargar onClick={() => descargarReceta(receta)} />
-                  <BotonObservaciones onClick={handleObservacionesClick} />
+                  {receta.estado?.toLowerCase() === "aceptado" && (
+                    <BotonDescargar onClick={() => descargarReceta(receta)} />
+                  )}
+                  {receta.estado?.toLowerCase() !== "aceptado" &&
+                    receta.estado?.toLowerCase() !== "rechazado" && (
+                      <BotonObservaciones onClick={handleObservacionesClick} />
+                    )}
                 </div>
               )}
             </>
@@ -110,9 +122,7 @@ function RecetaCard(props) {
               <BotonEditar
                 onClick={() => navigate(`/recetas/editar/${receta.id}`)}
               />
-              <BotonPapelera
-                onClick={() => handleDeleteReceta(receta, mutateAsync)} // ✅ usa helper
-              />
+              <BotonPapelera onClick={() => deleteRecetaHandler(receta)} />
             </div>
           )}
         </div>
