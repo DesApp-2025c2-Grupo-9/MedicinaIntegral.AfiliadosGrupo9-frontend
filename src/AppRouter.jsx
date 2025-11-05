@@ -9,17 +9,18 @@ import ReintegroVer from "./pages/Reintegro/ReintegroVer";
 import Inicio from "./pages/Inicio";
 import ReintegrosLayout from "./layout/ReintegrosLayout";
 import MiCuenta from "./pages/MiCuenta";
-import NuevoReintegroForm from "./pages/NuevoReintegroForm";
-import DatosFacturaReintegroForm from "./pages/DatosFacturaReintegroForm";
 import TurnosLayout from "./layout/TurnosLayout";
 import RecetasLayout from "./layout/RecetasLayout";
 import AutorizacionesLayout from "./layout/AutorizacionesLayout";
 import VerRecetas from "./pages/Recetas/VerRecetas";
 import SolicitarReceta from "./pages/Recetas/SolicitarReceta";
 import VerAutorizaciones from "./pages/Autorizaciones/VerAutorizaciones";
-import SolicitarAutorizacion from "./pages/Autorizaciones/SolicitarAutorizacion";
 import RequireAuth from "./components/RequireAuth";
 import EditarReceta from "./pages/Recetas/EditarReceta";
+import CartillaMedica from "./pages/CartillaMedica";
+import ReintegroFormStepOne from './pages/ReintegroFormStepOne';
+import ReintegroFormStepTwo from './pages/ReintegroFormStepTwo';
+import AutorizacionForm from "./pages/Autorizaciones/AutorizacionForm";
 
 export function AppRouter() {
   return (
@@ -48,11 +49,14 @@ export function AppRouter() {
             <Route path="historial-reintegros" element={<ReintegroVer />} />
             <Route
               path="solicitar-reintegro"
-              element={<NuevoReintegroForm />}
+              element={<ReintegroFormStepOne />}
             />
+            <Route path="datos-factura" element={<ReintegroFormStepTwo />} />
+
+            <Route path="editar-reintegro" element={<ReintegroFormStepOne />} />
             <Route
-              path="datos-factura"
-              element={<DatosFacturaReintegroForm />}
+              path="editar-reintegro/datos-factura"
+              element={<ReintegroFormStepTwo />}
             />
           </Route>
 
@@ -66,11 +70,15 @@ export function AppRouter() {
             <Route path="ver-autorizaciones" element={<VerAutorizaciones />} />
             <Route
               path="solicitar-autorizacion"
-              element={<SolicitarAutorizacion />}
+              element={<AutorizacionForm />}
+            />
+            <Route
+              path="editar-autorizacion"
+              element={<AutorizacionForm />}
             />
           </Route>
 
-          <Route path="/cartilla-medica" element={<h3>Cartilla Médica.</h3>} />
+          <Route path="/cartilla-medica" element={<CartillaMedica />} />
         </Route>
       </Route>
 

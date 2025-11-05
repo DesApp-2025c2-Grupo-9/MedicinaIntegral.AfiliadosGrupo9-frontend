@@ -17,15 +17,17 @@ export const useDelReintegro = () => {
           <br />
           <p>¿Desea continuar?</p>
         `,
-        icon: 'question',
+        icon: 'warning',
+        iconColor: '#dc143c',
         showCancelButton: true,
         cancelButtonText: 'Cancelar',
         cancelButtonColor: '#dc143c',
         confirmButtonText: 'Confirmar',
         confirmButtonColor: '#00ab01',
         customClass: {
+          htmlContainer: 'reintegros-html',
           cancelButton: 'reintegros-cancel-button',
-          confirmButton: 'reintegros-confirm-button'
+          confirmButton: 'reintegros-confirm-button',          
         }
       }).then(async result => {
         try {

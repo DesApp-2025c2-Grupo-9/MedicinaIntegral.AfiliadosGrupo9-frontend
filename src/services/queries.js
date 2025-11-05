@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { commentReintegroById, createReintegro, deleteReintegro, getAfiliado, getEspecialidades, getReintegros, login, register, updateReintegro } from './api';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
@@ -27,12 +27,13 @@ export function useGetAfiliado() {
 }
 
 // Reintegros
-export function useGetReintegros() {
+export function useGetReintegros(idAfiliado) {
   const axiosPrivate = useAxiosPrivate();
 
   return useQuery({
-    queryKey: ['reintegros'],
-    queryFn: () => getReintegros(axiosPrivate)
+    queryKey: ['reintegros', { idAfiliado }],
+    queryFn: () => getReintegros(axiosPrivate, idAfiliado),
+    placeholderData: keepPreviousData
   });
 }
 
@@ -81,7 +82,7 @@ export function useCommentReintegroById() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reintegros'] });
     }
-  })
+  });
 }
 
 // Especialidades

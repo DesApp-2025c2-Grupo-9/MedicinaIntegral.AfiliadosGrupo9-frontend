@@ -1,12 +1,10 @@
-import { cva } from 'class-variance-authority'
-import { icons } from '../../utils/icons'
+import { cva } from 'class-variance-authority';
+import { icons } from '../../utils/icons';
 import { twMerge } from 'tailwind-merge';
-import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { usePathPartials } from '../../hooks/usePathPartials';
 
-const variants = cva([
-  'inline-flex justify-center items-center gap-2 select-none cursor-pointer'
-], {
+const variants = cva(['inline-flex justify-center items-center gap-2 select-none cursor-pointer'], {
   variants: {
     state: {
       idle: ['text-negro-principal hover:text-menta-200'],
@@ -18,9 +16,9 @@ const variants = cva([
   }
 });
 
-function SidebarLink({ path, icon=icons.inicio, description='Description', onClick }) {
+function SidebarLink({ path, icon = icons.inicio, description = 'Description', onClick, pathPartials = [] }) {
   const location = useLocation();
-  const isActive = location.pathname === path; // Basándonos en la URL actual, definiremos el valor de isActive
+  const isActive = usePathPartials(pathPartials) || (location.pathname === '/' && path === '/');
 
   return (
     <Link
@@ -31,6 +29,6 @@ function SidebarLink({ path, icon=icons.inicio, description='Description', onCli
       <div className='w-[22px] h-5 flex flex-col justify-center items-center'>{icon}</div>
       <p>{description}</p>
     </Link>
-  )
+  );
 }
-export default SidebarLink
+export default SidebarLink;

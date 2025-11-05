@@ -4,17 +4,22 @@ import { icons } from '../utils/icons';
 import SectionLayoutTemplate from './SectionLayoutTemplate';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useNuevoReintegroStore } from '../store/nuevoReintegroStore';
+import { useReintegroStore } from '../store/reintegroStore';
 
 function ReintegrosLayout() {
   const location = useLocation();
-  const setData = useNuevoReintegroStore(state => state.setData);
+  const setReintegro = useReintegroStore(state => state.setReintegro);
+  const pathDest =
+    location.pathname !== '/reintegros/solicitar-reintegro' &&
+    location.pathname !== '/reintegros/datos-factura' &&
+    location.pathname !== '/reintegros/editar-reintegro' &&
+    location.pathname !== '/reintegros/editar-reintegro/datos-factura';
 
   useEffect(() => {
-    if (location.pathname !== '/reintegros/solicitar-reintegro' && location.pathname !== '/reintegros/datos-factura') {
-      setData({});
+    if (pathDest) {
+      setReintegro({});
     }
-  }, [setData, location]);
+  }, [location, setReintegro, pathDest]);
 
   return (
     <SectionLayoutTemplate
@@ -24,6 +29,7 @@ function ReintegrosLayout() {
           path='historial-reintegros'
           icon={icons.reintegros}
           description='Historial de reintegros'
+          pathPartials={['historial-reintegros']}
         />
       }
       navButtonB={
@@ -31,6 +37,7 @@ function ReintegrosLayout() {
           path='solicitar-reintegro'
           icon={icons.agregar}
           description='Solicitar nuevo reintegro'
+          pathPartials={['reintegros/solicitar-reintegro', 'reintegros/datos-factura']}
         />
       }
     />

@@ -1,21 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ListaFamiliares from './ListaFamiliares';
 import clsx from 'clsx';
 import { icons } from '../../utils/icons';
-import { useGetAfiliado /* useGetAfiliadoPublic */ } from '../../services/queries';
+import { useGetAfiliado } from '../../services/queries';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useUserStore } from '../../store/userStore';
 
 function AvatarAfiliado({ className }) {
-  // const { data, error, isLoading } = useGetAfiliadoPublic();
-  const { user, setUser } = useUserStore(state => state);
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { data, error, isLoading, isError } = useGetAfiliado();
-
-  useEffect(() => {
-    setUser({ ...user, grupoFamiliar: data?.data.grupoFamiliar });
-  }, [setUser, data]);
 
   if (isLoading) return <div>Cargando...</div>;
   if (isError && error.status === 401) {
@@ -32,8 +25,6 @@ function AvatarAfiliado({ className }) {
 
   const afiliado = data?.data;
   const inicialesUser = afiliado?.nombre?.charAt(0) + afiliado?.apellido?.charAt(0);
-
-  // setUser({ ...user, grupoFamiliar: afiliado.grupoFamiliar });
 
   return (
     <div className={`relative flex flex-col justify-center items-start lg:items-end gap-2 w-60 ${className}`}>
@@ -56,6 +47,7 @@ function AvatarAfiliado({ className }) {
           'absolute -top-45 opacity-0': !isOpen,
           'top-11 opacity-100': isOpen
         })}
+        onClick={() => setIsOpen(false)}
       />
     </div>
   );

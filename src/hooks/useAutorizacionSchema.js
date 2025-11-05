@@ -1,6 +1,4 @@
 import {z} from 'zod'
-import { getEspecialidades } from '../services/api';
-
 
 const ERROR_MESSAGES = {
   AFILIADO: {
@@ -26,9 +24,8 @@ const ERROR_MESSAGES = {
     TOO_SHORT: 'El lugar ingresado es demasiado corto.'
   },
   DIAS_DE_INTERNACION:{
-    REQUIRED: 'Debe ingresar una cantidad.',
-    INVALID_FORMAT: 'La cantidad debe expresarse con dígitos.',
-    NEGATIVE: 'La cantidad debe ser positiva.'
+    REQUIRED: 'Debe ingresar una cantidad de dias.',
+    INVALID_FORMAT: 'La cantidad debe expresarse con dígitos.'
   }
 }
 
@@ -55,7 +52,7 @@ export const useAutorizacionSchema = data => {
       practica : z.string().trim().min(3, ERROR_MESSAGES.PRACTICA.REQUIRED), 
       medicoSolicitante : z.string().trim().min(3, ERROR_MESSAGES.MEDICO_SOLICITANTE.REQUIRED),
       lugarAtencion : z.string().trim().min(3, ERROR_MESSAGES.LUGAR_DE_ATENCION.REQUIRED),
-      diasDeInternacion : z.coerce.number().positive(ERROR_MESSAGES.DIAS_DE_INTERNACION.NEGATIVE),
+      diasDeInternacion : z.coerce.number().min(0, ERROR_MESSAGES.DIAS_DE_INTERNACION.REQUIRED),
       observaciones : z.string().optional()
   });
   return { autorizacionSchema };

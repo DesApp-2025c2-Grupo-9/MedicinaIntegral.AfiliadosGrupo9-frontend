@@ -4,13 +4,16 @@ import FiltroEstados from "../../components/FiltroEstados"
 import { useGetAllAutorizaciones } from '../../services/autorizacionesQueries';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { capitalize } from 'lodash';
+import { useUserStore } from '../../store/userStore';
+
 
 function VerAutorizaciones() {
   const navigate = useNavigate();
   const { state } = useStateFilter();
   const location = useLocation();
+  const { user } = useUserStore(state => state);
 
-  const { data, error, isLoading } = useGetAllAutorizaciones();
+  const { data, error, isLoading } = useGetAllAutorizaciones(user.idAfiliado);
   const autorizaciones = data?.data || [];
 
   if (isLoading) return <p>Cargando...</p>;

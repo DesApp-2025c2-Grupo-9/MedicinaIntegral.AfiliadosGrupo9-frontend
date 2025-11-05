@@ -1,0 +1,29 @@
+.swal-popup-custom {
+  border-radius: 12px;
+  font-family: inherit;
+  padding: 1.5rem;
+}
+
+/* Botón Confirmar (verde) */
+.swal-btn-confirm {
+  background-color: #00ab01;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+}
+.swal-btn-confirm:hover {
+  background-color: #89ff89;
+}
+
+/* Botón Cancelar (gris) */
+.swal-btn-cancel {
+  background-color: #d1d5db;
+  color: #374151;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+}
+.swal-btn-cancel:hover {
+  background-color: #9ca3af;
+}

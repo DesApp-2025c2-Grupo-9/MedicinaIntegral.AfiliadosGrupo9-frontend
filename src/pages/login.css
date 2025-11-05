@@ -41,8 +41,8 @@
 .medicina-integral-section {
   position: absolute;
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56));
-    /* linear-gradient(rgba(0, 171, 1, 0.24), rgba(0, 171, 1, 0.24)); */
+    linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+    linear-gradient(rgba(0, 171, 1, 0.24), rgba(0, 171, 1, 0.24));
   width: 100%;
   height: 100%;
   display: flex;
