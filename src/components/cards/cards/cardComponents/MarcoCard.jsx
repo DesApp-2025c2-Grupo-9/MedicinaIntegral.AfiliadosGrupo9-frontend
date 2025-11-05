@@ -24,17 +24,17 @@ function MarcoCard(props) {
     observado: 'pt-1 bg-blue-300 shadow-blue-300 shadow rounded-xl m-3',
     analisis: 'pt-1 bg-blue-200 shadow-blue-300 shadow rounded-xl m-3',
   };
-  const mostrarEstado = () => {
-    
-    if(estado == 'analisis'){
-      return 'En analisis'  
-    }else{
-      return estado.charAt(0).toUpperCase() + estado.slice(1)
+    const mostrarEstado = () => {
+      
+      if(estado == 'analisis'){
+        return 'En analisis'  
+      }else{
+        return estado.charAt(0).toUpperCase() + estado.slice(1)
+      }
+
     }
-
-  }
-
-  const estiloEstado = estilos[estado] || '';
+    const estiloAnalisis = estado =='en análisis' ? estilos['analisis'] : ''
+    const estiloEstado = estilos[estado] || estiloAnalisis;
 
   // const invertirDetalle = () => { setdetalleOn(!detalleOn); console.log(detalleOn) }//Utilizado si se usa una pestaña para mostrar detalle
   return (
