@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 const getAllAutorizaciones = async (axiosPrivate, idAfiliado) => {
@@ -42,8 +42,9 @@ const commentAutorizacionById = async (axiosPrivate, body) => {
 export function useGetAllAutorizaciones (idAfiliado) {
   const axiosPrivate = useAxiosPrivate();
     return useQuery({
-        queryKey: ['autorizaciones'],
-        queryFn: () => getAllAutorizaciones(axiosPrivate, idAfiliado)
+        queryKey: ['autorizaciones', { idAfiliado }],
+        queryFn: () => getAllAutorizaciones(axiosPrivate, idAfiliado),
+        placeholderData: keepPreviousData
     })
 }
 
