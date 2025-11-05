@@ -228,3 +228,22 @@
 .swal-button-small:hover {
   background: #00ab01;
 }
+
+.auth-title {
+  font-size: 25px;
+  color: #3f4041;
+}
+
+.auth-html {
+  font-size: 16px;
+  color: #3f4041;
+}
+
+.auth-confirm-button {
+  min-height: 52px;
+  min-width: 160px;
+
+  &:hover {
+    background-color: #89ff89;
+  }
+}

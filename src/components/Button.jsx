@@ -1,71 +1,57 @@
-import { cva } from "class-variance-authority";
-import { twMerge } from "tailwind-merge";
+import { cva } from 'class-variance-authority';
+import { twMerge } from 'tailwind-merge';
+import LoadingSpinner from './LoadingSpinner';
 
 const variants = cva(
-  [
-    "flex",
-    "w-full",
-    "lg:w-fit",
-    "min-h-13",
-    "px-4",
-    "py-3",
-    "justify-center",
-    "items-center",
-    "rounded-lg",
-    "text-base",
-    "font-semibold",
-    "min-w-40"
-  ],
+  ['flex', 'w-full', 'lg:w-fit', 'min-h-13', 'px-4', 'py-3', 'justify-center', 'items-center', 'rounded-lg', 'text-base', 'font-semibold', 'min-w-40', 'transition-all'],
   {
     variants: {
       state: {
-        active: ["cursor-pointer"],
-        disabled: [""],
+        active: ['cursor-pointer'],
+        disabled: ['']
       },
       style: {
-        fill: [""],
-        outln: ["border"],
-      },
+        fill: [''],
+        outln: ['border']
+      }
     },
     compoundVariants: [
       {
-        state: "active",
-        style: "fill",
-        class: ["bg-menta-600 text-white hover:bg-menta-200"],
+        state: 'active',
+        style: 'fill',
+        class: ['bg-menta-600 text-white hover:bg-menta-200']
       },
       {
-        state: "disabled",
-        style: "fill",
-        class: ["bg-gris-placeholder text-gris-border"],
+        state: 'disabled',
+        style: 'fill',
+        class: ['bg-gris-placeholder text-gris-border']
       },
       {
-        state: "active",
-        style: "outln",
-        class: [
-          "border-gris-placeholder text-negro-principal hover:border-menta-200 hover:text-menta-200",
-        ],
+        state: 'active',
+        style: 'outln',
+        class: ['border-gris-placeholder text-negro-principal hover:border-menta-200 hover:text-menta-200']
       },
       {
-        state: "disabled",
-        style: "outln",
-        class: ["border-gris-border bg-gris-placeholder text-gris-border"],
-      },
+        state: 'disabled',
+        style: 'outln',
+        class: ['border-gris-border bg-gris-placeholder text-gris-border']
+      }
     ],
     defaultVariants: {
-      state: "active",
-      style: "fill",
-    },
+      state: 'active',
+      style: 'fill'
+    }
   }
 );
 
-function Button({ state, style, onClick, className, children, ...props }) {
+function Button({ state, style, onClick, className, isLoading = false, children, ...props }) {
   return (
     <button
       onClick={onClick}
       className={twMerge(variants({ state, style }), className)}
       {...props}
     >
-      {children}
+      {isLoading ? <LoadingSpinner /> : children}
     </button>
   );
 }

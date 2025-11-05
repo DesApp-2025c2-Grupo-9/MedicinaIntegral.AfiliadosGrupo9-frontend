@@ -105,8 +105,9 @@ function ReintegroFormStepOne({ className }) {
           type='submit'
           state={isSubmitting ? 'disabled' : 'active'}
           disabled={isSubmitting}
+          isLoading={isSubmitting}
         >
-          {isSubmitting ? 'Cargando...' : 'Siguiente'}
+          Siguiente
         </Button>
       </TwoButtons>
     </Form>

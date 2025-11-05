@@ -9,6 +9,7 @@ import { useReintegroStore } from '../store/reintegroStore';
 function ReintegrosLayout() {
   const location = useLocation();
   const setReintegro = useReintegroStore(state => state.setReintegro);
+
   const pathDest =
     location.pathname !== '/reintegros/solicitar-reintegro' &&
     location.pathname !== '/reintegros/datos-factura' &&

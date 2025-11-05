@@ -152,8 +152,9 @@ function ReintegroFormStepTwo({ className }) {
           type='submit'
           state={isSubmitting ? 'disabled' : 'active'}
           disabled={isSubmitting}
+          isLoading={isSubmitting}
         >
-          {isSubmitting ? 'Cargando...' : 'Confirmar'}
+          Confirmar
         </Button>
       </TwoButtons>
     </Form>

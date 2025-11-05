@@ -7,7 +7,7 @@ import { usePathPartials } from '../../hooks/usePathPartials';
 const variants = cva(['inline-flex justify-center items-center gap-2 select-none cursor-pointer'], {
   variants: {
     state: {
-      idle: ['text-negro-principal hover:text-menta-200'],
+      idle: ['text-negro-principal hover:text-menta-200 transition-all'],
       active: ['text-menta-600']
     }
   },

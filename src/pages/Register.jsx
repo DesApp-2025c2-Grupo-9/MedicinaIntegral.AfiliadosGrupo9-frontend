@@ -13,16 +13,15 @@ const Register = () => {
   const navigate = useNavigate();
   const { mutateAsync } = useRegister();
 
-  const handleClaveChange = (e) => {
+  const handleClaveChange = e => {
     setClave(e.target.value);
     if (error) setError('');
   };
 
-  const handleConfirmarClaveChange = (e) => {
-  setConfirmarClave(e.target.value);
-  if (error) setError('');
-};
-
+  const handleConfirmarClaveChange = e => {
+    setConfirmarClave(e.target.value);
+    if (error) setError('');
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -51,32 +50,41 @@ const Register = () => {
           popup: 'swal-popup-small',
           title: 'swal-title-small',
           confirmButton: 'swal-button-small',
-          confirmButtonColor: "#00ab01"
+          confirmButtonColor: '#00ab01'
         }
       }).then(() => {
         navigate('/login');
       });
     } catch (error) {
-       // este es el alerta para usuario ya registrado
-    if (error?.response?.status === 409) {
-      Swal.fire({
-        title: 'Usuario ya registrado',
-        text: 'El número de documento ya se encuentra registrado.',
-        icon: 'warning',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: "#00ab01"
-      });
-    } else {
-      console.log(error);
-      Swal.fire({
-        title: 'Error inesperado',
-        text: 'No se pudo completar el registro. Intente más tarde.',
-        icon: 'error',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: "#00ab01"
-      });
-    }
-
+      // este es el alerta para usuario ya registrado
+      if (error?.response?.status === 409) {
+        Swal.fire({
+          title: 'Usuario ya registrado',
+          text: 'El número de documento ingresado ya está registrado.',
+          icon: 'warning',
+          iconColor: '#dc143c',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#00ab01',
+          customClass: {
+            title: 'auth-title',
+            htmlContainer: 'auth-html',
+            confirmButton: 'auth-confirm-button'
+          }
+        });
+      } else {
+        Swal.fire({
+          title: 'Error inesperado',
+          text: 'No se pudo completar el registro. Intente más tarde.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#00ab01',
+          customClass: {
+            title: 'auth-title',
+            htmlContainer: 'auth-html',
+            confirmButton: 'auth-confirm-button'
+          }
+        });
+      }
     }
   };
 

@@ -21,7 +21,9 @@ import EditarReceta from "./pages/Recetas/EditarReceta";
 import CartillaMedica from "./pages/CartillaMedica";
 import ReintegroFormStepOne from './pages/ReintegroFormStepOne';
 import ReintegroFormStepTwo from './pages/ReintegroFormStepTwo';
-export function AppRouter() {
+import PersistLogin from './components/PersistLogin';
+
+export function AppRouter() {  
   return (
     <Routes>
       {/* Rutas públicas */}
@@ -31,10 +33,12 @@ export function AppRouter() {
       </Route>
 
       {/* Rutas protegidas */}
-      <Route element={<RequireAuth />}>
+      {/* <Route element={<RequireAuth />}> */}
+      <Route element={<PersistLogin />}>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Inicio />} />
           <Route path="/mi-cuenta" element={<MiCuenta />} />
+          <Route path="/alternate" element={<p>Soy alternate</p>} />
 
           <Route path="/turnos" element={<TurnosLayout />}>
             <Route
@@ -69,6 +73,7 @@ export function AppRouter() {
 
           <Route path="/cartilla-medica" element={<CartillaMedica />} />
         </Route>
+      {/* </Route> */}
       </Route>
 
       {/* Catch all */}

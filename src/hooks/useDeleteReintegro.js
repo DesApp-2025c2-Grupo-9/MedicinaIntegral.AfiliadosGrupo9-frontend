@@ -27,7 +27,7 @@ export const useDelReintegro = () => {
         customClass: {
           htmlContainer: 'reintegros-html',
           cancelButton: 'reintegros-cancel-button',
-          confirmButton: 'reintegros-confirm-button',          
+          confirmButton: 'reintegros-confirm-button'
         }
       }).then(async result => {
         try {
@@ -36,8 +36,13 @@ export const useDelReintegro = () => {
             Swal.fire({
               html: res.message,
               icon: 'success',
+              iconColor: '#00ab01',
               confirmButtonText: 'Continuar',
-              confirmButtonColor: '#00ab01'
+              confirmButtonColor: '#00ab01',
+              customClass: {
+                htmlContainer: 'reintegros-html',
+                confirmButton: 'reintegros-confirm-button'
+              }
             });
           } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.close();
@@ -51,5 +56,5 @@ export const useDelReintegro = () => {
     }
   };
 
-  return { deleteReintegro }
-}
+  return { deleteReintegro };
+};

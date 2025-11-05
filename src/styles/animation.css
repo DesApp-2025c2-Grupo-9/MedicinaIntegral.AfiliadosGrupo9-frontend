@@ -1,0 +1,26 @@
+.animate-topbar {
+  animation: from-top 0.8s ease;
+}
+
+.animate-sidebar {
+  @media (min-width: 1024px) {
+    animation: from-left 0.8s ease forwards;
+    animation-delay: 0.2s;
+  }
+}
+
+@keyframes from-top {
+  from {
+    transform: translateY(-60px);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes from-left {
+  to {
+    transform: translateX(236px);
+  }
+}

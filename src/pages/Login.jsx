@@ -42,12 +42,17 @@ const Login = () => {
       const mensaje = error.response?.data?.message || 'Ocurrió un problema. Intentá más tarde.';
       Swal.fire({
         icon: 'warning',
+        iconColor: '#dc143c',
         title: 'Error al iniciar sesión',
         text: mensaje,
         confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#00ab01'
+        confirmButtonColor: '#00ab01',
+        customClass: {
+          title: 'auth-title',
+          htmlContainer: 'auth-html',
+          confirmButton: 'auth-confirm-button'
+        }
       });
-      console.log(error);
     }
   };
 
