@@ -1,5 +1,9 @@
 import Swal from "sweetalert2";
 import { useCommentRecetaById } from "../services/recetasQueries";
+import jsPDF from "jspdf";
+import logo from "../assets/img/med_integral_logo.png";
+import capitalize from "../utils/capitalize";
+import "../styles/recetas.css";
 
 export const useCommentReceta = () => {
   const { mutateAsync } = useCommentRecetaById();
@@ -24,10 +28,16 @@ export const useDescargarReceta = () => {
   const descargarReceta = (receta) => {
     Swal.fire({
       title: "¿Desea descargar esta receta?",
-      icon: "question",
-      showDenyButton: true,
+      icon: "success",
+      showCancelButton: true,
       confirmButtonText: "Descargar",
-      denyButtonText: "Salir",
+      cancelButtonText: "Cancelar",
+      customClass: {
+        popup: "swal-popup-custom",
+        confirmButton: "swal-btn-confirm",
+        cancelButton: "swal-btn-cancel",
+      },
+      reverseButtons: true,
     }).then((result) => {
       if (!result.isConfirmed) return;
 

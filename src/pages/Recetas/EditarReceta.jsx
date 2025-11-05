@@ -6,12 +6,14 @@ import Form from "../../components/Form";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import InputContainer from "../../components/InputContainer";
-import Select from "../../components/Select";
+//import Select from "../../components/Select";
 import {
   useGetRecetaById,
   useUpdateReceta,
 } from "../../services/recetasQueries";
+
 import { useNewRecetaSchema } from "../../hooks/useNewRecetaSchema";
+import { useEditRecetaSchema } from "../../hooks/useEditRecetaSchema";
 import { useGetAfiliado } from "../../services/queries";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -24,11 +26,9 @@ function EditarReceta() {
   const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(
     (familiar) => `${familiar.nombre} ${familiar.apellido}`
   );
-  const recetaActual = recetasResponse?.data?.find(
-    (receta) => receta.id === id
-  );
+  const recetaActual = recetasResponse?.data;
 
-  const { recetaSchema } = useNewRecetaSchema({ listaAfiliados });
+  const { recetaSchema } = useEditRecetaSchema();
   const { mutateAsync } = useUpdateReceta();
 
   const {
@@ -52,31 +52,24 @@ function EditarReceta() {
       });
     }
   }, [recetaActual, reset]);
-
+  const volverPantallaRecetas = () => navigate("/recetas/ver-recetas");
   const onSubmit = async (formData) => {
-    const result = await Swal.fire({
-      title: "Confirmar edición",
-      html: `
-        <p>¿Desea guardar los cambios en la receta?</p>
-        <p><b>Medicamento: </b> ${formData.medicamento}</p>
-        <p><b>Presentación: </b> ${formData.presentacion}</p>
-        <p><b>Cantidad: </b> ${formData.cantidad}</p>
-      `,
-      icon: "question",
-      confirmButtonText: "Guardar",
-      showCancelButton: true,
-      cancelButtonText: "Cancelar",
-    });
-
-    if (!result.isConfirmed) return;
-
     try {
       setIsSubmitting(true);
       await mutateAsync({
         id: recetaActual.id,
         data: formData,
       });
-      Swal.fire({ title: "Receta actualizada", icon: "success" });
+      await Swal.fire({
+        html: "<p>Los cambios se han guardado correctamente.</p>",
+        icon: "success",
+        iconColor: "#00ab01",
+        confirmButtonText: "Continuar",
+        customClass: {
+          htmlContainer: "modal-tramites-html",
+          confirmButton: "modal-tramites-confirm-button",
+        },
+      });
       volverPantallaRecetas();
     } catch (error) {
       Swal.fire({
@@ -98,23 +91,16 @@ function EditarReceta() {
     return <p>Error: {JSON.stringify(error)}</p>;
   }
 
-  const volverPantallaRecetas = () => navigate("/recetas/ver-recetas");
-
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Select
-        {...register("paraAfiliado")}
-        id="paraAfiliado"
-        label="Para afiliado:"
-        placeholder="Seleccionar afiliado"
-        options={listaAfiliados}
-        errorMsg={errors.nroAfiliado?.message}
-      />
-
+    <Form className="max-w-211.5" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex items-center gap-1 w-fit text-blue-400 h-fit">
+        <h2 className="text-xl font-bold text-right">Editar receta</h2>
+      </div>
       <InputContainer>
         <Input
           {...register("medicamento")}
           label="Medicamento:"
+          maxLength={50}
           errorMsg={errors.medicamento?.message}
         />
         <Input

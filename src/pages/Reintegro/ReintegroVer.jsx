@@ -25,7 +25,7 @@ function ReintegroVer() {
   }
   if (isError) return <div>Error: {error.message}</div>;
 
-  const reintegros = data?.data;
+  const reintegros = data?.data || [];
   const reintegrosFiltrados = reintegros?.filter(r => state.includes(capitalize(r.estado)) || state === 'Todos');
 
   return (
