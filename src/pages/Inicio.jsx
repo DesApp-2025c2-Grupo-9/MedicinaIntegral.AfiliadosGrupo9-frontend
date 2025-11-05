@@ -30,7 +30,7 @@ function Inicio() {
       paciente: 'Carolina Benitez',
       especialidad: 'Oftalmología',
       profesional: 'Sol Diaz',
-      fecha: new Date('2025-05-03T14:00:00'),
+      fechaTurno: new Date('2025-05-03T14:00:00'),
       lugar: 'Centro Medicina Integral',
       direccion: 'Arias 2030, Castelar',
       telefono: '11-5467-8569',
@@ -41,7 +41,7 @@ function Inicio() {
       paciente: 'Carolina Benitez',
       especialidad: 'Cardiologia',
       profesional: 'Carlos Gonzalez',
-      fecha: new Date('2025-05-12T17:00:00'),
+      fechaTurno: new Date('2025-05-12T17:00:00'),
       lugar: 'Centro Medicina Integral',
       direccion: 'Arias 2030, Castelar',
       telefono: '11-5467-8569',
@@ -52,7 +52,7 @@ function Inicio() {
       paciente: 'Carolina Benitez',
       especialidad: 'Kinesiologia',
       profesional: 'Lucia Rodriguez',
-      fecha: new Date('2025-05-20T13:00:00'),
+      fechaTurno: new Date('2025-05-20T13:00:00'),
       lugar: 'Centro Medicina Integral',
       direccion: 'Arias 2030, Castelar',
       telefono: '11-5467-8569',
@@ -63,7 +63,7 @@ function Inicio() {
       paciente: 'Carolina Benitez',
       especialidad: 'Medicina General',
       profesional: 'Tomas Figueroa',
-      fecha: new Date('2025-06-01T09:00:00'),
+      fechaTurno: new Date('2025-06-01T09:00:00'),
       lugar: 'Centro Medicina Integral',
       direccion: 'Arias 2030, Castelar',
       telefono: '11-5467-8569',
@@ -125,6 +125,7 @@ function Inicio() {
               <TurnosCard
                 turno={t}
                 key={tIndex}
+                paciente={true}
               />
             ))
           ) : (

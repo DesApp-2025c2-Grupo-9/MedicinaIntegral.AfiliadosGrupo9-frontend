@@ -29,9 +29,10 @@ function VerRecetas() {
 
   return (
     <div className="flex flex-col items-end gap-3 relative">
-      <FiltroEstados className="sm:absolute -top-11 mr-auto" />
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-2 w-full">
-        {recetasFiltradas?.map((receta, idReceta) => (
+      <FiltroEstados className='sm:absolute -top-11 mr-auto'/>
+    <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-x-6">
+      {recetasFiltradas?.map(
+        (receta, idReceta) => (
           <RecetaCard receta={receta} key={idReceta} />
         ))}
       </div>
