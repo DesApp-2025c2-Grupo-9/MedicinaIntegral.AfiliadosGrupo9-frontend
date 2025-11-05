@@ -26,9 +26,7 @@ function EditarReceta() {
   const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(
     (familiar) => `${familiar.nombre} ${familiar.apellido}`
   );
-  const recetaActual = recetasResponse?.data?.find(
-    (receta) => receta.id === id
-  );
+  const recetaActual = recetasResponse?.data;
 
   const { recetaSchema } = useEditRecetaSchema();
   const { mutateAsync } = useUpdateReceta();
