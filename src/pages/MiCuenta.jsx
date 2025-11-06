@@ -26,7 +26,7 @@ function MiCuenta() {
   if (isError) return <div>Error: {error.message}</div>;
 
   const afiliado = data?.data;
-  const defaultCbu = afiliado.cbus.find(cbu => cbu.cbu === afiliado.cbuPrincipal);
+  const defaultCbu = afiliado?.cbus?.find(cbu => cbu.cbu === afiliado?.cbuPrincipal);
   const handleChange = async data => {
     try {
       await mutateAsync(data);
@@ -68,7 +68,12 @@ function MiCuenta() {
             label: `${cbu.nombre} ${cbu.apellido}: ${cbu.cbu}`,
             value: cbu.cbu
           }))}
-          defaultInputValue={`${defaultCbu.nombre} ${defaultCbu.apellido}: ${defaultCbu.cbu}`}
+          defaultInputValue={
+            defaultCbu
+              ? `${defaultCbu.nombre} ${defaultCbu.apellido}: ${defaultCbu.cbu}`
+              : ''
+          }
+
           onChange={selectedOption => handleChange({ nroCbu: selectedOption.value })}
           className='w-100 max-w-xl'
           placeholder='Selecciona un CBU'
