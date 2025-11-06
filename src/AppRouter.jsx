@@ -34,7 +34,7 @@ export function AppRouter() {
 
       {/* Rutas protegidas */}
       {/* <Route element={<RequireAuth />}> */}
-      <Route element={<PersistLogin />}>
+      {/* <Route element={<PersistLogin />}> */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Inicio />} />
           <Route path="/mi-cuenta" element={<MiCuenta />} />
@@ -81,7 +81,7 @@ export function AppRouter() {
           <Route path="/cartilla-medica" element={<CartillaMedica />} />
         </Route>
       {/* </Route> */}
-      </Route>
+      {/* </Route> */}
 
       {/* Catch all */}
       <Route path="*" element={<h3>Not Found.</h3>} />

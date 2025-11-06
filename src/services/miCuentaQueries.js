@@ -41,8 +41,12 @@ export function useRegistrarCbu() {
 
 export function useSetCbuPrincipal() {
   const axiosPrivate = useAxiosPrivate();
-
+  const queryClient = useQueryClient();
+  
   return useMutation({
-    mutationFn: data => setCbuPrincipal(axiosPrivate, data)
+    mutationFn: data => setCbuPrincipal(axiosPrivate, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['mi-cuenta'] });
+    }
   });
 }

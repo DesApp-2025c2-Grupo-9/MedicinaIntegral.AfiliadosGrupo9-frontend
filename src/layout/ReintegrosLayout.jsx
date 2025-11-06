@@ -5,10 +5,13 @@ import SectionLayoutTemplate from './SectionLayoutTemplate';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useReintegroStore } from '../store/reintegroStore';
+import { useGetAfiliado } from '../services/queries';
 
 function ReintegrosLayout() {
   const location = useLocation();
   const setReintegro = useReintegroStore(state => state.setReintegro);
+  const { data } = useGetAfiliado();
+  const paraAfiliado = data?.data?.grupoFamiliar?.length === 1 ? `${data?.data?.nombre} ${data?.data?.apellido}` : undefined;
 
   const pathDest =
     location.pathname !== '/reintegros/solicitar-reintegro' &&
@@ -18,7 +21,8 @@ function ReintegrosLayout() {
 
   useEffect(() => {
     if (pathDest) {
-      setReintegro({});
+      console.log('Para afiliado:', paraAfiliado);
+      setReintegro({ paraAfiliado });
     }
   }, [location, setReintegro, pathDest]);
 

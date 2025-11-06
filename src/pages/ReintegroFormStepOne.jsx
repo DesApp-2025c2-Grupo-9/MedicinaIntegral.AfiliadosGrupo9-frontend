@@ -46,15 +46,16 @@ function ReintegroFormStepOne({ className }) {
       onSubmit={handleSubmit(onSubmit)}
       className={`max-w-211.5 ${className}`}
     >
-      <Select
-        {...register('paraAfiliado')}
-        id='paraAfiliado'
-        label='Para afiliado:'
-        placeholder='Seleccionar afiliado'
-        options={listaAfiliados}
-        errorMsg={errors.paraAfiliado?.message}
-      />
-
+      {afiliados?.data?.grupoFamiliar?.length > 1 && (
+        <Select
+          {...register('paraAfiliado')}
+          id='paraAfiliado'
+          label='Para afiliado:'
+          placeholder='Seleccionar afiliado'
+          options={listaAfiliados}
+          errorMsg={errors.paraAfiliado?.message}
+        />
+      )}
       <InputContainer>
         <Input
           {...register('fechaDePrestacion')}

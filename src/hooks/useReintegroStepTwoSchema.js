@@ -16,9 +16,9 @@ export const useReintegroStepTwoSchema = () => {
         cuit: z
           .string()
           .trim()
-          .regex(/^[0-9]+$/, ERROR_MESSAGES.CUIT.REQUIRED)
-          .min(11, ERROR_MESSAGES.CUIT.INVALID_LENGTH)
-          .max(11, ERROR_MESSAGES.CUIT.INVALID_LENGTH),
+          // .regex(/^[0-9]+$/, ERROR_MESSAGES.CUIT.REQUIRED)
+          .min(13, ERROR_MESSAGES.CUIT.INVALID_LENGTH)
+          .max(13, ERROR_MESSAGES.CUIT.INVALID_LENGTH),
         valorTotal: z.coerce.number().positive(ERROR_MESSAGES.VALOR_TOTAL.NEGATIVE),
         personaAFacturar: z
           .string()
@@ -33,7 +33,7 @@ export const useReintegroStepTwoSchema = () => {
     .refine(
       data => {
         if (data.formaDePago === 'Transferencia') {
-          return data.cbu?.length === 22;
+          return data.cbu?.length === 23;
         } else {
           return true;
         }
