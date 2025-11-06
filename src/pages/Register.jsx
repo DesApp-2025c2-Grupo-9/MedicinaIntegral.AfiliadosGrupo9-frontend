@@ -33,12 +33,11 @@ const Register = () => {
         setError(mensajeError);
         return;
       }
-      const data = await mutateAsync({
+      await mutateAsync({
         nroDocumento: usuario,
         password: clave,
         confirmPassword: confirmarClave
       });
-      console.log(data);
       setError('');
       Swal.fire({
         title: 'Registro exitoso',
