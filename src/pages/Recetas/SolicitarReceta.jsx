@@ -11,61 +11,53 @@ import { useNewRecetaSchema } from "../../hooks/useNewRecetaSchema";
 import { useCreateReceta } from "../../services/recetasQueries";
 import { axiosPrivate } from "../../api/axios";
 import "../../styles/recetas.css";
-import { useGetAfiliado } from '../../services/queries';
+import { useGetAfiliado } from "../../services/queries";
 
 function SolicitarReceta() {
   const { data: afiliadoRes } = useGetAfiliado();
-  const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
+  const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(
+    (familiar) => `${familiar.nombre} ${familiar.apellido}`
+  );
   const { recetaSchema } = useNewRecetaSchema({ listaAfiliados });
   const { mutateAsync } = useCreateReceta(axiosPrivate);
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
-    resolver: zodResolver(recetaSchema)
+    resolver: zodResolver(recetaSchema),
   });
-  const navigate = useNavigate();
 
   const onSubmit = async (formData) => {
-    console.log(formData.paraidAfiliado);
-    await mutateAsync(formData);
-    Swal.fire({
-      title: "Confirmación de solicitud",
-      html: `
-    <p>Receta solicitada:</p>
-    <br/>
-    <p>Medicamento: ${formData.medicamento}</p>
-    <p>Presentación: ${formData.presentacion}</p>
-    <p>Cantidad: ${formData.cantidad}</p>
-  `,
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Aceptar",
-      cancelButtonText: "Cancelar",
-      width: "400px",
-      customClass: {
-        popup: "swal-popup-custom",
-        confirmButton: "swal-btn-confirm",
-        cancelButton: "swal-btn-cancel",
-        icon: "swal-icon-custom",
-      },
-    }).then(() => {
-      Swal.fire({
-        title: "Enviado",
-        text: "Receta solicitada exitosamente",
-        icon: "success",
-        confirmButtonText: "Aceptar",
-        showCancelButton: false,
-        confirmButtonColor: "#00ab01",
-      });
-      navigate("/recetas/ver-recetas");
-    });
-  };
+    try {
+      await mutateAsync(formData);
 
+      await Swal.fire({
+        html: `<p>Su solicitud se envió correctamente, puede verla en "Ver Recetas"</p>`,
+        icon: "success",
+        iconColor: "#00ab01",
+        confirmButtonText: "Continuar",
+        customClass: {
+          htmlContainer: "modal-tramites-html",
+          confirmButton: "modal-tramites-confirm-button",
+        },
+      });
+
+      navigate("/recetas/ver-recetas");
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: "Ocurrió un problema al enviar la solicitud.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
+    }
+  };
+  const volverPantallaRecetas = () => navigate("/recetas/ver-recetas");
   return (
-    <Form className='max-w-211.5' onSubmit={handleSubmit(onSubmit)}>
+    <Form className="max-w-211.5" onSubmit={handleSubmit(onSubmit)}>
       <Select
         {...register("paraAfiliado")}
         id="paraAfiliado"
@@ -74,7 +66,7 @@ function SolicitarReceta() {
         options={listaAfiliados}
         errorMsg={errors.paraAfiliado?.message}
       />
-      {/*Input medicamento - Input Cantidad */}
+
       <InputContainer>
         <Input
           {...register("medicamento")}
@@ -93,7 +85,7 @@ function SolicitarReceta() {
           errorMsg={errors.cantidad?.message}
         />
       </InputContainer>
-      {/*InputPresentación */}
+
       <Input
         {...register("presentacion")}
         label={"Presentación"}
@@ -102,21 +94,29 @@ function SolicitarReceta() {
         errorMsg={errors.presentacion?.message}
       />
 
-      {/*Input observaciones*/}
       <Input
         {...register("observaciones")}
         label={"Observaciones"}
         errorMsg={errors.observaciones?.message}
         maxLength={100}
       />
-      <Button
-        type="submit"
-        state={isSubmitting ? "disabled" : "active"}
-        disabled={isSubmitting}
-        className={"ml-auto"}
-      >
-        Confirmar
-      </Button>
+      <InputContainer>
+        <Button
+          type="button"
+          className="ml-auto"
+          style="outln"
+          onClick={volverPantallaRecetas}
+        >
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          state={isSubmitting ? "disabled" : "active"}
+          disabled={isSubmitting}
+        >
+          Confirmar
+        </Button>
+      </InputContainer>
     </Form>
   );
 }

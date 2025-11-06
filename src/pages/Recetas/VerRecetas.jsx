@@ -5,16 +5,15 @@ import { useGetRecetas } from "../../services/recetasQueries";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { capitalize } from "lodash";
+import { useUserStore } from "../../store/userStore";
 
 function VerRecetas() {
   const navigate = useNavigate();
-  const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
   const { state } = useStateFilter();
-
-  const { data, error, isLoading } = useGetRecetas(axiosPrivate);
+  const { user } = useUserStore((state) => state);
+  const { data, error, isLoading } = useGetRecetas(user.idAfiliado);
   const recetas = data?.data || [];
-
   if (isLoading) return <p>Cargando...</p>;
   if (error) {
     if (error?.response?.status === 401) {

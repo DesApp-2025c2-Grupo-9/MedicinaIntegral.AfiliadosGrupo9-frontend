@@ -3,6 +3,7 @@
 @import './styles/reintegros.css';
 @import './styles/buttonsCancelModal.css';
 @import './styles/animation.css';
+@import "./styles/modalesSwal.css";
 
 @theme {
   /* Colours */

@@ -17,13 +17,12 @@ export const useEliminarAutorizacion = () => {
          `,
       icon: "warning",
       showCancelButton: true,
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#00ab01',
-      cancelButtonColor: '#dc143c',
       confirmButtonText: 'Confirmar',
+      iconColor: '#dc143c',
+      cancelButtonText: 'Cancelar',
       customClass: {
-          cancelButton: 'modal-cancel-button',
-          confirmButton: 'modal-confirm-button'
+          cancelButton: 'modal-tramites-cancel-button',
+          confirmButton: 'modal-tramites-confirm-button'
       }
     }).then(async (result) => {
       if(result.isConfirmed) {

@@ -8,44 +8,65 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useGetAfiliado, useGetEspecialidades } from '../../services/queries';
-import { useCreateAutorizacion } from '../../services/autorizacionesQueries';
+import { useCreateAutorizacion, useUpdateAutorizacion } from '../../services/autorizacionesQueries';
 import { useAutorizacionSchema } from '../../hooks/useAutorizacionSchema';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { useAutorizacionStore } from '../../store/autorizacionStore';
+import { format } from "date-fns";
+import { useLocation } from "react-router-dom";
 
-function SolicitarAutorizacion({ className }) {
+function AutorizacionForm({ className }) {
+  const navigate = useNavigate()
+  const { autorizacion } = useAutorizacionStore(state => state)
+  const { paraAfiliado } = useAutorizacionStore(state => state)
   const { data: especialidadesRes } = useGetEspecialidades();
   const { data: afiliadoRes } = useGetAfiliado();
   const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
   const { autorizacionSchema } = useAutorizacionSchema({ listaAfiliados, listaEspecialidades: especialidadesRes?.data });
-  const axiosPrivate = useAxiosPrivate();
-  const { mutateAsync } = useCreateAutorizacion(axiosPrivate);
+  const observacionAfiliado = typeof autorizacion?.observaciones === 'object' && autorizacion?.observaciones?.find(obs => obs.rolEmisor === 'Afiliado');
+  const { mutateAsync: createAutorizacion } = useCreateAutorizacion();
+  const { mutateAsync: updateAutorizacion } = useUpdateAutorizacion();
 
-  //Se inicia el form con el resolver de zod
+  const location = useLocation();
+  const pathDest = location.pathname === '/autorizaciones/editar-autorizacion';
+  let sucessText 
+
   const {
     register,
     handleSubmit,
-    formState: {errors, isSubmitting }
+    formState: { errors, isSubmitting }
   } = useForm({
     resolver: zodResolver(autorizacionSchema),
     defaultValues: {
-      diasDeInternacion: 0
+      paraAfiliado: autorizacion?.paraAfiliado || paraAfiliado,
+      fechaSolicitud: autorizacion?.fechaSolicitud && format(autorizacion?.fechaSolicitud, 'yyyy-MM-dd'),
+      especialidad: autorizacion?.especialidad,
+      practica: autorizacion?.practica,
+      medicoSolicitante: autorizacion?.medicoSolicitante,
+      lugarAtencion: autorizacion?.lugarAtencion,
+      diasDeInternacion: autorizacion?.diasDeInternacion || 0,
+      observaciones: observacionAfiliado?.descripcion 
     }
   })
-  const navigate = useNavigate()
+
 
   const onSubmit = async(formData) => {
-    await mutateAsync(formData);
+    if (location.pathname === '/autorizaciones/solicitar-autorizacion') {
+        await createAutorizacion(formData);
+        sucessText = 'Su solicitud se envió correctamente, puede verla en "Ver Autorizaciones"'
+    } else {
+        await updateAutorizacion({ data: formData, id: autorizacion.id });
+        sucessText = 'Los cambios se han guardado correctamente'
+    }
+
     Swal.fire({
-            title: 'Solicitud enviada',
-            text: 'Su solicitud se envió correctamente, puede verla en "Ver Autorizaciones"',
+            html: sucessText,
             icon: 'success',
-            confirmButtonText: 'Aceptar',
+            iconColor: '#00ab01',
+            confirmButtonText: 'Continuar',
             draggable: true,
-            width: '400px',
-            customClass: {
-              popup: 'swal-popup-small',
-              title: 'swal-title-small',
-              confirmButton: 'swal-button-small'
+            customClass: {  
+              htmlContainer: 'modal-tramites-html',
+              confirmButton: 'modal-tramites-confirm-button'
             }
           }).then(() => {
             navigate('/autorizaciones/ver-autorizaciones')
@@ -53,62 +74,62 @@ function SolicitarAutorizacion({ className }) {
   }
   const fechaActual = new Date().toISOString().split('T')[0]
     return (
-
+    <>
     <Form
       onSubmit={handleSubmit(onSubmit)}
       className={`max-w-211.5 ${className}`}
-    >
-      {/*Dropdown afiliado - Modificar para que aparezca el nro de afiliado tambien // Fecha prevista*/}
-      <InputContainer>
-         {listaAfiliados.length > 1 ? <Select
+      > 
+       {/* Title Editar Autorización */}
+       {pathDest && <div className="flex items-center gap-1 w-fit text-blue-400 h-fit">
+                <h2 className="text-xl font-bold text-right">Editar autorización</h2>
+                </div>}
+
+        {/* Dropdown afiliado */}
+        {(!pathDest && listaAfiliados?.length > 1) &&
+        <Select
           {...register('paraAfiliado')}
           id='paraAfiliado'
           label='Para afiliado:'
           placeholder='Seleccionar afiliado'
           options={listaAfiliados}
           errorMsg={errors.paraAfiliado?.message}
-        /> : <Input
-          {...register('paraAfiliado')}
-          value={listaAfiliados[0]}
-          id='paraAfiliado'
-          label='Para afiliado:'
         />}
+        {/* Fecha + Especialidad */}
+        <InputContainer>
         <Input 
           {...register('fechaSolicitud')}
           type='date'
           id='fechaSolicitud'
-          label= 'Fecha prevista'
+          label= 'Fecha prevista:'
           min={fechaActual}
           errorMsg={errors.fechaSolicitud?.message}
-        />
-      </InputContainer>
-
-      {/*Desplegable especialidad - Desolegable médico */}
-      <InputContainer>
+          />
         <Select 
         {...register('especialidad')}
         label='Especialidad:'
         placeholder='Seleccionar Especialidad'
-        options={especialidadesRes?.data}/*Modificar esto */
+            options={especialidadesRes?.data}
         errorMsg={errors.especialidad?.message}
         />
+        </InputContainer>
+
+        {/* Práctica + Médico */}
+        <InputContainer>
         <Input 
         {...register("practica")}
         label="Práctica:"
         placeholder="Ingresar la práctica"
         errorMsg={errors.practica?.message}
-        />  
-      </InputContainer>
-      <div className="w-full md:max-w-[398px]">
+          />  
         <Input 
           {...register("medicoSolicitante")}
           label="Médico:"
           placeholder="Ingresar el médico"
           errorMsg={errors.medicoSolicitante?.message}
-        />  
-      </div>
+          /> 
+        </InputContainer>
        
-      {/*Input Lugar de prestación - Input dias de internación */}
+        {/* Lugar de prestación + Dias de internación */}
       <InputContainer>
       <Input 
         {...register('lugarAtencion')}
@@ -127,6 +148,7 @@ function SolicitarAutorizacion({ className }) {
         errorMsg={errors.diasDeInternacion?.message}
       />
       </InputContainer>
+
       {/*Input observaciones*/}
       <Input
         {...register('observaciones')}
@@ -145,7 +167,8 @@ function SolicitarAutorizacion({ className }) {
         Confirmar
       </Button>
     </Form>
+    </>
   )
 }
 
-export default SolicitarAutorizacion
+export default AutorizacionForm;
