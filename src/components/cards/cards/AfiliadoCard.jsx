@@ -8,11 +8,12 @@ function AfiliadoCard(props) {
     //Si no se pasa un afiliado por parámetro, se debe cargar el usuario del contexto, ya que es el actual
     const afiliado = props.afiliado
     const [situacionTerapeuticaOpen, setsituacionTerapeuticaOpen] = useState(false)
-    const situacionTerapeuticaTexto = (
+    /* const situacionTerapeuticaTexto = (
         afiliado.situacionTerapeutica.length > 0 ? (
             afiliado.situacionTerapeutica.join(', ') + '.'
         ) : ''
-    )
+    ) */
+   const situacionTerapeuticaTexto = afiliado.situacionTerapeutica
     return (<>
         <MarcoCard>
             <ColumnaPrincipal subtituloOn={false}>

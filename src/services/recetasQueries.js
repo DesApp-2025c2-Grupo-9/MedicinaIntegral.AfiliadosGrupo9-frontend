@@ -15,7 +15,7 @@ export function useGetRecetas(idAfiliado) {
   });
 }
 const getRecetaById = async (axiosClient, id) => {
-  const res = await axiosClient.get(`api/recetas/${id}`);
+  const res = await axiosClient.get(`api/receta/${id}`); // <-- Ruta NUEVA y correcta
   return res.data;
 };
 
