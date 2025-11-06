@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 @import 'tailwindcss';
 @import './styles/reintegros.css';
+@import './styles/turnos.css';
 /* @import './styles/buttonsCancelModal.css'; */
 @import './styles/animation.css';
 @import "./styles/modalesSwal.css";
@@ -21,6 +22,7 @@
   --color-rojo-alerta: #dc143c;
 
   --color-negro-translucido: rgba(0, 0, 0, 0.56);
+  --color-negro-semi-translucido: rgba(0, 0, 0, 0.76);
   --color-verde-translucido: rgba(0, 171, 1, 0.24);
 
   /* Shadow */

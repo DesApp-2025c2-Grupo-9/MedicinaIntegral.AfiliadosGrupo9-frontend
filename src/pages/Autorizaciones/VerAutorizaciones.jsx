@@ -31,7 +31,7 @@ function VerAutorizaciones() {
   return (
     <div className="flex flex-col items-end gap-3 relative">
       <FiltroEstados className='sm:absolute -top-11 mr-auto' />
-      <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-x-6">
+      <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3">
         {autorizacionesFiltradas.map(
           (autorizacion, idAutorizacion) => (
             <AutorizacionCard autorizacion={autorizacion} key={idAutorizacion} />

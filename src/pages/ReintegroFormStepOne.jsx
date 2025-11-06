@@ -16,8 +16,8 @@ import { useNavigate } from 'react-router-dom';
 function ReintegroFormStepOne({ className }) {
   const navigate = useNavigate();
   const fechaActual = new Date().toISOString().split('T')[0];
-  const { data: especialidades } = useGetEspecialidades();
-  const { data: afiliados } = useGetAfiliado();
+  const { data: especialidades, isLoading: isLoadingEspecialidades } = useGetEspecialidades();
+  const { data: afiliados, isLoading: isLoadingAfiliado } = useGetAfiliado();
   const listaEspecialidades = especialidades?.data;
   const listaAfiliados = afiliados?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
 
@@ -40,6 +40,8 @@ function ReintegroFormStepOne({ className }) {
       lugarDeAtencion: reintegro?.lugarDeAtencion
     }
   });
+
+  if (isLoadingAfiliado || isLoadingEspecialidades) return <div>Cargando...</div>
 
   return (
     <Form
@@ -94,7 +96,7 @@ function ReintegroFormStepOne({ className }) {
         />
       </InputContainer>
 
-      <TwoButtons className='ml-auto'>
+      <TwoButtons className='lg:ml-auto'>
         <Button
           type='button'
           style='outln'

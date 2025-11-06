@@ -18,11 +18,11 @@ function MarcoCard(props) {
         observado:  Se carga fondo y pestaña en azul
         analisis: Se carga fondo y pestaña en celeste
     */
-    pendiente: 'pt-1 bg-amber-300 shadow-amber-300 shadow rounded-xl m-3',
-    aceptado: 'pt-1 bg-green-300 shadow-green-300 shadow rounded-xl m-3',
-    rechazado: 'pt-1 bg-red-300 shadow-red-300 shadow rounded-xl m-3',
-    observado: 'pt-1 bg-blue-300 shadow-blue-300 shadow rounded-xl m-3',
-    analisis: 'pt-1 bg-blue-200 shadow-blue-300 shadow rounded-xl m-3',
+    pendiente: 'pt-1 bg-amber-300 shadow-amber-300 shadow rounded-xl', /* se quitó margin m-3 */
+    aceptado: 'pt-1 bg-green-300 shadow-green-300 shadow rounded-xl',
+    rechazado: 'pt-1 bg-red-300 shadow-red-300 shadow rounded-xl',
+    observado: 'pt-1 bg-blue-300 shadow-blue-300 shadow rounded-xl',
+    analisis: 'pt-1 bg-blue-200 shadow-blue-300 shadow rounded-xl',
   };
     const mostrarEstado = () => {
       
@@ -39,7 +39,8 @@ function MarcoCard(props) {
   // const invertirDetalle = () => { setdetalleOn(!detalleOn); console.log(detalleOn) }//Utilizado si se usa una pestaña para mostrar detalle
   return (
 
-    <div className={`m-1 ${estiloEstado}`}>
+    // <div className={`m-1 ${estiloEstado}`}>
+    <div className={`${estiloEstado}`}>
       {
       //Marco de estado de la card opcional 
       estado ? (
@@ -56,7 +57,7 @@ function MarcoCard(props) {
       ) : <></>//Sino no se muestra el marco y solo la card
       }
 
-      <div className={`grid p-3 bg-blanco-principal rounded-b-xl  border border-gris-border ${estilo}`}>
+      <div className={`grid p-3 bg-blanco-principal rounded-b-xl ${!estado && 'h-full'} border border-gris-border ${estilo}`}>
         {/*Aca dentro va la card */}
         {children}
       

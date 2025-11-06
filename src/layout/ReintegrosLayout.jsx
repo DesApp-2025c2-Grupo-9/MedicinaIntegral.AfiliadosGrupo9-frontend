@@ -21,7 +21,6 @@ function ReintegrosLayout() {
 
   useEffect(() => {
     if (pathDest) {
-      console.log('Para afiliado:', paraAfiliado);
       setReintegro({ paraAfiliado });
     }
   }, [location, setReintegro, pathDest]);

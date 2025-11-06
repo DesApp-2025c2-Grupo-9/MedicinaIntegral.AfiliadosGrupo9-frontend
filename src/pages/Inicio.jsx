@@ -45,10 +45,10 @@ function Inicio() {
   let tramitesStyles = tramites.filter(t => t != null).length % 2 != 0 ? "2xl:w-full" : "2xl:w-2/3";
 
   return (
-    <div className='flex flex-col gap-5'>
+    <div className='flex flex-col gap-5 lg:max-w-[calc(100dvw-296px)] mb-4'>
       <div className='flex flex-col gap-2'>
         <SectionTitle>Próximos turnos</SectionTitle>
-        <div className='w-full px-2 grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-6'>
+        <div className='w-full grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-3'>
           {turnos.length ? (
             turnos.map((t, tIndex) => (
               <TurnosCard
@@ -68,7 +68,7 @@ function Inicio() {
 
       <div className='flex flex-col gap-2'>
         <SectionTitle>Mis trámites</SectionTitle>
-        <div className={`grid w-full ${tramitesStyles} grid-cols-[repeat(auto-fill,minmax(450px,1fr))]`}>
+        <div className={`grid w-full ${tramitesStyles} grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-3`}>
           {tramites ? (
             tramites?.map((t, indx) => {
               if(t) {

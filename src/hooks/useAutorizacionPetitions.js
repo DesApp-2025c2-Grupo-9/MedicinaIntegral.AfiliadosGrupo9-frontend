@@ -33,7 +33,13 @@ export const useEliminarAutorizacion = () => {
               html: res.message,
               title: "Eliminada!",
               text: "Su autorización ha sido eliminada.",
-              icon: "success"
+              icon: "success",
+              iconColor: '#00ab01',
+              confirmButtonColor: '#00ab01',
+              customClass: {
+                htmlContainer: 'reintegros-html',
+                confirmButton: 'reintegros-confirm-button'
+              }
             });
           }
         } catch(err){

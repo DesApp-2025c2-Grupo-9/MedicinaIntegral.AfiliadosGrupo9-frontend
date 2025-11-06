@@ -40,16 +40,18 @@ const Register = () => {
       setError('');
       Swal.fire({
         title: 'Registro exitoso',
-        text: 'Su cuenta fue creada correctamente',
+        text: 'El usuario ha sido registrado exitosamente.',
         icon: 'success',
+        iconColor: '#00ab01',
         confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#00ab01',
         draggable: true,
         width: '400px',
         customClass: {
+          htmlContainer: 'auth-html',
+          title: 'auth-title',
           popup: 'swal-popup-small',
-          title: 'swal-title-small',
-          confirmButton: 'swal-button-small',
-          confirmButtonColor: '#00ab01'
+          confirmButton: 'auth-confirm-button',
         }
       }).then(() => {
         navigate('/login');

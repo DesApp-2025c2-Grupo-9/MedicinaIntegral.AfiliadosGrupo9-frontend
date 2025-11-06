@@ -202,7 +202,7 @@ function ReintegroFormStepTwo({ className }) {
         placeholder='Ingresar observaciones'
         errorMsg={errors.observaciones?.message}
       />
-      <TwoButtons className='ml-auto'>
+      <TwoButtons className='lg:ml-auto'>
         <Button
           onClick={() => {
             setReintegro({ ...reintegro, ...formValues });

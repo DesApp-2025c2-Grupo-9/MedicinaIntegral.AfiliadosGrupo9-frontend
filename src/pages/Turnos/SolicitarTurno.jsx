@@ -89,7 +89,7 @@ function SolicitarTurno() {
 
 
   return (
-    <div>
+    <div className='flex flex-col gap-4'>
       <InputContainer>
         {
           //listaAfiliados >1 &&
@@ -141,7 +141,7 @@ function SolicitarTurno() {
         {!isPendingTurnos && isSuccessTurnos && turnos.length === 0 && (
           <p>No hay turnos disponibles para la búsqueda.</p>
         )}
-        {isSuccessTurnos && <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-x-6">
+        {isSuccessTurnos && <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3">
           {
             turnos.length > 0 &&
             turnos.map(
@@ -152,8 +152,6 @@ function SolicitarTurno() {
             )
           }
         </div>}
-        <div>
-        </div>
       </div>
     </div>
   )

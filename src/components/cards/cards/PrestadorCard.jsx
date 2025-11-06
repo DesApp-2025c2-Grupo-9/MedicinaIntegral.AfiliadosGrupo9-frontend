@@ -15,7 +15,7 @@ function PrestadorCard({ prestador }) {
   } = lugarAtencion;
 
   return (
-    <div className="border border-gray-200 shadow-sm rounded-lg p-3 bg-white flex flex-col gap-1 hover:shadow-md transition-shadow duration-200">
+    <div className="border border-gris-border shadow-custom-shadow rounded-lg p-3 bg-white flex flex-col gap-1 hover:shadow-md transition-shadow duration-200">
       <h3 className="text-base font-bold text-menta-600">{especialidad}</h3>
 
       <p className="text-gray-800 font-semibold text-sm">{nombre}</p>

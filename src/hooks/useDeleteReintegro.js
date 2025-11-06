@@ -7,8 +7,9 @@ export const useDelReintegro = () => {
   const deleteReintegro = async (reintegro, fechaDePrestacion, valorTotal) => {
     try {
       Swal.fire({
-        html: `<p>Está a punto de cancelar la solicitud de reintegro:</p>
-          <br />
+        title: 'Está a punto de cancelar la solicitud de reintegro:',
+        html: /* `<p>Está a punto de cancelar la solicitud de reintegro:</p>
+          <br /> */`
           <p>Para afiliado: <b>${reintegro.paraAfiliado}</b></p>
           <p>Fecha de prestación: <b>${fechaDePrestacion}</b></p>
           <p>Especialidad: <b>${reintegro.especialidad}</b></p>
@@ -26,6 +27,7 @@ export const useDelReintegro = () => {
         confirmButtonColor: '#00ab01',
         customClass: {
           htmlContainer: 'reintegros-html',
+          title: 'auth-title',
           cancelButton: 'reintegros-cancel-button',
           confirmButton: 'reintegros-confirm-button'
         }

@@ -1,5 +1,5 @@
 import { ReintegroCard } from '../../components/cards';
-import PaginationButtons from '../../components/PaginationButtons';
+// import PaginationButtons from '../../components/PaginationButtons';
 import FiltroEstados from '../../components/FiltroEstados';
 import { useStateFilter } from '../../store/stateFilter';
 import { useGetReintegros } from '../../services/queries';
@@ -29,9 +29,9 @@ function ReintegroVer() {
   const reintegrosFiltrados = reintegros?.filter(r => state.includes(capitalize(r.estado)) || state === 'Todos');
 
   return (
-    <div className='flex flex-col items-end gap-3 relative'>
+    <div className='flex flex-col items-end gap-3 relative '>
       <FiltroEstados className='sm:absolute -top-11 mr-auto' />
-      <div className='w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-x-6'>
+      <div className='w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3'>
         {reintegrosFiltrados.map(r => (
           <ReintegroCard
             key={r.id}
@@ -39,7 +39,7 @@ function ReintegroVer() {
           />
         ))}
       </div>
-      <PaginationButtons />
+      {/* <PaginationButtons /> */}
     </div>
   );
 }

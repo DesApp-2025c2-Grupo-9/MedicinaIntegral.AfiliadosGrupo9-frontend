@@ -9,20 +9,22 @@ import { useGetAfiliado } from '../services/queries';
 
 function AutorizacionesLayout() {
   const location = useLocation();
-  const setParaAfiliado = useAutorizacionStore(state => state.setParaAfiliado);
+  // const setParaAfiliado = useAutorizacionStore(state => state.setParaAfiliado);
   const setAutorizacion = useAutorizacionStore(state => state.setAutorizacion);
   const { data: afiliadoRes } = useGetAfiliado();
-  const paraAfiliado = `${afiliadoRes?.data.nombre} ${afiliadoRes?.data.apellido}`
+  const paraAfiliado = afiliadoRes?.data?.grupoFamiliar.length === 1 ? `${afiliadoRes?.data.nombre} ${afiliadoRes?.data.apellido}` : undefined;
+  // const paraAfiliado = `${afiliadoRes?.data.nombre} ${afiliadoRes?.data.apellido}`
 
   const pathDest = location.pathname === '/autorizaciones/ver-autorizaciones';
 
   useEffect(() => {
+    console.log(paraAfiliado)
     if (pathDest) {
-      setAutorizacion({});
+      setAutorizacion({ paraAfiliado });
     }
-    if(afiliadoRes?.data?.grupoFamiliar.length === 1) {
+    /* if(afiliadoRes?.data?.grupoFamiliar.length === 1) {
       setParaAfiliado(paraAfiliado)
-    }
+    } */
   }, [location, setAutorizacion, pathDest]);
 
   return (

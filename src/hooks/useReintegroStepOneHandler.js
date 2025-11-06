@@ -9,7 +9,6 @@ export const useReintegroStepOneHandler = () => {
   const nextPath = location.pathname === '/reintegros/solicitar-reintegro' ? '/reintegros/datos-factura' : '/reintegros/editar-reintegro/datos-factura';
 
   const onSubmit = inputData => {
-    console.log(inputData);
     setReintegro({ ...reintegro, ...inputData });
     navigate(nextPath);
   };

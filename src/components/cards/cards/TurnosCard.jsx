@@ -23,21 +23,31 @@ function TurnosCard(props) {
   const idAfiliadoParaEliminar = props.idAfiliadoParaEliminar
   const isPast = props.isPast;
   //let ancho = paciente ? "max-w-md min-w-sm" : "w-xs";
-  let cardStyle = `relative overflow-hidden group transition-all duration-300 ${paciente ? 'grid-cols-2' : ''}`;
+  let cardStyle = `relative overflow-hidden group transition-all duration-300  ${paciente ? 'grid-cols-2' : ''}`;
 
 
   const deleteTurno = async () => {
     //Lógica a aplicar al apretar la papelera
     const fechaFormateada = formatFecha(turno.fechaTurno)
     const result = await Swal.fire({
-      title: "Estas a punto de anular el turno?",
-      text: `Para la especialidad ${turno.especialidad} con  ${turno.prestador} el día ${fechaFormateada}`,
+      title: "Está a punto de anular el turno:",
+      html: `<p>Para la especialidad: <b>${turno.especialidad}</b><br />
+      Con: <b>${turno.prestador}</b><br />
+      El día: <b>${fechaFormateada}</b></p>`,
+      // text: `Para la especialidad ${turno.especialidad} con ${turno.prestador} el día ${fechaFormateada}`,
       icon: "warning",
+      iconColor: '#dc143c',
       showCancelButton: true,
-      cancelButtonColor: "#3085d6",
-      confirmButtonColor: "#d33",
-      confirmButtonText: "Anular reserva",
-      cancelButtonText: 'Cancelar'
+      cancelButtonColor: '#dc143c',
+      confirmButtonColor: '#00ab01',
+      confirmButtonText: 'Anular reserva',
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        htmlContainer: 'turnos-html',
+        title: 'turnos-title',
+        cancelButton: 'turnos-cancel-button',
+        confirmButton: 'turnos-confirm-button'
+      }
     })
     if (!result.isConfirmed) {
       return;
@@ -63,9 +73,16 @@ function TurnosCard(props) {
       // Tu 'onSuccess' global (el de 'invalidateQueries') se va a disparar solo.
       // Y acá mostramos el modal de éxito.
       Swal.fire({
-        title: "Reserva anulada!",
+        title: "Reserva anulada",
         text: "Tu reserva ha sido anulada exitosamente.",
-        icon: "success"
+        icon: "success",
+        iconColor: '#00ab01',
+        confirmButtonColor: '#00ab01',
+        customClass: {
+          htmlContainer: 'turnos-html',
+          title: 'turnos-title',
+          confirmButton: 'turnos-confirm-button'
+        }
       });
 
     } catch (error) {
@@ -81,14 +98,24 @@ function TurnosCard(props) {
   const reservarTurno = async () => {
     const fechaFormateada = formatFecha(turno.fechaTurno)
     const result = await Swal.fire({
-      title: "Estas a punto de reservar el turno?",
-      text: `Para la especialidad ${turno.especialidad} con  ${turno.prestador} el día ${fechaFormateada}`,
-      icon: "warning",
+      title: "Está a punto de reservar el turno:",
+      html: `<p>Para la especialidad: <b>${turno.especialidad}</b><br />
+      Con: <b>${turno.prestador}</b><br />
+      El día: <b>${fechaFormateada}</b></p>`,
+      // text: `Para la especialidad ${turno.especialidad} con  ${turno.prestador} el día ${fechaFormateada}`,
+      icon: "question",
+      iconColor: '#00ab01',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Reservar!",
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: "#00ab01",
+      cancelButtonColor: "#dc143c",
+      confirmButtonText: "Reservar",
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        htmlContainer: 'turnos-html',
+        title: 'turnos-title',
+        cancelButton: 'turnos-cancel-button',
+        confirmButton: 'turnos-confirm-button'
+      }
     })
     if (!result.isConfirmed) {
       return;
@@ -116,7 +143,14 @@ function TurnosCard(props) {
       Swal.fire({
         title: "¡Reservado!",
         text: "Tu turno ha sido reservado exitosamente.",
-        icon: "success"
+        icon: "success",
+        iconColor: '#00ab01',
+        confirmButtonColor: '#00ab01',
+        customClass: {
+          htmlContainer: 'turnos-html',
+          title: 'turnos-title',
+          confirmButton: 'turnos-confirm-button'
+        }
       });
 
     } catch (error) {
@@ -167,10 +201,11 @@ function TurnosCard(props) {
       )}
       {!paciente &&
         <button
-          className="absolute inset-0 flex items-center justify-center text-white font-semibold bg-green-600/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+          /* className="absolute inset-0 flex items-center justify-center text-white font-semibold bg-green-600/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer" */
+          className="absolute inset-0 flex items-center justify-center text-white font-semibold bg-negro-translucido opacity-0 uppercase group-hover:opacity-100 transition-opacity duration-300 cursor-pointer backdrop-blur-xs"
           onClick={reservarTurno}
         >
-          ¡Reservar turno!
+          Reservar turno
         </button>
       }
 
@@ -191,5 +226,5 @@ function formatFecha(fechaParam) {
   const horas = (fecha.getHours() < 10 ? `0${fecha.getHours()}` : fecha.getHours())
   const minutos = (fecha.getMinutes() < 10 ? `0${fecha.getMinutes()}` : fecha.getMinutes())
 
-  return `${dia}/${mes}/${anio} - ${horas}:${minutos}`;
+  return `${dia}/${mes}/${anio} - ${horas}:${minutos}hs`;
 }

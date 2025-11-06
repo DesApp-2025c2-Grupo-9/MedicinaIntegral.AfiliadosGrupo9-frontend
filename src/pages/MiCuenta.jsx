@@ -37,16 +37,16 @@ function MiCuenta() {
   };
 
   return (
-    <div>
-      <div>
+    <div className='flex flex-col gap-5'>
+      <div className='flex flex-col gap-2'>
         <SectionTitle>Mi cuenta</SectionTitle>
         <div className='grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3'>{afiliado ? <AfiliadoCard afiliado={afiliado} /> : <p>No se encontraron datos del afiliado.</p>}</div>
       </div>
 
       {afiliado.grupoFamiliar.length > 1 && (
-        <div>
+        <div className='flex flex-col gap-2'>
           <SectionTitle>Grupo familiar</SectionTitle>
-          <div className='grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3'>
+          <div className='grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3'>
             {afiliado?.grupoFamiliar?.map(familiar => {
               if (familiar.nombre !== afiliado.nombre) {
                 return (
@@ -61,31 +61,33 @@ function MiCuenta() {
         </div>
       )}
 
-      <SectionTitle>CBUs Registrados</SectionTitle>
-      <div className='flex items-center gap-4 mt-4'>
-        <Select
-          options={afiliado.cbus.map(cbu => ({
-            label: `${cbu.nombre} ${cbu.apellido}: ${cbu.cbu}`,
-            value: cbu.cbu
-          }))}
-          defaultInputValue={
-            defaultCbu
-              ? `${defaultCbu.nombre} ${defaultCbu.apellido}: ${defaultCbu.cbu}`
-              : ''
-          }
+      <div className='flex flex-col gap-2'>
+        <SectionTitle>CBUs Registrados</SectionTitle>
+        <div className='flex gap-3'>
+          <Select
+            options={afiliado.cbus.map(cbu => ({
+              label: `${cbu.nombre} ${cbu.apellido}: ${cbu.cbu}`,
+              value: cbu.cbu
+            }))}
+            defaultInputValue={
+              defaultCbu
+                ? `${defaultCbu.nombre} ${defaultCbu.apellido}: ${defaultCbu.cbu}`
+                : ''
+            }
 
-          onChange={selectedOption => handleChange({ nroCbu: selectedOption.value })}
-          className='w-100 max-w-xl'
-          placeholder='Selecciona un CBU'
-        />
+            onChange={selectedOption => handleChange({ nroCbu: selectedOption.value })}
+            className='w-100 max-w-xl'
+            placeholder='Selecciona un CBU'
+          />
 
-        <Button
-          onClick={() => {
-            setCBUModalOnOf(true);
-          }}
-        >
-          Registrar nuevo CBU
-        </Button>
+          <Button
+            onClick={() => {
+              setCBUModalOnOf(true);
+            }}
+          >
+            Registrar nuevo CBU
+          </Button>
+        </div>
       </div>
       {CBUModalOnOf && (
         <ModalRegistrarCBU

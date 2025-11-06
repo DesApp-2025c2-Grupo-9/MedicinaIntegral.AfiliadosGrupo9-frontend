@@ -2,7 +2,6 @@ import RecetaCard from "../../components/cards/cards/RecetaCard";
 import { useStateFilter } from "../../store/stateFilter";
 import FiltroEstados from "../../components/FiltroEstados";
 import { useGetRecetas } from "../../services/recetasQueries";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { capitalize } from "lodash";
 import { useUserStore } from "../../store/userStore";
@@ -30,9 +29,9 @@ function VerRecetas() {
   return (
     <div className="flex flex-col items-end gap-3 relative">
       <FiltroEstados className='sm:absolute -top-11 mr-auto'/>
-    <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-x-6">
-      {recetasFiltradas?.map(
-        (receta, idReceta) => (
+      <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3">
+        {recetasFiltradas?.map(
+          (receta, idReceta) => (
           <RecetaCard receta={receta} key={idReceta} />
         ))}
       </div>

@@ -16,7 +16,7 @@ import { useLocation } from "react-router-dom";
 
 function AutorizacionForm({ className }) {
   const navigate = useNavigate()
-  const { autorizacion } = useAutorizacionStore(state => state)
+  const autorizacion = useAutorizacionStore(state => state.autorizacion)
   const { paraAfiliado } = useAutorizacionStore(state => state)
   const { data: especialidadesRes } = useGetEspecialidades();
   const { data: afiliadoRes } = useGetAfiliado();
@@ -37,7 +37,7 @@ function AutorizacionForm({ className }) {
   } = useForm({
     resolver: zodResolver(autorizacionSchema),
     defaultValues: {
-      paraAfiliado: autorizacion?.paraAfiliado || paraAfiliado,
+      paraAfiliado: autorizacion?.paraAfiliado,
       fechaSolicitud: autorizacion?.fechaSolicitud && format(autorizacion?.fechaSolicitud, 'yyyy-MM-dd'),
       especialidad: autorizacion?.especialidad,
       practica: autorizacion?.practica,

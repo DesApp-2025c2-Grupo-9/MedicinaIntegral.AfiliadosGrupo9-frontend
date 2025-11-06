@@ -3,6 +3,7 @@ import { useGetAfiliado } from '../../services/queries';
 import { useGetTurnosPorAfiliado } from '../../services/turnosQueries';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import TurnosCard from '../../components/cards/cards/TurnosCard';
+import SectionTitle from '../../components/SectionTitle';
 
 function VerTurnos() {
   const axiosPrivate = useAxiosPrivate();
@@ -58,45 +59,50 @@ function VerTurnos() {
   
   // --- RENDERIZADO CON 2 SECCIONES ---
   return (
-    <div className='p-4'>
-      
+    <div className='flex flex-col gap-5'>
+      <div className='flex flex-col gap-2'>
       {/* --- SECCIÓN 1: PRÓXIMOS TURNOS --- */}
-      <h1 className="text-2xl font-bold mb-4">Mis Próximos Turnos</h1>
-      {turnosFuturos.length > 0 ? (
-        <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
-          {turnosFuturos.map(turno => (
-            <TurnosCard 
-              key={turno.idTurno} 
-              turno={turno} 
-              paciente={true}
-              nombrePaciente={nombreAfiliado}
-              idAfiliadoParaEliminar={idAfiliado}
-              isPast={false} // <-- Prop para que SÍ muestre la papelera
-            />
-          ))}
-        </div>
-      ) : (
-        <p>No tenés turnos próximos.</p>
-      )}
+      {/* <h1 className="text-2xl font-bold mb-4">Mis Próximos Turnos</h1> */}
+        <SectionTitle>Mis Próximos Turnos</SectionTitle>
+        {turnosFuturos.length > 0 ? (
+          <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3">
+            {turnosFuturos.map(turno => (
+              <TurnosCard 
+                key={turno.idTurno} 
+                turno={turno} 
+                paciente={true}
+                nombrePaciente={nombreAfiliado}
+                idAfiliadoParaEliminar={idAfiliado}
+                isPast={false} // <-- Prop para que SÍ muestre la papelera
+              />
+            ))}
+          </div>
+        ) : (
+          <p>No tenés turnos próximos.</p>
+        )}
+      </div>
 
-      {/* --- SECCIÓN 2: HISTORIAL DE TURNOS --- */}
-      <h2 className="text-xl font-bold mt-10 mb-4">Historial de Turnos</h2>
-      {turnosPasados.length > 0 ? (
-        <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
-          {turnosPasados.map(turno => (
-            <TurnosCard 
-              key={turno.idTurno} 
-              turno={turno} 
-              paciente={true}
-              nombrePaciente={nombreAfiliado}
-              idAfiliadoParaEliminar={idAfiliado}
-              isPast={true}
-            />
-          ))}
-        </div>
-      ) : (
-        <p>No tenés turnos en tu historial.</p>
-      )}
+      <div className='flex flex-col gap-2'>
+        {/* --- SECCIÓN 2: HISTORIAL DE TURNOS --- */}
+        {/* <h2 className="text-xl font-bold mt-10 mb-4">Historial de Turnos</h2> */}
+        <SectionTitle>Historial de Turnos</SectionTitle>
+        {turnosPasados.length > 0 ? (
+          <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3">
+            {turnosPasados.map(turno => (
+              <TurnosCard 
+                key={turno.idTurno} 
+                turno={turno} 
+                paciente={true}
+                nombrePaciente={nombreAfiliado}
+                idAfiliadoParaEliminar={idAfiliado}
+                isPast={true}
+              />
+            ))}
+          </div>
+        ) : (
+          <p>No tenés turnos en tu historial.</p>
+        )}
+      </div>
     </div>
   )
 }
