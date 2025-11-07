@@ -8,6 +8,7 @@ import { Fragment } from 'react';
 import { useGetUltimosTramites, useGetUltimosTurnos } from '../services/inicioQueries';
 import { useUserStore } from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
+import InicioSkeleton from '../components/Skeletons/InicioSkeleton';
 
 function Inicio() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function Inicio() {
   const turnos = dataTurnos?.dataTurnos || [];
   const tramites = dataTramites?.dataTramites || [];
 
-  if (isLoadingTurnos || isLoadingTramites) return <p>Cargando...</p>;
+  if (isLoadingTurnos || isLoadingTramites) return <InicioSkeleton />;
 
   if (errorTurnos) {
     if (errorTurnos?.response?.status === 401) {

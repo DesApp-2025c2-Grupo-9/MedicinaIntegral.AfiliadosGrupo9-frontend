@@ -4,6 +4,7 @@ import { useGetTurnosPorAfiliado } from '../../services/turnosQueries';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import TurnosCard from '../../components/cards/cards/TurnosCard';
 import SectionTitle from '../../components/SectionTitle';
+import TurnosSkeleton from '../../components/Skeletons/TurnosSkeleton';
 
 function VerTurnos() {
   const axiosPrivate = useAxiosPrivate();
@@ -51,10 +52,10 @@ function VerTurnos() {
 
   // --- MANEJO DE CARGA Y ERROR (queda igual) ---
   if (isLoadingAfiliado || isLoadingTurnos) {
-    return <div className='p-4'><p>Cargando tus turnos...</p></div>;
+    return <TurnosSkeleton />;
   }
   if (isErrorTurnos) {
-    return <div className='p-4'><p>Error al cargar tus turnos.</p></div>;
+    return <div><p>Error al cargar tus turnos.</p></div>;
   }
   
   // --- RENDERIZADO CON 2 SECCIONES ---

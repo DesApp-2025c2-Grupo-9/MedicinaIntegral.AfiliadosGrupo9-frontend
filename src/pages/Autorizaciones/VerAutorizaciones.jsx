@@ -5,6 +5,7 @@ import { useGetAllAutorizaciones } from '../../services/autorizacionesQueries';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { capitalize } from 'lodash';
 import { useUserStore } from '../../store/userStore';
+import TramitesSkeleton from '../../components/Skeletons/TramitesSkeleton';
 
 
 function VerAutorizaciones() {
@@ -16,7 +17,7 @@ function VerAutorizaciones() {
   const { data, error, isLoading } = useGetAllAutorizaciones(user.idAfiliado);
   const autorizaciones = data?.data || [];
 
-  if (isLoading) return <p>Cargando...</p>;
+  if (isLoading) return <TramitesSkeleton />;
   if (error) {
     if (error?.response?.status === 401) {
       navigate('/login', { state: { from: location }, replace: true });

@@ -5,6 +5,7 @@ import { useGetRecetas } from "../../services/recetasQueries";
 import { useNavigate, useLocation } from "react-router-dom";
 import { capitalize } from "lodash";
 import { useUserStore } from "../../store/userStore";
+import TramitesSkeleton from '../../components/Skeletons/TramitesSkeleton';
 
 function VerRecetas() {
   const navigate = useNavigate();
@@ -13,7 +14,8 @@ function VerRecetas() {
   const { user } = useUserStore((state) => state);
   const { data, error, isLoading } = useGetRecetas(user.idAfiliado);
   const recetas = data?.data || [];
-  if (isLoading) return <p>Cargando...</p>;
+
+  if (isLoading) return <TramitesSkeleton />;
   if (error) {
     if (error?.response?.status === 401) {
       navigate("/login", { state: { from: location }, replace: true });

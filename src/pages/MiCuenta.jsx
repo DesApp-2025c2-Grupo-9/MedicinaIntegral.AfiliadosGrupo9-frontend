@@ -6,13 +6,14 @@ import Select from 'react-select';
 import { useState } from 'react';
 import { useGetMiCuenta, useSetCbuPrincipal } from '../services/miCuentaQueries';
 import { Navigate } from 'react-router-dom';
+import MiCuentaSkeleton from '../components/Skeletons/MiCuentaSkeleton';
 
 function MiCuenta() {
   const [CBUModalOnOf, setCBUModalOnOf] = useState(false);
   const { data, isLoading, isError, error } = useGetMiCuenta();
   const { mutateAsync } = useSetCbuPrincipal();
 
-  if (isLoading) return <div>Cargando...</div>;
+  if (isLoading) return <MiCuentaSkeleton />;
   if (isError && error.status === 401) {
     // Si el refresh token está vencido (401), redirigimos a /login para autenticarse
     return (

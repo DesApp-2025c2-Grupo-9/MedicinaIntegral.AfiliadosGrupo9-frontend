@@ -24,8 +24,8 @@ function ModalObservaciones({
     <div className='fixed inset-0 flex items-center justify-center bg-negro-translucido z-50'>
       {/* Caja externa */}
       <div
-        className='flex flex-col w-[720px] p-3 gap-3 rounded-lg border border-gris-border
-       bg-fondo-documento shadow-custom-shadow'
+        className={`flex flex-col w-[720px] p-3 gap-3 rounded-lg border border-gris-border
+       bg-fondo-documento shadow-custom-shadow ${open && 'animate-modal-observaciones'}`}
       >
         {/* Header */}
         <div

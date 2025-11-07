@@ -1,3 +1,5 @@
+import { icons } from '../../../../utils/icons';
+
 function MarcoCard(props) {
   //Marco con el estilo por defecto de las cards
 
@@ -18,12 +20,33 @@ function MarcoCard(props) {
         observado:  Se carga fondo y pestaña en azul
         analisis: Se carga fondo y pestaña en celeste
     */
-    pendiente: 'pt-1 bg-amber-300 shadow-amber-300 shadow rounded-xl', /* se quitó margin m-3 */
-    aceptado: 'pt-1 bg-green-300 shadow-green-300 shadow rounded-xl',
-    rechazado: 'pt-1 bg-red-300 shadow-red-300 shadow rounded-xl',
-    observado: 'pt-1 bg-blue-300 shadow-blue-300 shadow rounded-xl',
-    analisis: 'pt-1 bg-blue-200 shadow-blue-300 shadow rounded-xl',
+    pendiente: 'bg-[#FD7400]',
+    aceptado: 'bg-[#00AB01]',
+    rechazado: 'bg-[#FF1D23]',
+    observado: 'bg-[#1B76FF]',
+    analisis: 'bg-[#9C27B0]',
   };
+
+    const innerBorderColor = estado === 'pendiente' 
+      ? 'border-[#FD7400]'
+      : estado === 'observado'
+      ? 'border-[#1B76FF]'
+      : estado === 'aceptado'
+      ? 'border-[#00AB01]'
+      : estado === 'rechazado'
+      ? 'border-[#FF1D23]'
+      : 'border-[#9C27B0]';
+
+    const stateIcon = estado === 'pendiente' 
+      ? icons.pendiente
+      : estado === 'observado'
+      ? icons.observado
+      : estado === 'aceptado'
+      ? icons.aceptado
+      : estado === 'rechazado'
+      ? icons.rechazado
+      : icons.enAnalisis;  
+
     const mostrarEstado = () => {
       
       if(estado == 'analisis'){
@@ -38,14 +61,15 @@ function MarcoCard(props) {
 
   // const invertirDetalle = () => { setdetalleOn(!detalleOn); console.log(detalleOn) }//Utilizado si se usa una pestaña para mostrar detalle
   return (
-
-    // <div className={`m-1 ${estiloEstado}`}>
-    <div className={`${estiloEstado}`}>
+    <div className={`rounded-lg shadow-custom-shadow ${estiloEstado}`}>
       {
       //Marco de estado de la card opcional 
       estado ? (
-        <div className="flex text-black items-center justify-between px-1">{/*Si se manda un estado se carga esta parte */}
-          <p className="px-2">{mostrarEstado()}</p>
+        <div className="px-2 py-0.5">{/*Si se manda un estado se carga esta parte */}
+          <div className='flex items-center gap-1.5 text-blanco-principal'>
+            <div className='w-4 aspect-square flex justify-center items-center'>{stateIcon}</div>
+            <p className='font-bold uppercase tracking-wider'>{mostrarEstado()}</p>
+          </div>
           
 
 
@@ -57,7 +81,7 @@ function MarcoCard(props) {
       ) : <></>//Sino no se muestra el marco y solo la card
       }
 
-      <div className={`grid p-3 bg-blanco-principal rounded-b-xl ${!estado && 'h-full'} border border-gris-border ${estilo}`}>
+      <div className={`grid p-3 bg-blanco-principal rounded-lg ${estado ? `border-1 border-t-0 ${innerBorderColor}` : 'h-full border border-gris-border'} ${estilo}`}>
         {/*Aca dentro va la card */}
         {children}
       
