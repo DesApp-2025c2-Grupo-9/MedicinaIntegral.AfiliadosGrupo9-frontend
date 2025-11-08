@@ -1,7 +1,6 @@
 import axios from '../api/axios';
 import axiosPrivate from '../api/axios';
 
-
 // Registro
 export const register = async body => {
   const res = await axios.post('api/auth/register', body);
@@ -25,7 +24,6 @@ export async function obtenerMiCuenta() {
   return response.data;
 }
 
-
 // Afiliados
 export const getAfiliado = async axiosClient => {
   const res = await axiosClient.get('api/afiliados');
@@ -34,6 +32,7 @@ export const getAfiliado = async axiosClient => {
 
 // Reintegros
 export const getReintegros = async (axiosClient, idAfiliado) => {
+  throw new Error('Error 404'); // Error para testear TramitesFallback Component; cambiar mensaje a 'Error 401' para testear MainFallback Component;
   const res = await axiosClient.get(`api/reintegros/${idAfiliado}`);
   return res.data;
 };
@@ -56,7 +55,7 @@ export const deleteReintegro = async (axiosClient, id) => {
 export const commentReintegroById = async (axiosClient, body) => {
   const res = await axiosClient.post(`api/reintegros/${body.id}`, body);
   return res.data;
-}
+};
 
 // Especialidades
 export const getEspecialidades = async () => {

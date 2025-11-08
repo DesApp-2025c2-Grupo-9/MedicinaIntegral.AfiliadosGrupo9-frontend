@@ -3,25 +3,14 @@ import ListaFamiliares from './ListaFamiliares';
 import clsx from 'clsx';
 import { icons } from '../../utils/icons';
 import { useGetAfiliado } from '../../services/queries';
-import { Navigate, useLocation } from 'react-router-dom';
+import AvatarAfiliadoSkeleton from '../Skeletons/AvatarAfiliadoSkeleton';
 
 function AvatarAfiliado({ className }) {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
-  const { data, error, isLoading, isError } = useGetAfiliado();
+  const { data, isLoading, isError, error } = useGetAfiliado();
 
-  if (isLoading) return <div>Cargando...</div>;
-  if (isError && error.status === 401) {
-    // Si el refresh token está vencido (401), redirigimos a /login para autenticarse
-    return (
-      <Navigate
-        to='/login'
-        state={{ from: location }}
-        replace
-      />
-    );
-  }
-  if (isError) return <div>Error: {error.message}</div>;
+  if (isLoading) return <AvatarAfiliadoSkeleton />;
+  if (isError) throw error;
 
   const afiliado = data?.data;
   const inicialesUser = afiliado?.nombre?.charAt(0) + afiliado?.apellido?.charAt(0);
@@ -30,7 +19,7 @@ function AvatarAfiliado({ className }) {
     <div className={`relative flex flex-col justify-center items-start lg:items-end gap-2 w-60 ${className}`}>
       <div
         onClick={() => {
-          if(afiliado.grupoFamiliar.length > 1){
+          if (afiliado.grupoFamiliar.length > 1) {
             setIsOpen(!isOpen);
           }
         }}
@@ -40,10 +29,9 @@ function AvatarAfiliado({ className }) {
           {inicialesUser}
         </div>
         <p className='uppercase text-center text-xl font-bold text-negro-principal'>{afiliado?.nombre}</p>
-        {/*Si el afiliado no tiene grupo familiar, no se muestra el desplegable */}
-        {afiliado.grupoFamiliar.length > 1 &&
+        {afiliado.grupoFamiliar.length > 1 && (
           <div className={clsx('w-[14px] transition-all text-negro-principal', { 'rotate-90': !isOpen, 'rotate-0': isOpen })}>{icons.chevronDown}</div>
-        }
+        )}
       </div>
 
       <ListaFamiliares

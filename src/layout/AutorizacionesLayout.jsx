@@ -18,7 +18,6 @@ function AutorizacionesLayout() {
   const pathDest = location.pathname === '/autorizaciones/ver-autorizaciones';
 
   useEffect(() => {
-    console.log(paraAfiliado)
     if (pathDest) {
       setAutorizacion({ paraAfiliado });
     }

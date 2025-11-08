@@ -1,4 +1,4 @@
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { commentReintegroById, createReintegro, deleteReintegro, getAfiliado, getEspecialidades, getReintegros, login, register, updateReintegro } from './api';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
@@ -33,7 +33,7 @@ export function useGetReintegros(idAfiliado) {
   return useQuery({
     queryKey: ['reintegros', { idAfiliado }],
     queryFn: () => getReintegros(axiosPrivate, idAfiliado),
-    placeholderData: keepPreviousData
+    enabled: idAfiliado && true
   });
 }
 

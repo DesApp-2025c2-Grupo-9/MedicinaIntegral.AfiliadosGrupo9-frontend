@@ -1,29 +1,27 @@
 import Topbar from '../components/Topbar/Topbar';
 import Sidebar from '../components/Sidebar/Sidebar';
-import { Outlet } from 'react-router-dom';
-
-/* function MainFallbackFC({ error, resetErrorBoundary }) {
-  const setResetErrorBoundary = useResetErrorBoundaryStore(state => state.setResetErrorBoundary);
-  setResetErrorBoundary(resetErrorBoundary);
-
-  return <div>Su sesión ha expirado: {error.message}</div>;
-} */
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { ErrorBoundary } from 'react-error-boundary';
+import { useQueryErrorResetBoundary } from '@tanstack/react-query';
+import MainFallback from '../components/ErrorFallbacks/MainFallback';
 
 function MainLayout() {
-  /* const { reset } = useQueryErrorResetBoundary();
+  const { reset } = useQueryErrorResetBoundary();
   const location = useLocation();
-  const navigate = useNavigate(); */
+  const navigate = useNavigate();
+
+  const handleError = error => {
+    if (error.message.includes('401')) {
+      navigate('/login', { replace: true, state: { from: location } });
+    }
+  };
 
   return (
-/*     <ErrorBoundary
+    <ErrorBoundary
       onReset={reset}
-      FallbackComponent={MainFallbackFC}
-      onError={error => {
-        console.log('Soy error en MainLayout', error)
-        if (error.status === 401) navigate('/login', { replace: true, state: { from: location } });
-      }}
-    > */
-    <>
+      FallbackComponent={MainFallback}
+      // onError={handleError} // Descomentar para ser redirigido a /login cuando error.status === 401
+    >
       <Topbar className='mb-5 animate-topbar' />
       <div className='flex lg:gap-5 w-dvw lg:pr-10'>
         <div>
@@ -33,8 +31,7 @@ function MainLayout() {
           <Outlet />
         </div>
       </div>
-    </>
-    // </ErrorBoundary>
+    </ErrorBoundary>
   );
 }
 export default MainLayout;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './login.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { validacionLogin } from '../utils/validacionLogin';
@@ -6,13 +6,14 @@ import OcultarClave from '../components/OcultarClave/ocultarClave';
 import { useLogin } from '../services/queries';
 import { useUserStore } from '../store/userStore';
 import Swal from 'sweetalert2';
+import { useQueryClient } from '@tanstack/react-query';
+import { useResetErrorBoundaryStore } from '../store/resetErrorBoundaryStore';
 
 const Login = () => {
   const [usuario, setUsuario] = useState('');
   const [clave, setClave] = useState('');
   const [error, setError] = useState('');
-  // const { setUser } = useContext(UserContext);
-  const { setUser } = useUserStore(state => state);
+  const setUser = useUserStore(state => state.setUser);
   const navigate = useNavigate();
   const { mutateAsync } = useLogin();
   const location = useLocation();
@@ -21,6 +22,12 @@ const Login = () => {
     setClave(e.target.value);
     if (error) setError('');
   };
+
+  const queryClient = useQueryClient();
+  const resetErrorBoundary = useResetErrorBoundaryStore(state => state.resetErrorBoundary);
+  useEffect(() => {
+    queryClient.invalidateQueries();
+  });
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -36,10 +43,11 @@ const Login = () => {
         password: clave
       });
       setError('');
+      if (resetErrorBoundary) resetErrorBoundary();
       setUser({ accessToken: data?.accessToken, nroDocumento: usuario, idAfiliado: data?.data.idAfiliado });
       navigate(from, { replace: true });
     } catch (error) {
-      const mensaje = error.response?.data?.message || 'Ocurrió un problema. Intentá más tarde.';
+      const mensaje = error.response?.data?.message || 'Ocurrió un problema. Intente más tarde.';
       Swal.fire({
         icon: 'warning',
         iconColor: '#dc143c',

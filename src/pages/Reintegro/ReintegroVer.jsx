@@ -3,43 +3,44 @@ import FiltroEstados from '../../components/FiltroEstados';
 import { useStateFilter } from '../../store/stateFilter';
 import { useGetReintegros } from '../../services/queries';
 import { capitalize } from 'lodash';
-import { Navigate, useLocation } from 'react-router-dom';
 import { useUserStore } from '../../store/userStore';
 import TramitesSkeleton from '../../components/Skeletons/TramitesSkeleton';
+import { twMerge } from 'tailwind-merge';
+import clsx from 'clsx';
+import NoTramitesAvailable from '../NoTramitesAvailable';
 
 function ReintegroVer() {
-  const { state } = useStateFilter();
-  const location = useLocation();
-  const { user } = useUserStore(state => state);
-  const { data, error, isLoading, isError } = useGetReintegros(user.idAfiliado);
+  const state = useStateFilter(state => state.state);
+  const user = useUserStore(state => state.user);
+  const { data, isLoading, isError, error } = useGetReintegros(user.idAfiliado);
 
-  // if (isLoading) return <div>Cargando...</div>;
   if (isLoading) return <TramitesSkeleton />;
-  if (isError && error.status === 401) {
-    return (
-      <Navigate
-        to='/login'
-        state={{ from: location }}
-        replace
-      />
-    );
-  }
-  if (isError) return <div>Error: {error.message}</div>;
+  if (isError) throw error;
 
-  const reintegros = data?.data || [];
+  // const reintegros = data?.data;
+  const reintegros = null;
   const reintegrosFiltrados = reintegros?.filter(r => state.includes(capitalize(r.estado)) || state === 'Todos');
 
   return (
-    <div className='flex flex-col items-end relative gap-3'>
-      <FiltroEstados className='sm:absolute -top-11 mr-auto' />
-      <div className='w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3'>
-        {reintegrosFiltrados.map(r => (
-          <ReintegroCard
-            key={r.id}
-            reintegro={r}
-          />
-        ))}
-      </div>
+    <div className={twMerge(clsx('flex flex-col relative gap-3', { 'items-end': reintegros }))}>
+      {reintegros ? (
+        <>
+          <FiltroEstados className='sm:absolute -top-9.5 mr-auto' />
+          <div className='w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3'>
+            {reintegrosFiltrados.map(r => (
+              <ReintegroCard
+                key={r.id}
+                reintegro={r}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <NoTramitesAvailable
+          tipoTramite='Reintegro'
+          path='/reintegros/solicitar-reintegro'
+        />
+      )}
     </div>
   );
 }

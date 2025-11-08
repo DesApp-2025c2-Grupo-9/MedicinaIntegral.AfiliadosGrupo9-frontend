@@ -1,0 +1,44 @@
+import { Link } from 'react-router-dom';
+import { useResetErrorBoundaryStore } from '../../store/resetErrorBoundaryStore';
+import { icons } from '../../utils/icons';
+import { useQueryClient } from '@tanstack/react-query';
+
+function MainFallback({ error, resetErrorBoundary }) {
+  const queryClient = useQueryClient();
+  const setResetErrorBoundary = useResetErrorBoundaryStore(state => state.setResetErrorBoundary);
+  setResetErrorBoundary(resetErrorBoundary);
+
+  const handleClick = () => {
+    queryClient.resetQueries();
+    resetErrorBoundary();
+  };
+
+  return (
+    <div className='h-dvh flex flex-col items-center justify-center gap-2 p-4'>
+      <div className='text-rojo-alerta w-24 md:w-32 aspect-square flex items-center justify-center'>{icons.sadFace}</div>
+      <h2 className='text-[25px] md:text-[39.01px] font-bold md:leading-12 text-center'>Ups, ha ocurrido un error inesperado.</h2>
+      <pre className='text-base md:text-xl text-rojo-alerta'>{error.message}</pre>
+      <p className='text-base md:text-xl text-center'>
+        Por favor,{' '}
+        <span
+          className='font-bold text-menta-600 underline cursor-pointer'
+          onClick={handleClick}
+        >
+          refresque la página
+        </span>{' '}
+        o redirijase a{' '}
+        <Link
+          to='/'
+          className='font-bold text-menta-600 underline'
+          onClick={handleClick}
+        >
+          Inicio
+        </Link>{' '}
+        para intentar nuevamente.
+        <br />
+        Si el problema continúa, reintente en otro momento.
+      </p>
+    </div>
+  );
+}
+export default MainFallback;
