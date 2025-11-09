@@ -14,10 +14,10 @@ function MainFallback({ error, resetErrorBoundary }) {
   };
 
   return (
-    <div className='h-dvh flex flex-col items-center justify-center gap-2 p-4'>
+    <div className='h-dvh flex flex-col items-center justify-center gap-4 p-4 md:p-10'>
       <div className='text-rojo-alerta w-24 md:w-32 aspect-square flex items-center justify-center'>{icons.sadFace}</div>
       <h2 className='text-[25px] md:text-[39.01px] font-bold md:leading-12 text-center'>Ups, ha ocurrido un error inesperado.</h2>
-      <pre className='text-base md:text-xl text-rojo-alerta'>{error.message}</pre>
+      <p className='font-mono text-base md:text-lg font-bold text-rojo-alerta text-center'>{error.message}</p>
       <p className='text-base md:text-xl text-center'>
         Por favor,{' '}
         <span

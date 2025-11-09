@@ -11,7 +11,7 @@ function Topbar({ className }) {
       <GenErrorBoundary fallback={<div>Error en AvatarAfiliado</div>}>
         <AvatarAfiliado className='hidden lg:flex z-10' />
       </GenErrorBoundary>
-      {/* <HamburgerMenu /> */}
+      <HamburgerMenu />
     </div>
   );
 }

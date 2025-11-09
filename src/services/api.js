@@ -32,7 +32,7 @@ export const getAfiliado = async axiosClient => {
 
 // Reintegros
 export const getReintegros = async (axiosClient, idAfiliado) => {
-  throw new Error('Error 404'); // Error para testear TramitesFallback Component; cambiar mensaje a 'Error 401' para testear MainFallback Component;
+  // throw new Error('Error 404'); // Error para testear TramitesFallback Component; cambiar mensaje a 'Error 401' para testear MainFallback Component;
   const res = await axiosClient.get(`api/reintegros/${idAfiliado}`);
   return res.data;
 };

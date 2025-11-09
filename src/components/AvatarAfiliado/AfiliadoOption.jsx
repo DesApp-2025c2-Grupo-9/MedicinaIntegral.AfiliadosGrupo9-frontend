@@ -1,14 +1,35 @@
 import clsx from 'clsx';
 import { icons } from '../../utils/icons';
 import { useUserStore } from '../../store/userStore';
+import { toast } from 'react-toastify';
 
 function AfiliadoOption({ afiliado = { nombre: 'John', apellido: 'Doe' }, onClick }) {
-  const { user, setUser } = useUserStore(state => state);
+  const user = useUserStore(state => state.user);
+  const setUser = useUserStore(state => state.setUser);
   const isActive = user.idAfiliado === afiliado.id;
+
+  const toastContent = (
+    <p className='text-sm text-negro-principal w-full text-center'>
+      Viendo como{' '}
+      <b className='text-menta-600'>
+        {afiliado.nombre} {afiliado.apellido}
+      </b>
+    </p>
+  );
 
   const handleClick = () => {
     setUser({ ...user, idAfiliado: afiliado.id });
     onClick();
+    toast.dismiss();
+    toast(toastContent, {
+      position: 'top-center',
+      hideProgressBar: true,
+      closeButton: false,
+      autoClose: 3000,
+      containerId: 'toasty',
+      className: 'border border-menta-600 shadow-custom-shadow',
+      style: { backgroundColor: '#e2ffe2', width: '360px', borderRadius: '8px' }
+    });
   };
 
   return (
