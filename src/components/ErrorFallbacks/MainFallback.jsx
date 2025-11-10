@@ -1,17 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useResetErrorBoundaryStore } from '../../store/resetErrorBoundaryStore';
 import { icons } from '../../utils/icons';
-import { useQueryClient } from '@tanstack/react-query';
 
 function MainFallback({ error, resetErrorBoundary }) {
-  const queryClient = useQueryClient();
   const setResetErrorBoundary = useResetErrorBoundaryStore(state => state.setResetErrorBoundary);
   setResetErrorBoundary(resetErrorBoundary);
-
-  const handleClick = () => {
-    queryClient.resetQueries();
-    resetErrorBoundary();
-  };
 
   return (
     <div className='h-dvh flex flex-col items-center justify-center gap-4 p-4 md:p-10'>
@@ -22,7 +15,7 @@ function MainFallback({ error, resetErrorBoundary }) {
         Por favor,{' '}
         <span
           className='font-bold text-menta-600 underline cursor-pointer'
-          onClick={handleClick}
+          onClick={resetErrorBoundary}
         >
           refresque la página
         </span>{' '}
@@ -30,7 +23,7 @@ function MainFallback({ error, resetErrorBoundary }) {
         <Link
           to='/'
           className='font-bold text-menta-600 underline'
-          onClick={handleClick}
+          onClick={resetErrorBoundary}
         >
           Inicio
         </Link>{' '}

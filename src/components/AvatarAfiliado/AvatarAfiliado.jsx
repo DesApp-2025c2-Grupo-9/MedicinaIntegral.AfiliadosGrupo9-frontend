@@ -7,10 +7,9 @@ import AvatarAfiliadoSkeleton from '../Skeletons/AvatarAfiliadoSkeleton';
 
 function AvatarAfiliado({ className }) {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading, isError, error } = useGetAfiliado();
+  const { data, isLoading } = useGetAfiliado();
 
   if (isLoading) return <AvatarAfiliadoSkeleton />;
-  if (isError) throw error;
 
   const afiliado = data?.data;
   const inicialesUser = afiliado?.nombre?.charAt(0) + afiliado?.apellido?.charAt(0);
@@ -36,11 +35,13 @@ function AvatarAfiliado({ className }) {
 
       <ListaFamiliares
         grupoFamiliar={afiliado.grupoFamiliar}
-        className={clsx('lg:absolute transition-all', {
-          'absolute -top-45 opacity-0': !isOpen,
-          'top-11 opacity-100': isOpen
+        className={clsx('lg:absolute -right-6 transition-all', {
+          'absolute -top-108 opacity-0': !isOpen,
+          'top-16 opacity-100': isOpen
         })}
         onClick={() => setIsOpen(false)}
+        afiliado={afiliado}
+        inicialesUser={inicialesUser}
       />
     </div>
   );

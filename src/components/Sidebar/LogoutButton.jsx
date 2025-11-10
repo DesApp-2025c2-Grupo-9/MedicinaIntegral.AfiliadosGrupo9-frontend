@@ -4,8 +4,9 @@ import { icons } from '../../utils/icons';
 import { useNavigate } from 'react-router-dom';
 
 function LogoutButton() {
-  const { setUser } = useUserStore(state => state);
+  const setUser = useUserStore(state => state.setUser);
   const navigate = useNavigate();
+
   const handleClick = async () => {
     await logout();
     setUser({});

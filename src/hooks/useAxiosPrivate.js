@@ -4,7 +4,7 @@ import { useUserStore } from '../store/userStore';
 import useRefreshToken from './useRefreshToken';
 
 const useAxiosPrivate = () => {
-  const { user } = useUserStore(state => state);
+  const user = useUserStore(state => state.user);
   const refresh = useRefreshToken();
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.request.eject(requestInterceptor);
       axiosPrivate.interceptors.response.eject(responseInterceptor);
     };
-  }, [user, refresh]);
+  }, [user?.accessToken, refresh]);
 
   return axiosPrivate;
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './login.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { validacionLogin } from '../utils/validacionLogin';
@@ -6,7 +6,6 @@ import OcultarClave from '../components/OcultarClave/ocultarClave';
 import { useLogin } from '../services/queries';
 import { useUserStore } from '../store/userStore';
 import Swal from 'sweetalert2';
-import { useQueryClient } from '@tanstack/react-query';
 import { useResetErrorBoundaryStore } from '../store/resetErrorBoundaryStore';
 
 const Login = () => {
@@ -23,11 +22,7 @@ const Login = () => {
     if (error) setError('');
   };
 
-  const queryClient = useQueryClient();
   const resetErrorBoundary = useResetErrorBoundaryStore(state => state.resetErrorBoundary);
-  useEffect(() => {
-    queryClient.invalidateQueries();
-  });
 
   const handleSubmit = async e => {
     e.preventDefault();

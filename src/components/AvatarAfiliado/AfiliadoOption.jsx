@@ -34,14 +34,25 @@ function AfiliadoOption({ afiliado = { nombre: 'John', apellido: 'Doe' }, onClic
 
   return (
     <div
-      className={clsx('flex gap-2 items-center w-fit', {
-        'text-negro-principal hover:text-menta-200 cursor-pointer': !isActive,
-        'text-menta-600 cursor-default': isActive
+      className={clsx('flex gap-2 items-center p-2 rounded-full transition-all', {
+        'text-negro-principal bg-fondo-documento hover:bg-menta-100 cursor-pointer': !isActive,
+        'text-blanco-principal cursor-default bg-menta-600': isActive
       })}
       onClick={handleClick}
     >
-      <div className='h-4 aspect-square flex items-center justify-center'>{icons.usuario}</div>
-      <p className='text-sm'>
+      <div
+        className={clsx('p-2 rounded-full border', {
+          'border-fondo-documento bg-fondo-documento': !isActive,
+          'border-blanco-principal bg-blanco-principal text-menta-600': isActive
+        })}
+      >
+        <div className='h-4 aspect-square flex items-center justify-center'>{icons.usuario}</div>
+      </div>
+      <p
+        className={clsx('text-sm', {
+          'font-bold': isActive
+        })}
+      >
         {afiliado.nombre} {afiliado.apellido}
       </p>
     </div>

@@ -3,7 +3,6 @@ import FiltroEstados from '../../components/FiltroEstados';
 import { useStateFilter } from '../../store/stateFilter';
 import { useGetReintegros } from '../../services/queries';
 import { capitalize } from 'lodash';
-import { useUserStore } from '../../store/userStore';
 import TramitesSkeleton from '../../components/Skeletons/TramitesSkeleton';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
@@ -11,14 +10,13 @@ import NoTramitesAvailable from '../NoTramitesAvailable';
 
 function ReintegroVer() {
   const state = useStateFilter(state => state.state);
-  const user = useUserStore(state => state.user);
-  const { data, isLoading, isError, error } = useGetReintegros(user.idAfiliado);
+  const { data, isLoading, /* isError, error */ } = useGetReintegros();
 
   if (isLoading) return <TramitesSkeleton />;
-  if (isError) throw error;
+  // if (isError) throw error;
 
-  // const reintegros = data?.data;
-  const reintegros = null;
+  const reintegros = data?.data;
+  // const reintegros = null;
   const reintegrosFiltrados = reintegros?.filter(r => state.includes(capitalize(r.estado)) || state === 'Todos');
 
   return (

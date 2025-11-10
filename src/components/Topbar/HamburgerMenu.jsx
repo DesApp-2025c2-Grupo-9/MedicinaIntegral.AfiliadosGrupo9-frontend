@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { icons } from '../../utils/icons'
-import MenuButton from './MenuButton'
+import { useState } from 'react';
+import { icons } from '../../utils/icons';
+import MenuButton from './MenuButton';
 import clsx from 'clsx';
 import AvatarAfiliado from '../AvatarAfiliado/AvatarAfiliado';
 import LogoutButton from '../Sidebar/LogoutButton';
@@ -14,19 +14,24 @@ function HamburgerMenu() {
       <MenuButton onClick={() => setMenuOpen(true)}>{icons.hamburgerMenu}</MenuButton>
 
       <div
-        className={clsx('bg-blanco-principal flex w-dvw h-dvh py-5 pr-4 pl-10 flex-col justify-between items-start fixed top-0 transition-all', {
+        className={clsx('bg-fondo-documento flex w-dvw h-dvh p-8 flex-col justify-between items-start fixed top-0 transition-all', {
           'left-0': menuOpen,
           'left-[100dvw] opacity-0': !menuOpen
         })}
       >
-        <div className='flex flex-col gap-5 self-stretch'>
-          <MenuButton className='ml-auto' onClick={() => setMenuOpen(false)}>{icons.cerrar}</MenuButton>
-          <AvatarAfiliado />
+        <div className='flex flex-col self-stretch h-full gap-8'>
+          <MenuButton
+            className='ml-auto'
+            onClick={() => setMenuOpen(false)}
+          >
+            {icons.cerrar}
+          </MenuButton>
+          {/* <AvatarAfiliado /> */}
           <NavLinks onClick={() => setMenuOpen(false)} />
         </div>
         <LogoutButton />
       </div>
     </div>
-  )
+  );
 }
-export default HamburgerMenu
+export default HamburgerMenu;
