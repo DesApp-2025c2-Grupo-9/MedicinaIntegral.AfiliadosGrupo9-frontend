@@ -59,7 +59,14 @@ function ReintegroCard(props) {
         <div className='grid grid-rows-4 justify-items-end relative'>
           {/*El estilo del estado es dinámico si está o no en el dashboard*/}
           {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
-            <TipoDeTramite tipo={'Reintegro'} />
+             <>
+                <div>
+                  <UsuarioActual paciente={reintegro.paraAfiliado}/>
+                </div>
+                <div>
+                  <TipoDeTramite tipo={'Reintegro'} />
+                </div>
+              </>
           ) : (
             <>
               <UsuarioActual paciente={reintegro.paraAfiliado} />
