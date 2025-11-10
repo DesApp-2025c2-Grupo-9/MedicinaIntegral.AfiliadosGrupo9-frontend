@@ -10,24 +10,22 @@ import TipoDeTramite from "./cardComponents/TipoDeTramite";
 import BotonDescargar from "./cardComponents/BotonDescargar";
 import EditarReceta from "../../../pages/Recetas/EditarReceta";
 import ModalObservaciones from "../../ModalObservaciones/ModalObservaciones";
-//import { useDeleteReceta } from "../../../services/recetasQueries";
 import { useDelReceta } from "../../../hooks/useDeleteReceta";
 import {
   useCommentReceta,
   useDescargarReceta,
 } from "../../../hooks/useRecetaPetitions";
-//import { handleDeleteReceta } from "../../../services/recetasHelpers";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/recetas.css";
 
 function RecetaCard(props) {
   const dashboard = props.dashboard || false;
   const receta = props.receta;
+  const estado = receta.estado?.toLowerCase();
   const [modalEditarOpen, setModalEditarOpen] = useState(false);
   const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
   const { onSubmit: commentReceta } = useCommentReceta();
   const { descargarReceta } = useDescargarReceta();
-  //const { mutateAsync } = useDeleteReceta();
   const navigate = useNavigate();
   const { deleteRecetaHandler } = useDelReceta();
   const observacionPrestador = receta?.observaciones?.find(
@@ -43,12 +41,19 @@ function RecetaCard(props) {
     : "Sin fecha";
 
   const handleObservacionesClick = () => {
-    const estado = receta.estado?.toLowerCase();
-    if (estado === "en análisis" || estado === "observado") {
+    //obtener la última observación del prestador
+    const ultimaObsPrestador = receta?.observaciones
+      ?.filter((obs) => obs.rolEmisor === "Prestador")
+      .slice(-1)[0];
+
+    if (estado === "observado") {
       setIsObservacionesOpen(true);
-    } else {
+    } else if (receta.estado === "rechazado") {
       Swal.fire({
-        text: "No hay observaciones para esta receta.",
+        title: "Motivo de rechazo:",
+        text: ultimaObsPrestador?.descripcion?.trim()
+          ? ultimaObsPrestador.descripcion
+          : "No hay observaciones para esta receta.",
         icon: "info",
         iconColor: "#00ab01",
         confirmButtonText: "Aceptar",
@@ -57,8 +62,11 @@ function RecetaCard(props) {
 
           htmlContainer: "text-sm text-gray-700",
           confirmButton: "modal-tramites-confirm-button",
+          title: "swal2-title",
         },
       });
+    } else {
+      return;
     }
   };
 
@@ -82,7 +90,9 @@ function RecetaCard(props) {
         nombreUsuario={receta.paraAfiliado}
         headerText="Volver a Recetas"
         fechaEnvio={observacionPrestador?.fecha}
-        observacionesTexto={observacionPrestador?.descripcion}
+        observacionesTexto={
+          observacionPrestador?.descripcion || "No hay observaciones"
+        }
         idTramite={receta.id}
         onSubmit={commentReceta}
       />
@@ -103,15 +113,15 @@ function RecetaCard(props) {
           ) : (
             <>
               <UsuarioActual paciente={receta.paraAfiliado} />
-              {receta.estado !== "pendiente" && (
+              {estado !== "pendiente" && (
                 <div className="flex row-start-4">
-                  {receta.estado?.toLowerCase() === "aceptado" && (
+                  {estado === "aceptado" && (
                     <BotonDescargar onClick={() => descargarReceta(receta)} />
                   )}
-                  {receta.estado?.toLowerCase() !== "aceptado" &&
-                    receta.estado?.toLowerCase() !== "rechazado" && (
-                      <BotonObservaciones onClick={handleObservacionesClick} />
-                    )}
+
+                  {(estado === "observado" || estado === "rechazado") && (
+                    <BotonObservaciones onClick={handleObservacionesClick} />
+                  )}
                 </div>
               )}
             </>
