@@ -109,7 +109,14 @@ function RecetaCard(props) {
 
         <div className="grid grid-rows-4 justify-items-end">
           {dashboard ? (
-            <TipoDeTramite tipo="Receta" />
+            <>
+                <div>
+                  <UsuarioActual paciente={receta.paraAfiliado}/>
+                </div>
+                <div>
+                  <TipoDeTramite tipo={'Receta'} />
+                </div>
+              </>
           ) : (
             <>
               <UsuarioActual paciente={receta.paraAfiliado} />
