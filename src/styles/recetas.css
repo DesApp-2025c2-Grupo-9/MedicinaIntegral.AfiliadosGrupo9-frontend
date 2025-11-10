@@ -27,3 +27,7 @@
 .swal-btn-cancel:hover {
   background-color: #9ca3af;
 }
+.swal2-title {
+  font-size: 1.7rem !important;
+  font-weight: 600 !important;
+}
