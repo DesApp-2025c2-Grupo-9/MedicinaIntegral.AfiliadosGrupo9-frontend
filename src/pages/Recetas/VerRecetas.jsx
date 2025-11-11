@@ -24,27 +24,28 @@ function VerRecetas() {
     return <p>Error: {JSON.stringify(error)}</p>;
   }
 
-  let recetasFiltradas = recetas?.filter(
-    (receta) => state.includes(capitalize(receta.estado)) || state == "Todos"
-  );
+  let recetasFiltradas = recetas
+    ?.filter(
+      (receta) => state.includes(capitalize(receta.estado)) || state == "Todos"
+    )
+    .filter((receta) => {
+      const estado = receta.estado?.toLowerCase();
+      const fechaCreacion = receta.createdAt
+        ? new Date(receta.createdAt)
+        : null;
 
-  recetasFiltradas = recetasFiltradas.filter((receta) => {
-    const estado = receta.estado?.toLowerCase();
-    const fechaCreacion = receta.createdAt ? new Date(receta.createdAt) : null;
+      const haceUnaSemana = new Date();
+      haceUnaSemana.setDate(haceUnaSemana.getDate() - 7);
+      console.log(haceUnaSemana, receta);
+      if (["pendiente", "observado", "en análisis"].includes(estado))
+        return true;
 
-    const haceUnMes = new Date();
-    haceUnMes.setMonth(haceUnMes.getMonth() - 1);
+      if (["aceptado", "rechazado"].includes(estado) && fechaCreacion) {
+        return fechaCreacion <= haceUnaSemana;
+      }
 
-    if (["pendiente", "observado", "en análisis"].includes(estado)) return true;
-
-    if (["aceptado", "rechazado"].includes(estado) && fechaCreacion) {
-      // Mostrar solo si la fecha es igual o posterior a hace un mes
-      //si se quiere mostrar más antiguas, cambiar -1 por los meses que se quieran mostrar
-      return fechaCreacion >= haceUnMes;
-    }
-
-    return false;
-  });
+      return false;
+    });
   return (
     <div className="flex flex-col items-end gap-3 relative">
       <FiltroEstados className="sm:absolute -top-9.5 mr-auto" />

@@ -151,7 +151,6 @@ function CartillaMedica() {
         </Form>
 
         <div>
-          {/* 🔹 Caso 1: sin filtros válidos */}
           {!hayFiltrosActivos && (
             <p className="text-gray-500 text-sm">
               Seleccione una localidad y una especialidad para comenzar la
@@ -159,12 +158,10 @@ function CartillaMedica() {
             </p>
           )}
 
-          {/* 🔹 Caso 2: cargando */}
           {hayFiltrosActivos && loadingPrestadores && (
             <p>Cargando prestadores...</p>
           )}
 
-          {/* 🔹 Caso 3: con resultados */}
           {hayFiltrosActivos &&
             !loadingPrestadores &&
             prestadores.length > 0 && (
@@ -178,7 +175,6 @@ function CartillaMedica() {
               </div>
             )}
 
-          {/* 🔹 Caso 4: sin resultados */}
           {hayFiltrosActivos &&
             !loadingPrestadores &&
             prestadores.length === 0 && (
