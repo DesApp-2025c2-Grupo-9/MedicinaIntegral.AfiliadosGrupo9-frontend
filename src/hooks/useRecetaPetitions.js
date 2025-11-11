@@ -61,13 +61,13 @@ export const useDescargarReceta = () => {
       doc.setFontSize(11);
       doc.text("Receta médica", 40, y + 18);
 
-      // Línea separadora
+      //linea
       y += 35;
       doc.setLineWidth(0.5);
       doc.line(10, y, 140, y);
       y += 10;
 
-      // 🔹 Datos principales
+      //Datos principales
       doc.setFontSize(11);
       const datos = [
         ["N° de afiliado:", receta.nroAfiliado],
@@ -86,12 +86,12 @@ export const useDescargarReceta = () => {
         y += 8;
       });
 
-      // Línea separadora
+      // Línea
       y += 2;
       doc.line(10, y, 140, y);
       y += 10;
 
-      // 🔹 Observaciones
+      //  Observaciones
       doc.setFont("helvetica", "bold");
       doc.text("Observaciones:", 10, y);
       y += 8;
@@ -127,7 +127,7 @@ export const useDescargarReceta = () => {
         doc.text("Sin observaciones registradas.", 15, y);
       }
 
-      // 🔹 Footer
+      //  Footer
       doc.setFontSize(9);
       doc.setTextColor(120);
       doc.text(
