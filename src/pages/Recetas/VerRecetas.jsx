@@ -1,40 +1,56 @@
-import RecetaCard from '../../components/cards/cards/RecetaCard';
-import { useStateFilter } from '../../store/stateFilter';
-import FiltroEstados from '../../components/FiltroEstados';
-import { useGetRecetas } from '../../services/recetasQueries';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { capitalize } from 'lodash';
-import { useUserStore } from '../../store/userStore';
-import TramitesSkeleton from '../../components/Skeletons/TramitesSkeleton';
+import RecetaCard from "../../components/cards/cards/RecetaCard";
+import { useStateFilter } from "../../store/stateFilter";
+import FiltroEstados from "../../components/FiltroEstados";
+import { useGetRecetas } from "../../services/recetasQueries";
+import { useNavigate, useLocation } from "react-router-dom";
+import { capitalize } from "lodash";
+import { useUserStore } from "../../store/userStore";
+import TramitesSkeleton from "../../components/Skeletons/TramitesSkeleton";
 
 function VerRecetas() {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = useStateFilter();
-  const { user } = useUserStore(state => state);
+  const { user } = useUserStore((state) => state);
   const { data, error, isLoading } = useGetRecetas(user.idAfiliado);
   const recetas = data?.data || [];
 
   if (isLoading) return <TramitesSkeleton />;
   if (error) {
     if (error?.response?.status === 401) {
-      navigate('/login', { state: { from: location }, replace: true });
+      navigate("/login", { state: { from: location }, replace: true });
       return null;
     }
     return <p>Error: {JSON.stringify(error)}</p>;
   }
 
-  const recetasFiltradas = recetas?.filter(receta => state.includes(capitalize(receta.estado)) || state == 'Todos');
+  let recetasFiltradas = recetas?.filter(
+    (receta) => state.includes(capitalize(receta.estado)) || state == "Todos"
+  );
 
+  recetasFiltradas = recetasFiltradas.filter((receta) => {
+    const estado = receta.estado?.toLowerCase();
+    const fechaCreacion = receta.createdAt ? new Date(receta.createdAt) : null;
+
+    const haceUnMes = new Date();
+    haceUnMes.setMonth(haceUnMes.getMonth() - 1);
+
+    if (["pendiente", "observado", "en análisis"].includes(estado)) return true;
+
+    if (["aceptado", "rechazado"].includes(estado) && fechaCreacion) {
+      // Mostrar solo si la fecha es igual o posterior a hace un mes
+      //si se quiere mostrar más antiguas, cambiar -1 por los meses que se quieran mostrar
+      return fechaCreacion >= haceUnMes;
+    }
+
+    return false;
+  });
   return (
-    <div className='flex flex-col items-end gap-3 relative'>
-      <FiltroEstados className='sm:absolute -top-9.5 mr-auto' />
-      <div className='w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3'>
+    <div className="flex flex-col items-end gap-3 relative">
+      <FiltroEstados className="sm:absolute -top-9.5 mr-auto" />
+      <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3">
         {recetasFiltradas?.map((receta, idReceta) => (
-          <RecetaCard
-            receta={receta}
-            key={idReceta}
-          />
+          <RecetaCard receta={receta} key={idReceta} />
         ))}
       </div>
     </div>
