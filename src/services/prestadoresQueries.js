@@ -1,15 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
-import { getEspecialidades } from './api';
-import useAxiosPrivate from '../hooks/useAxiosPrivate';
-import { getLocalidades, getPrestadores } from './prestadoresService';
+import { useQuery } from "@tanstack/react-query";
+import { getEspecialidades } from "./api";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { getLocalidades, getPrestadores } from "./prestadoresService";
+import { isNil } from "lodash";
 
 // Traer especialidades
 export const useGetEspecialidades = () => {
   const axiosPrivate = useAxiosPrivate();
 
   return useQuery({
-    queryKey: ['especialidades'],
-    queryFn: () => getEspecialidades(axiosPrivate)
+    queryKey: ["especialidades"],
+    queryFn: () => getEspecialidades(axiosPrivate),
   });
 };
 
@@ -18,27 +19,19 @@ export const useGetLocalidades = () => {
   const axiosPrivate = useAxiosPrivate();
 
   return useQuery({
-    queryKey: ['localidades'],
-    queryFn: () => getLocalidades(axiosPrivate)
+    queryKey: ["localidades"],
+    queryFn: () => getLocalidades(axiosPrivate),
   });
 };
 
 // Traer prestadores según filtros
-export const useGetPrestadores = filters => {
+export const useGetPrestadores = (filters) => {
   const axiosPrivate = useAxiosPrivate();
 
   return useQuery({
-    queryKey: ['prestadores', filters],
+    queryKey: ["prestadores", filters],
     queryFn: () => getPrestadores(axiosPrivate, filters),
-    /* queryFn: async () => {
-      if (!filters) return [];
-      const params = new URLSearchParams();
-      if (filters.localidad) params.append('localidad', filters.localidad);
-      if (filters.especialidad) params.append('especialidad', filters.especialidad);
 
-      const res = await axiosPrivate.get(`/api/prestadores?${params.toString()}`);
-      return res.data;
-    }, */
-    enabled: !!filters
+    enabled: !isNil(filters?.localidad) && !isNil(filters?.especialidad),
   });
 };
