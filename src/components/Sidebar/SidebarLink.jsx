@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { usePathPartials } from '../../hooks/usePathPartials';
 import clsx from 'clsx';
 
-const variants = cva(['inline-flex lg:justify-center items-center gap-2 select-none cursor-pointer p-2 pr-8 lg:p-0 rounded-full lg:rounded-none w-[84%] min-w-fit'], {
+const variants = cva(['inline-flex lg:justify-center items-center gap-2 select-none cursor-pointer p-2 pr-8 lg:p-0 rounded-full lg:rounded-none w-full max-w-[84%] min-w-fit'], {
   variants: {
     state: {
       idle: ['text-negro-principal hover:text-menta-200 transition-all bg-menta-100 lg:bg-inherit'],

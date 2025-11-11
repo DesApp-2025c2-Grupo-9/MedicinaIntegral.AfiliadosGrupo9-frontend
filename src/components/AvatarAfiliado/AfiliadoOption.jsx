@@ -38,7 +38,11 @@ function AfiliadoOption({ afiliado = { nombre: 'John', apellido: 'Doe' }, onClic
         'text-negro-principal bg-fondo-documento hover:bg-menta-100 cursor-pointer': !isActive,
         'text-blanco-principal cursor-default bg-menta-600': isActive
       })}
-      onClick={handleClick}
+      onClick={() => {
+        if (user.idAfiliado !== afiliado.id) {
+          handleClick();
+        }
+      }}
     >
       <div
         className={clsx('p-2 rounded-full border', {

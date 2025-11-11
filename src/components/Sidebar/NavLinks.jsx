@@ -14,7 +14,7 @@ const navLinks = [
 
 function NavLinks({ className, onClick }) {
   return (
-    <div className={twMerge('flex flex-col items-center lg:items-start gap-5', className)}>
+    <div className={twMerge('flex flex-col items-center lg:items-start gap-2 lg:gap-5', className)}>
       {navLinks.map((link, index) => (
         <SidebarLink
           key={index}
