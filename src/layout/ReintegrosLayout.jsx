@@ -32,7 +32,7 @@ function ReintegrosLayout() {
         <NavButton
           path='historial-reintegros'
           icon={icons.reintegros}
-          description='Historial de reintegros'
+          description='Ver reintegros'
           pathPartials={['historial-reintegros']}
         />
       }

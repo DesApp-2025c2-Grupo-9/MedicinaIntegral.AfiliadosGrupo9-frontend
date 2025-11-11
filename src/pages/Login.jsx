@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './login.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { validacionLogin } from '../utils/validacionLogin';
@@ -22,6 +22,11 @@ const Login = () => {
     if (error) setError('');
   };
 
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef?.current?.focus();
+  }, []);
+
   const resetErrorBoundary = useResetErrorBoundaryStore(state => state.resetErrorBoundary);
 
   const handleSubmit = async e => {
@@ -42,18 +47,17 @@ const Login = () => {
       setUser({ accessToken: data?.accessToken, nroDocumento: usuario, idAfiliado: data?.data.idAfiliado });
       navigate(from, { replace: true });
     } catch (error) {
-      const mensaje = error.response?.data?.message || 'Ocurrió un problema. Intente más tarde.';
+      const mensaje = error.response?.data?.message || 'Ha ocurrido un problema inesperado. Por favor, intente más tarde.';
       Swal.fire({
         icon: 'warning',
         iconColor: '#dc143c',
-        title: 'Error al iniciar sesión',
+        titleText: 'Error al iniciar sesión',
         text: mensaje,
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#00ab01',
+        confirmButtonText: 'Continuar',
         customClass: {
-          title: 'auth-title',
-          htmlContainer: 'auth-html',
-          confirmButton: 'auth-confirm-button'
+          title: 'swal-title',
+          htmlContainer: 'swal-html',
+          confirmButton: 'swal-confirm-button'
         }
       });
     }
@@ -67,6 +71,7 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <label htmlFor='documento-login'>Ingrese su número de documento:</label>
           <input
+            ref={inputRef}
             id='documento-login'
             type='text'
             placeholder='ej: 12345678'

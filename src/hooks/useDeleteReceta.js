@@ -1,52 +1,57 @@
-import Swal from "sweetalert2";
-import { useDeleteReceta } from "../services/recetasQueries";
-import "../styles/recetas.css";
+import Swal from 'sweetalert2';
+import { useDeleteReceta } from '../services/recetasQueries';
 
 export const useDelReceta = () => {
   const { mutateAsync } = useDeleteReceta();
 
-  const deleteRecetaHandler = async (receta) => {
+  const deleteRecetaHandler = async receta => {
     const result = await Swal.fire({
+      icon: 'warning',
+      iconColor: '#dc143c',
+      titleText: 'Está a punto de eliminar la solicitud de receta:',
       html: `
-        <p>Está a punto de eliminar la receta:</p>
-        <p><b>Medicamento:</b> ${receta.medicamento}</p>
-        <p><b>Cantidad:</b> ${receta.cantidad}</p>
-        <p><b>Presentación:</b> ${receta.presentacion}</p>
-        <br>
+        <p>Medicamento: <b>${receta.medicamento}</b></p>
+        <p>Cantidad: <b>${receta.cantidad}</b></p>
+        <p>Presentación: <b>${receta.presentacion}</b></p>
+        <br />
         <p>¿Desea continuar?</p>
       `,
-      icon: "warning",
-      iconColor: "#00ab01",
       showCancelButton: true,
-      confirmButtonText: "Eliminar",
-      cancelButtonText: "Cancelar",
-      reverseButtons: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Confirmar',
       customClass: {
-        popup: "swal-popup-custom",
-        confirmButton: "modal-tramites-confirm-button",
-        cancelButton: "modal-tramites-cancel-button",
-        htmlContainer: "modal-tramites-html",
-      },
+        title: 'swal-title',
+        htmlContainer: 'swal-html',
+        cancelButton: 'swal-cancel-button',
+        confirmButton: 'swal-confirm-button'
+      }
     });
     if (result.isConfirmed) {
       try {
         const res = await mutateAsync(receta.id);
         Swal.fire({
-          html: res.message || "Receta eliminada exitosamente",
-          title: "Eliminada!",
-          icon: "success",
-          confirmButtonText: "Aceptar",
+          icon: 'success',
+          iconColor: '#00ab01',
+          titleText: 'Eliminada',
+          html: res.message || 'Receta eliminada exitosamente.',
+          confirmButtonText: 'Continuar',
           customClass: {
-            confirmButton: "modal-tramites-confirm-button",
-            htmlContainer: "modal-tramites-html",
-          },
+            title: 'swal-title',
+            htmlContainer: 'swal-html',
+            confirmButton: 'swal-confirm-button'
+          }
         });
-      } catch (err) {
-        console.log(err);
+      } catch (error) {
         Swal.fire({
-          title: "Error",
-          text: "No se pudo eliminar la receta.",
-          icon: "error",
+          icon: 'error',
+          iconColor: '#dc143c',
+          titleText: 'Ha ocurrido un error',
+          text: 'No se pudo eliminar la receta.',
+          confirmButtonText: 'Continuar',
+          customClass: {
+            title: 'swal-title',
+            htmlContainer: 'swal-html'
+          }
         });
       }
     }

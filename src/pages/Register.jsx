@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
 import { validacionRegistro } from '../utils/validacionRegistro';
@@ -12,6 +12,11 @@ const Register = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { mutateAsync } = useRegister();
+
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef?.current?.focus();
+  }, []);
 
   const handleClaveChange = e => {
     setClave(e.target.value);
@@ -39,19 +44,15 @@ const Register = () => {
       });
       setError('');
       Swal.fire({
-        title: 'Registro exitoso',
-        text: 'El usuario ha sido registrado exitosamente.',
         icon: 'success',
         iconColor: '#00ab01',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#00ab01',
-        draggable: true,
-        width: '400px',
+        titleText: 'Registro exitoso',
+        text: 'El usuario ha sido registrado exitosamente.',
+        confirmButtonText: 'Continuar',
         customClass: {
-          htmlContainer: 'auth-html',
-          title: 'auth-title',
-          popup: 'swal-popup-small',
-          confirmButton: 'auth-confirm-button',
+          title: 'swal-title',
+          htmlContainer: 'swal-html',
+          confirmButton: 'swal-confirm-button'
         }
       }).then(() => {
         navigate('/login');
@@ -60,29 +61,28 @@ const Register = () => {
       // este es el alerta para usuario ya registrado
       if (error?.response?.status === 409) {
         Swal.fire({
-          title: 'Usuario ya registrado',
-          text: 'El número de documento ingresado ya está registrado.',
           icon: 'warning',
           iconColor: '#dc143c',
-          confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#00ab01',
+          titleText: 'Usuario ya registrado',
+          text: 'El número de documento ingresado ya se encuentra registrado.',
+          confirmButtonText: 'Continuar',
           customClass: {
-            title: 'auth-title',
-            htmlContainer: 'auth-html',
-            confirmButton: 'auth-confirm-button'
+            title: 'swal-title',
+            htmlContainer: 'swal-html',
+            confirmButton: 'swal-confirm-button'
           }
         });
       } else {
         Swal.fire({
-          title: 'Error inesperado',
-          text: 'No se pudo completar el registro. Intente más tarde.',
           icon: 'error',
-          confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#00ab01',
+          iconColor: '#dc143c',
+          titleText: 'Error inesperado',
+          text: 'Ha ocurrido un problema inesperado. Por favor, intente más tarde.',
+          confirmButtonText: 'Continuar',
           customClass: {
-            title: 'auth-title',
-            htmlContainer: 'auth-html',
-            confirmButton: 'auth-confirm-button'
+            title: 'swal-title',
+            htmlContainer: 'swal-html',
+            confirmButton: 'swal-confirm-button'
           }
         });
       }
@@ -98,6 +98,7 @@ const Register = () => {
           <label htmlFor='documento-register'>Ingrese su número de documento:</label>
 
           <input
+            ref={inputRef}
             id='documento-register'
             type='text'
             placeholder='ej: 12345678'

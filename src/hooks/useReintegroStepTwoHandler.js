@@ -19,7 +19,7 @@ export const useReintegroStepTwoHandler = () => {
       nroGestion,
       formaDePago: inputData.formaDePago.toLowerCase()
     });
-    textToShow = `La solicitud fue enviada correctamente.<br />N° de gestión: ${nroGestion}.`;
+    textToShow = `La solicitud fue enviada correctamente.<br />N° de gestión: <b>${nroGestion}</b>.`;
   };
 
   const editReintegroHandler = async inputData => {
@@ -42,14 +42,13 @@ export const useReintegroStepTwoHandler = () => {
         await editReintegroHandler(inputData);
       }
       Swal.fire({
-        html: textToShow,
         icon: 'success',
         iconColor: '#00ab01',
+        html: textToShow,
         confirmButtonText: 'Continuar',
-        confirmButtonColor: '#00ab01',
         customClass: {
-          htmlContainer: 'reintegros-html',
-          confirmButton: 'reintegros-confirm-button'
+          htmlContainer: 'swal-html',
+          confirmButton: 'swal-confirm-button'
         }
       }).then(() => {
         navigate('/reintegros/historial-reintegros');

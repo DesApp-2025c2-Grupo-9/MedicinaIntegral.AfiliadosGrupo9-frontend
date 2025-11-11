@@ -1,21 +1,24 @@
-import Swal from "sweetalert2";
-import { useCommentRecetaById } from "../services/recetasQueries";
-import jsPDF from "jspdf";
-import logo from "../assets/img/med_integral_logo.png";
-import capitalize from "../utils/capitalize";
-import "../styles/recetas.css";
+import Swal from 'sweetalert2';
+import { useCommentRecetaById } from '../services/recetasQueries';
+import jsPDF from 'jspdf';
+import logo from '../assets/img/med_integral_logo.png';
+import capitalize from '../utils/capitalize';
 
 export const useCommentReceta = () => {
   const { mutateAsync } = useCommentRecetaById();
-  console.log();
-  const onSubmit = async (inputData) => {
+
+  const onSubmit = async inputData => {
     try {
       await mutateAsync(inputData);
       Swal.fire({
-        html: "El comentario fue enviado correctamente.",
-        icon: "success",
-        confirmButtonText: "Continuar",
-        confirmButtonColor: "#00ab01",
+        icon: 'success',
+        iconColor: '#00ab01',
+        text: 'El comentario fue enviado correctamente.',
+        confirmButtonText: 'Continuar',
+        customClass: {
+          htmlContainer: 'swal-html',
+          confirmButton: 'swal-confirm-button'
+        }
       });
     } catch (error) {
       console.log(error);
@@ -25,39 +28,40 @@ export const useCommentReceta = () => {
 };
 
 export const useDescargarReceta = () => {
-  const descargarReceta = (receta) => {
+  const descargarReceta = receta => {
     Swal.fire({
-      title: "¿Desea descargar esta receta?",
-      icon: "success",
+      icon: 'question',
+      iconColor: '#1B76FF',
+      text: '¿Desea descargar esta receta?',
       showCancelButton: true,
-      confirmButtonText: "Descargar",
-      cancelButtonText: "Cancelar",
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Confirmar',
       customClass: {
-        popup: "swal-popup-custom",
-        confirmButton: "swal-btn-confirm",
-        cancelButton: "swal-btn-cancel",
+        htmlContainer: 'swal-html',
+        cancelButton: 'swal-cancel-button',
+        confirmButton: 'swal-confirm-button'
       },
-      reverseButtons: true,
-    }).then((result) => {
+      reverseButtons: true
+    }).then(result => {
       if (!result.isConfirmed) return;
 
       const fechaSolicitud = receta.createdAt
-        ? new Date(receta.createdAt).toLocaleDateString("es-AR", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
+        ? new Date(receta.createdAt).toLocaleDateString('es-AR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
           })
-        : "Sin fecha";
+        : 'Sin fecha';
 
       let y = 10;
-      const doc = new jsPDF({ format: "a5" });
+      const doc = new jsPDF({ format: 'a5' });
 
       // Encabezado
-      doc.addImage(logo, "PNG", 100, 10, 40, 40);
+      doc.addImage(logo, 'PNG', 100, 10, 40, 40);
       doc.setFontSize(22);
-      doc.text("Medicina Integral", 10, y);
+      doc.text('Medicina Integral', 10, y);
       doc.setFontSize(16);
-      doc.text("Receta médica", 10, (y += 10));
+      doc.text('Receta médica', 10, (y += 10));
 
       // Datos principales
       doc.setFontSize(12);
@@ -70,19 +74,15 @@ export const useDescargarReceta = () => {
 
       // Observaciones
       if (receta.observaciones && receta.observaciones.length > 0) {
-        doc.text("Observaciones:", 10, (y += 10));
+        doc.text('Observaciones:', 10, (y += 10));
         receta.observaciones.forEach((observacion, index) => {
           let yObs = 90 + index * 10;
           doc.text(`Emisor: ${observacion.emisor}`, 20, yObs);
           doc.text(`Descripción: ${observacion.descripcion}`, 25, yObs + 10);
-          doc.text(
-            `Fecha: ${new Date(observacion.fecha).toLocaleDateString()}`,
-            25,
-            yObs + 20
-          );
+          doc.text(`Fecha: ${new Date(observacion.fecha).toLocaleDateString()}`, 25, yObs + 20);
         });
       } else {
-        doc.text("Observaciones: Sin observaciones", 10, (y += 10));
+        doc.text('Observaciones: Sin observaciones', 10, (y += 10));
       }
 
       doc.save(`Receta.pdf`);

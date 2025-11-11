@@ -1,22 +1,18 @@
-import { useState } from "react";
-import Swal from "sweetalert2";
-import ColumnaPrincipal from "./cardComponents/ColumnaPrincipal";
-import BotonPapelera from "./cardComponents/BotonPapelera";
-import UsuarioActual from "./cardComponents/UsuarioActual";
-import BotonEditar from "./cardComponents/BotonEditar";
-import BotonObservaciones from "./cardComponents/BotonObservaciones";
-import MarcoCard from "./cardComponents/MarcoCard";
-import TipoDeTramite from "./cardComponents/TipoDeTramite";
-import BotonDescargar from "./cardComponents/BotonDescargar";
-import EditarReceta from "../../../pages/Recetas/EditarReceta";
-import ModalObservaciones from "../../ModalObservaciones/ModalObservaciones";
-import { useDelReceta } from "../../../hooks/useDeleteReceta";
-import {
-  useCommentReceta,
-  useDescargarReceta,
-} from "../../../hooks/useRecetaPetitions";
-import { useNavigate } from "react-router-dom";
-import "../../../styles/recetas.css";
+import { useState } from 'react';
+import Swal from 'sweetalert2';
+import ColumnaPrincipal from './cardComponents/ColumnaPrincipal';
+import BotonPapelera from './cardComponents/BotonPapelera';
+import UsuarioActual from './cardComponents/UsuarioActual';
+import BotonEditar from './cardComponents/BotonEditar';
+import BotonObservaciones from './cardComponents/BotonObservaciones';
+import MarcoCard from './cardComponents/MarcoCard';
+import TipoDeTramite from './cardComponents/TipoDeTramite';
+import BotonDescargar from './cardComponents/BotonDescargar';
+import EditarReceta from '../../../pages/Recetas/EditarReceta';
+import ModalObservaciones from '../../ModalObservaciones/ModalObservaciones';
+import { useDelReceta } from '../../../hooks/useDeleteReceta';
+import { useCommentReceta, useDescargarReceta } from '../../../hooks/useRecetaPetitions';
+import { useNavigate } from 'react-router-dom';
 
 function RecetaCard(props) {
   const dashboard = props.dashboard || false;
@@ -28,42 +24,36 @@ function RecetaCard(props) {
   const { descargarReceta } = useDescargarReceta();
   const navigate = useNavigate();
   const { deleteRecetaHandler } = useDelReceta();
-  const observacionPrestador = receta?.observaciones?.find(
-    (obs) => obs.rolEmisor === "Prestador"
-  );
+  const observacionPrestador = receta?.observaciones?.find(obs => obs.rolEmisor === 'Prestador');
 
   const fechaSolicitud = receta.createdAt
-    ? new Date(receta.createdAt).toLocaleDateString("es-AR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
+    ? new Date(receta.createdAt).toLocaleDateString('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
       })
-    : "Sin fecha";
+    : 'Sin fecha';
 
   const handleObservacionesClick = () => {
     //obtener la última observación del prestador
-    const ultimaObsPrestador = receta?.observaciones
-      ?.filter((obs) => obs.rolEmisor === "Prestador")
-      .slice(-1)[0];
+    const ultimaObsPrestador = receta?.observaciones?.filter(obs => obs.rolEmisor === 'Prestador').slice(-1)[0];
 
-    if (estado === "observado") {
+    if (estado === 'observado') {
       setIsObservacionesOpen(true);
-    } else if (receta.estado === "rechazado") {
+    } else if (receta.estado === 'rechazado') {
       Swal.fire({
-        title: "Motivo de rechazo:",
-        text: ultimaObsPrestador?.descripcion?.trim()
-          ? ultimaObsPrestador.descripcion
-          : "No hay observaciones para esta receta.",
-        icon: "info",
-        iconColor: "#00ab01",
-        confirmButtonText: "Aceptar",
+        title: 'Motivo de rechazo:',
+        text: ultimaObsPrestador?.descripcion?.trim() ? ultimaObsPrestador.descripcion : 'No hay observaciones para esta receta.',
+        icon: 'info',
+        iconColor: '#00ab01',
+        confirmButtonText: 'Aceptar',
         customClass: {
-          popup: "p-6",
+          popup: 'p-6',
 
-          htmlContainer: "text-sm text-gray-700",
-          confirmButton: "modal-tramites-confirm-button",
-          title: "swal2-title",
-        },
+          htmlContainer: 'text-sm text-gray-700',
+          confirmButton: 'modal-tramites-confirm-button',
+          title: 'swal2-title'
+        }
       });
     } else {
       return;
@@ -74,9 +64,9 @@ function RecetaCard(props) {
     <>
       {/* Modal editar */}
       {modalEditarOpen && (
-        <div className="bg-negro-translucido fixed top-0 left-0 w-dvw h-dvh z-10 flex items-center justify-center">
+        <div className='bg-negro-translucido fixed top-0 left-0 w-dvw h-dvh z-10 flex items-center justify-center'>
           <EditarReceta
-            className="w-full max-w-[600px]"
+            className='w-full max-w-[600px]'
             receta={receta}
             cancelBtnOnClick={() => setModalEditarOpen(false)}
           />
@@ -88,17 +78,18 @@ function RecetaCard(props) {
         open={isObservacionesOpen}
         onClose={() => setIsObservacionesOpen(false)}
         nombreUsuario={receta.paraAfiliado}
-        headerText="Volver a Recetas"
+        headerText='Volver a Recetas'
         fechaEnvio={observacionPrestador?.fecha}
-        observacionesTexto={
-          observacionPrestador?.descripcion || "No hay observaciones"
-        }
+        observacionesTexto={observacionPrestador?.descripcion || 'No hay observaciones'}
         idTramite={receta.id}
         onSubmit={commentReceta}
       />
 
       {/* Card */}
-      <MarcoCard estilo="grid-cols-2" estado={receta.estado}>
+      <MarcoCard
+        estilo='grid-cols-2'
+        estado={receta.estado}
+      >
         <ColumnaPrincipal>
           Receta
           {receta.medicamento}
@@ -107,38 +98,32 @@ function RecetaCard(props) {
           {`Fecha de solicitud: ${fechaSolicitud}`}
         </ColumnaPrincipal>
 
-        <div className="grid grid-rows-4 justify-items-end">
+        <div className='grid grid-rows-4 justify-items-end'>
           {dashboard ? (
             <>
-                <div>
-                  <UsuarioActual paciente={receta.paraAfiliado}/>
-                </div>
-                <div>
-                  <TipoDeTramite tipo={'Receta'} />
-                </div>
-              </>
+              <div>
+                <UsuarioActual paciente={receta.paraAfiliado} />
+              </div>
+              <div>
+                <TipoDeTramite tipo={'Receta'} />
+              </div>
+            </>
           ) : (
             <>
               <UsuarioActual paciente={receta.paraAfiliado} />
-              {estado !== "pendiente" && (
-                <div className="flex row-start-4">
-                  {estado === "aceptado" && (
-                    <BotonDescargar onClick={() => descargarReceta(receta)} />
-                  )}
+              {estado !== 'pendiente' && (
+                <div className='flex row-start-4'>
+                  {estado === 'aceptado' && <BotonDescargar onClick={() => descargarReceta(receta)} />}
 
-                  {(estado === "observado" || estado === "rechazado") && (
-                    <BotonObservaciones onClick={handleObservacionesClick} />
-                  )}
+                  {(estado === 'observado' || estado === 'rechazado') && <BotonObservaciones onClick={handleObservacionesClick} />}
                 </div>
               )}
             </>
           )}
 
-          {receta.estado === "pendiente" && !dashboard && (
-            <div className="flex justify-end row-start-4">
-              <BotonEditar
-                onClick={() => navigate(`/recetas/editar/${receta.id}`)}
-              />
+          {receta.estado === 'pendiente' && !dashboard && (
+            <div className='flex justify-end row-start-4'>
+              <BotonEditar onClick={() => navigate(`/recetas/editar/${receta.id}`)} />
               <BotonPapelera onClick={() => deleteRecetaHandler(receta)} />
             </div>
           )}
