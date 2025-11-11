@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import SectionTitle from "../components/SectionTitle";
 import Form from "../components/Form";
 import Button from "../components/Button";
@@ -9,92 +10,127 @@ import {
   useGetPrestadores,
 } from "../services/prestadoresQueries";
 
-function CartillaMedica() {
-  const [especialidad, setEspecialidad] = useState("");
-  const [localidad, setLocalidad] = useState("");
-  const [filters, setFilters] = useState(null);
-  const { data: especialidades = [], isLoading: loadingEsp } =
-    useGetEspecialidades();
-  const { data: localidades = [], isLoading: loadingLoc } = useGetLocalidades();
+const INITIAL_STATE_FORM = {
+  localidad: "",
+  especialidad: "",
+};
 
-  const {
-    data: prestadores = [],
-    isLoading: loadingPrestadores,
-    isFetching,
-  } = useGetPrestadores(filters);
-  const filtrosCompletos = especialidad !== "" && localidad !== "";
-  // Resetear filtros al entrar a la página
+function CartillaMedica() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [formFilters, setFormFilters] = useState(INITIAL_STATE_FORM);
+  const [filters, setFilters] = useState(INITIAL_STATE_FORM);
+
+  // Consultas
+  const { data: especialidadesData = [], isLoading: loadingEsp } =
+    useGetEspecialidades();
+  const { data: localidadesData = [], isLoading: loadingLoc } =
+    useGetLocalidades();
+
+  const especialidades = especialidadesData?.data || [];
+  const localidades = localidadesData || [];
+
+  const { data: prestadores = [], isLoading: loadingPrestadores } =
+    useGetPrestadores(filters);
+
+  // Inicializar filtros desde la URL
   useEffect(() => {
-    setEspecialidad("");
-    setLocalidad("");
-    setFilters(null);
-  }, []);
+    if (loadingEsp || loadingLoc) return;
+
+    const localidadParam = searchParams.get("localidad") || "";
+    const especialidadParam = searchParams.get("especialidad") || "";
+
+    const localidadValida = localidades.includes(localidadParam)
+      ? localidadParam
+      : "";
+    const especialidadValida = especialidades.includes(especialidadParam)
+      ? especialidadParam
+      : "";
+
+    const newFilters = {
+      localidad: localidadValida,
+      especialidad: especialidadValida,
+    };
+
+    setFormFilters(newFilters);
+    setFilters(newFilters);
+  }, [searchParams, localidades, especialidades, loadingEsp, loadingLoc]);
+
+  const filtrosCompletos = formFilters.localidad && formFilters.especialidad;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!filtrosCompletos) return;
-    setFilters({
-      especialidad,
-      localidad,
-    });
+
+    setSearchParams(formFilters);
+    setFilters(formFilters);
   };
 
-  //if (loadingEsp || loadingLoc) return <div>Cargando...</div>;
+  const hayFiltrosActivos = filters.localidad && filters.especialidad;
 
   return (
     <div className="mb-4 flex flex-col gap-5">
       <SectionTitle>Cartilla Médica</SectionTitle>
 
-      <div className='flex flex-col gap-4'>
+      <div className="flex flex-col gap-4">
         <Form
           onSubmit={handleSubmit}
           className="border-none shadow-none bg-transparent p-0"
         >
           <div className="flex flex-col sm:flex-row gap-4 w-full">
-            {/* Localidad  */}
+            {/* Localidad */}
             <div className="flex flex-col flex-1">
-              <label className=" font-bold text-menta-600 text-lg">
+              <label className="font-bold text-menta-600 text-lg">
                 Localidad
               </label>
               <select
-                value={localidad}
-                onChange={(e) => setLocalidad(e.target.value)}
-                className={`mt-1 border border-gray-300 rounded-md p-2 w-full bg-white ${localidad === "" ? "text-gray-400" : "text-black"} hover:border-menta-400 focus:border-menta-600 focus:ring-menta-300`}
+                value={formFilters.localidad}
+                onChange={(e) =>
+                  setFormFilters((prev) => ({
+                    ...prev,
+                    localidad: e.target.value,
+                  }))
+                }
+                className={`mt-1 border border-gray-300 rounded-md p-2 w-full bg-white ${
+                  formFilters.localidad === "" ? "text-gray-400" : "text-black"
+                } hover:border-menta-400 focus:border-menta-600 focus:ring-menta-300`}
                 disabled={loadingLoc}
               >
-                <option value="" disabled hidden>
+                <option value="" disabled hidden className="px-2 pt-1">
                   Seleccionar
                 </option>
-
                 {localidades.map((l, i) => (
-                  <option key={`${l}-${i}`} value={l} className="px-3 py-1">
+                  <option key={i} value={l} className="px-2 pt-1">
                     {l}
                   </option>
                 ))}
               </select>
             </div>
 
-            {/* Especialidad  */}
+            {/* Especialidad */}
             <div className="flex flex-col flex-1">
-              <label className=" font-bold text-menta-600 text-lg">
+              <label className="font-bold text-menta-600 text-lg">
                 Especialidad
               </label>
               <select
-                value={especialidad}
-                onChange={(e) => setEspecialidad(e.target.value)}
-                className={`
-                    mt-1 border border-gray-300 rounded-md p-2 w-full bg-white
-                    ${especialidad === "" ? "text-gray-400" : "text-black"}
-                    hover:border-menta-400 focus:border-menta-600 focus:ring-menta-300 
-                    `}
+                value={formFilters.especialidad}
+                onChange={(e) =>
+                  setFormFilters((prev) => ({
+                    ...prev,
+                    especialidad: e.target.value,
+                  }))
+                }
+                className={`mt-1 border border-gray-300 rounded-md p-2 w-full bg-white ${
+                  formFilters.especialidad === ""
+                    ? "text-gray-400"
+                    : "text-black"
+                } hover:border-menta-400 focus:border-menta-600 focus:ring-menta-300`}
                 disabled={loadingEsp}
               >
-                <option value="" disabled hidden>
+                <option value="" disabled hidden className="px-2 pt-1">
                   Seleccionar
                 </option>
-
-                {especialidades?.data?.map((e) => (
-                  <option key={e} value={e} className="px-2 py-1">
+                {especialidades.map((e, i) => (
+                  <option key={i} value={e} className="px-2 pt-1 ">
                     {e}
                   </option>
                 ))}
@@ -115,24 +151,39 @@ function CartillaMedica() {
         </Form>
 
         <div>
-          {!filtrosCompletos && (
+          {/* 🔹 Caso 1: sin filtros válidos */}
+          {!hayFiltrosActivos && (
             <p className="text-gray-500 text-sm">
               Seleccione una localidad y una especialidad para comenzar la
               búsqueda.
             </p>
           )}
 
-          {filters && (loadingPrestadores || isFetching) ? (
+          {/* 🔹 Caso 2: cargando */}
+          {hayFiltrosActivos && loadingPrestadores && (
             <p>Cargando prestadores...</p>
-          ) : filters && prestadores.length ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {prestadores.map((p, i) => (
-                <PrestadorCard key={p._id ?? `${p.nombre}-${i}`} prestador={p} />
-              ))}
-            </div>
-          ) : filters ? (
-            <p>No se encontraron prestadores con esos filtros.</p>
-          ) : null}
+          )}
+
+          {/* 🔹 Caso 3: con resultados */}
+          {hayFiltrosActivos &&
+            !loadingPrestadores &&
+            prestadores.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {prestadores.map((p, i) => (
+                  <PrestadorCard
+                    key={p._id ?? `${p.nombre}-${i}`}
+                    prestador={p}
+                  />
+                ))}
+              </div>
+            )}
+
+          {/* 🔹 Caso 4: sin resultados */}
+          {hayFiltrosActivos &&
+            !loadingPrestadores &&
+            prestadores.length === 0 && (
+              <p>No se encontraron prestadores con esos filtros.</p>
+            )}
         </div>
       </div>
     </div>

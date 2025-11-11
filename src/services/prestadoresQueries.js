@@ -27,11 +27,18 @@ export const useGetLocalidades = () => {
 // Traer prestadores según filtros
 export const useGetPrestadores = (filters) => {
   const axiosPrivate = useAxiosPrivate();
-
   return useQuery({
     queryKey: ["prestadores", filters],
     queryFn: () => getPrestadores(axiosPrivate, filters),
 
-    enabled: !isNil(filters?.localidad) && !isNil(filters?.especialidad),
+    // 🔹 Solo se ejecuta si:
+    //   1. enabled es true (decidido desde el componente)
+    //   2. y ambos filtros existen y no son nulos/vacíos
+
+    enabled:
+      !isNil(filters?.localidad) &&
+      filters?.localidad !== "" &&
+      !isNil(filters?.especialidad) &&
+      filters?.especialidad !== "",
   });
 };
