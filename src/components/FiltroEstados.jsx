@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge';
 const estados = [
     'Todos',
     'Pendientes de procesamiento',
+    'En análisis',
     'Observados',
     'Rechazados última semana',
     'Aceptados última semana'
