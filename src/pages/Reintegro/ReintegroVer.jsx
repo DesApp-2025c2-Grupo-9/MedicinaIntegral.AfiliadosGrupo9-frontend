@@ -1,29 +1,32 @@
 import { ReintegroCard } from '../../components/cards';
 import FiltroEstados from '../../components/FiltroEstados';
-import { useStateFilter } from '../../store/stateFilter';
 import { useGetReintegros } from '../../services/queries';
 import { capitalize } from 'lodash';
 import TramitesSkeleton from '../../components/Skeletons/TramitesSkeleton';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
 import NoTramitesAvailable from '../NoTramitesAvailable';
+import { useState } from 'react';
 
 function ReintegroVer() {
-  const state = useStateFilter(state => state.state);
-  const { data, isLoading, /* isError, error */ } = useGetReintegros();
+  const [estadoTramite, setEstadoTramite] = useState('Todos');
+  const { data, isLoading /* isError, error */ } = useGetReintegros();
 
   if (isLoading) return <TramitesSkeleton />;
-  // if (isError) throw error;
+  // if (isError) throw error; // Error se lanza por default en la instancia de queryClient (ver App.jsx); nos ahorra tener que lanzar el error en cada componente;
 
   const reintegros = data?.data;
   // const reintegros = null;
-  const reintegrosFiltrados = reintegros?.filter(r => state.includes(capitalize(r.estado)) || state === 'Todos');
+  const reintegrosFiltrados = reintegros?.filter(r => estadoTramite.includes(capitalize(r.estado)) || estadoTramite === 'Todos');
 
   return (
     <div className={twMerge(clsx('flex flex-col relative gap-3', { 'items-end': reintegros }))}>
       {reintegros ? (
         <>
-          <FiltroEstados className='sm:absolute -top-9.5 mr-auto' />
+          <FiltroEstados
+            className='sm:absolute -top-9.5 mr-auto'
+            setEstadoTramite={setEstadoTramite}
+          />
           <div className='w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3'>
             {reintegrosFiltrados.map(r => (
               <ReintegroCard

@@ -1,5 +1,4 @@
 import { twMerge } from 'tailwind-merge';
-import { useStateFilter } from '../store/stateFilter';
 
 const estados = [
     'Todos',
@@ -9,13 +8,11 @@ const estados = [
     'Aceptados última semana'
 ];
 
-function FiltroEstados({ className }) {
-    const usedFilter = useStateFilter((state) => state.updateState);
-
+function FiltroEstados({ className, setEstadoTramite }) {
     return (
         <div className={twMerge('flex gap-2', className)}>
             <label htmlFor="verEstados" className="text-menta-600 font-bold">Ver:</label>
-            <select className="cursor-pointer" name="verEstados" id="verEstados" onChange={(e) => usedFilter(e.target.value)}>
+            <select className="cursor-pointer" name="verEstados" id="verEstados" onChange={(e) => setEstadoTramite(e.target.value)}>
                 {
                     estados.map((estado, index) =>
                         <option

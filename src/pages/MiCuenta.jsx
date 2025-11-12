@@ -70,12 +70,7 @@ function MiCuenta() {
               label: `${cbu.nombre} ${cbu.apellido}: ${cbu.cbu}`,
               value: cbu.cbu
             }))}
-            defaultInputValue={
-              defaultCbu
-                ? `${defaultCbu.nombre} ${defaultCbu.apellido}: ${defaultCbu.cbu}`
-                : ''
-            }
-
+            defaultInputValue={defaultCbu ? `${defaultCbu.nombre} ${defaultCbu.apellido}: ${defaultCbu.cbu}` : ''}
             onChange={selectedOption => handleChange({ nroCbu: selectedOption.value })}
             className='w-100 max-w-xl'
             placeholder='Selecciona un CBU'

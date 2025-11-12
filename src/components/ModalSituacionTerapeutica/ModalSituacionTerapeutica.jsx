@@ -1,52 +1,44 @@
-import { icons } from "../../utils/icons";
-import UsuarioActual from "../UsuarioActual";
+import clsx from 'clsx';
+import { icons } from '../../utils/icons';
+import UsuarioActual from '../UsuarioActual';
 
-function ModalSituacionTerapeutica({
-  open,
-  onClose,
-  prefix,
-  nombreUsuario,
-  diagnosticoTexto,
-  headerText = "Volver",
-}) {
+function ModalSituacionTerapeutica({ open, onClose, prefix, nombreUsuario, diagnosticoTexto, headerText = 'Volver' }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+    <div className='fixed inset-0 flex items-center justify-center bg-negro-translucido z-10'>
       {/* Caja externa */}
       <div
-        className="flex flex-col w-[720px] p-3 gap-3 rounded-lg border border-gris-border
-       bg-fondo-documento shadow-custom-shadow"
+        className={clsx('flex flex-col w-full max-w-[calc(100dvw-32px)] lg:max-w-180 gap-3 p-4 rounded-lg bg-fondo-documento shadow-custom-shadow', {
+          'animate-modal': open
+        })}
       >
         {/* Header */}
         <div
-          className="flex justify-between items-start p-2  border-gris-border cursor-pointer"
+          className='flex items-center gap-2 w-fit cursor-pointer lg:hover:text-menta-200 transition-all'
           onClick={onClose}
         >
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-4">{icons.flechaVolver}</span>
-            <span className="font-bold">{headerText}</span>
-          </div>
+          <div className='w-3 h-3 rotate-90'>{icons.chevronDown}</div>
+          <p className='font-bold'>{headerText}</p>
         </div>
 
         {/* Usuario y situacion terapeutica*/}
-        <div className="border border-gray-300 rounded-lg  flex flex-col  bg-blanco-principal">
+        <div className='flex flex-col rounded-lg overflow-clip'>
           {/* Usuario*/}
-          <div
-            className="flex justify-between items-center w-full py-3 px-4 bg-menta-100 border-b
-           border-gris-border"
-          >
-            <UsuarioActual prefix={prefix} nombre={nombreUsuario} />
+          <div className='flex justify-center p-3 bg-menta-600'>
+            <UsuarioActual
+              prefix={prefix}
+              nombre={nombreUsuario}
+            />
           </div>
 
           {/* Diagnóstico principal */}
-          <div className="flex flex-col gap-2 p-3 px-4  bg-blanco-principal rounded  min-h-[128px]">
-            <label className="text-base font-bold w-fit select-none">
-              Diagnóstico principal:
-            </label>
-            <p className="text-sm font-medium text-negro-principal">
-              {diagnosticoTexto || "Sin observaciones"}
-            </p>
+          <div className='p-3 flex flex-col gap-2 bg-blanco-principal border border-gris-border border-t-0 rounded-b-lg'>
+            <p className='font-bold w-fit select-none'>Diagnóstico principal:</p>
+            <div className='flex gap-2 text-sm'>
+              <span>•</span>
+              <p className='font-medium text-negro-principal min-h-28'>{diagnosticoTexto || 'No hay observaciones.'}</p>
+            </div>
           </div>
         </div>
       </div>
