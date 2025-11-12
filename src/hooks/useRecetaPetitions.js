@@ -7,8 +7,6 @@ import capitalize from "../utils/capitalize";
 export const useCommentReceta = () => {
   const { mutateAsync } = useCommentRecetaById();
 
-  //const onSubmit = async (inputData) => {
-
   const onSubmit = async (inputData) => {
     try {
       await mutateAsync(inputData);
@@ -34,11 +32,6 @@ export const useDescargarReceta = () => {
     Swal.fire({
       title: "¿Desea descargar esta receta?",
       icon: "question",
-
-      //icon: 'question',
-      //iconColor: '#1B76FF',
-      //text: '¿Desea descargar esta receta?',
-
       showCancelButton: true,
       cancelButtonText: "Cancelar",
       confirmButtonText: "Confirmar",
@@ -70,16 +63,6 @@ export const useDescargarReceta = () => {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(11);
       doc.text("Receta médica", 40, y + 18);
-
-      /*let y = 10;
-      const doc = new jsPDF({ format: 'a5' });
-
-      // Encabezado
-      doc.addImage(logo, 'PNG', 100, 10, 40, 40);
-      doc.setFontSize(22);
-      doc.text('Medicina Integral', 10, y);
-      doc.setFontSize(16);
-      doc.text('Receta médica', 10, (y += 10));*/
 
       //linea
       y += 35;
@@ -145,17 +128,6 @@ export const useDescargarReceta = () => {
         });
       } else {
         doc.text("Sin observaciones registradas.", 15, y);
-
-        /* doc.text('Observaciones:', 10, (y += 10));
-        receta.observaciones.forEach((observacion, index) => {
-          let yObs = 90 + index * 10;
-          doc.text(`Emisor: ${observacion.emisor}`, 20, yObs);
-          doc.text(`Descripción: ${observacion.descripcion}`, 25, yObs + 10);
-          doc.text(`Fecha: ${new Date(observacion.fecha).toLocaleDateString()}`, 25, yObs + 20);
-        });
-      } else {
-        doc.text('Observaciones: Sin observaciones', 10, (y += 10));
-*/
       }
 
       //  Footer
