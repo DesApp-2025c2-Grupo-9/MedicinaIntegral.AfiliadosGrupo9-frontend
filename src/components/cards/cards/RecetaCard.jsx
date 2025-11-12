@@ -54,15 +54,15 @@ function RecetaCard(props) {
         text: ultimaObsPrestador?.descripcion?.trim()
           ? ultimaObsPrestador.descripcion
           : "No hay observaciones para esta receta.",
-        icon: "info",
-        iconColor: "#00ab01",
-        confirmButtonText: "Aceptar",
+        icon: "error",
+        iconColor: "#dc143c",
+        confirmButtonText: "Continuar",
         customClass: {
           popup: "p-6",
 
-          htmlContainer: "text-sm text-gray-700",
+          htmlContainer: "swal-html",
           confirmButton: "swal-confirm-button",
-          title: "swal2-title",
+          title: "swal-title",
         },
       });
     } else {
