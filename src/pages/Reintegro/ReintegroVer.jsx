@@ -10,7 +10,7 @@ import NoTramitesAvailable from '../NoTramitesAvailable';
 
 function ReintegroVer() {
   const state = useStateFilter(state => state.state);
-  const { data, isLoading, /* isError, error */ } = useGetReintegros();
+  const { data, isLoading /* isError, error */ } = useGetReintegros();
 
   if (isLoading) return <TramitesSkeleton />;
   // if (isError) throw error;

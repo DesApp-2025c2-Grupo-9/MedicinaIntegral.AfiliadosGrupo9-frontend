@@ -7,13 +7,15 @@ function Sidebar({ className }) {
   return (
     <div
       className={twMerge(
-        clsx('flex min-w-59 p-10 pr-0 flex-col justify-between items-start border border-gris-border bg-blanco-principal rounded-tr-lg shadow-custom-shadow', className, {
+        clsx('flex min-w-59 p-10 flex-col justify-between border-t border-r border-gris-border rounded-tr-lg shadow-custom-shadow bg-blanco-principal', className, {
           'h-dvh': !className
         })
       )}
     >
-      <NavLinks />
-      <LogoutButton />
+      <div className='min-h-[calc(100dvh-162px)] flex flex-col justify-between sticky top-10'>
+        <NavLinks />
+      </div>
+      <LogoutButton className='sticky bottom-10' />
     </div>
   );
 }

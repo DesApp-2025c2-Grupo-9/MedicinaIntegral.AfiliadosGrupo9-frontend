@@ -59,6 +59,7 @@ function AfiliadoOption({ afiliado = { nombre: 'John', apellido: 'Doe' }, onClic
       >
         {afiliado.nombre} {afiliado.apellido}
       </p>
+      {isActive && <div className='w-4 aspect-square ml-auto mr-2'>{icons.aceptado}</div>}
     </div>
   );
 }

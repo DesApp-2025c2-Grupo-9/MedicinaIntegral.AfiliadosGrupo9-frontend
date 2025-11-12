@@ -31,7 +31,7 @@ function MainLayout() {
       />
       <div className='flex lg:gap-5 w-dvw lg:pr-10'>
         <div>
-          <Sidebar className='min-h-[calc(100dvh-81px)] h-full hidden lg:flex lg:-translate-x-59 animate-sidebar' />
+          <Sidebar className='hidden lg:flex lg:-translate-x-59 min-h-[calc(100dvh-81px)] h-full animate-sidebar' />
         </div>
         <div className='px-4 lg:px-0 w-full'>
           <Outlet />

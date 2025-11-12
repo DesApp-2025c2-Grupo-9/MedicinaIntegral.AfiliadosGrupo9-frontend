@@ -28,7 +28,7 @@ function SidebarLink({ path, icon = icons.inicio, description = 'Description', o
       className={twMerge(variants({ state: isActive ? 'active' : 'idle' }))}
     >
       <div
-        className={clsx('flex items-center justify-center p-3 lg:p-0 rounded-full bg-blanco-principal', {
+        className={clsx('flex items-center justify-center p-3 lg:p-0 rounded-full bg-blanco-principal lg:bg-inherit', {
           'text-menta-600': isActive
         })}
       >

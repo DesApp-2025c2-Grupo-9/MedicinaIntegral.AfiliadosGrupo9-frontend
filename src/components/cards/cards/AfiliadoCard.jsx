@@ -35,6 +35,8 @@ function AfiliadoCard(props) {
                     onClose={() => { setsituacionTerapeuticaOpen(!situacionTerapeuticaOpen) }}
                     nombreUsuario={afiliado.nombre}
                     diagnosticoTexto={situacionTerapeuticaTexto}
+                    headerText='Volver a Mi cuenta'
+                    prefix={null}
                 />
             ) : (<></>)
         }

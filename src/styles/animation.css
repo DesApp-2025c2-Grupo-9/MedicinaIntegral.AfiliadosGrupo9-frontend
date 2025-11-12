@@ -9,7 +9,7 @@
   }
 }
 
-.animate-modal-observaciones {
+.animate-modal {
   animation: to-full-size 0.28s ease-in-out;
 }
 
