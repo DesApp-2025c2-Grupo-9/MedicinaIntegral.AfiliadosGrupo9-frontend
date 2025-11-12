@@ -42,12 +42,17 @@ function AutorizacionCard(props) {
           {autorizacion.lugar}
           {`Dias de internación: ${autorizacion.diasDeInternacion} días`}
         </ColumnaPrincipal>
-        <div className="grid grid-rows-4 justify-items-end col-start-2">
+        <div className="grid grid-rows-4 items-center justify-items-end col-start-2">
           {//Si es card de dashboard
             props.dashboard ? (
-
-              <TipoDeTramite tipo={'Autorización'} />
-
+              <>
+                <div>
+                  <UsuarioActual paciente={autorizacion.paraAfiliado}/>
+                </div>
+                <div>
+                  <TipoDeTramite tipo={'Autorización'} />
+                </div>
+              </>
             ) ://Si no es de dashboard
               < >
                 <UsuarioActual paciente={autorizacion.paraAfiliado}/>

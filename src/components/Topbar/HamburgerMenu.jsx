@@ -1,32 +1,38 @@
-import { useState } from 'react'
-import { icons } from '../../utils/icons'
-import MenuButton from './MenuButton'
+import { useState } from 'react';
+import { icons } from '../../utils/icons';
+import MenuButton from './MenuButton';
 import clsx from 'clsx';
 import AvatarAfiliado from '../AvatarAfiliado/AvatarAfiliado';
 import LogoutButton from '../Sidebar/LogoutButton';
 import NavLinks from '../Sidebar/NavLinks';
+import Separador from '../Separador';
 
 function HamburgerMenu() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
 
   return (
     <div className='flex flex-col items-center z-10 lg:hidden'>
-      <MenuButton onClick={() => setMenuOpen(true)}>{icons.hamburgerMenu}</MenuButton>
+      <MenuButton onClick={() => setIsHamburgerOpen(true)}>{icons.hamburgerMenu}</MenuButton>
 
       <div
-        className={clsx('bg-blanco-principal flex w-dvw h-dvh py-5 pr-4 pl-10 flex-col justify-between items-start fixed top-0 transition-all', {
-          'left-0': menuOpen,
-          'left-[100dvw] opacity-0': !menuOpen
+        className={clsx('bg-fondo-documento flex w-dvw h-dvh p-16 flex-col justify-between items-start fixed top-0 transition-all', {
+          'left-0': isHamburgerOpen,
+          'left-[100dvw] opacity-0': !isHamburgerOpen
         })}
       >
-        <div className='flex flex-col gap-5 self-stretch'>
-          <MenuButton className='ml-auto' onClick={() => setMenuOpen(false)}>{icons.cerrar}</MenuButton>
-          <AvatarAfiliado />
-          <NavLinks onClick={() => setMenuOpen(false)} />
+        <div className='flex flex-col self-stretch h-full gap-8'>
+          <div className='ml-auto border border-negro-principal rounded-full p-3 mb-8'>
+            <MenuButton onClick={() => setIsHamburgerOpen(false)}>{icons.cerrar}</MenuButton>
+          </div>
+          <div className='mx-auto w-full max-w-[84%] p-2 bg-menta-100 rounded-4xl'>
+            <AvatarAfiliado setIsHamburgerOpen={setIsHamburgerOpen} />
+          </div>
+          <Separador className='w-full max-w-[84%] mx-auto' />
+          <NavLinks onClick={() => setIsHamburgerOpen(false)} />
         </div>
-        <LogoutButton />
+        <LogoutButton className='w-full aspect-auto uppercase font-bold underline text-menta-600'>Cerrar sesión</LogoutButton>
       </div>
     </div>
-  )
+  );
 }
-export default HamburgerMenu
+export default HamburgerMenu;

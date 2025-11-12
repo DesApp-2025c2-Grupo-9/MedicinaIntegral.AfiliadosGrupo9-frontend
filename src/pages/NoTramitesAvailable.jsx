@@ -13,6 +13,7 @@ function NoTramitesAvailable({ tipoTramite = '', path = '' }) {
         >
           Solicitar nuevo {tipoTramite}
         </Link>
+        .
       </p>
     </div>
   );

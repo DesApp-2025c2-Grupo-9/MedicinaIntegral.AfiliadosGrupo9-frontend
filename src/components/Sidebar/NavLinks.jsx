@@ -1,3 +1,4 @@
+import { twMerge } from 'tailwind-merge';
 import { icons } from '../../utils/icons';
 import SidebarLink from './SidebarLink';
 
@@ -11,9 +12,9 @@ const navLinks = [
   { icon: icons.cartillaMedica, description: 'Cartilla Médica', path: '/cartilla-medica', pathPartials: ['cartilla-medica'] }
 ];
 
-function NavLinks({ onClick }) {
+function NavLinks({ className, onClick }) {
   return (
-    <div className='flex flex-col items-start gap-5'>
+    <div className={twMerge('flex flex-col items-center lg:items-start gap-2 lg:gap-5', className)}>
       {navLinks.map((link, index) => (
         <SidebarLink
           key={index}

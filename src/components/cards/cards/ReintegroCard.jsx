@@ -13,6 +13,7 @@ import ModalObservaciones from '../../ModalObservaciones/ModalObservaciones';
 import { useCommentReintegro } from '../../../hooks/useCommentReintegro';
 import { useNavigate } from 'react-router-dom';
 import { useReintegroStore } from '../../../store/reintegroStore';
+import Swal from 'sweetalert2';
 
 function ReintegroCard(props) {
   const dashboard = props.dashboard || false;
@@ -31,6 +32,21 @@ function ReintegroCard(props) {
   const { onSubmit: commentReintegro } = useCommentReintegro();
   const setReintegro = useReintegroStore(state => state.setReintegro);
 
+  const mostrarObservacionesRechazado = () => {
+    Swal.fire({
+      icon: 'error',
+      iconColor: '#dc143c',
+      titleText: 'Motivo de rechazo:',
+      text: observacionPrestador?.descripcion,
+      confirmButtonText: 'Continuar',
+      customClass: {
+        title: 'swal-title',
+        htmlContainer: 'swal-html',
+        confirmButton: 'swal-confirm-button'
+      }
+    });
+  };
+
   return (
     <>
       <ModalObservaciones
@@ -43,6 +59,7 @@ function ReintegroCard(props) {
         idTramite={reintegro.id}
         onSubmit={commentReintegro}
       />
+
       <MarcoCard
         estilo={cardStyle}
         estado={reintegro.estado}
@@ -59,15 +76,26 @@ function ReintegroCard(props) {
         <div className='grid grid-rows-4 justify-items-end relative'>
           {/*El estilo del estado es dinámico si está o no en el dashboard*/}
           {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
-            <TipoDeTramite tipo={'Reintegro'} />
+            <>
+              <div>
+                <UsuarioActual paciente={reintegro.paraAfiliado} />
+              </div>
+              <div>
+                <TipoDeTramite tipo={'Reintegro'} />
+              </div>
+            </>
           ) : (
             <>
               <UsuarioActual paciente={reintegro.paraAfiliado} />
-              {reintegro.estado !== 'pendiente' ? ( //el estado está en minuscula
+              {reintegro.estado !== 'pendiente' && reintegro.estado !== 'aceptado' && reintegro.estado !== 'en análisis' ? ( //el estado está en minuscula
                 <div className='row-start-4'>
                   <BotonObservaciones
                     onClick={() => {
-                      setIsObservacionesOpen(true);
+                      if (reintegro.estado === 'observado') {
+                        setIsObservacionesOpen(true);
+                      } else if (reintegro.estado === 'rechazado') {
+                        mostrarObservacionesRechazado();
+                      }
                     }}
                   />
                 </div>

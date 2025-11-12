@@ -68,7 +68,7 @@ function Inicio() {
       </div>
 
       <div className='flex flex-col gap-2'>
-        <SectionTitle>Mis trámites</SectionTitle>
+        <SectionTitle>Trámites</SectionTitle>
         <div className={`grid w-full ${tramitesStyles} grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-3`}>
           {tramites ? (
             tramites?.map((t, indx) => {

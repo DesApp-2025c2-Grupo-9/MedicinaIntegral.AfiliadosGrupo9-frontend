@@ -22,7 +22,6 @@ import CartillaMedica from "./pages/CartillaMedica";
 import ReintegroFormStepOne from './pages/ReintegroFormStepOne';
 import ReintegroFormStepTwo from './pages/ReintegroFormStepTwo';
 import AutorizacionForm from "./pages/Autorizaciones/AutorizacionForm";
-import { ErrorBoundary } from 'react-error-boundary';
 import GenErrorBoundary from './components/ErrorBoundaries/GenErrorBoundary';
 import TramitesFallback from './components/ErrorFallbacks/TramitesFallback';
 
@@ -39,6 +38,7 @@ export function AppRouter() {
       {/* <Route element={<RequireAuth />}> */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Inicio />} />
+          {/* <Route path="/" element={<p>Inicio</p>} /> */}
           <Route path="/mi-cuenta" element={<MiCuenta />} />
           <Route path="/alternate" element={<p>Soy alternate</p>} />
 
@@ -49,7 +49,7 @@ export function AppRouter() {
 
           <Route path="/reintegros" element={<ReintegrosLayout />}>
             <Route path="historial-reintegros" element={
-              <GenErrorBoundary queryKeyToReset='reintegros' FallbackComponent={() => TramitesFallback({ tipoTramite: 'Reintegros' })}>
+              <GenErrorBoundary FallbackComponent={() => TramitesFallback({ tipoTramite: 'Reintegros' })}>
                 <ReintegroVer />
               </GenErrorBoundary>
             } />

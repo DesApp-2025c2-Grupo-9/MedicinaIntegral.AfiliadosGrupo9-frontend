@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { commentReintegroById, createReintegro, deleteReintegro, getAfiliado, getEspecialidades, getReintegros, login, register, updateReintegro } from './api';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { useUserStore } from '../store/userStore';
 
 // Registro
 export function useRegister() {
@@ -27,13 +28,15 @@ export function useGetAfiliado() {
 }
 
 // Reintegros
-export function useGetReintegros(idAfiliado) {
+export function useGetReintegros() {
   const axiosPrivate = useAxiosPrivate();
+  const user = useUserStore(state => state.user);
+  const idAfiliado = user?.idAfiliado;
 
   return useQuery({
     queryKey: ['reintegros', { idAfiliado }],
-    queryFn: () => getReintegros(axiosPrivate, idAfiliado),
-    enabled: idAfiliado && true
+    enabled: idAfiliado !== undefined,
+    queryFn: () => getReintegros(axiosPrivate, idAfiliado)
   });
 }
 

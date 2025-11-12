@@ -5,13 +5,13 @@
 }
 
 .login-page .login-wrapper {
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background: #eeffed;
   padding: 0px 45px 0 0px;
-  gap: 32px;/* espacio entre imagen y formulario */
+  gap: 32px; /* espacio entre imagen y formulario */
 }
 
 .login-page .bienvenida {
@@ -40,9 +40,7 @@
 
 .medicina-integral-section {
   position: absolute;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
-    linear-gradient(rgba(0, 171, 1, 0.24), rgba(0, 171, 1, 0.24));
+  background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), linear-gradient(rgba(0, 171, 1, 0.24), rgba(0, 171, 1, 0.24));
   width: 100%;
   height: 100%;
   display: flex;
@@ -73,29 +71,34 @@
   line-height: 1;
 }
 
-.login-page .login-container {
+.login-container button {
   width: 50%;
   display: flex;
   justify-content: center;
   height: fit-content;
+  transition: background-color ease 0.2s;
 }
 
-.login-page .login { /*form*/
+.login-page .login {
+  /*form*/
   width: 500px;
   /* min-width: 295px; */
   /* height: 450px; */
-  background: #fff ;
+  background: #fff;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
-.login-page .login label, .login input, .login button, .login form {
+.login-page .login label,
+.login input,
+.login button,
+.login form {
   height: fit-content;
 }
 
 .login-page .login label {
- left: 10%;
+  left: 10%;
   width: fit-content;
   padding-left: 0;
   position: relative;
@@ -112,6 +115,10 @@
   outline: none;
   left: 0;
   align-self: center; /* centra horizontalmente los inputs */
+}
+
+.login-page input:focus {
+  border-color: #00ab01;
 }
 
 .login-page .login-container form {
@@ -153,7 +160,6 @@
   text-align: center;
 }
 
-
 .login-page .footer span {
   font-weight: bold;
   color: #00ab01;
@@ -162,7 +168,6 @@
 .login-page .footer span:hover {
   text-decoration: underline;
 }
-
 
 @media (max-width: 768px) {
   .login-page .login-wrapper {
@@ -198,14 +203,13 @@
     height: 64px;
   }
 
- .login-page .image-section img {
+  .login-page .image-section img {
     max-height: 250px;
   }
 
   .login-page .login-container form {
     padding: 0;
   }
-
 }
 
 /*este es el alerta*/
