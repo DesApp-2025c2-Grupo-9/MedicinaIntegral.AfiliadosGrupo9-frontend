@@ -8,10 +8,15 @@ export const useCommentReintegro = () => {
     try {
       await mutateAsync(inputData);
       Swal.fire({
-        html: 'El comentario fue enviado correctamente.',
         icon: 'success',
+        iconColor: '#00ab01',
+        text: 'El comentario fue enviado correctamente.',
         confirmButtonText: 'Continuar',
-        confirmButtonColor: '#00ab01'
+        customClass: {
+          htmlContainer: 'swal-html',
+          cancelButton: 'swal-cancel-button',
+          confirmButton: 'swal-confirm-button'
+        }
       });
     } catch (error) {
       console.log(error);
