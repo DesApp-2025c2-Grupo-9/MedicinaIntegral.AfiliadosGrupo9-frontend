@@ -12,7 +12,7 @@ import Button from '../components/Button';
 import { addDays, format } from 'date-fns';
 import TwoButtons from '../components/TwoButtons';
 import { useNavigate } from 'react-router-dom';
-import  soloLetrasYEspaciosConLimite  from '../utils/validacion.reintegro';
+import  soloLetrasYEspaciosConLimite  from '../utils/validacion.caracteresYLimite';
 
 function ReintegroFormStepOne({ className }) {
   const navigate = useNavigate();

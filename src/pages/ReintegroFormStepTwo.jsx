@@ -16,7 +16,7 @@ import { useFormRedirect } from '../hooks/useFormRedirect';
 import { useGetMiCuenta } from '../services/miCuentaQueries';
 import { useEffect } from 'react';
 import { NumericFormat } from 'react-number-format';
-import  soloLetrasYEspaciosConLimite  from '../utils/validacion.reintegro';
+import  soloLetrasYEspaciosConLimite  from '../utils/validacion.caracteresYLimite';
 
 
 
