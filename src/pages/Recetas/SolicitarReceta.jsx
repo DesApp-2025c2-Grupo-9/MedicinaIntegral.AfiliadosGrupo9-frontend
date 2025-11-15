@@ -11,6 +11,7 @@ import { useNewRecetaSchema } from '../../hooks/useNewRecetaSchema';
 import { useCreateReceta } from '../../services/recetasQueries';
 import { axiosPrivate } from '../../api/axios';
 import { useGetAfiliado } from '../../services/queries';
+import  soloLetrasYEspaciosConLimite  from '../../utils/validacion.caracteresYLimite';
 
 function SolicitarReceta() {
   const { data: afiliadoRes } = useGetAfiliado();
@@ -74,8 +75,8 @@ function SolicitarReceta() {
           {...register('medicamento')}
           label={'Medicamento'}
           placeholder={'Ingresar Medicamento'}
-          maxLength={50}
           errorMsg={errors.medicamento?.message}
+          onKeyDown= {soloLetrasYEspaciosConLimite(50)}
         />
         <Input
           {...register('cantidad', { valueAsNumber: true })}
@@ -91,9 +92,9 @@ function SolicitarReceta() {
       <Input
         {...register('presentacion')}
         label={'Presentación'}
-        maxLength={50}
         placeholder={'Ingrese la presentación'}
         errorMsg={errors.presentacion?.message}
+        onKeyDown= {soloLetrasYEspaciosConLimite(50)}
       />
 
       <Input

@@ -13,6 +13,7 @@ import { useAutorizacionSchema } from '../../hooks/useAutorizacionSchema';
 import { useAutorizacionStore } from '../../store/autorizacionStore';
 import { format } from 'date-fns';
 import { useLocation } from 'react-router-dom';
+import  soloLetrasYEspaciosConLimite  from '../../utils/validacion.caracteresYLimite';
 
 function AutorizacionForm({ className }) {
   const navigate = useNavigate();
@@ -121,12 +122,14 @@ function AutorizacionForm({ className }) {
             label='Práctica:'
             placeholder='Ingresar la práctica'
             errorMsg={errors.practica?.message}
+            onKeyDown= {soloLetrasYEspaciosConLimite(50)}
           />
           <Input
             {...register('medicoSolicitante')}
             label='Médico:'
             placeholder='Ingresar el médico'
             errorMsg={errors.medicoSolicitante?.message}
+            onKeyDown= {soloLetrasYEspaciosConLimite(50)}
           />
         </InputContainer>
 
@@ -138,6 +141,7 @@ function AutorizacionForm({ className }) {
             label='Lugar de prestación:'
             placeholder='Ingresar lugar de prestación'
             errorMsg={errors.lugarAtencion?.message}
+            onKeyDown= {soloLetrasYEspaciosConLimite(50)}
           />
           <Input
             {...register('diasDeInternacion')}

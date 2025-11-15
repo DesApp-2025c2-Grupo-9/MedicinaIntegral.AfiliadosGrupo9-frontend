@@ -12,6 +12,7 @@ import Button from '../components/Button';
 import { addDays, format } from 'date-fns';
 import TwoButtons from '../components/TwoButtons';
 import { useNavigate } from 'react-router-dom';
+import  soloLetrasYEspaciosConLimite  from '../utils/validacion.caracteresYLimite';
 
 function ReintegroFormStepOne({ className }) {
   const navigate = useNavigate();
@@ -40,6 +41,8 @@ function ReintegroFormStepOne({ className }) {
       lugarDeAtencion: reintegro?.lugarDeAtencion
     }
   });
+
+  
 
   if (isLoadingAfiliado || isLoadingEspecialidades) return <div>Cargando...</div>
 
@@ -85,6 +88,7 @@ function ReintegroFormStepOne({ className }) {
           label='Médico:'
           placeholder='Ingresar nombre del médico'
           errorMsg={errors.medico?.message}
+          onKeyDown= {soloLetrasYEspaciosConLimite(50)}
         />
         <Input
           {...register('lugarDeAtencion')}
@@ -93,6 +97,7 @@ function ReintegroFormStepOne({ className }) {
           label='Lugar donde fue atendido:'
           placeholder='Ingresar lugar de prestación'
           errorMsg={errors.lugarDeAtencion?.message}
+          onKeyDown= {soloLetrasYEspaciosConLimite(50)}
         />
       </InputContainer>
 

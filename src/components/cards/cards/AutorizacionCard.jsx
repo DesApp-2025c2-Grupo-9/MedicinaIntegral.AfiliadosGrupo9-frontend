@@ -10,6 +10,8 @@ import ModalObservaciones from "../../ModalObservaciones/ModalObservaciones";
 import { useEliminarAutorizacion, useCommentAutorizacion } from "../../../hooks/useAutorizacionPetitions";
 import { useNavigate } from "react-router-dom";
 import { useAutorizacionStore } from "../../../store/autorizacionStore";
+import Swal from "sweetalert2";
+import { format, addDays } from "date-fns";
 
 function AutorizacionCard(props) {
   const setAutorizacion = useAutorizacionStore(state => state.setAutorizacion)
@@ -21,6 +23,29 @@ function AutorizacionCard(props) {
   const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
   const observacionPrestador = autorizacion?.observaciones?.find(observacion => observacion.rolEmisor === 'Prestador');
   const navigate = useNavigate()
+  const fechaSolicitud = format(addDays(autorizacion.fechaSolicitud, 1), 'dd/MM/yyyy');
+
+
+  const handleObservacionesRechazadas = () => {
+      //obtener la última observación del prestador
+      const ultimaObsPrestador = autorizacion?.observaciones?.filter(obs => obs.rolEmisor === 'Prestador').slice(-1)[0];
+
+        Swal.fire({
+          title: 'Motivo de rechazo:',
+          text: ultimaObsPrestador?.descripcion?.trim(),
+          icon: 'error',
+          iconColor: '#dc143c',
+          confirmButtonText: 'Continuar',
+          customClass: {
+            popup: 'p-6',
+            htmlContainer: 'swal-html',
+            confirmButton: 'swal-confirm-button',
+            title: 'swal-title'
+          }
+        });
+
+        return;
+};
 
   return (
     <>
@@ -38,11 +63,11 @@ function AutorizacionCard(props) {
         <ColumnaPrincipal>
           {autorizacion.especialidad}
           {`${autorizacion.medicoSolicitante}`}
-          {`Fecha prevista ${new Date(autorizacion.fechaSolicitud).toLocaleDateString()}`}
+          {`Fecha prevista ${fechaSolicitud}`}
           {autorizacion.lugar}
           {`Dias de internación: ${autorizacion.diasDeInternacion} días`}
         </ColumnaPrincipal>
-        <div className="grid grid-rows-4 items-center justify-items-end col-start-2">
+        <div className="grid grid-rows-4 min-h-[96px] items-center justify-items-end col-start-2">
           {//Si es card de dashboard
             props.dashboard ? (
               <>
@@ -56,9 +81,11 @@ function AutorizacionCard(props) {
             ) ://Si no es de dashboard
               < >
                 <UsuarioActual paciente={autorizacion.paraAfiliado}/>
-                {autorizacion.estado !== "pendiente" ? (
+                {autorizacion.estado === "observado" || autorizacion.estado == "rechazado" ? (
                   <div className="row-start-4">
-                    <BotonObservaciones onClick={() => setIsObservacionesOpen(true)} />
+                    <BotonObservaciones onClick={() => 
+                            autorizacion.estado == "observado" ? setIsObservacionesOpen(true) : handleObservacionesRechazadas()
+                    } />
                   </div>
                 ) : <>  </>}
               </>

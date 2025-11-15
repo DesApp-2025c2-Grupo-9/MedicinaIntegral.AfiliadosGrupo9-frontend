@@ -42,6 +42,8 @@ select,
 }
 
 select::picker-icon {
+  content: url("data:image/svg+xml;utf8,<svg width='100%' height='100%' viewBox='0 0 14 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M1 1L7 7L13 1' stroke='currentColor' strokeLinejoin='round'/></svg>");
+  width: 18px;
   transition: 0.4s rotate;
 }
 
@@ -50,8 +52,9 @@ select:open::picker-icon {
 }
 
 ::picker(select) {
-  border: 1px solid #cecece;
-  top: calc(anchor(bottom) + 3px);
+  box-shadow: 0px 8px 20px -4px rgb(0, 0, 0, 0.2);
+  border: none;
+  top: calc(anchor(bottom) + 4px);
   border-radius: 8px;
 }
 
@@ -63,8 +66,12 @@ option {
   color: var(--color-negro-principal);
 }
 
+option:hover {
+  background: #f1f2f5;
+}
+
 option:checked {
-  font-weight: bold;
+  background: var(--color-menta-100);
 }
 
 select option .text {
