@@ -8,6 +8,7 @@ import { useGetMiCuenta, useSetCbuPrincipal } from '../services/miCuentaQueries'
 import { Navigate } from 'react-router-dom';
 import MiCuentaSkeleton from '../components/Skeletons/MiCuentaSkeleton';
 
+
 function MiCuenta() {
   const [CBUModalOnOf, setCBUModalOnOf] = useState(false);
   const { data, isLoading, isError, error } = useGetMiCuenta();
