@@ -15,6 +15,11 @@ import { addDays, format } from 'date-fns';
 import { useFormRedirect } from '../hooks/useFormRedirect';
 import { useGetMiCuenta } from '../services/miCuentaQueries';
 import { useEffect } from 'react';
+import { NumericFormat } from 'react-number-format';
+import  soloLetrasYEspaciosConLimite  from '../utils/validacion.reintegro';
+
+
+
 
 function ReintegroFormStepTwo({ className }) {
   const fechaActual = new Date().toISOString().split('T')[0];
@@ -56,6 +61,7 @@ function ReintegroFormStepTwo({ className }) {
   const cuit = watch('factura.cuit');
   const cbuValue = watch('cbu');
   const formValues = watch();
+
 
   const handleChangeCuit = e => {
     let value = e.target.value.replace(/\D/g, ''); // elimina todo lo que no sea número
@@ -129,19 +135,25 @@ function ReintegroFormStepTwo({ className }) {
       </InputContainer>
 
       <InputContainer>
-        <Input
+        <NumericFormat   //agregue mascara de comas y decimales en el input
+          customInput={Input}
           {...register('factura.valorTotal')}
-          type='number'
           id='factura.valorTotal'
           label='Valor total en pesos ARS:'
           placeholder='Ingresar valor'
-          onKeyDown={e => {
-            if (e.key === '-' || e.key === 'e') {
-              e.preventDefault();
-            }
-          }}
+          thousandSeparator='.'
+          decimalSeparator=','
+          prefix='$ '
+          allowNegative={false}
+          decimalScale={2}        
+          fixedDecimalScale={true}
+          allowDecimals={true}  
           errorMsg={errors.factura?.valorTotal?.message}
+          onValueChange={({ value }) => {
+            setValue('factura.valorTotal', value);
+          }}
         />
+
         <Input
           {...register('factura.personaAFacturar')}
           type='text'
@@ -149,6 +161,7 @@ function ReintegroFormStepTwo({ className }) {
           label='Persona a la que se factura:'
           placeholder='Ingresar nombre completo'
           errorMsg={errors.factura?.personaAFacturar?.message}
+          onKeyDown= {soloLetrasYEspaciosConLimite(50)}
         />
       </InputContainer>
 
@@ -201,6 +214,7 @@ function ReintegroFormStepTwo({ className }) {
         label='Observaciones:'
         placeholder='Ingresar observaciones'
         errorMsg={errors.observaciones?.message}
+        onKeyDown= {soloLetrasYEspaciosConLimite(100)}
       />
       <TwoButtons className='lg:ml-auto'>
         <Button
