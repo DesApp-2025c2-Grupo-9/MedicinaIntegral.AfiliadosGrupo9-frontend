@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { validarRegistroCBU } from '../../utils/validarRegistroCBU.js';
 import { useRegistrarCbu } from '../../services/miCuentaQueries.js';
 import Swal from 'sweetalert2';
+import  soloLetrasYEspaciosConLimite  from '../../utils/validacion.caracteresYLimite';
 
 function ModalRegistrarCBU({ isOpen, setIsOpen }) {
   const [registro, setRegistro] = useState({
@@ -164,7 +165,7 @@ function ModalRegistrarCBU({ isOpen, setIsOpen }) {
               label='Nombre'
               placeholder='Ingresar nombre'
               onChange={handleChange}
-              maxLength={20}
+              onKeyDown= {soloLetrasYEspaciosConLimite(50)}
               value={registro.nombre}
               inputMode='text'
             />
@@ -188,7 +189,7 @@ function ModalRegistrarCBU({ isOpen, setIsOpen }) {
               label='Apellido'
               placeholder='Ingresar apellido'
               onChange={handleChange}
-              maxLength={20}
+              onKeyDown= {soloLetrasYEspaciosConLimite(50)}
               value={registro.apellido}
               inputMode='text'
             />
