@@ -6,6 +6,17 @@ export async function obtenerMiCuenta() {
   return response.data;
 }
 
+export const editarCbuApi = async (cbuEditado) => {
+  const response = await axiosInstance.put(`/cbus/${cbuEditado.nroCBU}`, cbuEditado);
+  return response.data;
+};
+
+export const eliminarCbuApi = async (nroCBU) => {
+  const response = await axiosInstance.delete(`/cbus/${nroCBU}`);
+  return response.data;
+};
+
+
 
 const BASE_URL = 'http://localhost:3000';
 

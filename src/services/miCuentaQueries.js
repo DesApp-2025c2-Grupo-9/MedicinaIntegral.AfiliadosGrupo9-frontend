@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { editarCbuApi, eliminarCbuApi } from '../api/axios';
 
 // Api
 const getMiCuenta = async axiosClient => {
@@ -50,3 +51,15 @@ export function useSetCbuPrincipal() {
     }
   });
 }
+
+export const useEditarCbu = () => {
+  return useMutation({
+    mutationFn: editarCbuApi
+  });
+};
+
+export const useEliminarCbu = () => {
+  return useMutation({
+    mutationFn: eliminarCbuApi
+  });
+};

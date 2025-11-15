@@ -7,10 +7,15 @@ import { useState } from 'react';
 import { useGetMiCuenta, useSetCbuPrincipal } from '../services/miCuentaQueries';
 import { Navigate } from 'react-router-dom';
 import MiCuentaSkeleton from '../components/Skeletons/MiCuentaSkeleton';
+import ModalEditarEliminarCBU from '../components/ModalRegistrarCBU/ModalEditarEliminarCBU';
+import { editarCbuApi, eliminarCbuApi } from '../api/axios';
+
 
 
 function MiCuenta() {
   const [CBUModalOnOf, setCBUModalOnOf] = useState(false);
+  const [editarModalOnOff, setEditarModalOnOff] = useState(false);
+  const [cbuSeleccionado, setCbuSeleccionado] = useState(null);
   const { data, isLoading, isError, error } = useGetMiCuenta();
   const { mutateAsync } = useSetCbuPrincipal();
 
@@ -72,9 +77,12 @@ function MiCuenta() {
               value: cbu.cbu
             }))}
             defaultInputValue={defaultCbu ? `${defaultCbu.nombre} ${defaultCbu.apellido}: ${defaultCbu.cbu}` : ''}
-            onChange={selectedOption => handleChange({ nroCbu: selectedOption.value })}
-            className='w-100 max-w-xl'
-            placeholder='Selecciona un CBU'
+            onChange={selectedOption => {
+              handleChange({ nroCbu: selectedOption.value });
+              const seleccionado = afiliado.cbus.find(cbu => cbu.cbu === selectedOption.value);
+              setCbuSeleccionado(seleccionado);
+            }}
+
           />
 
           <Button
@@ -84,6 +92,22 @@ function MiCuenta() {
           >
             Registrar nuevo CBU
           </Button>
+
+          <Button
+            onClick={() => {
+              if (cbuSeleccionado) {
+                setEditarModalOnOff(true);
+              }
+            }}
+            disabled={!cbuSeleccionado}
+          >
+            Editar
+          </Button>
+
+          
+
+
+
         </div>
       </div>
       {CBUModalOnOf && (
@@ -92,6 +116,14 @@ function MiCuenta() {
           setIsOpen={setCBUModalOnOf}
         />
       )}
+      {editarModalOnOff && (
+      <ModalEditarEliminarCBU
+        isOpen={editarModalOnOff}
+        setIsOpen={setEditarModalOnOff}
+        cbuActual={cbuSeleccionado}
+      />
+    )}
+
     </div>
   );
 }
