@@ -41,6 +41,25 @@ function ReintegroFormStepOne({ className }) {
     }
   });
 
+  ///bloqueo caracteres invalidos y limite de caracteres desde el teclado
+  const soloLetrasYEspaciosConLimite = (max) => (e) => {
+    const key = e.key;
+    const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]$/;
+    const teclasPermitidas = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Delete'];
+
+  if (
+    !regex.test(key) &&
+    !teclasPermitidas.includes(key)
+  ) {
+    e.preventDefault();
+  }
+  const valorActual = e.target.value;
+  if (valorActual.length >= max && !teclasPermitidas.includes(key)) {
+    e.preventDefault();
+  }
+
+  };
+
   if (isLoadingAfiliado || isLoadingEspecialidades) return <div>Cargando...</div>
 
   return (
@@ -85,6 +104,7 @@ function ReintegroFormStepOne({ className }) {
           label='Médico:'
           placeholder='Ingresar nombre del médico'
           errorMsg={errors.medico?.message}
+          onKeyDown= {soloLetrasYEspaciosConLimite(50)}
         />
         <Input
           {...register('lugarDeAtencion')}
@@ -93,6 +113,7 @@ function ReintegroFormStepOne({ className }) {
           label='Lugar donde fue atendido:'
           placeholder='Ingresar lugar de prestación'
           errorMsg={errors.lugarDeAtencion?.message}
+          onKeyDown= {soloLetrasYEspaciosConLimite(50)}
         />
       </InputContainer>
 
