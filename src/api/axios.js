@@ -7,12 +7,12 @@ export async function obtenerMiCuenta() {
 }
 
 export const editarCbuApi = async (cbuEditado) => {
-  const response = await axiosInstance.put(`/cbus/${cbuEditado.nroCBU}`, cbuEditado);
+  const response = await axiosPrivate.put(`/cbu/${cbuEditado.cbu}`, cbuEditado);
   return response.data;
 };
 
 export const eliminarCbuApi = async (nroCBU) => {
-  const response = await axiosInstance.delete(`/cbus/${nroCBU}`);
+  const response = await axiosInstance.delete(`/cbu/${nroCBU}`);
   return response.data;
 };
 

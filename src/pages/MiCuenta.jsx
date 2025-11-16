@@ -8,7 +8,7 @@ import { useGetMiCuenta, useSetCbuPrincipal } from '../services/miCuentaQueries'
 import { Navigate } from 'react-router-dom';
 import MiCuentaSkeleton from '../components/Skeletons/MiCuentaSkeleton';
 import ModalEditarEliminarCBU from '../components/ModalRegistrarCBU/ModalEditarEliminarCBU';
-import { editarCbuApi, eliminarCbuApi } from '../api/axios';
+
 
 
 

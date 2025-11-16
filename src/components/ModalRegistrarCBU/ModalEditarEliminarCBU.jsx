@@ -65,32 +65,41 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
   if (!isOpen) return null;
 
   const handleEditar = async e => {
-    e.preventDefault();
-    const erroresValidados = validarRegistroCBU(registro);
-    setErrores(erroresValidados);
+  e.preventDefault();
+  const erroresValidados = validarRegistroCBU(registro);
+  setErrores(erroresValidados);
 
-    if (Object.keys(erroresValidados).length === 0) {
-      try {
-        await editarCbu(registro);
-        setIsOpen(false);
-        Swal.fire({
-          title: 'CBU actualizado',
-          text: 'Los datos fueron modificados correctamente.',
-          icon: 'success',
-          confirmButtonText: 'Continuar',
-          confirmButtonColor: '#00ab01'
-        });
-      } catch (error) {
-        Swal.fire({
-          title: 'Error al editar CBU',
-          text: 'No se pudo actualizar. Intente nuevamente.',
-          icon: 'error',
-          confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#dc143c'
-        });
-      }
+  if (Object.keys(erroresValidados).length === 0) {
+    try {
+      const datosTransformados = {
+        cbu: registro.nroCBU,
+        tipoDeCuenta: registro.tipoDeCuenta,
+        cuil: registro.cuilOCuit,
+        nombre: registro.nombre,
+        apellido: registro.apellido
+      };
+
+      await editarCbu(datosTransformados);
+      setIsOpen(false);
+      Swal.fire({
+        title: 'CBU actualizado',
+        text: 'Los datos fueron modificados correctamente.',
+        icon: 'success',
+        confirmButtonText: 'Continuar',
+        confirmButtonColor: '#00ab01'
+      });
+    } catch (error) {
+      Swal.fire({
+        title: 'Error al editar CBU',
+        text: 'No se pudo actualizar. Intente nuevamente.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#dc143c'
+      });
     }
-  };
+  }
+};
+
 
   const handleChange = e => {
     const { id, value } = e.target;
@@ -130,6 +139,7 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
                 className='outline-none border border-slate-300 rounded-lg h-fit p-3 min-w-40 w-full'
                 name='tipoDeCuenta'
                 id='tipoDeCuenta'
+                value={registro.tipoDeCuenta}
                 onChange={handleChange}
               >
                 <option className='py-2 pl-3'>Seleccionar tipo de cuenta</option>

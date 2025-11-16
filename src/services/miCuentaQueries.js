@@ -53,9 +53,15 @@ export function useSetCbuPrincipal() {
 }
 
 export const useEditarCbu = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: editarCbuApi
+    mutationFn: editarCbuApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['mi-cuenta']); 
+    }
   });
+
 };
 
 export const useEliminarCbu = () => {
