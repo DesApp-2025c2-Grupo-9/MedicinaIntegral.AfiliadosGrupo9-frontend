@@ -71,6 +71,7 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
 
   if (Object.keys(erroresValidados).length === 0) {
     try {
+      
       const datosTransformados = {
         cbu: registro.nroCBU,
         tipoDeCuenta: registro.tipoDeCuenta,
@@ -89,9 +90,10 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
         confirmButtonColor: '#00ab01'
       });
     } catch (error) {
+      const mensaje = error?.response?.data?.message || 'No se pudo actualizar. Intente nuevamente.';
       Swal.fire({
         title: 'Error al editar CBU',
-        text: 'No se pudo actualizar. Intente nuevamente.',
+        text: mensaje,
         icon: 'error',
         confirmButtonText: 'Aceptar',
         confirmButtonColor: '#dc143c'
