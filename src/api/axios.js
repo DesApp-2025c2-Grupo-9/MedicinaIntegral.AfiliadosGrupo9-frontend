@@ -7,11 +7,13 @@ export async function obtenerMiCuenta() {
 }
 
 export const editarCbuApi = async (cbuEditado) => {
-  const { cbu, tipoDeCuenta, cuil, nombre, apellido } = cbuEditado;
+  const { idAfiliado, tipoDeCuenta, cuil, nombre, apellido } = cbuEditado;
+  
   const body = { tipoDeCuenta, cuil, nombre, apellido };
-  const response = await axiosPrivate.put(`/api/mi-cuenta/cbu/${cbu}`, body);
+  const response = await axiosPrivate.put(`/api/mi-cuenta/cbu-principal/${idAfiliado}`, body);
   return response.data;
 };
+
 
 
 export const eliminarCbuApi = async (nroCBU) => {

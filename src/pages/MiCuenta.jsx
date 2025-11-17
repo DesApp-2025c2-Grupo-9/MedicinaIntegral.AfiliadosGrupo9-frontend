@@ -120,7 +120,7 @@ function MiCuenta() {
       <ModalEditarEliminarCBU
         isOpen={editarModalOnOff}
         setIsOpen={setEditarModalOnOff}
-        cbuActual={cbuSeleccionado}
+        cbuActual={{ ...cbuSeleccionado, idAfiliado: afiliado?._id } }
       />
     )}
 
