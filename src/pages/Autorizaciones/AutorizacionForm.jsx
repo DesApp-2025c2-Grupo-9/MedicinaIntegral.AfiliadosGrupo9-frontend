@@ -13,7 +13,7 @@ import { useAutorizacionSchema } from '../../hooks/useAutorizacionSchema';
 import { useAutorizacionStore } from '../../store/autorizacionStore';
 import { addDays, format } from 'date-fns';
 import { useLocation } from 'react-router-dom';
-import  soloLetrasYEspaciosConLimite  from '../../utils/validacion.caracteresYLimite';
+import soloLetrasYEspaciosConLimite from '../../utils/validacion.caracteresYLimite';
 
 function AutorizacionForm({ className }) {
   const navigate = useNavigate();
@@ -77,14 +77,9 @@ function AutorizacionForm({ className }) {
       <Form
         onSubmit={handleSubmit(onSubmit)}
         className={`max-w-211.5 ${className}`}
+        legend={pathDest && 'Editar autorización'}
+        legendClassName='text-xl font-bold text-blue-500'
       >
-        {/* Title Editar Autorización */}
-        {pathDest && (
-          <div className='flex items-center gap-1 w-fit text-blue-400 h-fit'>
-            <h2 className='text-xl font-bold text-right'>Editar autorización</h2>
-          </div>
-        )}
-
         {/* Dropdown afiliado */}
         {!pathDest && listaAfiliados?.length > 1 && (
           <Select
@@ -122,14 +117,14 @@ function AutorizacionForm({ className }) {
             label='Práctica:'
             placeholder='Ingresar la práctica'
             errorMsg={errors.practica?.message}
-            onKeyDown= {soloLetrasYEspaciosConLimite(50)}
+            onKeyDown={soloLetrasYEspaciosConLimite(50)}
           />
           <Input
             {...register('medicoSolicitante')}
             label='Médico:'
             placeholder='Ingresar el médico'
             errorMsg={errors.medicoSolicitante?.message}
-            onKeyDown= {soloLetrasYEspaciosConLimite(50)}
+            onKeyDown={soloLetrasYEspaciosConLimite(50)}
           />
         </InputContainer>
 
@@ -141,7 +136,7 @@ function AutorizacionForm({ className }) {
             label='Lugar de prestación:'
             placeholder='Ingresar lugar de prestación'
             errorMsg={errors.lugarAtencion?.message}
-            onKeyDown= {soloLetrasYEspaciosConLimite(50)}
+            onKeyDown={soloLetrasYEspaciosConLimite(50)}
           />
           <Input
             {...register('diasDeInternacion')}
