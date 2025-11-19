@@ -15,9 +15,10 @@ const ERROR_MESSAGES = {
   ESPECIALIDAD: {
     REQUIRED: 'Debe seleccionar una especialidad.'
   },
-  MEDICO_SOLICITANTE: {
-    REQUIRED: 'Debe ingresar el nombre del médico.',
-    INVALID_FORMAT: 'El nombre del médico solo puede contener letras.'
+   MEDICO_SOLICITANTE: {
+    REQUIRED: 'Debe ingresar el médico.',
+    INVALID_FORMAT: 'Sólo se permite el nombre y apellido.',
+    INCOMPLETE: 'Debe contener el nombre y apellido.'
   },
   LUGAR_DE_ATENCION: {
     REQUIRED: 'Debe ingresar el lugar donde se va a atender.',
@@ -29,10 +30,7 @@ const ERROR_MESSAGES = {
   }
 }
 
-// const especialidadesRes = await getEspecialidades();
-
 export const useAutorizacionSchema = data => {
-//Esquema de solicitud utilizando zod
   const  autorizacionSchema = z.object({
     paraAfiliado: z.literal(data.listaAfiliados, ERROR_MESSAGES.AFILIADO.REQUIRED),
       fechaSolicitud: z.string({
@@ -50,7 +48,10 @@ export const useAutorizacionSchema = data => {
       ),
       especialidad : z.literal(data.listaEspecialidades, ERROR_MESSAGES.ESPECIALIDAD.REQUIRED),
       practica : z.string().trim().min(3, ERROR_MESSAGES.PRACTICA.REQUIRED), 
-      medicoSolicitante : z.string().trim().min(3, ERROR_MESSAGES.MEDICO_SOLICITANTE.REQUIRED),
+      medicoSolicitante: z.string().min(3, ERROR_MESSAGES.MEDICO_SOLICITANTE.REQUIRED).regex(/^(?!.*\bdr|dra|doc|doctor|doctora\.?\b)[\p{L}.\s]+$/iu, ERROR_MESSAGES.MEDICO_SOLICITANTE.INVALID_FORMAT).refine(val => {
+      const partes = val.trim().split(/\s+/);
+      return partes.length >= 2;
+      }, {message: ERROR_MESSAGES.MEDICO_SOLICITANTE.INCOMPLETE}),
       lugarAtencion : z.string().trim().min(3, ERROR_MESSAGES.LUGAR_DE_ATENCION.REQUIRED),
       diasDeInternacion : z.coerce.number().min(0, ERROR_MESSAGES.DIAS_DE_INTERNACION.REQUIRED),
       observaciones : z.string().optional()
