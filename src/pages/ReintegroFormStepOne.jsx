@@ -41,7 +41,7 @@ function ReintegroFormStepOne({ className }) {
     }
   });
 
-  if (isLoadingAfiliado || isLoadingEspecialidades) return <div>Cargando...</div>
+  if (isLoadingAfiliado || isLoadingEspecialidades) return <div>Cargando...</div>;
 
   return (
     <Form

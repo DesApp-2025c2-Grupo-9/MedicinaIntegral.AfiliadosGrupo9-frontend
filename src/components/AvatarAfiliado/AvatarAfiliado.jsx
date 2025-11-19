@@ -51,7 +51,7 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
           <p>
             Viendo como{' '}
             <span className='font-bold text-menta-600'>
-              {afiliadoActual.nombre} {afiliadoActual.apellido}
+              {afiliadoActual?.nombre} {afiliadoActual?.apellido}
             </span>
           </p>
           <div
@@ -81,7 +81,7 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
           {afiliado?.nombre} <span className='lg:hidden'>{afiliado?.apellido}</span>
         </p>
         {afiliado.grupoFamiliar.length > 1 && (
-          <div className={clsx('w-5 lg:w-[14px] transition-all text-negro-principal ml-auto mr-4 lg:m-0', { 'rotate-90': !isOpen, 'rotate-0': isOpen })}>{icons.chevronDown}</div>
+          <div className={clsx('w-5 lg:w-3.5 transition-all text-negro-principal ml-auto mr-4 lg:m-0', { 'rotate-90': !isOpen, 'rotate-0': isOpen })}>{icons.chevronDown}</div>
         )}
       </div>
 
