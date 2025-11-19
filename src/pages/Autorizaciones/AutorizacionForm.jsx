@@ -11,7 +11,7 @@ import { useGetAfiliado, useGetEspecialidades } from '../../services/queries';
 import { useCreateAutorizacion, useUpdateAutorizacion } from '../../services/autorizacionesQueries';
 import { useAutorizacionSchema } from '../../hooks/useAutorizacionSchema';
 import { useAutorizacionStore } from '../../store/autorizacionStore';
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { useLocation } from 'react-router-dom';
 import  soloLetrasYEspaciosConLimite  from '../../utils/validacion.caracteresYLimite';
 
@@ -39,7 +39,7 @@ function AutorizacionForm({ className }) {
     resolver: zodResolver(autorizacionSchema),
     defaultValues: {
       paraAfiliado: autorizacion?.paraAfiliado,
-      fechaSolicitud: autorizacion?.fechaSolicitud && format(autorizacion?.fechaSolicitud, 'yyyy-MM-dd'),
+      fechaSolicitud: autorizacion?.fechaSolicitud && format(addDays(autorizacion?.fechaSolicitud, 1), 'yyyy-MM-dd'),
       especialidad: autorizacion?.especialidad,
       practica: autorizacion?.practica,
       medicoSolicitante: autorizacion?.medicoSolicitante,

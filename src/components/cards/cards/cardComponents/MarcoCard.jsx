@@ -65,10 +65,10 @@ function MarcoCard(props) {
       {
       //Marco de estado de la card opcional 
       estado ? (
-        <div className="px-2 py-0.5">{/*Si se manda un estado se carga esta parte */}
-          <div className='flex items-center gap-1.5 text-blanco-principal'>
-            <div className='w-4 aspect-square flex justify-center items-center'>{stateIcon}</div>
-            <p className='font-bold uppercase tracking-wider'>{mostrarEstado()}</p>
+        <div className="px-2.5 py-2">{/*Si se manda un estado se carga esta parte */}
+          <div className='flex items-center text-blanco-principal'>
+            {/* <div className='w-4 aspect-square flex justify-center items-center'>{stateIcon}</div> */}
+            <p className='font-semibold uppercase tracking-wider leading-3'>{mostrarEstado()}</p>
           </div>
           
 
