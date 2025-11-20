@@ -19,8 +19,11 @@ function ReintegroFormStepOne({ className }) {
   const fechaActual = new Date().toISOString().split('T')[0];
   const { data: especialidades, isLoading: isLoadingEspecialidades } = useGetEspecialidades();
   const { data: afiliados, isLoading: isLoadingAfiliado } = useGetAfiliado();
+
+  const rolSesion = afiliados?.data?.rol; // Rol de quien inició sesión
   const listaEspecialidades = especialidades?.data;
-  const listaAfiliados = afiliados?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
+  const listaAfiliadosFiltrados = rolSesion === 'Titular' ? afiliados?.data?.grupoFamiliar?.filter(familiar => familiar.rol !== 'Cónyuge') : afiliados?.data?.grupoFamiliar; // Si quien inició sesión es Titular, Cónyuge no me se muestra en el input de paraAfiliado
+  const listaAfiliados = listaAfiliadosFiltrados?.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
 
   const reintegro = useReintegroStore(state => state.reintegro);
   const fechaDePrestacion = reintegro?.fechaDePrestacion ? format(addDays(reintegro?.fechaDePrestacion, 1), 'yyyy-MM-dd') : '';

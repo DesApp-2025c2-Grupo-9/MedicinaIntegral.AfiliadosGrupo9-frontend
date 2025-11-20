@@ -38,9 +38,7 @@ export function AppRouter() {
       {/* <Route element={<RequireAuth />}> */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Inicio />} />
-          {/* <Route path="/" element={<p>Inicio</p>} /> */}
           <Route path="/mi-cuenta" element={<MiCuenta />} />
-          <Route path="/alternate" element={<p>Soy alternate</p>} />
 
           <Route path='/turnos' element={<TurnosLayout />}>
             <Route path='turnos-reservados' element={<VerTurnos/>} />
