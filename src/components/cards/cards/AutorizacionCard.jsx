@@ -62,7 +62,7 @@ function AutorizacionCard(props) {
       <MarcoCard estilo={cardStyle} estado={autorizacion.estado}>
         <ColumnaPrincipal>
           {autorizacion.especialidad}
-          {`${autorizacion.medicoSolicitante}`}
+          {`Dr. ${autorizacion.medicoSolicitante}`}
           {`Fecha prevista ${fechaSolicitud}`}
           {autorizacion.lugar}
           {`Dias de internación: ${autorizacion.diasDeInternacion} días`}
