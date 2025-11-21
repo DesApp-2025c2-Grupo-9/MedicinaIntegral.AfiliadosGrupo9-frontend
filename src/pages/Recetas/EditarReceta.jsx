@@ -10,11 +10,9 @@ import {
   useGetRecetaById,
   useUpdateReceta,
 } from "../../services/recetasQueries";
-import { useNewRecetaSchema } from "../../hooks/useNewRecetaSchema";
 import { useEditRecetaSchema } from "../../hooks/useEditRecetaSchema";
 import { useGetAfiliado } from "../../services/queries";
 import { useNavigate, useParams } from "react-router-dom";
-import  soloLetrasYEspaciosConLimite  from '../../utils/validacion.caracteresYLimite';
 
 function EditarReceta() {
   const { id } = useParams();
@@ -99,7 +97,6 @@ function EditarReceta() {
         <Input
           {...register("medicamento")}
           label="Medicamento:"
-          onKeyDown= {soloLetrasYEspaciosConLimite(50)}
           errorMsg={errors.medicamento?.message}
         />
         <Input
@@ -115,7 +112,6 @@ function EditarReceta() {
         {...register("presentacion")}
         label="Presentación:"
         errorMsg={errors.presentacion?.message}
-        onKeyDown= {soloLetrasYEspaciosConLimite(50)}
       />
 
       <Input

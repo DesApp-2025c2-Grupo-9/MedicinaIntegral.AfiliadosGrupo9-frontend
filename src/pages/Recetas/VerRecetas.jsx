@@ -2,7 +2,6 @@ import RecetaCard from "../../components/cards/cards/RecetaCard";
 import FiltroEstados from "../../components/FiltroEstados";
 import { useGetRecetas } from "../../services/recetasQueries";
 import { useNavigate, useLocation } from "react-router-dom";
-import { capitalize } from "lodash";
 import { useUserStore } from "../../store/userStore";
 import TramitesSkeleton from "../../components/Skeletons/TramitesSkeleton";
 import { useState } from "react";
@@ -24,14 +23,40 @@ function VerRecetas() {
     }
     return <p>Error: {JSON.stringify(error)}</p>;
   }
+  const getFechaReceta = (receta) => {
+    const estado = receta.estado?.toLowerCase();
 
+    // Aceptadas - fechaAprobacion
+    if (estado === "aceptado") {
+      return receta.fechaAprobacion ? new Date(receta.fechaAprobacion) : null;
+    }
+
+    // Rechazadas -fecha de la última observación
+    if (estado === "rechazado") {
+      if (!receta.observaciones || receta.observaciones.length === 0)
+        return null;
+
+      const ultimaObservacion =
+        receta.observaciones[receta.observaciones.length - 1];
+
+      return ultimaObservacion?.fecha
+        ? new Date(ultimaObservacion.fecha)
+        : null;
+    }
+
+    // Otras -createdAt
+    return receta.createdAt ? new Date(receta.createdAt) : null;
+  };
   // Ordenar recetas de más reciente a más antigua
-  const recetasOrdenadas = [...recetas].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
+  const recetasOrdenadas = [...recetas].sort((a, b) => {
+    const fechaA = getFechaReceta(a);
+    const fechaB = getFechaReceta(b);
+    return fechaB - fechaA;
+  });
 
   // Función para saber si una fecha supera X días
   const esMayorA_dias = (fecha, dias) => {
+    if (!fecha) return false;
     const hoy = new Date();
     const fechaReceta = new Date(fecha);
     const diferenciaMs = hoy - fechaReceta;
@@ -50,10 +75,11 @@ function VerRecetas() {
   const recetasFiltradas = recetasOrdenadas.filter((receta) => {
     const estadoBackend = receta.estado?.toLowerCase();
     const estadoSelect = estadoTramite;
+    const fechaBase = getFechaReceta(receta);
 
     if (estadoSelect === "Todos") {
       if (estadoBackend === "aceptado" || estadoBackend === "rechazado") {
-        return !esMayorA_dias(receta.createdAt, 30);
+        return !esMayorA_dias(fechaBase, 30);
       }
       return true;
     }
@@ -63,13 +89,13 @@ function VerRecetas() {
       estadoSelect === "Aceptados última semana" &&
       estadoBackend === "aceptado"
     ) {
-      return !esMayorA_dias(receta.createdAt, 7);
+      return !esMayorA_dias(fechaBase, 7);
     }
     if (
       estadoSelect === "Rechazados última semana" &&
       estadoBackend === "rechazado"
     ) {
-      return !esMayorA_dias(receta.createdAt, 7);
+      return !esMayorA_dias(fechaBase, 7);
     }
 
     // Para pendiente, en análisis, observado
