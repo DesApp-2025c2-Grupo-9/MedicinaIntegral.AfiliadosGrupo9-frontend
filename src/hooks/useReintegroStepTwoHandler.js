@@ -35,6 +35,7 @@ export const useReintegroStepTwoHandler = () => {
   };
 
   const onSubmit = async inputData => {
+    console.log({ ...reintegro, ...inputData });
     try {
       if (location.pathname === '/reintegros/datos-factura') {
         await newReintegroHandler(inputData);

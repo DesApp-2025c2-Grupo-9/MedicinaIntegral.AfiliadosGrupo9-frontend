@@ -7,34 +7,16 @@ import AutorizacionCard from '../components/cards/cards/AutorizacionCard';
 import { Fragment } from 'react';
 import { useGetUltimosTramites, useGetUltimosTurnos } from '../services/inicioQueries';
 import { useUserStore } from '../store/userStore';
-import { useNavigate } from 'react-router-dom';
 import InicioSkeleton from '../components/Skeletons/InicioSkeleton';
 
 function Inicio() {
-  const navigate = useNavigate();
   const { user } = useUserStore(state => state);
-  const { data: dataTurnos, error: errorTurnos, isLoading: isLoadingTurnos } = useGetUltimosTurnos(user.idAfiliado);
-  const { data: dataTramites, error: errorTramites, isLoading: isLoadingTramites } = useGetUltimosTramites(user.idAfiliado);
+  const { data: dataTurnos, isLoading: isLoadingTurnos } = useGetUltimosTurnos(user.idAfiliado);
+  const { data: dataTramites, isLoading: isLoadingTramites } = useGetUltimosTramites(user.idAfiliado);
   const turnos = dataTurnos?.dataTurnos || [];
   const tramites = dataTramites?.dataTramites || [];
 
   if (isLoadingTurnos || isLoadingTramites) return <InicioSkeleton />;
-
-  if (errorTurnos) {
-    if (errorTurnos?.response?.status === 401) {
-      navigate('/login', { state: { from: location }, replace: true });
-      return null;
-    }
-    return <p>Error: {JSON.stringify(errorTurnos)}</p>;
-  }
-
-  if (errorTramites) {
-    if (errorTramites?.response?.status === 401) {
-      navigate('/login', { state: { from: location }, replace: true });
-      return null;
-    }
-    return <p>Error: {JSON.stringify(errorTramites)}</p>;
-  }
 
   const componentsCard = {
     receta: item => <RecetaCard receta={item} dashboard/>,
@@ -62,7 +44,7 @@ function Inicio() {
               />
             ))
           ) : (
-            <i>Sin contenido</i>
+            <i>No tenés turnos próximos.</i>
           )}
         </div>
       </div>
@@ -79,11 +61,10 @@ function Inicio() {
               
             })
           ) : (
-            <i>Sin contenido</i>
+            <i>No tenés trámites.</i>
           )}
         </div>
       </div>
-
       <Carousel height={heightCarousel} />
     </div>
   );

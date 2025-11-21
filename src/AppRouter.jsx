@@ -22,8 +22,10 @@ import CartillaMedica from "./pages/CartillaMedica";
 import ReintegroFormStepOne from './pages/ReintegroFormStepOne';
 import ReintegroFormStepTwo from './pages/ReintegroFormStepTwo';
 import AutorizacionForm from "./pages/Autorizaciones/AutorizacionForm";
+import { ErrorBoundary } from 'react-error-boundary';
 import GenErrorBoundary from './components/ErrorBoundaries/GenErrorBoundary';
 import TramitesFallback from './components/ErrorFallbacks/TramitesFallback';
+import InicioFallback from "./components/ErrorFallbacks/InicioFallback";
 
 export function AppRouter() {
   return (
@@ -37,8 +39,11 @@ export function AppRouter() {
       {/* Rutas protegidas */}
       {/* <Route element={<RequireAuth />}> */}
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Inicio />} />
-          {/* <Route path="/" element={<p>Inicio</p>} /> */}
+          <Route path="/" element={
+           <GenErrorBoundary FallbackComponent={InicioFallback}>
+              <Inicio />
+            </GenErrorBoundary>
+          } />
           <Route path="/mi-cuenta" element={<MiCuenta />} />
           <Route path="/alternate" element={<p>Soy alternate</p>} />
 
@@ -49,7 +54,7 @@ export function AppRouter() {
 
           <Route path="/reintegros" element={<ReintegrosLayout />}>
             <Route path="historial-reintegros" element={
-              <GenErrorBoundary FallbackComponent={() => TramitesFallback({ tipoTramite: 'Reintegros' })}>
+              <GenErrorBoundary queryKeyToReset='reintegros' FallbackComponent={() => TramitesFallback({ tipoTramite: 'Reintegros' })}>
                 <ReintegroVer />
               </GenErrorBoundary>
             } />
@@ -73,7 +78,12 @@ export function AppRouter() {
           </Route>
 
           <Route path="/autorizaciones" element={<AutorizacionesLayout />}>
-            <Route path="ver-autorizaciones" element={<VerAutorizaciones />} />
+            <Route path="ver-autorizaciones" element={
+              <GenErrorBoundary queryKeyToReset='autorizaciones' FallbackComponent={() => TramitesFallback({ tipoTramite: 'Autorizaciones' })}>
+                <VerAutorizaciones />
+              </GenErrorBoundary>
+            } />
+
             <Route
               path="solicitar-autorizacion"
               element={<AutorizacionForm />}

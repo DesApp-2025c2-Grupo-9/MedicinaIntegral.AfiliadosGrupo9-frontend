@@ -11,8 +11,8 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { addDays, format } from 'date-fns';
 import TwoButtons from '../components/TwoButtons';
-import { useNavigate } from 'react-router-dom';
-import  soloLetrasYEspaciosConLimite  from '../utils/validacion.caracteresYLimite';
+import { useLocation, useNavigate } from 'react-router-dom';
+import soloLetrasYEspaciosConLimite from '../utils/validacion.caracteresYLimite';
 
 function ReintegroFormStepOne({ className }) {
   const navigate = useNavigate();
@@ -26,6 +26,9 @@ function ReintegroFormStepOne({ className }) {
   const fechaDePrestacion = reintegro?.fechaDePrestacion ? format(addDays(reintegro?.fechaDePrestacion, 1), 'yyyy-MM-dd') : '';
   const { reintegroStepOneSchema } = useReintegroStepOneSchema({ listaAfiliados, listaEspecialidades });
   const { onSubmit } = useReintegroStepOneHandler();
+
+  const location = useLocation();
+  const isEditPath = location.pathname === '/reintegros/editar-reintegro';
 
   const {
     register,
@@ -42,14 +45,14 @@ function ReintegroFormStepOne({ className }) {
     }
   });
 
-  
-
-  if (isLoadingAfiliado || isLoadingEspecialidades) return <div>Cargando...</div>
+  if (isLoadingAfiliado || isLoadingEspecialidades) return <div>Cargando...</div>;
 
   return (
     <Form
       onSubmit={handleSubmit(onSubmit)}
       className={`max-w-211.5 ${className}`}
+      legend={isEditPath && 'Editar reintegro'}
+      legendClassName='text-xl font-bold text-blue-500'
     >
       {afiliados?.data?.grupoFamiliar?.length > 1 && (
         <Select
@@ -88,7 +91,7 @@ function ReintegroFormStepOne({ className }) {
           label='Médico:'
           placeholder='Ingresar nombre del médico'
           errorMsg={errors.medico?.message}
-          onKeyDown= {soloLetrasYEspaciosConLimite(50)}
+          onKeyDown={soloLetrasYEspaciosConLimite(50)}
         />
         <Input
           {...register('lugarDeAtencion')}
@@ -97,7 +100,7 @@ function ReintegroFormStepOne({ className }) {
           label='Lugar donde fue atendido:'
           placeholder='Ingresar lugar de prestación'
           errorMsg={errors.lugarDeAtencion?.message}
-          onKeyDown= {soloLetrasYEspaciosConLimite(50)}
+          onKeyDown={soloLetrasYEspaciosConLimite(50)}
         />
       </InputContainer>
 

@@ -16,6 +16,7 @@ function VerRecetas() {
   const recetas = data?.data || [];
 
   if (isLoading) return <TramitesSkeleton />;
+
   if (error) {
     if (error?.response?.status === 401) {
       navigate("/login", { state: { from: location }, replace: true });
@@ -24,11 +25,56 @@ function VerRecetas() {
     return <p>Error: {JSON.stringify(error)}</p>;
   }
 
-  const recetasFiltradas = recetas?.filter(
-    (receta) =>
-      estadoTramite.includes(capitalize(receta.estado)) ||
-      estadoTramite === "Todos"
+  // Ordenar recetas de más reciente a más antigua
+  const recetasOrdenadas = [...recetas].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
+
+  // Función para saber si una fecha supera X días
+  const esMayorA_dias = (fecha, dias) => {
+    const hoy = new Date();
+    const fechaReceta = new Date(fecha);
+    const diferenciaMs = hoy - fechaReceta;
+    const diferenciaDias = diferenciaMs / (1000 * 60 * 60 * 24);
+    return diferenciaDias > dias;
+  };
+
+  const mapEstados = {
+    "Pendientes de procesamiento": "pendiente",
+    "En análisis": "en análisis",
+    Observados: "observado",
+    "Rechazados última semana": "rechazado",
+    "Aceptados última semana": "aceptado",
+  };
+
+  const recetasFiltradas = recetasOrdenadas.filter((receta) => {
+    const estadoBackend = receta.estado?.toLowerCase();
+    const estadoSelect = estadoTramite;
+
+    if (estadoSelect === "Todos") {
+      if (estadoBackend === "aceptado" || estadoBackend === "rechazado") {
+        return !esMayorA_dias(receta.createdAt, 30);
+      }
+      return true;
+    }
+
+    //  filtros por última semana
+    if (
+      estadoSelect === "Aceptados última semana" &&
+      estadoBackend === "aceptado"
+    ) {
+      return !esMayorA_dias(receta.createdAt, 7);
+    }
+    if (
+      estadoSelect === "Rechazados última semana" &&
+      estadoBackend === "rechazado"
+    ) {
+      return !esMayorA_dias(receta.createdAt, 7);
+    }
+
+    // Para pendiente, en análisis, observado
+    return mapEstados[estadoSelect] === estadoBackend;
+  });
 
   return (
     <div className="flex flex-col items-end gap-3 relative">
@@ -36,6 +82,7 @@ function VerRecetas() {
         className="sm:absolute -top-9.5 mr-auto"
         setEstadoTramite={setEstadoTramite}
       />
+
       <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3">
         {recetasFiltradas?.map((receta, idReceta) => (
           <RecetaCard receta={receta} key={idReceta} />

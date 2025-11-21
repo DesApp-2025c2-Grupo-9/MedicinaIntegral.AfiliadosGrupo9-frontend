@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 @import 'tailwindcss';
 @import './styles/turnos.css';
-@import './styles/animation.css';
 @import './styles/modalesSwal.css';
+@import './styles/animation.css';
 
 @theme {
   /* Colours */
@@ -35,48 +35,48 @@ body {
   overflow-x: hidden;
 }
 
-/* Estilos para los elementos select del formulario */
-select,
+/* Estilos para el elemento <select /> */
+
+select {
+  appearance: base-select;
+
+  &::picker-icon {
+    content: url("data:image/svg+xml;utf8,<svg width='100%' height='100%' viewBox='0 0 14 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M1 1L7 7L13 1' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    width: 14px;
+    rotate: 90deg;
+    transition: rotate 0.2s;
+  }
+
+  &:open::picker-icon {
+    rotate: 0deg;
+  }
+}
+
 ::picker(select) {
   appearance: base-select;
-}
-
-select::picker-icon {
-  content: url("data:image/svg+xml;utf8,<svg width='100%' height='100%' viewBox='0 0 14 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M1 1L7 7L13 1' stroke='currentColor' strokeLinejoin='round'/></svg>");
-  width: 18px;
-  transition: 0.4s rotate;
-}
-
-select:open::picker-icon {
-  rotate: 180deg;
-}
-
-::picker(select) {
-  box-shadow: 0px 8px 20px -4px rgb(0, 0, 0, 0.2);
-  border: none;
-  top: calc(anchor(bottom) + 4px);
   border-radius: 8px;
-}
-
-option::checkmark {
-  display: none;
+  border-color: var(--color-gris-placeholder);
+  top: calc(anchor(bottom) + 1px);
+  right: anchor(right);
 }
 
 option {
   color: var(--color-negro-principal);
-}
 
-option:hover {
-  background: #f1f2f5;
-}
+  &:hover {
+    background-color: var(--color-gris-border);
+  }
 
-option:checked {
-  background: var(--color-menta-100);
-}
+  &:checked {
+    font-weight: bold;
+    background-color: var(--color-menta-200);
 
-select option .text {
-  width: inherit;
-}
-.text-responsive {
-  font-size: clamp(12px, 2vw, 18px);
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  &::checkmark {
+    display: none;
+  }
 }

@@ -15,6 +15,7 @@ import {
   useCommentReceta,
   useDescargarReceta,
 } from "../../../hooks/useRecetaPetitions";
+import { useUserStore } from "../../../store/userStore";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/modalesSwal.css";
 
@@ -28,6 +29,9 @@ function RecetaCard(props) {
   const { descargarReceta } = useDescargarReceta();
   const navigate = useNavigate();
   const { deleteRecetaHandler } = useDelReceta();
+  const { user } = useUserStore((state) => state);
+  console.log(receta, user);
+
   const observacionPrestador = receta?.observaciones?.find(
     (obs) => obs.rolEmisor === "Prestador"
   );
@@ -39,7 +43,9 @@ function RecetaCard(props) {
         year: "numeric",
       })
     : "Sin fecha";
-
+  const esRecetaPropia =
+    user?.idAfiliado?.toString().trim() ===
+    receta?.idAfiliado?.toString().trim();
   const handleObservacionesClick = () => {
     //obtener la última observación del prestador
     const ultimaObsPrestador = receta?.observaciones
@@ -134,7 +140,7 @@ function RecetaCard(props) {
             </>
           )}
 
-          {receta.estado === "pendiente" && !dashboard && (
+          {receta.estado === "pendiente" && !dashboard && esRecetaPropia && (
             <div className="flex justify-end row-start-4">
               <BotonEditar
                 onClick={() => navigate(`/recetas/editar/${receta.id}`)}

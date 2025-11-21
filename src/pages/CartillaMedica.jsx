@@ -78,9 +78,9 @@ function CartillaMedica() {
         >
           <div className="flex flex-col sm:flex-row gap-4 w-full">
             {/* Localidad */}
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col flex-1 gap-1">
               <label className="font-bold text-menta-600 text-lg">
-                Localidad
+                Localidad:
               </label>
               <select
                 value={formFilters.localidad}
@@ -90,16 +90,16 @@ function CartillaMedica() {
                     localidad: e.target.value,
                   }))
                 }
-                className={`mt-1 border border-gray-300 rounded-md p-2 w-full bg-white ${
-                  formFilters.localidad === "" ? "text-gray-400" : "text-black"
+                className={`border border-gris-border rounded-md p-3 pl-4 w-full bg-white ${
+                  formFilters.localidad === "" ? "text-gris-placeholder" : "text-black"
                 } hover:border-menta-400 focus:border-menta-600 focus:ring-menta-300`}
                 disabled={loadingLoc}
               >
-                <option value="" disabled hidden className="px-2 pt-1">
-                  Seleccionar
+                <option value="" disabled hidden className="p-3 pl-4">
+                  Seleccionar localidad
                 </option>
                 {localidades.map((l, i) => (
-                  <option key={i} value={l} className="px-2 pt-1">
+                  <option key={i} value={l} className="p-3 pl-4">
                     {l}
                   </option>
                 ))}
@@ -107,9 +107,9 @@ function CartillaMedica() {
             </div>
 
             {/* Especialidad */}
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col flex-1 gap-1">
               <label className="font-bold text-menta-600 text-lg">
-                Especialidad
+                Especialidad:
               </label>
               <select
                 value={formFilters.especialidad}
@@ -119,18 +119,18 @@ function CartillaMedica() {
                     especialidad: e.target.value,
                   }))
                 }
-                className={`mt-1 border border-gray-300 rounded-md p-2 w-full bg-white ${
+                className={`border border-gris-border rounded-md p-3 pl-4 w-full bg-white ${
                   formFilters.especialidad === ""
-                    ? "text-gray-400"
+                    ? "text-gris-placeholder"
                     : "text-black"
                 } hover:border-menta-400 focus:border-menta-600 focus:ring-menta-300`}
                 disabled={loadingEsp}
               >
-                <option value="" disabled hidden className="px-2 pt-1">
-                  Seleccionar
+                <option value="" disabled hidden className="p-3 pl-4">
+                  Seleccionar especialidad
                 </option>
                 {especialidades.map((e, i) => (
-                  <option key={i} value={e} className="px-2 pt-1 ">
+                  <option key={i} value={e} className="p-3 pl-4">
                     {e}
                   </option>
                 ))}
@@ -142,7 +142,7 @@ function CartillaMedica() {
                 type="submit"
                 state={filtrosCompletos ? "active" : "disabled"}
                 style="fill"
-                className="w-full sm:w-auto py-2 min-h-[42px]"
+                className="w-full min-h-12.5"
               >
                 Buscar
               </Button>
@@ -152,9 +152,8 @@ function CartillaMedica() {
 
         <div>
           {!hayFiltrosActivos && (
-            <p className="text-gray-500 text-sm">
-              Seleccione una localidad y una especialidad para comenzar la
-              búsqueda.
+            <p className="text-gris-placeholder text-sm">
+              Seleccione una <b>Localidad</b> y una <b>Especialidad</b> para comenzar la búsqueda.
             </p>
           )}
 
