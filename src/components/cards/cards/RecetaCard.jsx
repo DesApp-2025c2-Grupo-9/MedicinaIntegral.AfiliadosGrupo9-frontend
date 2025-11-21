@@ -35,9 +35,21 @@ function RecetaCard(props) {
   const observacionPrestador = receta?.observaciones?.find(
     (obs) => obs.rolEmisor === "Prestador"
   );
+  const ultimaObservacionPrestador = receta?.observaciones
+    ?.filter((obs) => obs.rolEmisor === "Prestador")
+    ?.slice(-1)[0];
 
-  const fechaSolicitud = receta.createdAt
-    ? new Date(receta.createdAt).toLocaleDateString("es-AR", {
+  let fechaAMostrar = null;
+
+  if (estado === "rechazado") {
+    fechaAMostrar = ultimaObservacionPrestador?.fecha;
+  } else if (estado === "aceptado") {
+    fechaAMostrar = receta?.fechaAprobacion;
+  } else {
+    fechaAMostrar = receta?.createdAt;
+  }
+  const fechaFormateada = fechaAMostrar
+    ? new Date(fechaAMostrar).toLocaleDateString("es-AR", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
@@ -110,7 +122,11 @@ function RecetaCard(props) {
           {receta.medicamento}
           {`Cantidad: ${receta.cantidad}`}
           {`Presentación: ${receta.presentacion}`}
-          {`Fecha de solicitud: ${fechaSolicitud}`}
+          {estado === "rechazado" && `Rechazada el: ${fechaFormateada}`}
+          {estado === "aceptado" && `Aceptada el: ${fechaFormateada}`}
+          {estado !== "rechazado" &&
+            estado !== "aceptado" &&
+            `Fecha de solicitud: ${fechaFormateada}`}
         </ColumnaPrincipal>
 
         <div className="grid grid-rows-4 justify-items-end">
