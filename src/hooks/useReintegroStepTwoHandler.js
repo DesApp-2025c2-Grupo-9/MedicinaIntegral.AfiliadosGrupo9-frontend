@@ -11,8 +11,8 @@ export const useReintegroStepTwoHandler = () => {
   const { mutateAsync: updateReintegro } = useUpdateReintegro();
   let textToShow = '';
 
-  const { data: afiliado } = useGetAfiliado();
-  const grupoFamiliar = afiliado?.data?.grupoFamiliar;
+  const { data } = useGetAfiliado();
+  const grupoFamiliar = data?.data?.grupoFamiliar;
 
   const idParaAfiliado = paraAfiliado => {
     const unAfiliado = grupoFamiliar.find(familiar => paraAfiliado.includes(familiar.nombre) && paraAfiliado.includes(familiar.apellido));

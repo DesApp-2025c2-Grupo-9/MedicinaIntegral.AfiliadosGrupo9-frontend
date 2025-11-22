@@ -1,16 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { commentReintegroById, createReintegro, deleteReintegro, getAfiliado, getEspecialidades, getReintegros, login, register, updateReintegro } from './api';
+import { commentReintegroById, createReintegro, deleteReintegro, getAfiliado, getReintegros, login, register, updateReintegro, getEspecialidades } from './api';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { useUserStore } from '../store/userStore';
 
-// Registro
+// Registro & Sesión
 export function useRegister() {
   return useMutation({
     mutationFn: register
   });
 }
 
-// Sesión
 export function useLogin() {
   return useMutation({
     mutationFn: login
@@ -20,9 +19,11 @@ export function useLogin() {
 // Afiliados
 export function useGetAfiliado() {
   const axiosPrivate = useAxiosPrivate();
+  const user = useUserStore(state => state.user);
+  const rolSesion = user?.rolSesion;
 
   return useQuery({
-    queryKey: ['afiliado'],
+    queryKey: ['afiliado', { rolSesion }],
     queryFn: () => getAfiliado(axiosPrivate)
   });
 }
@@ -35,7 +36,6 @@ export function useGetReintegros() {
 
   return useQuery({
     queryKey: ['reintegros', { idAfiliado }],
-    enabled: idAfiliado !== undefined,
     queryFn: () => getReintegros(axiosPrivate, idAfiliado)
   });
 }
@@ -47,7 +47,7 @@ export function useCreateReintegro() {
   return useMutation({
     mutationFn: data => createReintegro(axiosPrivate, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reintegros'] });
+      queryClient.invalidateQueries({ queryKey: ['reintegros'], exact: false });
     }
   });
 }
@@ -59,7 +59,7 @@ export function useUpdateReintegro() {
   return useMutation({
     mutationFn: data => updateReintegro(axiosPrivate, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reintegros'] });
+      queryClient.invalidateQueries({ queryKey: ['reintegros'], exact: false });
     }
   });
 }
@@ -71,7 +71,7 @@ export function useDeleteReintegro() {
   return useMutation({
     mutationFn: id => deleteReintegro(axiosPrivate, id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reintegros'] });
+      queryClient.invalidateQueries({ queryKey: ['reintegros'], exact: false });
     }
   });
 }
@@ -83,17 +83,17 @@ export function useCommentReintegroById() {
   return useMutation({
     mutationFn: data => commentReintegroById(axiosPrivate, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reintegros'] });
+      queryClient.invalidateQueries({ queryKey: ['reintegros'], exact: false });
     }
   });
 }
 
 // Especialidades
 export function useGetEspecialidades() {
-  // const axiosPrivate = useAxiosPrivate();
+  const axiosPrivate = useAxiosPrivate();
 
   return useQuery({
     queryKey: ['especialidades'],
-    queryFn: () => getEspecialidades()
+    queryFn: () => getEspecialidades(axiosPrivate)
   });
 }
