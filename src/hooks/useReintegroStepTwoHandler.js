@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useReintegroStore } from '../store/reintegroStore';
-import { useCreateReintegro, useUpdateReintegro, useGetAfiliado } from '../services/queries';
+import { useCreateReintegro, useUpdateReintegro } from '../services/queries';
 import Swal from 'sweetalert2';
+import { useIdParaAfiliado } from './useIdParaAfiliado';
 
 export const useReintegroStepTwoHandler = () => {
   const reintegro = useReintegroStore(state => state.reintegro);
@@ -11,13 +12,7 @@ export const useReintegroStepTwoHandler = () => {
   const { mutateAsync: updateReintegro } = useUpdateReintegro();
   let textToShow = '';
 
-  const { data } = useGetAfiliado();
-  const grupoFamiliar = data?.data?.grupoFamiliar;
-
-  const idParaAfiliado = paraAfiliado => {
-    const unAfiliado = grupoFamiliar.find(familiar => paraAfiliado.includes(familiar.nombre) && paraAfiliado.includes(familiar.apellido));
-    return unAfiliado?.id;
-  };
+  const { idParaAfiliado } = useIdParaAfiliado();
 
   const newReintegroHandler = async inputData => {
     const nroGestion = Math.floor(1000 + Math.random() * 9000);

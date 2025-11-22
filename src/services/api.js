@@ -18,6 +18,7 @@ export const logout = async () => {
 
 // Afiliados
 export const getAfiliado = async axiosClient => {
+  // throw new Error('Error 404');
   const res = await axiosClient.get('api/afiliados');
   return res.data;
 };
