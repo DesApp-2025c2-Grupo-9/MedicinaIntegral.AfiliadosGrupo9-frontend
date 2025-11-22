@@ -10,7 +10,7 @@ import {
   useGetPrestadores,
 } from "../services/prestadoresQueries";
 import { icons } from "../utils/icons";
-import { Search, FileSearch, Frown } from "lucide-react";
+import { FileSearch2 } from "lucide-react";
 
 const INITIAL_STATE_FORM = {
   localidad: "",
@@ -156,17 +156,16 @@ function CartillaMedica() {
 
         <div>
           {!hayFiltrosActivos && (
-            <div className="flex flex-col items-center justify-center text-center py-10 gap-4">
-              <FileSearch size={64} className="text-gris-placeholder" />
-              <p className="text-gris-placeholder text-sm max-w-md text-center">
-                Seleccione una <b>Localidad</b> y una <b>Especialidad</b> para
-                comenzar la búsqueda.
-              </p>
-            </div>
-          )}
+              <div className='flex flex-col items-center gap-5 h-70 justify-center w-full text-gris-placeholder'>
+                <FileSearch2 size={92} strokeWidth={1.2} />
+                <p className='text-center'>
+                  Selecciona una <b>Localidad</b> y una <b>Especialidad</b> para iniciar la búsqueda.
+                </p>
+              </div>
+            )}
 
           {hayFiltrosActivos && loadingPrestadores && (
-            <p>Cargando prestadores...</p>
+            <p>Cargando...</p>
           )}
 
           {hayFiltrosActivos &&
@@ -185,10 +184,10 @@ function CartillaMedica() {
           {hayFiltrosActivos &&
             !loadingPrestadores &&
             prestadores.length === 0 && (
-              <div className="flex flex-col items-center gap-4 py-10">
-                <div className="max-w-48">{icons.shrug}</div>
-                <p className="text-gris-placeholder text-sm">
-                  No se encontraron prestadores con los filtros seleccionados.
+              <div className='flex flex-col items-center gap-5 h-70 justify-center w-full text-gris-placeholder'>
+                <div className='max-w-72'>{icons.shrug}</div>
+                <p className='text-center'>
+                  No se encontraron <b>prestadores</b> con los filtros seleccionados.
                 </p>
               </div>
             )}
