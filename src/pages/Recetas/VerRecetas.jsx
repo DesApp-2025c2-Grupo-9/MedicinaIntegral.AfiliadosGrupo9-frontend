@@ -5,6 +5,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useUserStore } from "../../store/userStore";
 import TramitesSkeleton from "../../components/Skeletons/TramitesSkeleton";
 import { useState } from "react";
+import NoTramitesAvailable from "../NoTramitesAvailable";
+import NoTramitesEstado from "../NoTramitesEstado";
 
 function VerRecetas() {
   const [estadoTramite, setEstadoTramite] = useState("Todos");
@@ -103,17 +105,28 @@ function VerRecetas() {
   });
 
   return (
-    <div className="flex flex-col items-end gap-3 relative">
+    <div className="flex flex-col items-end relative gap-3">
+      {/* Filtro */}
       <FiltroEstados
         className="sm:absolute -top-9.5 mr-auto"
         setEstadoTramite={setEstadoTramite}
       />
 
-      <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3">
-        {recetasFiltradas?.map((receta, idReceta) => (
-          <RecetaCard receta={receta} key={idReceta} />
-        ))}
-      </div>
+      {/* Sin recetas */}
+      {recetas.length === 0 ? (
+        <NoTramitesAvailable
+          tipoTramite="Recetas"
+          path="/recetas/solicitar-receta"
+        />
+      ) : recetasFiltradas.length === 0 ? (
+        <NoTramitesEstado tipoTramite="recetas" estado={estadoTramite} />
+      ) : (
+        <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3">
+          {recetasFiltradas.map((receta, idReceta) => (
+            <RecetaCard receta={receta} key={idReceta} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
