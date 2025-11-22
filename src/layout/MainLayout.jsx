@@ -12,7 +12,6 @@ function MainLayout() {
   const navigate = useNavigate();
 
   const handleError = error => {
-    // if (error?.message?.includes('401')) {
     if (error?.response?.status === 401) {
       navigate('/login', { replace: true, state: { from: location } });
     }
@@ -22,7 +21,7 @@ function MainLayout() {
     <ErrorBoundary
       onReset={reset}
       FallbackComponent={MainFallback}
-      onError={handleError} // Descomentar para ser redirigido a /login cuando error.status === 401
+      onError={handleError}
     >
       <Topbar className='mb-5 animate-topbar' />
       <ToastContainer

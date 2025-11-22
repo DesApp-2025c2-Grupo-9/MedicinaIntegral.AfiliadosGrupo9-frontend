@@ -14,6 +14,7 @@ import { useCommentReintegro } from '../../../hooks/useCommentReintegro';
 import { useNavigate } from 'react-router-dom';
 import { useReintegroStore } from '../../../store/reintegroStore';
 import Swal from 'sweetalert2';
+import { useUserStore } from '../../../store/userStore';
 
 function ReintegroCard(props) {
   const dashboard = props.dashboard || false;
@@ -21,8 +22,11 @@ function ReintegroCard(props) {
   const { deleteReintegro } = useDelReintegro();
   const fechaDePrestacion = format(addDays(reintegro.fechaDePrestacion, 1), 'dd/MM/yyyy');
   const valorTotal = pesosArg.format(reintegro.factura.valorTotal);
-
   const navigate = useNavigate();
+
+  const user = useUserStore(state => state.user);
+  const rolSesion = user?.rolSesion;
+  const showButtons = rolSesion === 'Titular' && reintegro?.rolAfiliado === 'Cónyuge';
 
   //Estilo de la card
   const cardStyle = 'grid-cols-2';
@@ -88,17 +92,19 @@ function ReintegroCard(props) {
             <>
               <UsuarioActual paciente={reintegro.paraAfiliado} />
               {reintegro.estado !== 'pendiente' && reintegro.estado !== 'aceptado' && reintegro.estado !== 'en análisis' ? ( //el estado está en minuscula
-                <div className='row-start-4'>
-                  <BotonObservaciones
-                    onClick={() => {
-                      if (reintegro.estado === 'observado') {
-                        setIsObservacionesOpen(true);
-                      } else if (reintegro.estado === 'rechazado') {
-                        mostrarObservacionesRechazado();
-                      }
-                    }}
-                  />
-                </div>
+                !showButtons && (
+                  <div className='row-start-4'>
+                    <BotonObservaciones
+                      onClick={() => {
+                        if (reintegro.estado === 'observado') {
+                          setIsObservacionesOpen(true);
+                        } else if (reintegro.estado === 'rechazado') {
+                          mostrarObservacionesRechazado();
+                        }
+                      }}
+                    />
+                  </div>
+                )
               ) : (
                 <></>
               )}
@@ -106,15 +112,17 @@ function ReintegroCard(props) {
           )}
           {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
           {reintegro.estado == 'pendiente' && dashboard == false ? ( //El estado está en minuscula
-            <div className='flex items-baseline-last justify-end row-start-4'>
-              <BotonEditar
-                onClick={() => {
-                  setReintegro(reintegro);
-                  navigate('/reintegros/editar-reintegro');
-                }}
-              />
-              <BotonPapelera onClick={() => deleteReintegro(reintegro, fechaDePrestacion, valorTotal)} />
-            </div>
+            !showButtons && (
+              <div className='flex items-baseline-last justify-end row-start-4'>
+                <BotonEditar
+                  onClick={() => {
+                    setReintegro(reintegro);
+                    navigate('/reintegros/editar-reintegro');
+                  }}
+                />
+                <BotonPapelera onClick={() => deleteReintegro(reintegro, fechaDePrestacion, valorTotal)} />
+              </div>
+            )
           ) : (
             <></>
           )}

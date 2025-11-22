@@ -38,13 +38,13 @@ const Login = () => {
         setError(mensajeError);
         return;
       }
-      const data = await mutateAsync({
+      const loginRes = await mutateAsync({
         nroDocumento: usuario,
         password: clave
       });
       setError('');
       if (resetErrorBoundary) resetErrorBoundary();
-      setUser({ accessToken: data?.accessToken, nroDocumento: usuario, idAfiliado: data?.data.idAfiliado });
+      setUser({ accessToken: loginRes?.accessToken, idAfiliado: loginRes?.data?.idAfiliado, rolSesion: loginRes?.data?.rolSesion });
       navigate(from, { replace: true });
     } catch (error) {
       const mensaje = error.response?.data?.message || 'Ha ocurrido un problema inesperado. Por favor, intente más tarde.';

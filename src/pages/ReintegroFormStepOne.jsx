@@ -12,15 +12,20 @@ import Button from '../components/Button';
 import { addDays, format } from 'date-fns';
 import TwoButtons from '../components/TwoButtons';
 import { useLocation, useNavigate } from 'react-router-dom';
-import soloLetrasYEspaciosConLimite from '../utils/validacion.caracteresYLimite';
+import { useUserStore } from '../store/userStore';
+// import soloLetrasYEspaciosConLimite from '../utils/validacion.caracteresYLimite';
 
 function ReintegroFormStepOne({ className }) {
   const navigate = useNavigate();
   const fechaActual = new Date().toISOString().split('T')[0];
   const { data: especialidades, isLoading: isLoadingEspecialidades } = useGetEspecialidades();
-  const { data: afiliados, isLoading: isLoadingAfiliado } = useGetAfiliado();
+  const { data: afiliado, isLoading: isLoadingAfiliado } = useGetAfiliado();
+  const user = useUserStore(state => state.user);
+
+  const rolSesion = user?.rolSesion; // Rol de quien inició sesión
   const listaEspecialidades = especialidades?.data;
-  const listaAfiliados = afiliados?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
+  const listaAfiliadosFiltrados = rolSesion === 'Titular' ? afiliado?.data?.grupoFamiliar?.filter(familiar => familiar.rol !== 'Cónyuge') : afiliado?.data?.grupoFamiliar; // Si quien inició sesión es Titular, Cónyuge no me se muestra en el input de paraAfiliado
+  const listaAfiliados = listaAfiliadosFiltrados?.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
 
   const reintegro = useReintegroStore(state => state.reintegro);
   const fechaDePrestacion = reintegro?.fechaDePrestacion ? format(addDays(reintegro?.fechaDePrestacion, 1), 'yyyy-MM-dd') : '';
@@ -54,7 +59,7 @@ function ReintegroFormStepOne({ className }) {
       legend={isEditPath && 'Editar reintegro'}
       legendClassName='text-xl font-bold text-blue-500'
     >
-      {afiliados?.data?.grupoFamiliar?.length > 1 && (
+      {afiliado?.data?.grupoFamiliar?.length > 1 && (
         <Select
           {...register('paraAfiliado')}
           id='paraAfiliado'
@@ -91,7 +96,7 @@ function ReintegroFormStepOne({ className }) {
           label='Médico:'
           placeholder='Ingresar nombre del médico'
           errorMsg={errors.medico?.message}
-          onKeyDown={soloLetrasYEspaciosConLimite(50)}
+          // onKeyDown={soloLetrasYEspaciosConLimite(50)}
         />
         <Input
           {...register('lugarDeAtencion')}
@@ -100,7 +105,7 @@ function ReintegroFormStepOne({ className }) {
           label='Lugar donde fue atendido:'
           placeholder='Ingresar lugar de prestación'
           errorMsg={errors.lugarDeAtencion?.message}
-          onKeyDown={soloLetrasYEspaciosConLimite(50)}
+          // onKeyDown={soloLetrasYEspaciosConLimite(50)}
         />
       </InputContainer>
 
