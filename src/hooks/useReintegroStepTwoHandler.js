@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useReintegroStore } from '../store/reintegroStore';
-import { useCreateReintegro, useUpdateReintegro } from '../services/queries';
+import { useCreateReintegro, useUpdateReintegro, useGetAfiliado } from '../services/queries';
 import Swal from 'sweetalert2';
 
 export const useReintegroStepTwoHandler = () => {
@@ -11,11 +11,21 @@ export const useReintegroStepTwoHandler = () => {
   const { mutateAsync: updateReintegro } = useUpdateReintegro();
   let textToShow = '';
 
+  const { data } = useGetAfiliado();
+  const grupoFamiliar = data?.data?.grupoFamiliar;
+
+  const idParaAfiliado = paraAfiliado => {
+    const unAfiliado = grupoFamiliar.find(familiar => paraAfiliado.includes(familiar.nombre) && paraAfiliado.includes(familiar.apellido));
+    return unAfiliado?.id;
+  };
+
   const newReintegroHandler = async inputData => {
     const nroGestion = Math.floor(1000 + Math.random() * 9000);
+    const idAfiliado = idParaAfiliado(reintegro.paraAfiliado);
     await createReintegro({
       ...reintegro,
       ...inputData,
+      idAfiliado,
       nroGestion,
       formaDePago: inputData.formaDePago.toLowerCase()
     });
@@ -23,10 +33,12 @@ export const useReintegroStepTwoHandler = () => {
   };
 
   const editReintegroHandler = async inputData => {
+    const idAfiliado = idParaAfiliado(reintegro.paraAfiliado);
     await updateReintegro({
       data: {
         ...reintegro,
         ...inputData,
+        idAfiliado,
         formaDePago: inputData.formaDePago.toLowerCase()
       },
       id: reintegro.id
@@ -35,7 +47,6 @@ export const useReintegroStepTwoHandler = () => {
   };
 
   const onSubmit = async inputData => {
-    console.log({ ...reintegro, ...inputData });
     try {
       if (location.pathname === '/reintegros/datos-factura') {
         await newReintegroHandler(inputData);

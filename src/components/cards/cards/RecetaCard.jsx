@@ -30,7 +30,6 @@ function RecetaCard(props) {
   const navigate = useNavigate();
   const { deleteRecetaHandler } = useDelReceta();
   const { user } = useUserStore((state) => state);
-  console.log(receta, user);
 
   const observacionPrestador = receta?.observaciones?.find(
     (obs) => obs.rolEmisor === "Prestador"

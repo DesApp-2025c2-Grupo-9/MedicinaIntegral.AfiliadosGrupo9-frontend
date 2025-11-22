@@ -20,18 +20,18 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
   const inicialesUser = afiliado?.nombre?.charAt(0) + afiliado?.apellido?.charAt(0);
 
   const grupoFamiliar = afiliado?.grupoFamiliar;
-  const afiliadoActual = grupoFamiliar.find(familiar => familiar.id === user.idAfiliado);
+  const afiliadoActual = grupoFamiliar?.find(familiar => familiar?.id === user?.idAfiliado);
 
   const toastContent = (
     <p className='text-sm text-negro-principal w-full text-center'>
       Viendo como{' '}
       <b className='text-menta-600'>
-        {afiliado.nombre} {afiliado.apellido}
+        {afiliado?.nombre} {afiliado?.apellido}
       </b>
     </p>
   );
   const handleClick = () => {
-    setUser({ ...user, idAfiliado: afiliado.id });
+    setUser({ ...user, idAfiliado: afiliado?.id });
     toast.dismiss();
     toast(toastContent, {
       position: 'top-center',
@@ -46,7 +46,7 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
 
   return (
     <div className={twMerge('relative flex flex-col justify-center items-start lg:items-end gap-2 lg:w-60', className)}>
-      {afiliado.id !== user.idAfiliado && (
+      {afiliado?.id !== user?.idAfiliado && (
         <div className='hidden absolute text-sm lg:flex items-center gap-1.5 right-41 whitespace-nowrap opacity-75 border border-gris-border rounded-full p-1 pl-3'>
           <p>
             Viendo como{' '}
@@ -80,7 +80,7 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
         <p className='uppercase text-center text-xl font-bold text-negro-principal'>
           {afiliado?.nombre} <span className='lg:hidden'>{afiliado?.apellido}</span>
         </p>
-        {afiliado.grupoFamiliar.length > 1 && (
+        {afiliado?.grupoFamiliar.length > 1 && (
           <div className={clsx('w-5 lg:w-3.5 transition-all text-negro-principal ml-auto mr-4 lg:m-0', { 'rotate-90': !isOpen, 'rotate-0': isOpen })}>{icons.chevronDown}</div>
         )}
       </div>

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { useUserStore } from '../store/userStore';
 
 // Api
 const getMiCuenta = async axiosClient => {
@@ -20,9 +21,11 @@ const setCbuPrincipal = async (axiosClient, body) => {
 // Queries
 export function useGetMiCuenta() {
   const axiosPrivate = useAxiosPrivate();
+  const user = useUserStore(state => state.user);
+  const rolSesion = user?.rolSesion;
 
   return useQuery({
-    queryKey: ['mi-cuenta'],
+    queryKey: ['mi-cuenta', { rolSesion }],
     queryFn: () => getMiCuenta(axiosPrivate)
   });
 }
@@ -34,7 +37,7 @@ export function useRegistrarCbu() {
   return useMutation({
     mutationFn: data => registrarCbu(axiosPrivate, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mi-cuenta'] });
+      queryClient.invalidateQueries({ queryKey: ['mi-cuenta'], exact: false });
     }
   });
 }
@@ -42,11 +45,11 @@ export function useRegistrarCbu() {
 export function useSetCbuPrincipal() {
   const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: data => setCbuPrincipal(axiosPrivate, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mi-cuenta'] });
+      queryClient.invalidateQueries({ queryKey: ['mi-cuenta'], exact: false });
     }
   });
 }

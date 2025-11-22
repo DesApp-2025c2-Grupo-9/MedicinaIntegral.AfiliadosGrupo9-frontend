@@ -10,8 +10,8 @@ import { useGetAfiliado } from '../services/queries';
 function ReintegrosLayout() {
   const location = useLocation();
   const setReintegro = useReintegroStore(state => state.setReintegro);
-  const { data } = useGetAfiliado();
-  const paraAfiliado = data?.data?.grupoFamiliar?.length === 1 ? `${data?.data?.nombre} ${data?.data?.apellido}` : undefined;
+  const { data: afiliado } = useGetAfiliado();
+  const paraAfiliado = afiliado?.data?.grupoFamiliar?.length === 1 ? `${afiliado?.data?.nombre} ${afiliado?.data?.apellido}` : undefined;
 
   const pathDest =
     location.pathname !== '/reintegros/solicitar-reintegro' &&
@@ -23,7 +23,7 @@ function ReintegrosLayout() {
     if (pathDest) {
       setReintegro({ paraAfiliado });
     }
-  }, [location, setReintegro, pathDest]);
+  }, [setReintegro, pathDest, paraAfiliado]);
 
   return (
     <SectionLayoutTemplate
