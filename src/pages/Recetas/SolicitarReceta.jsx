@@ -11,10 +11,19 @@ import { useNewRecetaSchema } from "../../hooks/useNewRecetaSchema";
 import { useCreateReceta } from "../../services/recetasQueries";
 import { axiosPrivate } from "../../api/axios";
 import { useGetAfiliado } from "../../services/queries";
+import { useUserStore } from "../../store/userStore";
 
 function SolicitarReceta() {
   const { data: afiliadoRes } = useGetAfiliado();
-  const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(
+  const user = useUserStore((state) => state.user);
+  const rolSesion = user?.rolSesion;
+  const listaAfiliadosFiltrados =
+    rolSesion === "Titular"
+      ? afiliadoRes?.data?.grupoFamiliar.filter(
+          (familiar) => familiar.rol !== "Cónyuge"
+        )
+      : afiliadoRes?.data?.grupoFamiliar;
+  const listaAfiliados = listaAfiliadosFiltrados.map(
     (familiar) => `${familiar.nombre} ${familiar.apellido}`
   );
   const { recetaSchema } = useNewRecetaSchema({ listaAfiliados });
