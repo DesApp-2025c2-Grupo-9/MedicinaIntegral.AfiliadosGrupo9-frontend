@@ -12,6 +12,7 @@ import { useCreateReceta } from "../../services/recetasQueries";
 import { axiosPrivate } from "../../api/axios";
 import { useGetAfiliado } from "../../services/queries";
 import { useUserStore } from "../../store/userStore";
+import { useIdParaAfiliado } from '../../hooks/useIdParaAfiliado';
 
 function SolicitarReceta() {
   const { data: afiliadoRes } = useGetAfiliado();
@@ -38,9 +39,15 @@ function SolicitarReceta() {
     resolver: zodResolver(recetaSchema),
   });
 
+  const { idParaAfiliado } = useIdParaAfiliado();
+
   const onSubmit = async (formData) => {
+    const idAfiliado = idParaAfiliado(formData?.paraAfiliado);
     try {
-      await mutateAsync(formData);
+      await mutateAsync({
+        ...formData,
+        idAfiliado
+      });
 
       await Swal.fire({
         icon: "success",

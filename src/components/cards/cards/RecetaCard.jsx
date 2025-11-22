@@ -32,7 +32,7 @@ function RecetaCard(props) {
   const user = useUserStore((state) => state.user);
   const rolSesion = user?.rolSesion;
   const showButtons =
-    rolSesion === "Titular" && receta?.rolAfiliado !== "Cónyuge";
+    rolSesion === "Titular" && receta?.rolAfiliado === "Cónyuge";
 
   const observacionPrestador = receta?.observaciones?.find(
     (obs) => obs.rolEmisor === "Prestador"
@@ -145,7 +145,7 @@ function RecetaCard(props) {
           ) : (
             <>
               <UsuarioActual paciente={receta.paraAfiliado} />
-              {receta.estado !== "pendiente" && showButtons && (
+              {receta.estado !== "pendiente" && !showButtons && (
                 <div className="flex row-start-4">
                   {receta.estado === "aceptado" && (
                     <BotonDescargar onClick={() => descargarReceta(receta)} />
@@ -159,7 +159,7 @@ function RecetaCard(props) {
             </>
           )}
 
-          {receta.estado === "pendiente" && !dashboard && showButtons && (
+          {receta.estado === "pendiente" && !dashboard && !showButtons && (
             <div className="flex justify-end row-start-4">
               <BotonEditar
                 onClick={() => navigate(`/recetas/editar/${receta.id}`)}
