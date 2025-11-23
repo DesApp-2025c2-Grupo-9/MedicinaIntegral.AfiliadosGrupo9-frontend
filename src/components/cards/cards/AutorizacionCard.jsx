@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useAutorizacionStore } from "../../../store/autorizacionStore";
 import Swal from "sweetalert2";
 import { format, addDays } from "date-fns";
+import { useUserStore } from "../../../store/userStore";
 
 function AutorizacionCard(props) {
   const setAutorizacion = useAutorizacionStore(state => state.setAutorizacion)
@@ -25,6 +26,9 @@ function AutorizacionCard(props) {
   const navigate = useNavigate()
   const fechaSolicitud = format(addDays(autorizacion.fechaSolicitud, 1), 'dd/MM/yyyy');
 
+  const user = useUserStore(state => state.user);
+  const rolSesion = user?.rolSesion;
+  const showButtons = rolSesion === 'Titular' && autorizacion?.rolAfiliado === 'Cónyuge';
 
   const handleObservacionesRechazadas = () => {
       //obtener la última observación del prestador
@@ -82,24 +86,25 @@ function AutorizacionCard(props) {
               < >
                 <UsuarioActual paciente={autorizacion.paraAfiliado}/>
                 {autorizacion.estado === "observado" || autorizacion.estado == "rechazado" ? (
-                  <div className="row-start-4">
-                    <BotonObservaciones onClick={() => 
-                            autorizacion.estado == "observado" ? setIsObservacionesOpen(true) : handleObservacionesRechazadas()
-                    } />
-                  </div>
-                ) : <>  </>}
+                  !showButtons && (
+                    <div className="row-start-4">
+                      <BotonObservaciones onClick={() => autorizacion.estado == "observado" ? setIsObservacionesOpen(true) : handleObservacionesRechazadas()} />
+                  </div>)
+                  ) : <>  </>
+                }
               </>
           }
-          {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
+          {/*Aca si el estado es pendiente se puede modificar o eliminar la autorizacion*/}
           {autorizacion.estado == 'pendiente' && dashboard == false ? (
-            <div className="flex items-baseline-last justify-end row-start-4 col-start-1">
-              <BotonEditar onClick={() => {
-                  setAutorizacion(autorizacion);
-                  navigate('/autorizaciones/editar-autorizacion');
-                }} />
-              <BotonPapelera onClick={() => eliminarAutorizacion(autorizacion)} />
-            </div>
-          ) : <></>
+            !showButtons && (
+              <div className="flex items-baseline-last justify-end row-start-4 col-start-1">
+                <BotonEditar onClick={() => {
+                    setAutorizacion(autorizacion);
+                    navigate('/autorizaciones/editar-autorizacion');
+                  }} />
+                <BotonPapelera onClick={() => eliminarAutorizacion(autorizacion)} />
+              </div>
+            )) : <></>
           }
         </div>
       </MarcoCard>
