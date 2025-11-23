@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import axios from 'axios'
-
+import { axiosPrivate } from '../api/axios';
 
 // Api
 const getMiCuenta = async axiosClient => {
@@ -54,21 +54,18 @@ export function useSetCbuPrincipal() {
 }
 
 export const useEditarCbu = () => {
-  const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async (datos) => {
-      const res = axios.put(`/api/mi-cuenta/cbu-principal/${cbu}`, datos);
-
-
-      return res.data;
+      return axiosPrivate.put(`/api/mi-cuenta/cbu-principal/${datos.cbuPrincipal}`, datos);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['mi-cuenta'] });
     }
   });
 };
+
+
 
 
 export const useEliminarCbu = () => {

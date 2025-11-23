@@ -71,14 +71,15 @@ function MiCuenta() {
       <div className='flex flex-col gap-2'>
         <SectionTitle>CBUs Registrados</SectionTitle>
         <div className='flex gap-3'>
-          <Select
+          <Select className="w-90"
             options={afiliado.cbus.map(cbu => ({
               label: `${cbu.nombre} ${cbu.apellido}: ${cbu.cbu}`,
               value: cbu.cbu
             }))}
             defaultInputValue={defaultCbu ? `${defaultCbu.nombre} ${defaultCbu.apellido}: ${defaultCbu.cbu}` : ''}
+            placeholder="Seleccione un CBU"
             onChange={selectedOption => {
-              handleChange({ nroCbu: selectedOption.value });
+              handleChange({ cbuPrincipal: selectedOption.value });
               const seleccionado = afiliado.cbus.find(cbu => cbu.cbu === selectedOption.value);
               setCbuSeleccionado(seleccionado);
             }}
@@ -120,7 +121,7 @@ function MiCuenta() {
       <ModalEditarEliminarCBU
         isOpen={editarModalOnOff}
         setIsOpen={setEditarModalOnOff}
-        cbuActual={{ ...cbuSeleccionado} }
+        cbuActual={{...cbuSeleccionado} }
         refetch={refetch} 
       />
     )}

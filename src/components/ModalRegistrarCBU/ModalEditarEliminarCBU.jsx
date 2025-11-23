@@ -13,6 +13,7 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
   const { mutateAsync: editarCbu } = useEditarCbu();
   const { mutateAsync: eliminarCbu } = useEliminarCbu();
 
+  if (!isOpen) return null;
  
 
   useEffect(() => {
@@ -22,9 +23,17 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
 
   useEffect(() => {
   if (cbuActual) {
-    setRegistro(cbuActual);
+    setRegistro({
+      nroCBU: cbuActual.cbu,             
+      tipoDeCuenta: cbuActual.tipoDeCuenta,
+      cuilOCuit: cbuActual.cuil,         
+      nombre: cbuActual.nombre,
+      apellido: cbuActual.apellido,
+      _id: cbuActual._id    
+    });
   }
-  }, [cbuActual]);
+}, [cbuActual]);
+
 
 
   const handleEliminar = async () => {
@@ -64,9 +73,6 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
   };
 
 
-
-  if (!isOpen) return null;
-
   const handleEditar = async e => {
   e.preventDefault();
   const erroresValidados = validarRegistroCBU(registro);
@@ -74,18 +80,27 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
 
   if (Object.keys(erroresValidados).length === 0) {
     try {
+      
       const datosTransformados = {
-        cbu: registro.nroCBU,
+        cbuPrincipal: registro.nroCBU ? registro.nroCBU.replace(/-/g, '') : '',
         tipoDeCuenta: registro.tipoDeCuenta,
-        cuil: registro.cuilOCuit,
+        cuil: registro.cuilOCuit.replace(/-/g, ''),
         nombre: registro.nombre,
         apellido: registro.apellido
       };
 
       console.log("Datos enviados a editarCbu:", datosTransformados);
+      
 
-      await editarCbu(datosTransformados);   // actualiza en backend
-                      
+
+      const respuesta = await editarCbu(datosTransformados);   // actualiza en back
+      console.log("Respuesta del backend:", respuesta);
+      setRegistro(prev => {
+        const nuevo = { ...prev, ...datosTransformados };
+        console.log("Estado actualizado en el modal:", nuevo);
+        return nuevo;
+      });
+            
 
       setIsOpen(false);
       Swal.fire({
@@ -112,33 +127,39 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
 
 
   const handleChange = e => {
-    const { id, value } = e.target;
+  const { id, value } = e.target;
+  let valor = value;
 
-    let valor = e.target.value.replace(/-/g, ''); // quitar guiones para validar
+  if (id === 'nroCBU') {
+    valor = valor.replace(/-/g, '');
+    if (!/^\d*$/.test(valor)) return;
+    if (valor.length > 22) return;
 
-    // Formateo para nroCBU
-    if (id === 'nroCBU') {
-      if (!/^\d*$/.test(valor)) return;
-      if (valor.length > 22) return;
-
-      if (valor.length > 8) {
-        valor = `${valor.slice(0, 8)}-${valor.slice(8)}`;
-      }
+    if (valor.length > 8) {
+      valor = `${valor.slice(0, 8)}-${valor.slice(8)}`;
     }
+  }
 
-    // agrega guiones
-    if (id === 'cuilOCuit') {
-      if (!/^\d*$/.test(valor)) return;
-      if (valor.length > 11) return;
+  if (id === 'cuilOCuit') {
+    valor = valor.replace(/-/g, '');
+    if (!/^\d*$/.test(valor)) return;
+    if (valor.length > 11) return;
 
-      if (valor.length === 11) {
-        valor = `${valor.slice(0, 2)}-${valor.slice(2, 10)}-${valor.slice(10)}`;
-      } else if (valor.length > 2) {
-        valor = `${valor.slice(0, 2)}-${valor.slice(2)}`;
-      }
+    if (valor.length === 11) {
+      valor = `${valor.slice(0, 2)}-${valor.slice(2, 10)}-${valor.slice(10)}`;
+    } else if (valor.length > 2) {
+      valor = `${valor.slice(0, 2)}-${valor.slice(2)}`;
     }
-    setRegistro({ ...registro, [id]: valor });
-  };
+  }
+
+  
+  if (id === 'tipoDeCuenta') {
+    valor = value;
+  }
+
+  setRegistro({ ...registro, [id]: valor });
+};
+
 
   return (
     <div className='inset-0 h-full fixed top-0 left-0 z-50 bg-negro-translucido flex items-center justify-center'>
