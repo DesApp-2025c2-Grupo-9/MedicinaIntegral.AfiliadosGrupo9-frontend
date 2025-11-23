@@ -1,6 +1,6 @@
-function Select({ id, label, errorMsg, options = [], ...props }) {
+function Select({ id, label, errorMsg, options = [],placeholder = false, ...props }) {
   const baseStyles = 'flex min-w-40 min-h-[43px] p-3 pl-4 items-center self-stretch rounded-lg border border-gris-border bg-blanco-principal text-base outline-none';
-
+  
   return (
     <div className='flex self-stretch flex-col items-start gap-2 w-full'>
       {label && (
@@ -18,6 +18,12 @@ function Select({ id, label, errorMsg, options = [], ...props }) {
         defaultValue=''
         {...props}
       >
+        {/**Cambio para utilizar placeholder */}
+        {placeholder && (
+          <option value='' disabled hidden>
+            {placeholder}
+          </option>
+        )}
         {options.map((option, index) => (
           <option
             key={index}

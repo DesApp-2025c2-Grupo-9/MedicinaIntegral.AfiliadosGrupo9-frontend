@@ -4,7 +4,9 @@ import UsuarioActual from "./cardComponents/UsuarioActual";
 import MarcoCard from "./cardComponents/MarcoCard";
 import { useAnularReserva, useReservarTurno } from "../../../services/turnosQueries";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 function TurnosCard(props) {
+  const navigate = useNavigate();
   //Recibe en sus props un turno
   //Opcionalmente, si el turno le pertenece al afiliado, se manda el afiliado o una flag
   //  que indique que el turno pertenece al paciente
@@ -16,12 +18,18 @@ function TurnosCard(props) {
     
   } = useReservarTurno();
   
-
+  
   const { mutateAsync: anularReserva} = useAnularReserva();
   const turno = props.turno; //El turno con el que se va a cargar la primera columna
   const paciente = props.paciente; //Flag  paciente
   const idAfiliadoParaEliminar = props.idAfiliadoParaEliminar
   const isPast = props.isPast;
+  const fechaTurnoStr = turno.fechaTurno;
+  const fechaTurno = new Date(fechaTurnoStr)
+  const ahora = new Date();
+  const diferenciaMs = fechaTurno.getTime() - ahora.getTime();
+  const ms24Hs = 86400000;
+  const mostrarPapelera = diferenciaMs > ms24Hs;
   //let ancho = paciente ? "max-w-md min-w-sm" : "w-xs";
   let cardStyle = `relative overflow-hidden group transition-all duration-300  ${paciente ? 'grid-cols-2' : ''}`;
 
@@ -30,7 +38,7 @@ function TurnosCard(props) {
     //Lógica a aplicar al apretar la papelera
     const fechaFormateada = formatFecha(turno.fechaTurno)
     const result = await Swal.fire({
-      title: "Está a punto de anular el turno:",
+      title: "Está a punto de cancelar el turno:",
       html: `<p>Para la especialidad: <b>${turno.especialidad}</b><br />
       Con: <b>${turno.prestador}</b><br />
       El día: <b>${fechaFormateada}</b></p>`,
@@ -40,8 +48,8 @@ function TurnosCard(props) {
       showCancelButton: true,
       cancelButtonColor: '#dc143c',
       confirmButtonColor: '#00ab01',
-      confirmButtonText: 'Anular reserva',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Cancelar Turno',
+      cancelButtonText: 'Volver',
       customClass: {
         htmlContainer: 'turnos-html',
         title: 'turnos-title',
@@ -55,7 +63,7 @@ function TurnosCard(props) {
     try {
       // Mostramos un modal de "Cargando..."
       Swal.fire({
-        title: 'Anulando...',
+        title: 'Cancelando...',
         text: 'Por favor esperá.',
         allowOutsideClick: false,
         didOpen: () => {
@@ -74,7 +82,7 @@ function TurnosCard(props) {
       // Y acá mostramos el modal de éxito.
       Swal.fire({
         title: "Reserva anulada",
-        text: "Tu reserva ha sido anulada exitosamente.",
+        text: "Tu turno ha sido cancelando exitosamente.",
         icon: "success",
         iconColor: '#00ab01',
         confirmButtonColor: '#00ab01',
@@ -102,7 +110,6 @@ function TurnosCard(props) {
       html: `<p>Para la especialidad: <b>${turno.especialidad}</b><br />
       Con: <b>${turno.prestador}</b><br />
       El día: <b>${fechaFormateada}</b></p>`,
-      // text: `Para la especialidad ${turno.especialidad} con  ${turno.prestador} el día ${fechaFormateada}`,
       icon: "question",
       iconColor: '#00ab01',
       showCancelButton: true,
@@ -136,7 +143,7 @@ function TurnosCard(props) {
         idTurno: turno.idTurno,
         idAfiliado: props.idAfiliadoParaReservar
       });
-
+      
       // 7. SI 'await' TERMINA BIEN (Éxito):
       // Tu 'onSuccess' global (el de 'invalidateQueries') se va a disparar solo.
       // Y acá mostramos el modal de éxito.
@@ -151,7 +158,9 @@ function TurnosCard(props) {
           title: 'turnos-title',
           confirmButton: 'turnos-confirm-button'
         }
+        //Cuando se aplica el boton de confirmación se navega hacia ('/turnos/turnos-reservados')
       });
+      navigate('/turnos/turnos-reservados')
 
     } catch (error) {
       // 8. SI 'await' FALLA (Error):
@@ -187,10 +196,12 @@ function TurnosCard(props) {
           <UsuarioActual paciente={props.nombrePaciente}/>
           <div className="row-start-4 justify-self-end">
 
-            {!isPast? (
-            <BotonPapelera
-              onClick={deleteTurno}
-            />
+            {!isPast? (//Si no pasó
+              //Si faltan más de 24hs hasta el turno mostrar el botón de papelera
+              mostrarPapelera &&
+              <BotonPapelera
+                onClick={deleteTurno}
+              />
             ): (
               <span className="text-sm font-bold text-gray-500 p-2">
                 Finalizado

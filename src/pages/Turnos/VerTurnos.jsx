@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'; // <-- Importá useMemo
+import { useMemo } from 'react'; 
 import { useGetAfiliado } from '../../services/queries';
 import { useGetTurnosPorAfiliado } from '../../services/turnosQueries';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -19,7 +19,6 @@ function VerTurnos() {
     isError: isErrorTurnos
   } = useGetTurnosPorAfiliado(axiosPrivate, idAfiliado);
 
-  // --- ¡AQUÍ ESTÁ LA MAGIA! ---
   // Usamos useMemo para separar la lista en dos (y solo cuando 'misTurnos' cambie)
   const { turnosFuturos, turnosPasados } = useMemo(() => {
     // Si no hay turnos, devolvemos arrays vacíos
@@ -50,7 +49,7 @@ function VerTurnos() {
 
   }, [misTurnos]); // <-- Dependencia: solo se recalcula si 'misTurnos' cambia
 
-  // --- MANEJO DE CARGA Y ERROR (queda igual) ---
+  // --- MANEJO DE CARGA Y ERROR  ---
   if (isLoadingAfiliado || isLoadingTurnos) {
     return <TurnosSkeleton />;
   }

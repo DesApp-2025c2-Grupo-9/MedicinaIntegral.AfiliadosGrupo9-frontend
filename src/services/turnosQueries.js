@@ -56,13 +56,15 @@ const getTurnosFiltrados = async (axiosPrivate, especialidad, localidad, prestad
   return res.data;
 }
 
-export function useGetTurnosFiltrados(axiosPrivate, especialidad, localidad, prestador) {
+export function useGetTurnosFiltrados(axiosPrivate, especialidad, localidad, prestador, options = {}) {
   return useQuery({
     queryKey: ['turnos', especialidad, localidad, prestador],
     queryFn: () => getTurnosFiltrados(
       axiosPrivate, especialidad, localidad, prestador
     ),
-    enabled: false //Se ejecuta solo cuando disparo la query
+    // Por defecto false, pero permitimos sobreescribirlo
+    enabled: options.enabled ?? false, 
+    ...options
   })
 }
 
