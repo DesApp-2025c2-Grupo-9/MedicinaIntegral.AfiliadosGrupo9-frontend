@@ -19,7 +19,7 @@ function AutorizacionesLayout() {
     if (pathDest) {
       setAutorizacion({ paraAfiliado });
     }
-  }, [location, setAutorizacion, pathDest]);
+  }, [paraAfiliado, setAutorizacion, pathDest]);
 
   return (
     <SectionLayoutTemplate
