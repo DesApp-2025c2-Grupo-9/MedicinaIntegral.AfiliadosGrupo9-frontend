@@ -7,19 +7,24 @@ export async function obtenerMiCuenta() {
 }
 
 export const editarCbuApi = async (cbuEditado) => {
-  const { idAfiliado, tipoDeCuenta, cuil, nombre, apellido } = cbuEditado;
-  
+  const { idCbu, tipoDeCuenta, cuil, nombre, apellido } = cbuEditado;
+  if (!idCbu) throw new Error("El id del CBU no está definido");
+
   const body = { tipoDeCuenta, cuil, nombre, apellido };
-  const response = await axiosPrivate.put(`/api/mi-cuenta/cbu-principal/${idAfiliado}`, body);
+  const response = await axios.put(`http://localhost:3000/mi-cuenta/cbu-principal/${idCbu}`, body);
+
   return response.data;
+}
+
+
+
+
+export const eliminarCbuApi = async (idAfiliado, nroCBU) => {
+  return axios.delete(`/api/mi-cuenta/cbu-principal/${idAfiliado}`, {
+    data: { nroCbu: nroCBU }
+  });
 };
 
-
-
-export const eliminarCbuApi = async (nroCBU) => {
-  const response = await axiosInstance.delete(`/cbu/${nroCBU}`);
-  return response.data;
-};
 
 
 

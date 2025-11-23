@@ -4,14 +4,16 @@ import Button from '../Button.jsx';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import soloLetrasYEspaciosConLimite from '../../utils/validacion.caracteresYLimite.js';
-import { useEditarCbu, useEliminarCbu } from '../../services/miCuentaQueries.js';
+import { useEditarCbu, useEliminarCbu, useGetMiCuenta } from '../../services/miCuentaQueries.js';
 import { validarRegistroCBU } from '../../utils/validarRegistroCBU.js';
 
 function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
-  const [registro, setRegistro] = useState(cbuActual);
+  const [registro, setRegistro] = useState(cbuActual || {});
   const [errores, setErrores] = useState({});
   const { mutateAsync: editarCbu } = useEditarCbu();
   const { mutateAsync: eliminarCbu } = useEliminarCbu();
+
+ 
 
   useEffect(() => {
     document.body.classList.add('overflow-hidden');
@@ -26,6 +28,7 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
 
 
   const handleEliminar = async () => {
+    
     const resultado = await Swal.fire({
       title: '¿Está seguro?',
       text: 'Esta acción eliminará el CBU de forma permanente.',
@@ -39,7 +42,7 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
 
     if (resultado.isConfirmed) {
       try {
-        await eliminarCbu(registro.nroCBU);
+        await eliminarCbu(registro._id);
         setIsOpen(false);
         Swal.fire({
           title: 'CBU eliminado',
@@ -71,7 +74,6 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
 
   if (Object.keys(erroresValidados).length === 0) {
     try {
-      
       const datosTransformados = {
         cbu: registro.nroCBU,
         tipoDeCuenta: registro.tipoDeCuenta,
@@ -80,7 +82,11 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
         apellido: registro.apellido
       };
 
-      await editarCbu(datosTransformados);
+      console.log("Datos enviados a editarCbu:", datosTransformados);
+
+      await editarCbu(datosTransformados);   // actualiza en backend
+                      
+
       setIsOpen(false);
       Swal.fire({
         title: 'CBU actualizado',
@@ -91,6 +97,7 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
       });
     } catch (error) {
       const mensaje = error?.response?.data?.message || 'No se pudo actualizar. Intente nuevamente.';
+      console.error("Error al editar CBU:", error.response?.data || error.message);
       Swal.fire({
         title: 'Error al editar CBU',
         text: mensaje,
@@ -103,9 +110,34 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
 };
 
 
+
   const handleChange = e => {
     const { id, value } = e.target;
-    setRegistro({ ...registro, [id]: value });
+
+    let valor = e.target.value.replace(/-/g, ''); // quitar guiones para validar
+
+    // Formateo para nroCBU
+    if (id === 'nroCBU') {
+      if (!/^\d*$/.test(valor)) return;
+      if (valor.length > 22) return;
+
+      if (valor.length > 8) {
+        valor = `${valor.slice(0, 8)}-${valor.slice(8)}`;
+      }
+    }
+
+    // agrega guiones
+    if (id === 'cuilOCuit') {
+      if (!/^\d*$/.test(valor)) return;
+      if (valor.length > 11) return;
+
+      if (valor.length === 11) {
+        valor = `${valor.slice(0, 2)}-${valor.slice(2, 10)}-${valor.slice(10)}`;
+      } else if (valor.length > 2) {
+        valor = `${valor.slice(0, 2)}-${valor.slice(2)}`;
+      }
+    }
+    setRegistro({ ...registro, [id]: valor });
   };
 
   return (
@@ -122,8 +154,8 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
           placeholder='Ingresar CBU'
           onChange={handleChange}
           value={registro.nroCBU}
-          inputMode='numeric'
           maxLength={23}
+          inputMode='numeric'
         />
         {errores.nroCBU && <p className='text-red-500 text-sm mt-1'>{errores.nroCBU}</p>}
       </div>
@@ -183,7 +215,6 @@ function ModalEditarEliminarCBU({ isOpen, setIsOpen, cbuActual }) {
               label='CUIL o CUIT'
               placeholder='Ingresar CUIL o CUIT'
               onChange={handleChange}
-              maxLength={13}
               value={registro.cuilOCuit}
               inputMode='numeric'
             />

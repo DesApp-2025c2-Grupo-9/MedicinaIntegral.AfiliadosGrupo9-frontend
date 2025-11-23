@@ -16,7 +16,7 @@ function MiCuenta() {
   const [CBUModalOnOf, setCBUModalOnOf] = useState(false);
   const [editarModalOnOff, setEditarModalOnOff] = useState(false);
   const [cbuSeleccionado, setCbuSeleccionado] = useState(null);
-  const { data, isLoading, isError, error } = useGetMiCuenta();
+  const { data, isLoading, isError, error, refetch } = useGetMiCuenta();
   const { mutateAsync } = useSetCbuPrincipal();
 
   if (isLoading) return <MiCuentaSkeleton />;
@@ -120,7 +120,8 @@ function MiCuenta() {
       <ModalEditarEliminarCBU
         isOpen={editarModalOnOff}
         setIsOpen={setEditarModalOnOff}
-        cbuActual={{ ...cbuSeleccionado, idAfiliado: afiliado?._id } }
+        cbuActual={{ ...cbuSeleccionado} }
+        refetch={refetch} 
       />
     )}
 
