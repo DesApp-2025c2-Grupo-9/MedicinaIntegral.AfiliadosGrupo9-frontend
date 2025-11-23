@@ -1,0 +1,161 @@
+.pre-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100dvh;
+  background-color: #eeffed;
+  gap: 16px;
+
+  @media (min-width: 1024px) {
+    gap: 20px;
+    flex-direction: row;
+    padding-right: 40px;
+    justify-content: center;
+  }
+}
+
+.image-section {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (min-width: 1024px) {
+    height: 100%;
+  }
+}
+
+.image-section .bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo-section {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)), linear-gradient(rgba(0, 171, 1, 0.24), rgba(0, 171, 1, 0.24));
+  gap: 8px;
+
+  @media (min-width: 1024px) {
+    gap: 20px;
+  }
+}
+
+.logo-section .logo {
+  max-width: 40px;
+
+  @media (min-width: 1024px) {
+    max-width: 116px;
+  }
+}
+
+.logo-section .title {
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 1;
+
+  span {
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 48.83px;
+  }
+}
+
+.login-page,
+.register-page {
+  background-color: #ffffff;
+  border: 1px solid #cecece;
+  border-radius: 8px;
+  padding: 32px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: calc(100% - 32px);
+  max-width: 480px;
+  box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.12);
+}
+
+.heading {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.login-form,
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 72%;
+
+  & .documento-field,
+  & .contraseña-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.documento-field label,
+.contraseña-field label {
+  width: fit-content;
+}
+
+.documento-field input,
+.contraseña-field input {
+  border: 1px solid #cecece;
+  border-radius: 8px;
+  padding: 8px 12px;
+  outline: none;
+  width: 100%;
+
+  &:focus {
+    border-color: #00ab01;
+  }
+}
+
+.form-button {
+  background-color: #00ab01;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 8px;
+  width: 100%;
+  transition: background-color 0.2s ease;
+  margin-top: 12px;
+  height: 42px;
+
+  &:hover {
+    background-color: #89ff89;
+  }
+}
+
+.form-footer {
+  font-size: 14px;
+  text-align: center;
+
+  span {
+    font-weight: bold;
+    color: #00ab01;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.error-message {
+  color: #dc143c;
+  font-size: 14px;
+}

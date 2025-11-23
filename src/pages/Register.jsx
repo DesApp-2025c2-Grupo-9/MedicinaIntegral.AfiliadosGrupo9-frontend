@@ -90,16 +90,18 @@ const Register = () => {
   };
 
   return (
-    <div className='login-container'>
-      <div className='login'>
-        <h1 className='bienvenida'>Registrate</h1>
+    <div className='register-page'>
+      <h1 className='heading'>Regístrese</h1>
 
-        <form onSubmit={handleSubmit}>
-          <label htmlFor='documento-register'>Ingrese su número de documento:</label>
-
+      <form
+        onSubmit={handleSubmit}
+        className='register-form'
+      >
+        <div className='documento-field'>
+          <label htmlFor='documento-input'>Ingrese su número de documento:</label>
           <input
             ref={inputRef}
-            id='documento-register'
+            id='documento-input'
             type='text'
             placeholder='ej: 12345678'
             value={usuario}
@@ -112,40 +114,46 @@ const Register = () => {
               }
             }}
           />
-          <label htmlFor='contraseña-register'>Elija una contraseña:</label>
+        </div>
 
+        <div className='contraseña-field'>
+          <label htmlFor='contraseña-input'>Elija una contraseña:</label>
           <OcultarClave
-            id='contraseña-register'
+            id='contraseña-input'
             type='password'
             placeholder='ej: ******'
             value={clave}
             onChange={handleClaveChange}
           />
-          <label
-            htmlFor='contraseña-confirm'
-            className='contraseña-confirm'
-          >
-            Confirme su contraseña:
-          </label>
+        </div>
+
+        <div className='contraseña-field'>
+          <label htmlFor='contraseña-confirm-input'>Confirme su contraseña:</label>
           <OcultarClave
-            id='contraseña-confirm'
+            id='contraseña-confirm-input'
             type='password'
             placeholder='ej: ******'
             value={confirmarClave}
             onChange={handleConfirmarClaveChange}
           />
+        </div>
 
-          {error && <p className='error'>{error}</p>}
-          <button type='submit'>Registrarse</button>
-        </form>
+        {error && <p className='error-message'>{error}</p>}
 
-        <p className='footer'>
-          ¿Ya tenés cuenta?{' '}
-          <span>
-            <Link to='/login'>Ingresá aquí</Link>
-          </span>
-        </p>
-      </div>
+        <button
+          type='submit'
+          className='form-button'
+        >
+          Registrarse
+        </button>
+      </form>
+
+      <p className='form-footer'>
+        ¿Ya está registrado?{' '}
+        <span>
+          <Link to='/login'>Ingrese aquí.</Link>
+        </span>
+      </p>
     </div>
   );
 };

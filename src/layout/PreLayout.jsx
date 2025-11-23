@@ -1,29 +1,33 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom';
 import clinica_img from '../assets/img/clinica.webp';
-import medIntegralLogo from '../assets/img/med_integral_logo.png';
+import med_integral_logo from '../assets/img/med_integral_logo.png';
 
 function PreLayout() {
   return (
-    <div className="login-page">
-      <div className="login-wrapper">
-        <div className="image-section">
-          <img src={clinica_img} alt="clinica" />
-        
-          <div className="medicina-integral-section">
-            <div className="medicina-integral-logo">
-              <img src={medIntegralLogo} alt="medicina-integral-logo" />
-            </div>
-            
-            <div className="medicina-integral-title">
-              <p>Medicina</p>
-              <p>Integral</p>
-            </div>
-          </div>
-        </div>
+    <div className='pre-layout'>
+      <div className='image-section'>
+        <img
+          className='bg-image'
+          src={clinica_img}
+          alt='clinica_img'
+        />
 
-        <Outlet />
+        <div className='logo-section'>
+          <img
+            className='logo'
+            src={med_integral_logo}
+            alt='logo'
+          />
+          <p className='title'>
+            Medicina
+            <br />
+            <span>Integral</span>
+          </p>
+        </div>
       </div>
+
+      <Outlet />
     </div>
-  )
+  );
 }
-export default PreLayout
+export default PreLayout;

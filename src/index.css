@@ -3,6 +3,7 @@
 @import './styles/turnos.css';
 @import './styles/modalesSwal.css';
 @import './styles/animation.css';
+@import './styles/loginRegister.css';
 
 @theme {
   /* Colours */

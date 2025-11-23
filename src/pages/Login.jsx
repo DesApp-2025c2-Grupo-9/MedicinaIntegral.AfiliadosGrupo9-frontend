@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import './login.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { validacionLogin } from '../utils/validacionLogin';
 import OcultarClave from '../components/OcultarClave/ocultarClave';
@@ -64,15 +63,18 @@ const Login = () => {
   };
 
   return (
-    <div className='login-container'>
-      <div className='login'>
-        <h1 className='bienvenida'>Bienvenido</h1>
+    <div className='login-page'>
+      <h1 className='heading'>Bienvenido</h1>
 
-        <form onSubmit={handleSubmit}>
-          <label htmlFor='documento-login'>Ingrese su número de documento:</label>
+      <form
+        onSubmit={handleSubmit}
+        className='login-form'
+      >
+        <div className='documento-field'>
+          <label htmlFor='documento-input'>Ingrese su número de documento:</label>
           <input
             ref={inputRef}
-            id='documento-login'
+            id='documento-input'
             type='text'
             placeholder='ej: 12345678'
             maxLength={8}
@@ -85,27 +87,35 @@ const Login = () => {
               }
             }}
           />
-          <label htmlFor='contraseña-login'>Ingrese su contraseña:</label>
+        </div>
 
+        <div className='contraseña-field'>
+          <label htmlFor='contraseña-input'>Ingrese su contraseña:</label>
           <OcultarClave
-            id='contraseña-login'
+            id='contraseña-input'
             type='password'
             placeholder='ej: ******'
             value={clave}
             onChange={handleClaveChange}
           />
+        </div>
 
-          {error && <p className='error'>{error}</p>}
-          <button type='submit'>Ingresar</button>
-        </form>
+        {error && <p className='error-message'>{error}</p>}
 
-        <p className='footer'>
-          ¿No tenés cuenta?{' '}
-          <span>
-            <Link to='/register'>Registrate aquí</Link>
-          </span>
-        </p>
-      </div>
+        <button
+          type='submit'
+          className='form-button'
+        >
+          Ingresar
+        </button>
+      </form>
+
+      <p className='form-footer'>
+        ¿Aún no está registrado?{' '}
+        <span>
+          <Link to='/register'>Regístrese aquí.</Link>
+        </span>
+      </p>
     </div>
   );
 };
