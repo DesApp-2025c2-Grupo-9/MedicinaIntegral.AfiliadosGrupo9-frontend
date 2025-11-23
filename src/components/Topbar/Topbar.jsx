@@ -7,7 +7,9 @@ import AvatarAfiliadoFallback from '../ErrorFallbacks/AvatarAfiliadoFallback';
 
 function Topbar({ className }) {
   return (
-    <div className={twMerge('flex justify-between items-center px-4 lg:px-10 py-3 w-dvw border-b border-gris-border bg-blanco-principal shadow-custom-shadow', className)}>
+    <div
+      className={twMerge('flex justify-between items-center px-4 lg:px-10 py-3 w-full lg:w-dvw border-b border-gris-border bg-blanco-principal shadow-custom-shadow', className)}
+    >
       <MainLogo />
       <GenErrorBoundary FallbackComponent={AvatarAfiliadoFallback}>
         <AvatarAfiliado className='hidden lg:flex z-10' />

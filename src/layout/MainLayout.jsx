@@ -28,7 +28,7 @@ function MainLayout() {
         containerId='toasty'
         limit={1}
       />
-      <div className='flex lg:gap-5 w-dvw lg:pr-10'>
+      <div className='flex lg:gap-5 w-full lg:w-dvw lg:pr-10'>
         <div>
           <Sidebar className='hidden lg:flex lg:-translate-x-59 min-h-[calc(100dvh-81px)] h-full animate-sidebar' />
         </div>

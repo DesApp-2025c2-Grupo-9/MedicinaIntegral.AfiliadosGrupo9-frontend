@@ -9,7 +9,7 @@ function AvatarAfiliadoFallback({ error, resetErrorBoundary }) {
       Reintentar
       <RefreshCcw
         strokeWidth={1.4}
-        size={20}
+        size={16}
       />
     </button>
   );

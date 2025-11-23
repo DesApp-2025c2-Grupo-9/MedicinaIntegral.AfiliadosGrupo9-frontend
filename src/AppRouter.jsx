@@ -56,17 +56,10 @@ export function AppRouter() {
                 <ReintegroVer />
               </GenErrorBoundary>
             } />
-            <Route
-              path="solicitar-reintegro"
-              element={<ReintegroFormStepOne />}
-            />
+            <Route path="solicitar-reintegro" element={<ReintegroFormStepOne />} />
             <Route path="datos-factura" element={<ReintegroFormStepTwo />} />
-
             <Route path="editar-reintegro" element={<ReintegroFormStepOne />} />
-            <Route
-              path="editar-reintegro/datos-factura"
-              element={<ReintegroFormStepTwo />}
-            />
+            <Route path="editar-reintegro/datos-factura" element={<ReintegroFormStepTwo />} />
           </Route>
 
           <Route path="/recetas" element={<RecetasLayout />}>

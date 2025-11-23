@@ -3,7 +3,7 @@ import { useReintegroStepTwoSchema } from '../hooks/useReintegroStepTwoSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useReintegroStore } from '../store/reintegroStore';
 import { useReintegroStepTwoHandler } from '../hooks/useReintegroStepTwoHandler';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import TwoButtons from '../components/TwoButtons';
 import Input from '../components/Input';
@@ -16,7 +16,7 @@ import { useFormRedirect } from '../hooks/useFormRedirect';
 import { useGetMiCuenta } from '../services/miCuentaQueries';
 import { useEffect } from 'react';
 import { NumericFormat } from 'react-number-format';
-// import soloLetrasYEspaciosConLimite from '../utils/validacion.caracteresYLimite';
+import soloLetrasYEspaciosConLimite from '../utils/validacion.caracteresYLimite';
 
 function ReintegroFormStepTwo({ className }) {
   const fechaActual = new Date().toISOString().split('T')[0];
@@ -28,11 +28,12 @@ function ReintegroFormStepTwo({ className }) {
   const observacionAfiliado = typeof reintegro?.observaciones === 'object' && reintegro?.observaciones?.find(obs => obs.rolEmisor === 'Afiliado');
   const { reintegroStepTwoSchema } = useReintegroStepTwoSchema();
   const { onSubmit } = useReintegroStepTwoHandler();
+  const listaFormasDePago = ['Cheque', 'Efectivo', 'Transferencia'];
 
-  const { data, isError, isLoading, error } = useGetMiCuenta();
+  const { data, isLoading } = useGetMiCuenta();
 
-  const listaCbus = data?.data?.cbus;
-  const cbuPrincipal = data?.data?.cbuPrincipal;
+  const listaCBUs = data?.data?.cbus;
+  const CBUPrincipal = data?.data?.cbuPrincipal;
 
   const {
     register,
@@ -59,10 +60,9 @@ function ReintegroFormStepTwo({ className }) {
   const cbuValue = watch('cbu');
   const formValues = watch();
 
-  const handleChangeCuit = e => {
-    let value = e.target.value.replace(/\D/g, ''); // elimina todo lo que no sea número
+  const handleChangeOnCuit = e => {
+    let value = e.target.value.replace(/\D/g, ''); // Elimina todo caracter que no sea un número
     value = value.slice(0, 11);
-
     let formatted = value;
     if (value.length > 2 && value.length <= 10) {
       formatted = `${value.slice(0, 2)}-${value.slice(2)}`;
@@ -72,8 +72,8 @@ function ReintegroFormStepTwo({ className }) {
     setValue('factura.cuit', formatted);
   };
 
-  const handleChangeCbu = e => {
-    let value = e.target.value.replace(/\D/g, '');
+  const handleChangeOnCBU = e => {
+    let value = e.target.value.replace(/\D/g, ''); // Elimina todo caracter que no sea un número
     if (value.length > 8) {
       value = value.slice(0, 8) + '-' + value.slice(8, 22);
     }
@@ -83,24 +83,13 @@ function ReintegroFormStepTwo({ className }) {
 
   useEffect(() => {
     if (!reintegro?.cbu) {
-      setValue('cbu', cbuPrincipal);
+      setValue('cbu', CBUPrincipal);
     }
-  }, [cbuPrincipal, setValue, reintegro?.cbu]);
+  }, [reintegro?.cbu, setValue, CBUPrincipal]);
 
   useFormRedirect();
 
   if (isLoading) return <div>Cargando...</div>;
-  if (isError && error.status === 401) {
-    // Si el refresh token está vencido (401), redirigimos a /login para autenticarse
-    return (
-      <Navigate
-        to='/login'
-        state={{ from: location }}
-        replace
-      />
-    );
-  }
-  if (isError) return <div>Error: {error.message}</div>;
 
   return (
     <Form
@@ -120,14 +109,14 @@ function ReintegroFormStepTwo({ className }) {
         />
         <Input
           {...register('factura.cuit')}
-          type='text'
           id='factura.cuit'
+          type='text'
           label='CUIT:'
           placeholder='Ingresar CUIT'
           maxLength='13'
-          onChange={handleChangeCuit}
           value={cuit || ''}
           errorMsg={errors.factura?.cuit?.message}
+          onChange={handleChangeOnCuit}
         />
       </InputContainer>
 
@@ -138,12 +127,12 @@ function ReintegroFormStepTwo({ className }) {
           id='factura.valorTotal'
           label='Valor total en pesos (ARS):'
           placeholder='Ingresar valor total'
+          allowNegative={false}
+          prefix='$ '
           thousandSeparator='.'
           decimalSeparator=','
-          prefix='$ '
-          allowNegative={false}
           decimalScale={2}
-          fixedDecimalScale={true}
+          fixedDecimalScale
           errorMsg={errors.factura?.valorTotal?.message}
           value={reintegro?.factura?.valorTotal}
           onValueChange={({ value }) => {
@@ -157,7 +146,7 @@ function ReintegroFormStepTwo({ className }) {
           label='Persona a la que se factura:'
           placeholder='Ingresar nombre completo'
           errorMsg={errors.factura?.personaAFacturar?.message}
-          // onKeyDown={soloLetrasYEspaciosConLimite(50)}
+          onKeyDown={soloLetrasYEspaciosConLimite(48)}
         />
       </InputContainer>
 
@@ -167,30 +156,30 @@ function ReintegroFormStepTwo({ className }) {
           id='formaDePago'
           label='Forma de pago del reintegro:'
           placeholder='Seleccionar forma de pago'
-          options={['Cheque', 'Efectivo', 'Transferencia']}
+          options={listaFormasDePago}
           errorMsg={errors.formaDePago?.message}
         />
         {formaDePagoInput === 'Transferencia' ? (
           <>
             <Input
               {...register('cbu')}
-              type='text'
               id='cbu'
+              type='text'
               label='CBU:'
               placeholder='Ingresar CBU'
               maxLength='23'
-              onChange={handleChangeCbu}
               value={cbuValue || ''}
               errorMsg={errors.cbu?.message}
-              list={'listaCbu'}
+              onChange={handleChangeOnCBU}
+              list={'listaCBU'}
             />
-            <datalist id='listaCbu'>
-              {listaCbus.map(cbu => (
+            <datalist id='listaCBU'>
+              {listaCBUs.map(entry => (
                 <option
-                  key={cbu.cbu}
-                  value={cbu.cbu}
+                  key={entry.cbu}
+                  value={entry.cbu}
                 >
-                  {`${cbu.nombre} ${cbu.apellido}: ${cbu.cbu}`}
+                  {`${entry.nombre} ${entry.apellido}: ${entry.cbu}`}
                 </option>
               ))}
             </datalist>
@@ -207,16 +196,15 @@ function ReintegroFormStepTwo({ className }) {
         label='Observaciones:'
         placeholder='Ingresar observaciones'
         errorMsg={errors.observaciones?.message}
-        // onKeyDown={soloLetrasYEspaciosConLimite(100)}
       />
       <TwoButtons className='lg:ml-auto'>
         <Button
+          type='button'
+          style='outln'
           onClick={() => {
             setReintegro({ ...reintegro, ...formValues });
             navigate(-1);
           }}
-          type='button'
-          style='outln'
         >
           Atrás
         </Button>
