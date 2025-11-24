@@ -5,6 +5,8 @@ import MarcoCard from "./cardComponents/MarcoCard";
 import { useAnularReserva, useReservarTurno } from "../../../services/turnosQueries";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { useGetAfiliado } from "../../../services/queries";
+import { useUserStore } from "../../../store/userStore";
 function TurnosCard(props) {
   const navigate = useNavigate();
   //Recibe en sus props un turno
@@ -17,21 +19,41 @@ function TurnosCard(props) {
     isError: isErrorReserva
     
   } = useReservarTurno();
+
+  //Usuario actual para mostrar la papelera si corresponde
+  const user = useUserStore(state => state.user)
+  const {data: afiliadoRes } = useGetAfiliado();
+  const afiliado = afiliadoRes?.data;
+  const grupoFamiliar = afiliado?.grupoFamiliar;
+  const afiliadoActual = grupoFamiliar?.find(familiar => familiar?.id === user?.idAfiliado)
+  const rolAfiliadoActual = afiliadoActual.rol;
+
+  
   
   
   const { mutateAsync: anularReserva} = useAnularReserva();
   const turno = props.turno; //El turno con el que se va a cargar la primera columna
   const paciente = props.paciente; //Flag  paciente
-  const idAfiliadoParaEliminar = props.idAfiliadoParaEliminar
+  const idAfiliadoParaEliminar = props.idAfiliadoTurno
   const isPast = props.isPast;
   const fechaTurnoStr = turno.fechaTurno;
   const fechaTurno = new Date(fechaTurnoStr)
   const ahora = new Date();
   const diferenciaMs = fechaTurno.getTime() - ahora.getTime();
   const ms24Hs = 86400000;
-  const mostrarPapelera = diferenciaMs > ms24Hs;
-  //let ancho = paciente ? "max-w-md min-w-sm" : "w-xs";
   let cardStyle = `relative overflow-hidden group transition-all duration-300  ${paciente ? 'grid-cols-2' : ''}`;
+  
+  //Para saber si el turno corresponde al usuario logueado
+  
+  const turnoPropio = user.idAfiliado === props.idAfiliadoTurno
+  
+  //Para saber si el turno corresponde a un hijo menor
+  const turnoDeHijoMenor = rolAfiliadoActual === 'Hijo Menor'
+  
+const mostrarPapelera = () => {
+  return diferenciaMs > ms24Hs && (turnoPropio || turnoDeHijoMenor);
+};
+
 
 
   const deleteTurno = async () => {
@@ -173,6 +195,7 @@ function TurnosCard(props) {
       });
     }
   }
+  
 
   return (
     <MarcoCard estilo={cardStyle} >
@@ -198,7 +221,7 @@ function TurnosCard(props) {
 
             {!isPast? (//Si no pasó
               //Si faltan más de 24hs hasta el turno mostrar el botón de papelera
-              mostrarPapelera &&
+              mostrarPapelera() &&
               <BotonPapelera
                 onClick={deleteTurno}
               />

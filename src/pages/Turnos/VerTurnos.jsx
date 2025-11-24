@@ -8,12 +8,13 @@ import { useUserStore } from '../../store/userStore';
 
 function VerTurnos() {
   const user = useUserStore(state => state.user)
-
+  
   const { data: afiliadoRes, isLoading: isLoadingAfiliado } = useGetAfiliado();
   const idAfiliado = afiliadoRes?.data?.id;
   const afiliado = afiliadoRes?.data
   const grupoFamiliar = afiliado?.grupoFamiliar;
   const afiliadoActual = grupoFamiliar?.find(familiar => familiar?.id === user?.idAfiliado)
+  
   //Estado para controlar si se ve todo o solo un resumen
   const [mostrarTodoHistorial, setMostrarTodoHistorial] = useState(false)
   const {
@@ -74,7 +75,7 @@ function VerTurnos() {
                 turno={turno}
                 paciente={true}
                 nombrePaciente={`${afiliadoActual?.nombre} ${afiliadoActual.apellido}`}//Usuario que está viendo actualmente
-                idAfiliadoParaEliminar={idAfiliado}
+                idAfiliadoTurno={idAfiliado}
                 isPast={false} // <-- Prop para que SÍ muestre la papelera
               />
             ))}
