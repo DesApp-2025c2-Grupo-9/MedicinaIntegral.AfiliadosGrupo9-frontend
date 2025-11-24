@@ -1,5 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { useUserStore } from '../store/userStore';
 
 //Get para especialidades (no cambian, solo se piden una vez)
 const getEspecialidadesConTurno = async (axiosPrivate) => {
@@ -112,14 +113,18 @@ export function useReservarTurno() {
 //Obtener los turnos de un afiliado:
 const getTurnosPorAfiliado = async (axiosPrivate, idAfiliado) => {
   // await new Promise(res, setTimeout(res, 2000))
+  
   const res = 
-    await axiosPrivate.get(
-      `api/turnos/afiliado/${idAfiliado}`
-    )
-    return res.data;
+  await axiosPrivate.get(
+    `api/turnos/afiliado/${idAfiliado}`
+  )
+  return res.data;
 }
 
-export function useGetTurnosPorAfiliado (axiosPrivate, idAfiliado){
+export function useGetTurnosPorAfiliado (){
+  const axiosPrivate = useAxiosPrivate();
+  const user = useUserStore(state => state.user)
+  const idAfiliado = user?.idAfiliado;
   return useQuery({
     queryKey: ['turnosPorAfiliado', idAfiliado],
     queryFn: () => getTurnosPorAfiliado(axiosPrivate, idAfiliado),

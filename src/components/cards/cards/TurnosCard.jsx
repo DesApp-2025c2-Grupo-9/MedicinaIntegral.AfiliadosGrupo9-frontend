@@ -176,7 +176,7 @@ function TurnosCard(props) {
 
   return (
     <MarcoCard estilo={cardStyle} >
-      <div className={`transition-all duration-300 group-hover:blur-xxs group-hover:brightness-75 ${paciente || 'grid-cols-2'}`}>
+      <div className={`transition-all duration-300 group-hover:blur-xxs group-hover:brightness-75 ${paciente || 'grid-cols-2'} ${isPast ? 'opacity-60 grayscale-[50%]': ''}`}>
         <div>
 
           {/*columna datos del turno*/}
