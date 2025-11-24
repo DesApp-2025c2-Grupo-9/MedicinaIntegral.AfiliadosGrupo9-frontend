@@ -14,19 +14,28 @@ import { useAutorizacionStore } from '../../store/autorizacionStore';
 import { addDays, format } from 'date-fns';
 import { useLocation } from 'react-router-dom';
 import soloLetrasYEspaciosConLimite from '../../utils/validacion.caracteresYLimite';
+import { useUserStore } from '../../store/userStore';
+import { useIdParaAfiliado } from '../../hooks/useIdParaAfiliado';
 
 function AutorizacionForm({ className }) {
   const navigate = useNavigate();
   const autorizacion = useAutorizacionStore(state => state.autorizacion);
-  const { paraAfiliado } = useAutorizacionStore(state => state);
-  const { data: especialidadesRes } = useGetEspecialidades();
-  const { data: afiliadoRes } = useGetAfiliado();
-  const listaAfiliados = afiliadoRes?.data?.grupoFamiliar.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
+  const { data: especialidadesRes, isLoading: isLoadingEspecialidades } = useGetEspecialidades();
+  const { data: afiliado, isLoading: isLoadingAfiliado } = useGetAfiliado();
+  const user = useUserStore(state => state.user);
+
+  const rolSesion = user?.rolSesion;
+  const listaAfiliadosFiltrados = rolSesion === 'Titular' ? afiliado?.data?.grupoFamiliar?.filter(familiar => familiar.rol !== 'Cónyuge') : afiliado?.data?.grupoFamiliar; // Si quien inició sesión es Titular, Cónyuge no me se muestra en el input de paraAfiliado
+  const listaAfiliados = listaAfiliadosFiltrados?.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
+
   const { autorizacionSchema } = useAutorizacionSchema({ listaAfiliados, listaEspecialidades: especialidadesRes?.data });
   const observacionAfiliado = typeof autorizacion?.observaciones === 'object' && autorizacion?.observaciones?.find(obs => obs.rolEmisor === 'Afiliado');
   const { mutateAsync: createAutorizacion } = useCreateAutorizacion();
   const { mutateAsync: updateAutorizacion } = useUpdateAutorizacion();
 
+  
+  const { idParaAfiliado } = useIdParaAfiliado()
+  
   const location = useLocation();
   const pathDest = location.pathname === '/autorizaciones/editar-autorizacion';
   let sucessText;
@@ -49,12 +58,14 @@ function AutorizacionForm({ className }) {
     }
   });
 
+  if (isLoadingAfiliado || isLoadingEspecialidades) return <div>Cargando...</div>;
+
   const onSubmit = async formData => {
     if (location.pathname === '/autorizaciones/solicitar-autorizacion') {
-      await createAutorizacion(formData);
+      await createAutorizacion({...formData, idAfiliado: idParaAfiliado(formData.paraAfiliado)});
       sucessText = 'La solicitud fue enviada correctamente. Puede verla en "Ver autorizaciones".';
     } else {
-      await updateAutorizacion({ data: formData, id: autorizacion.id });
+      await updateAutorizacion({ data: {...formData, idAfiliado: idParaAfiliado(formData.paraAfiliado)}, id: autorizacion.id });
       sucessText = 'La solicitud fue actualizada correctamente.';
     }
 
@@ -81,7 +92,7 @@ function AutorizacionForm({ className }) {
         legendClassName='text-xl font-bold text-blue-500'
       >
         {/* Dropdown afiliado */}
-        {!pathDest && listaAfiliados?.length > 1 && (
+        {!pathDest && afiliado?.data?.grupoFamiliar?.length > 1 && (
           <Select
             {...register('paraAfiliado')}
             id='paraAfiliado'
