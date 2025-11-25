@@ -26,7 +26,7 @@ function TurnosCard(props) {
   const afiliado = afiliadoRes?.data;
   const grupoFamiliar = afiliado?.grupoFamiliar;
   const afiliadoActual = grupoFamiliar?.find(familiar => familiar?.id === user?.idAfiliado)
-  const rolAfiliadoActual = afiliadoActual.rol;
+  const rolAfiliadoActual = afiliadoActual.rol || '';
 
   
   
@@ -34,7 +34,6 @@ function TurnosCard(props) {
   const { mutateAsync: anularReserva} = useAnularReserva();
   const turno = props.turno; //El turno con el que se va a cargar la primera columna
   const paciente = props.paciente; //Flag  paciente
-  const idAfiliadoParaEliminar = props.idAfiliadoTurno
   const isPast = props.isPast;
   const fechaTurnoStr = turno.fechaTurno;
   const fechaTurno = new Date(fechaTurnoStr)
