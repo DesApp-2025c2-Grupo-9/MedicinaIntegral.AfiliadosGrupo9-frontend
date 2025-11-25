@@ -73,7 +73,6 @@ const Register = () => {
           }
         });
       } else if(error?.response?.status === 404){
-        console.log(error.response.data.message)
         Swal.fire({
           icon: 'warning',
           iconColor: '#dc143c',

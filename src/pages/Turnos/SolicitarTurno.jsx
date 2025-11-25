@@ -148,7 +148,7 @@ function SolicitarTurno() {
         <Select
           placeholder='Seleccionar especialidad'
           label={'Especialidad'}
-          value={especialidadSeleccionada}
+          value={searchParams.get('especialidad') || especialidadSeleccionada}
           options={especialidades || []}
           onChange={handleEspecialidadChange}
         />
@@ -157,7 +157,7 @@ function SolicitarTurno() {
           <Select
             placeholder='Seleccionar ubicación'
             label={'Ubicación'}
-            value={localidadSeleccionada}
+            value={searchParams.get('localidad') || localidadSeleccionada}
             options={isLoadingLocalidades ? ['Cargando...'] : localidades || []}
             onChange={handleLocalidadChange}
             disabled={!especialidadSeleccionada}

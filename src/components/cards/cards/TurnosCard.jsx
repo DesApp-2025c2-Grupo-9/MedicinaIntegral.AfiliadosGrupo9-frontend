@@ -94,10 +94,9 @@ const mostrarPapelera = () => {
       });
 
       // 6. LLAMAMOS A LA MUTACIÓN Y ESPERAMOS (await)
-      await anularReserva({
-        idTurno: turno.idTurno,
-        idAfiliado: idAfiliadoParaEliminar
-      });
+      await anularReserva(
+         turno.idTurno
+      );
 
       // 7. SI 'await' TERMINA BIEN (Éxito):
       // Tu 'onSuccess' global (el de 'invalidateQueries') se va a disparar solo.
