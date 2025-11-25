@@ -64,7 +64,7 @@ const Register = () => {
           icon: 'warning',
           iconColor: '#dc143c',
           titleText: 'Usuario ya registrado',
-          text: 'El número de documento ingresado ya se encuentra registrado.',
+          text: error.response.data.message,
           confirmButtonText: 'Continuar',
           customClass: {
             title: 'swal-title',
@@ -72,7 +72,33 @@ const Register = () => {
             confirmButton: 'swal-confirm-button'
           }
         });
-      } else {
+      } else if(error?.response?.status === 404){
+        Swal.fire({
+          icon: 'warning',
+          iconColor: '#dc143c',
+          titleText: 'Documento no encontrado',
+          text: error.response.data.message,
+          confirmButtonText: 'Continuar',
+          customClass: {
+            title: 'swal-title',
+            htmlContainer: 'swal-html',
+            confirmButton: 'swal-confirm-button'
+          }
+        });
+      }else if(error?.response?.status === 403){
+        Swal.fire({
+          icon: 'warning',
+          iconColor: '#dc143c',
+          titleText: 'No permitido',
+          text: error.response.data.message,
+          confirmButtonText: 'Continuar',
+          customClass: {
+            title: 'swal-title',
+            htmlContainer: 'swal-html',
+            confirmButton: 'swal-confirm-button'
+          }
+        });
+      }else {
         Swal.fire({
           icon: 'error',
           iconColor: '#dc143c',

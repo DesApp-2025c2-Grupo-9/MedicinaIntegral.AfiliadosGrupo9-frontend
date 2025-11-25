@@ -134,8 +134,7 @@ export function useGetTurnosPorAfiliado (){
 }
 
 //Anular la reserva de un turno
-const anularReserva = async (axiosPrivate, data) => {
-  const {idTurno, idAfiliado} = data;
+const anularReserva = async (axiosPrivate, idTurno, idAfiliado) => {
   const res = await axiosPrivate.patch(
     'api/turnos/cancelarTurno',
     {
@@ -149,8 +148,10 @@ const anularReserva = async (axiosPrivate, data) => {
 export function useAnularReserva () {
   const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
+  const user = useUserStore(state => state.user)
+  const idAfiliado = user?.idAfiliado
   return useMutation({
-    mutationFn: (data) => anularReserva(axiosPrivate, data),
+    mutationFn: (idTurno) => anularReserva(axiosPrivate, idTurno, idAfiliado),
 
     onSuccess: () => {
       console.log('Turno eliminado, invalidando queries...')

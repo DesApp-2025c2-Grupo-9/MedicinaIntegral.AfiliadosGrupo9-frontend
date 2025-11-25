@@ -15,7 +15,7 @@ function Select({ id, label, errorMsg, options = [],placeholder = false, ...prop
         id={id}
         name={id}
         className={baseStyles}
-        defaultValue=''
+        //defaultValue=''
         {...props}
       >
         {/**Cambio para utilizar placeholder */}
