@@ -29,36 +29,51 @@ function RecetaCard(props) {
   const { descargarReceta } = useDescargarReceta();
   const navigate = useNavigate();
   const { deleteRecetaHandler } = useDelReceta();
-  const { user } = useUserStore((state) => state);
-  console.log(receta, user);
+  const user = useUserStore((state) => state.user);
+  const rolSesion = user?.rolSesion;
+  const showButtons =
+    rolSesion === "Titular" && receta?.rolAfiliado === "Cónyuge";
 
   const observacionPrestador = receta?.observaciones?.find(
     (obs) => obs.rolEmisor === "Prestador"
   );
+  const ultimaObservacionPrestador = receta?.observaciones
+    ?.filter((obs) => obs.rolEmisor === "Prestador")
+    ?.slice(-1)[0];
 
-  const fechaSolicitud = receta.createdAt
-    ? new Date(receta.createdAt).toLocaleDateString("es-AR", {
+  let fechaAMostrar = null;
+
+  if (estado === "rechazado") {
+    fechaAMostrar = ultimaObservacionPrestador?.fecha;
+  } else if (estado === "aceptado") {
+    fechaAMostrar = receta?.fechaAprobacion;
+  } else {
+    fechaAMostrar = receta?.createdAt;
+  }
+  const fechaFormateada = fechaAMostrar
+    ? new Date(fechaAMostrar).toLocaleDateString("es-AR", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
       })
     : "Sin fecha";
-  const esRecetaPropia =
+
+  /*const esRecetaPropia =
     user?.idAfiliado?.toString().trim() ===
-    receta?.idAfiliado?.toString().trim();
+    receta?.idAfiliado?.toString().trim();*/
   const handleObservacionesClick = () => {
     //obtener la última observación del prestador
-    const ultimaObsPrestador = receta?.observaciones
+    /*const ultimaObsPrestador = receta?.observaciones
       ?.filter((obs) => obs.rolEmisor === "Prestador")
-      .slice(-1)[0];
+      .slice(-1)[0];*/
 
     if (estado === "observado") {
       setIsObservacionesOpen(true);
     } else if (receta.estado === "rechazado") {
       Swal.fire({
         title: "Motivo de rechazo:",
-        text: ultimaObsPrestador?.descripcion?.trim()
-          ? ultimaObsPrestador.descripcion
+        text: ultimaObservacionPrestador?.descripcion?.trim()
+          ? ultimaObservacionPrestador.descripcion
           : "No hay observaciones para esta receta.",
         icon: "error",
         iconColor: "#dc143c",
@@ -110,7 +125,11 @@ function RecetaCard(props) {
           {receta.medicamento}
           {`Cantidad: ${receta.cantidad}`}
           {`Presentación: ${receta.presentacion}`}
-          {`Fecha de solicitud: ${fechaSolicitud}`}
+          {estado === "rechazado" && `Rechazada el: ${fechaFormateada}`}
+          {estado === "aceptado" && `Aceptada el: ${fechaFormateada}`}
+          {estado !== "rechazado" &&
+            estado !== "aceptado" &&
+            `Fecha de solicitud: ${fechaFormateada}`}
         </ColumnaPrincipal>
 
         <div className="grid grid-rows-4 justify-items-end">
@@ -126,9 +145,9 @@ function RecetaCard(props) {
           ) : (
             <>
               <UsuarioActual paciente={receta.paraAfiliado} />
-              {estado !== "pendiente" && (
+              {receta.estado !== "pendiente" && !showButtons && (
                 <div className="flex row-start-4">
-                  {estado === "aceptado" && (
+                  {receta.estado === "aceptado" && (
                     <BotonDescargar onClick={() => descargarReceta(receta)} />
                   )}
 
@@ -140,7 +159,7 @@ function RecetaCard(props) {
             </>
           )}
 
-          {receta.estado === "pendiente" && !dashboard && esRecetaPropia && (
+          {receta.estado === "pendiente" && !dashboard && !showButtons && (
             <div className="flex justify-end row-start-4">
               <BotonEditar
                 onClick={() => navigate(`/recetas/editar/${receta.id}`)}

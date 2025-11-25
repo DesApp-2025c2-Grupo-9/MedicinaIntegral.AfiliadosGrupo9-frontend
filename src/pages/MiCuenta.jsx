@@ -11,7 +11,6 @@ import ModalEditarEliminarCBU from '../components/ModalRegistrarCBU/ModalEditarE
 
 
 
-
 function MiCuenta() {
   const [CBUModalOnOf, setCBUModalOnOf] = useState(false);
   const [editarModalOnOff, setEditarModalOnOff] = useState(false);
@@ -33,11 +32,10 @@ function MiCuenta() {
   if (isError) return <div>Error: {error.message}</div>;
 
   const afiliado = data?.data;
-  const defaultCbu = afiliado?.cbus?.find(cbu => cbu.cbu === afiliado?.cbuPrincipal);
+  const defaultCbu = afiliado?.cbus?.find(entry => entry.cbu === afiliado?.cbuPrincipal);
   const handleChange = async data => {
     try {
       await mutateAsync(data);
-      console.log('Cambio exitoso');
     } catch (error) {
       console.log(error);
     }

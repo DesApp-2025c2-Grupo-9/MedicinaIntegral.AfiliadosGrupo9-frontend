@@ -22,7 +22,6 @@ import CartillaMedica from "./pages/CartillaMedica";
 import ReintegroFormStepOne from './pages/ReintegroFormStepOne';
 import ReintegroFormStepTwo from './pages/ReintegroFormStepTwo';
 import AutorizacionForm from "./pages/Autorizaciones/AutorizacionForm";
-import { ErrorBoundary } from 'react-error-boundary';
 import GenErrorBoundary from './components/ErrorBoundaries/GenErrorBoundary';
 import TramitesFallback from './components/ErrorFallbacks/TramitesFallback';
 import InicioFallback from "./components/ErrorFallbacks/InicioFallback";
@@ -40,12 +39,11 @@ export function AppRouter() {
       {/* <Route element={<RequireAuth />}> */}
         <Route element={<MainLayout />}>
           <Route path="/" element={
-           <GenErrorBoundary FallbackComponent={InicioFallback}>
+            <GenErrorBoundary FallbackComponent={InicioFallback}>
               <Inicio />
             </GenErrorBoundary>
           } />
           <Route path="/mi-cuenta" element={<MiCuenta />} />
-          <Route path="/alternate" element={<p>Soy alternate</p>} />
 
           <Route path='/turnos' element={<TurnosLayout />}>
             <Route path='turnos-reservados' element={<VerTurnos/>} />
@@ -54,21 +52,14 @@ export function AppRouter() {
 
           <Route path="/reintegros" element={<ReintegrosLayout />}>
             <Route path="historial-reintegros" element={
-              <GenErrorBoundary queryKeyToReset='reintegros' FallbackComponent={() => TramitesFallback({ tipoTramite: 'Reintegros' })}>
+              <GenErrorBoundary FallbackComponent={() => TramitesFallback({ tipoTramite: 'Reintegros' })}>
                 <ReintegroVer />
               </GenErrorBoundary>
             } />
-            <Route
-              path="solicitar-reintegro"
-              element={<ReintegroFormStepOne />}
-            />
+            <Route path="solicitar-reintegro" element={<ReintegroFormStepOne />} />
             <Route path="datos-factura" element={<ReintegroFormStepTwo />} />
-
             <Route path="editar-reintegro" element={<ReintegroFormStepOne />} />
-            <Route
-              path="editar-reintegro/datos-factura"
-              element={<ReintegroFormStepTwo />}
-            />
+            <Route path="editar-reintegro/datos-factura" element={<ReintegroFormStepTwo />} />
           </Route>
 
           <Route path="/recetas" element={<RecetasLayout />}>

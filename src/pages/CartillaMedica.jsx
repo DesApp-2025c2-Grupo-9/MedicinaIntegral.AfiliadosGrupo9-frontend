@@ -9,6 +9,8 @@ import {
   useGetLocalidades,
   useGetPrestadores,
 } from "../services/prestadoresQueries";
+import { icons } from "../utils/icons";
+import { FileSearch2 } from "lucide-react";
 
 const INITIAL_STATE_FORM = {
   localidad: "",
@@ -91,7 +93,9 @@ function CartillaMedica() {
                   }))
                 }
                 className={`border border-gris-border rounded-md p-3 pl-4 w-full bg-white ${
-                  formFilters.localidad === "" ? "text-gris-placeholder" : "text-black"
+                  formFilters.localidad === ""
+                    ? "text-gris-placeholder"
+                    : "text-black"
                 } hover:border-menta-400 focus:border-menta-600 focus:ring-menta-300`}
                 disabled={loadingLoc}
               >
@@ -152,13 +156,16 @@ function CartillaMedica() {
 
         <div>
           {!hayFiltrosActivos && (
-            <p className="text-gris-placeholder text-sm">
-              Seleccione una <b>Localidad</b> y una <b>Especialidad</b> para comenzar la búsqueda.
-            </p>
-          )}
+              <div className='flex flex-col items-center gap-5 h-70 justify-center w-full text-gris-placeholder'>
+                <FileSearch2 size={92} strokeWidth={1.2} />
+                <p className='text-center'>
+                  Selecciona una <b>Localidad</b> y una <b>Especialidad</b> para iniciar la búsqueda.
+                </p>
+              </div>
+            )}
 
           {hayFiltrosActivos && loadingPrestadores && (
-            <p>Cargando prestadores...</p>
+            <p>Cargando...</p>
           )}
 
           {hayFiltrosActivos &&
@@ -177,7 +184,12 @@ function CartillaMedica() {
           {hayFiltrosActivos &&
             !loadingPrestadores &&
             prestadores.length === 0 && (
-              <p>No se encontraron prestadores con esos filtros.</p>
+              <div className='flex flex-col items-center gap-5 h-70 justify-center w-full text-gris-placeholder'>
+                <div className='max-w-72'>{icons.shrug}</div>
+                <p className='text-center'>
+                  No se encontraron <b>prestadores</b> con los filtros seleccionados.
+                </p>
+              </div>
             )}
         </div>
       </div>

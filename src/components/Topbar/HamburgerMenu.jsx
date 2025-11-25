@@ -16,11 +16,11 @@ function HamburgerMenu() {
 
       <div
         className={clsx('bg-fondo-documento flex w-dvw h-dvh p-16 flex-col justify-between items-start fixed top-0 transition-all', {
-          'left-0': isHamburgerOpen,
+          'left-0 overflow-y-scroll': isHamburgerOpen,
           'left-[100dvw] opacity-0': !isHamburgerOpen
         })}
       >
-        <div className='flex flex-col self-stretch h-full gap-8'>
+        <div className='flex flex-col self-stretch h-full gap-8 overflow-y-scroll'>
           <div className='ml-auto border border-negro-principal rounded-full p-3 mb-8'>
             <MenuButton onClick={() => setIsHamburgerOpen(false)}>{icons.cerrar}</MenuButton>
           </div>
@@ -29,8 +29,8 @@ function HamburgerMenu() {
           </div>
           <Separador className='w-full max-w-[84%] mx-auto' />
           <NavLinks onClick={() => setIsHamburgerOpen(false)} />
+          <LogoutButton className='w-fit aspect-auto uppercase font-bold underline text-menta-600 mt-auto mx-auto'>Cerrar sesión</LogoutButton>
         </div>
-        <LogoutButton className='w-full aspect-auto uppercase font-bold underline text-menta-600'>Cerrar sesión</LogoutButton>
       </div>
     </div>
   );

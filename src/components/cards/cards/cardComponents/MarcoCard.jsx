@@ -56,7 +56,7 @@ function MarcoCard(props) {
       }
 
     }
-    const estiloAnalisis = estado =='en análisis' ? estilos['analisis'] : ''
+    const estiloAnalisis = estado ==='en análisis' ? estilos['analisis'] : ''
     const estiloEstado = estilos[estado] || estiloAnalisis;
 
   // const invertirDetalle = () => { setdetalleOn(!detalleOn); console.log(detalleOn) }//Utilizado si se usa una pestaña para mostrar detalle
@@ -65,7 +65,7 @@ function MarcoCard(props) {
       {
       //Marco de estado de la card opcional 
       estado ? (
-        <div className="px-2.5 py-2">{/*Si se manda un estado se carga esta parte */}
+        <div className="px-3 py-2">{/*Si se manda un estado se carga esta parte */}
           <div className='flex items-center text-blanco-principal'>
             {/* <div className='w-4 aspect-square flex justify-center items-center'>{stateIcon}</div> */}
             <p className='font-semibold uppercase tracking-wider leading-3'>{mostrarEstado()}</p>

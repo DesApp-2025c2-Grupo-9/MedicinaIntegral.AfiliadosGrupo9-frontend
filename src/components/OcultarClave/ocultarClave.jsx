@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import './ocultarClave.css'; 
+import './ocultarClave.css';
 
 const OcultarClave = ({ id, placeholder, value, onChange, label }) => {
   const [mostrarClave, setMostrarClave] = useState(false);
@@ -17,7 +16,10 @@ const OcultarClave = ({ id, placeholder, value, onChange, label }) => {
         value={value}
         onChange={onChange}
       />
-      <span className='icon-eye' onClick={() => setMostrarClave(prev => !prev)}>
+      <span
+        className='icon-eye'
+        onClick={() => setMostrarClave(prev => !prev)}
+      >
         {mostrarClave ? <FaEye /> : <FaEyeSlash />}
       </span>
     </div>

@@ -5,12 +5,8 @@ export const useAutorizacionStore = create(
   persist(
     set => ({
       autorizacion: {},
-      paraAfiliado: "",
       setAutorizacion: value => {
         set({ autorizacion: value });
-      },
-      setParaAfiliado: value => {
-        set({ paraAfiliado: value })
       }
     }),
     {

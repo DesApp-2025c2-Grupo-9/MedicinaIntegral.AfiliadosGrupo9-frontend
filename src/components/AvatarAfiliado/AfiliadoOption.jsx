@@ -35,7 +35,7 @@ function AfiliadoOption({ afiliado = { nombre: 'John', apellido: 'Doe' }, onClic
   return (
     <div
       className={clsx('flex gap-2 items-center p-2 rounded-full transition-all', {
-        'text-negro-principal bg-fondo-documento hover:bg-menta-100 cursor-pointer': !isActive,
+        'text-negro-principal bg-fondo-documento lg:hover:bg-menta-100 cursor-pointer': !isActive,
         'text-blanco-principal cursor-default bg-menta-600': isActive
       })}
       onClick={() => {

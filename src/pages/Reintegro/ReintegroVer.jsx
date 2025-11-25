@@ -11,10 +11,9 @@ import NoTramitesEstado from '../NoTramitesEstado';
 
 function ReintegroVer() {
   const [estadoTramite, setEstadoTramite] = useState('Todos');
-  const { data, isLoading /* isError, error */ } = useGetReintegros();
+  const { data, isLoading } = useGetReintegros();
 
   if (isLoading) return <TramitesSkeleton />;
-  // if (isError) throw error; // Error se lanza por default en la instancia de queryClient (ver App.jsx); nos ahorra tener que lanzar el error en cada componente;
 
   const reintegros = data?.data;
   // const reintegros = null;

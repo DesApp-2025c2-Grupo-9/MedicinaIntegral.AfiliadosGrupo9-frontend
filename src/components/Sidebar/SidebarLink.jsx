@@ -9,7 +9,7 @@ const variants = cva(['inline-flex lg:justify-center items-center gap-2 select-n
   variants: {
     state: {
       idle: ['text-negro-principal hover:text-menta-200 transition-all bg-menta-100 lg:bg-inherit'],
-      active: ['text-blanco-principal bg-menta-600 lg:text-menta-600 lg:bg-inherit']
+      active: ['text-blanco-principal bg-menta-600 lg:text-menta-600 lg:bg-inherit cursor-default']
     }
   },
   defaultVariants: {
