@@ -7,10 +7,15 @@ import { useState } from 'react';
 import { useGetMiCuenta, useSetCbuPrincipal } from '../services/miCuentaQueries';
 import { Navigate } from 'react-router-dom';
 import MiCuentaSkeleton from '../components/Skeletons/MiCuentaSkeleton';
+import ModalEditarEliminarCBU from '../components/ModalRegistrarCBU/ModalEditarEliminarCBU';
+
+
 
 function MiCuenta() {
   const [CBUModalOnOf, setCBUModalOnOf] = useState(false);
-  const { data, isLoading, isError, error } = useGetMiCuenta();
+  const [editarModalOnOff, setEditarModalOnOff] = useState(false);
+  const [cbuSeleccionado, setCbuSeleccionado] = useState(null);
+  const { data, isLoading, isError, error, refetch } = useGetMiCuenta();
   const { mutateAsync } = useSetCbuPrincipal();
 
   if (isLoading) return <MiCuentaSkeleton />;
@@ -64,15 +69,19 @@ function MiCuenta() {
       <div className='flex flex-col gap-2'>
         <SectionTitle>CBUs Registrados</SectionTitle>
         <div className='flex gap-3'>
-          <Select
+          <Select className="w-90"
             options={afiliado.cbus.map(cbu => ({
               label: `${cbu.nombre} ${cbu.apellido}: ${cbu.cbu}`,
               value: cbu.cbu
             }))}
             defaultInputValue={defaultCbu ? `${defaultCbu.nombre} ${defaultCbu.apellido}: ${defaultCbu.cbu}` : ''}
-            onChange={selectedOption => handleChange({ nroCbu: selectedOption.value })}
-            className='w-100 max-w-xl'
-            placeholder='Selecciona un CBU'
+            placeholder="Seleccione un CBU"
+            onChange={selectedOption => {
+              handleChange({ cbuPrincipal: selectedOption.value });
+              const seleccionado = afiliado.cbus.find(cbu => cbu.cbu === selectedOption.value);
+              setCbuSeleccionado(seleccionado);
+            }}
+
           />
 
           <Button
@@ -82,6 +91,22 @@ function MiCuenta() {
           >
             Registrar nuevo CBU
           </Button>
+
+          <Button
+            onClick={() => {
+              if (cbuSeleccionado) {
+                setEditarModalOnOff(true);
+              }
+            }}
+            disabled={!cbuSeleccionado}
+          >
+            Editar
+          </Button>
+
+          
+
+
+
         </div>
       </div>
       {CBUModalOnOf && (
@@ -90,6 +115,15 @@ function MiCuenta() {
           setIsOpen={setCBUModalOnOf}
         />
       )}
+      {editarModalOnOff && (
+      <ModalEditarEliminarCBU
+        isOpen={editarModalOnOff}
+        setIsOpen={setEditarModalOnOff}
+        cbuActual={{...cbuSeleccionado} }
+        refetch={refetch} 
+      />
+    )}
+
     </div>
   );
 }

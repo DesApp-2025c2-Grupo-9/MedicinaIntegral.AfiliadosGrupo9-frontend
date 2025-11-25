@@ -177,7 +177,6 @@ function ModalRegistrarCBU({ isOpen, setIsOpen }) {
               label='CUIL o CUIT'
               placeholder='Ingresar CUIL o CUIT'
               onChange={handleChange}
-              maxLength={13}
               value={registro.cuilOCuit}
               inputMode='numeric'
             />
