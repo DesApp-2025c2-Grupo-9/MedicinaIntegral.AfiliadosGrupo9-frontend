@@ -43,7 +43,7 @@ const Login = () => {
       });
       setError('');
       if (resetErrorBoundary) resetErrorBoundary();
-      setUser({ accessToken: loginRes?.accessToken, idAfiliado: loginRes?.data?.idAfiliado, rolSesion: loginRes?.data?.rolSesion });
+      setUser({ accessToken: loginRes?.accessToken, idAfiliado: loginRes?.data?.idAfiliado, rolSesion: loginRes?.data?.rolSesion, grupoFamiliar: loginRes?.data?.grupoFamiliar });
       navigate(from, { replace: true });
     } catch (error) {
       const mensaje = error.response?.data?.message || 'Ha ocurrido un problema inesperado. Por favor, intente más tarde.';

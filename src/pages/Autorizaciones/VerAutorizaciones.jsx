@@ -9,17 +9,17 @@ import NoTramitesAvailable from '../NoTramitesAvailable';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import NoTramitesEstado from '../NoTramitesEstado';
+import filtrarTramitePorFecha from '../../utils/filtrarTramitePorFecha';
 
 function VerAutorizaciones() {
   const [estadoTramite, setEstadoTramite] = useState('Todos');
   const { user } = useUserStore(state => state);
   const { data, isLoading } = useGetAllAutorizaciones(user.idAfiliado);
-  
+  const autorizacionesFiltradas = data && filtrarTramitePorFecha(data.data, estadoTramite)
+
   const autorizaciones = data?.data;
 
   if (isLoading) return <TramitesSkeleton />;
-
-  const autorizacionesFiltradas = autorizaciones?.filter(autorizacion => estadoTramite.includes(capitalize(autorizacion.estado)) || estadoTramite == 'Todos');
 
   return (
     <div className={twMerge(clsx('flex flex-col relative gap-3', { 'items-end': autorizaciones }))}>

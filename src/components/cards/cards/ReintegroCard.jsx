@@ -22,17 +22,55 @@ function ReintegroCard(props) {
   const { deleteReintegro } = useDelReintegro();
   const fechaDePrestacion = format(addDays(reintegro.fechaDePrestacion, 1), 'dd/MM/yyyy');
   const valorTotal = pesosArg.format(reintegro.factura.valorTotal);
+  const ultimaObsPrestador = reintegro?.observaciones?.filter(obs => obs.rolEmisor === 'Prestador').slice(-1)[0];
+  const ultimaObsAfiliado = reintegro?.observaciones?.filter((obs) => obs.rolEmisor === "Afiliado")?.slice(-1)[0];
   const navigate = useNavigate();
 
   const user = useUserStore(state => state.user);
   const rolSesion = user?.rolSesion;
   const showButtons = rolSesion === 'Titular' && reintegro?.rolAfiliado === 'Cónyuge';
+  const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
+
+   let fechaAMostrar = null;
+
+  if (reintegro.estado === "rechazado" || reintegro.estado === "observado") {
+    fechaAMostrar = ultimaObsPrestador?.fecha;
+  } else if (reintegro.estado === "aceptado") {
+    fechaAMostrar = reintegro.estado?.fechaAprobacion;
+  } else if (reintegro.estado === "en análisis") {
+    fechaAMostrar = ultimaObsAfiliado.fecha;
+  } else {
+    fechaAMostrar = reintegro?.createdAt;
+  }
+
+  const fechaFormateada = fechaAMostrar
+    ? new Date(fechaAMostrar).toLocaleDateString("es-AR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+    : "Sin fecha";
+
+  const fechaActualizacion = {
+    rechazado: `Rechazada: ${fechaFormateada}`,
+    aceptado: `Aceptada: ${fechaFormateada}`,
+    pendiente: `Solicitud: ${fechaFormateada}`,
+    observado: `Observada: ${fechaFormateada}`,
+    analisis: `Análisis: ${fechaFormateada}`,
+  }
+
+  const fechaActualizacionFn = () => {
+    if(reintegro.estado == 'en análisis'){
+        return fechaActualizacion.analisis
+    }
+    return fechaActualizacion[reintegro.estado]
+  }
 
   //Estilo de la card
   const cardStyle = 'grid-cols-3';
 
   const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
-  const observacionPrestador = reintegro?.observaciones?.find(observacion => observacion.rolEmisor === 'Prestador');
+  
   const { onSubmit: commentReintegro } = useCommentReintegro();
   const setReintegro = useReintegroStore(state => state.setReintegro);
 
@@ -41,7 +79,7 @@ function ReintegroCard(props) {
       icon: 'error',
       iconColor: '#dc143c',
       titleText: 'Motivo de rechazo:',
-      text: observacionPrestador?.descripcion,
+      text: ultimaObsPrestador?.descripcion,
       confirmButtonText: 'Continuar',
       customClass: {
         title: 'swal-title',
@@ -58,8 +96,8 @@ function ReintegroCard(props) {
         onClose={() => setIsObservacionesOpen(false)}
         nombreUsuario={reintegro.paraAfiliado}
         headerText='Volver a Reintegros'
-        fechaEnvio={observacionPrestador?.fecha}
-        observacionesTexto={observacionPrestador?.descripcion}
+        fechaEnvio={ultimaObsPrestador?.fecha}
+        observacionesTexto={ultimaObsPrestador?.descripcion}
         idTramite={reintegro.id}
         onSubmit={commentReintegro}
       />
@@ -67,6 +105,7 @@ function ReintegroCard(props) {
       <MarcoCard
         estilo={cardStyle}
         estado={reintegro.estado}
+        fechaSolicitud={fechaActualizacionFn()}
       >
         <ColumnaPrincipal>
           {reintegro.especialidad}
@@ -81,16 +120,16 @@ function ReintegroCard(props) {
           {/*El estilo del estado es dinámico si está o no en el dashboard*/}
           {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
             <>
-              <div>
-                <UsuarioActual paciente={reintegro.paraAfiliado} />
-              </div>
+              <>
+                {showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado}/>}
+              </>
               <div>
                 <TipoDeTramite tipo={'Reintegro'} />
               </div>
             </>
           ) : (
             <>
-              <UsuarioActual paciente={reintegro.paraAfiliado} />
+              {showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado}/>}
               {reintegro.estado !== 'pendiente' && reintegro.estado !== 'aceptado' && reintegro.estado !== 'en análisis' ? ( //el estado está en minuscula
                 !showButtons && (
                   <div className='row-start-4'>

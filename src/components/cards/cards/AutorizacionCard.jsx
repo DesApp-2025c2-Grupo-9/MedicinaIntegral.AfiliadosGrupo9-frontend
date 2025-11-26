@@ -22,18 +22,52 @@ function AutorizacionCard(props) {
   const { onSubmit:commentAutorizacion } = useCommentAutorizacion();
   const { eliminarAutorizacion } = useEliminarAutorizacion();
   const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
-  const observacionPrestador = autorizacion?.observaciones?.find(observacion => observacion.rolEmisor === 'Prestador');
+  const ultimaObsPrestador = autorizacion?.observaciones?.filter(obs => obs.rolEmisor === 'Prestador').slice(-1)[0];
+  const ultimaObsAfiliado = autorizacion?.observaciones?.filter((obs) => obs.rolEmisor === "Afiliado")?.slice(-1)[0];
   const navigate = useNavigate()
   const fechaSolicitud = format(addDays(autorizacion.fechaSolicitud, 1), 'dd/MM/yyyy');
 
   const user = useUserStore(state => state.user);
   const rolSesion = user?.rolSesion;
   const showButtons = rolSesion === 'Titular' && autorizacion?.rolAfiliado === 'Cónyuge';
+  const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
+
+  let fechaAMostrar = null;
+
+  if (autorizacion.estado === "rechazado" || autorizacion.estado === "observado") {
+    fechaAMostrar = ultimaObsPrestador?.fecha;
+  } else if (autorizacion.estado === "aceptado") {
+    fechaAMostrar = autorizacion.estado?.fechaAprobacion;
+  } else if (autorizacion.estado === "en análisis") {
+    fechaAMostrar = ultimaObsAfiliado.fecha;
+  } else {
+    fechaAMostrar = autorizacion?.createdAt;
+  }
+
+  const fechaFormateada = fechaAMostrar
+    ? new Date(fechaAMostrar).toLocaleDateString("es-AR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+    : "Sin fecha";
+
+  const fechaActualizacion = {
+    rechazado: `Rechazada: ${fechaFormateada}`,
+    aceptado: `Aceptada: ${fechaFormateada}`,
+    pendiente: `Solicitud: ${fechaFormateada}`,
+    observado: `Observada: ${fechaFormateada}`,
+    analisis: `Análisis: ${fechaFormateada}`,
+  }
+
+  const fechaActualizacionFn = () => {
+    if(autorizacion.estado == 'en análisis'){
+        return fechaActualizacion.analisis
+    }
+    return fechaActualizacion[autorizacion.estado]
+  }
 
   const handleObservacionesRechazadas = () => {
-      //obtener la última observación del prestador
-      const ultimaObsPrestador = autorizacion?.observaciones?.filter(obs => obs.rolEmisor === 'Prestador').slice(-1)[0];
-
         Swal.fire({
           title: 'Motivo de rechazo:',
           text: ultimaObsPrestador?.descripcion?.trim(),
@@ -58,12 +92,12 @@ function AutorizacionCard(props) {
         onClose={() => setIsObservacionesOpen(false)}
         nombreUsuario={autorizacion.paraAfiliado}
         headerText='Volver a Autorizaciones'
-        fechaEnvio={observacionPrestador?.fecha}
-        observacionesTexto={observacionPrestador?.descripcion}
+        fechaEnvio={ultimaObsPrestador?.fecha}
+        observacionesTexto={ultimaObsPrestador?.descripcion}
         idTramite={autorizacion.id}
         onSubmit={commentAutorizacion}
       />
-      <MarcoCard estilo={cardStyle} estado={autorizacion.estado}>
+      <MarcoCard estilo={cardStyle} estado={autorizacion.estado} fechaSolicitud={fechaActualizacionFn()}>
         <ColumnaPrincipal>
           {autorizacion.especialidad}
           {`${autorizacion.practica}`}
@@ -71,20 +105,20 @@ function AutorizacionCard(props) {
           {`Fecha prevista: ${fechaSolicitud}`}
           {`Lugar: ${autorizacion.lugarAtencion}`}
         </ColumnaPrincipal>
-        <div className="grid grid-rows-4 min-h-[96px] items-center justify-items-end col-start-3">
+        <div className="grid grid-rows-4 justify-items-end col-start-3">
           {//Si es card de dashboard
             props.dashboard ? (
               <>
-                <div>
-                  <UsuarioActual paciente={autorizacion.paraAfiliado}/>
-                </div>
+                <>
+                  {showUsuarioCard && <UsuarioActual paciente={autorizacion.paraAfiliado}/>}
+                </>
                 <div>
                   <TipoDeTramite tipo={'Autorización'} />
                 </div>
               </>
             ) ://Si no es de dashboard
               < >
-                <UsuarioActual paciente={autorizacion.paraAfiliado}/>
+                {showUsuarioCard && <UsuarioActual paciente={autorizacion.paraAfiliado}/>}
                 {autorizacion.estado === "observado" || autorizacion.estado == "rechazado" ? (
                   !showButtons && (
                     <div className="row-start-4">

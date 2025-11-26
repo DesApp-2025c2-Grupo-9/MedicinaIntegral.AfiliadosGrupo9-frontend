@@ -33,23 +33,32 @@ function RecetaCard(props) {
   const rolSesion = user?.rolSesion;
   const showButtons =
     rolSesion === "Titular" && receta?.rolAfiliado === "Cónyuge";
+  const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
   const observacionPrestador = receta?.observaciones?.find(
     (obs) => obs.rolEmisor === "Prestador"
   );
+
+  const ultimaObservacionAfiliado = receta?.observaciones
+    ?.filter((obs) => obs.rolEmisor === "Afiliado")
+    ?.slice(-1)[0];
+
   const ultimaObservacionPrestador = receta?.observaciones
     ?.filter((obs) => obs.rolEmisor === "Prestador")
     ?.slice(-1)[0];
 
   let fechaAMostrar = null;
 
-  if (estado === "rechazado") {
+  if (estado === "rechazado" || estado === "observado") {
     fechaAMostrar = ultimaObservacionPrestador?.fecha;
   } else if (estado === "aceptado") {
-    fechaAMostrar = receta?.fechaAprobacion;
+    fechaAMostrar = estado?.fechaAprobacion;
+  } else if (estado === "en análisis") {
+    fechaAMostrar = ultimaObservacionAfiliado.fecha;
   } else {
     fechaAMostrar = receta?.createdAt;
   }
+
   const fechaFormateada = fechaAMostrar
     ? new Date(fechaAMostrar).toLocaleDateString("es-AR", {
         day: "2-digit",
@@ -126,25 +135,25 @@ function RecetaCard(props) {
           {`Cantidad: ${receta.cantidad}`}
           {`Presentación: ${receta.presentacion}`}
           {estado === "rechazado" && `Rechazada el: ${fechaFormateada}`}
+          {estado === "observado" && `Observada el: ${fechaFormateada}`}
           {estado === "aceptado" && `Aceptada el: ${fechaFormateada}`}
-          {estado !== "rechazado" &&
-            estado !== "aceptado" &&
-            `Fecha de solicitud: ${fechaFormateada}`}
+          {estado === "en análisis" && `En análisis desde: ${fechaFormateada}`}
+          {estado === "pendiente" && `Fecha de solicitud: ${fechaFormateada}`}
         </ColumnaPrincipal>
 
         <div className="grid grid-rows-4 justify-items-end">
           {dashboard ? (
             <>
-              <div>
-                <UsuarioActual paciente={receta.paraAfiliado} />
-              </div>
+              <>
+                {showUsuarioCard && <UsuarioActual paciente={receta.paraAfiliado}/>}
+              </>
               <div>
                 <TipoDeTramite tipo={"Receta"} />
               </div>
             </>
           ) : (
             <>
-              <UsuarioActual paciente={receta.paraAfiliado} />
+             {showUsuarioCard && <UsuarioActual paciente={receta.paraAfiliado}/>}
               {receta.estado !== "pendiente" && !showButtons && (
                 <div className="flex row-start-4">
                   {receta.estado === "aceptado" && (
