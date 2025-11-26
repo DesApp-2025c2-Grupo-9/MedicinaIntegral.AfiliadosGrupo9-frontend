@@ -1,48 +1,55 @@
 import SectionTitle from '../components/SectionTitle';
 import Button from '../components/Button';
 import { AfiliadoCard } from '../components/cards';
-import ModalRegistrarCBU from '../components/ModalRegistrarCBU/ModalRegistrarCBU';
 import Select from 'react-select';
 import { useState } from 'react';
 import { useGetMiCuenta, useSetCbuPrincipal } from '../services/miCuentaQueries';
-import { Navigate } from 'react-router-dom';
 import MiCuentaSkeleton from '../components/Skeletons/MiCuentaSkeleton';
-import ModalEditarEliminarCBU from '../components/ModalRegistrarCBU/ModalEditarEliminarCBU';
-
-
+import ModalRegistrarEditarCBU from '../components/ModalRegistrarEditarCBU/ModalRegistrarEditarCBU';
+import { Info } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 function MiCuenta() {
-  const [CBUModalOnOf, setCBUModalOnOf] = useState(false);
+  const [CBUModalOnOff, setCBUModalOnOff] = useState(false);
   const [editarModalOnOff, setEditarModalOnOff] = useState(false);
-  const [cbuSeleccionado, setCbuSeleccionado] = useState(null);
-  const { data, isLoading, isError, error, refetch } = useGetMiCuenta();
+  const { data, isLoading } = useGetMiCuenta();
   const { mutateAsync } = useSetCbuPrincipal();
 
   if (isLoading) return <MiCuentaSkeleton />;
-  if (isError && error.status === 401) {
-    // Si el refresh token está vencido (401), redirigimos a /login para autenticarse
-    return (
-      <Navigate
-        to='/login'
-        state={{ from: location }}
-        replace
-      />
-    );
-  }
-  if (isError) return <div>Error: {error.message}</div>;
 
   const afiliado = data?.data;
-  const defaultCbu = afiliado?.cbus?.find(entry => entry.cbu === afiliado?.cbuPrincipal);
-  const handleChange = async data => {
+  const defaultCbu = afiliado?.cbus.find(entry => entry.cbu === afiliado?.cbuPrincipal);
+  const cbuOptions = afiliado?.cbus.map(entry => ({
+    value: entry.cbu,
+    label: `${entry.cbu} ${entry.nombre} ${entry.apellido} (${entry.tipoDeCuenta})`
+  }));
+  const defaultOption = cbuOptions.find(option => option.value === afiliado?.cbuPrincipal);
+
+  const toastContent = (
+    <p className='text-sm text-negro-principal w-full text-center'>
+      El <span className='font-bold text-menta-600'>CBU</span> por default se estableció correctamente.
+    </p>
+  );
+  const handleChange = async selectedOption => {
     try {
-      await mutateAsync(data);
+      await mutateAsync({ nroCbu: selectedOption.value });
+      toast.dismiss();
+      toast(toastContent, {
+        position: 'top-center',
+        hideProgressBar: true,
+        closeButton: false,
+        autoClose: 3000,
+        containerId: 'toasty',
+        className: 'border border-menta-600 shadow-custom-shadow',
+        style: { backgroundColor: '#e2ffe2', width: '360px', borderRadius: '8px' }
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className='flex flex-col gap-5'>
+    <div className='flex flex-col gap-5 mb-5'>
       <div className='flex flex-col gap-2'>
         <SectionTitle>Mi cuenta</SectionTitle>
         <div className='grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3'>{afiliado ? <AfiliadoCard afiliado={afiliado} /> : <p>No se encontraron datos del afiliado.</p>}</div>
@@ -66,64 +73,61 @@ function MiCuenta() {
         </div>
       )}
 
-      <div className='flex flex-col gap-2'>
-        <SectionTitle>CBUs Registrados</SectionTitle>
-        <div className='flex gap-3'>
-          <Select className="w-90"
-            options={afiliado.cbus.map(cbu => ({
-              label: `${cbu.nombre} ${cbu.apellido}: ${cbu.cbu}`,
-              value: cbu.cbu
-            }))}
-            defaultInputValue={defaultCbu ? `${defaultCbu.nombre} ${defaultCbu.apellido}: ${defaultCbu.cbu}` : ''}
-            placeholder="Seleccione un CBU"
-            onChange={selectedOption => {
-              handleChange({ cbuPrincipal: selectedOption.value });
-              const seleccionado = afiliado.cbus.find(cbu => cbu.cbu === selectedOption.value);
-              setCbuSeleccionado(seleccionado);
-            }}
+      <div className='flex flex-col gap-3'>
+        <SectionTitle>CBUs registrados</SectionTitle>
 
+        <div className='w-full lg:max-w-[64%] border border-menta-600 rounded-lg p-3 text-sm flex gap-3'>
+          <Info
+            color='#00ab01'
+            strokeWidth={0.6}
+            size={80}
           />
-
-          <Button
-            onClick={() => {
-              setCBUModalOnOf(true);
+          <p className='w-full'>
+            Para recibir pagos de <b>Reintegros</b> por <b>Transferencia</b> es necesario contar con un <b>CBU</b>. Puede registrar un nuevo CBU y definirlo como predeterminado
+            para próximos reintegros, elegir uno ya registrado o ingresar un nuevo CBU al momento de realizar una solicitud de reintegro.
+          </p>
+        </div>
+        <div className='flex flex-col lg:flex-row gap-3'>
+          <Select
+            className='w-full lg:max-w-[64%]'
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                borderColor: state.isFocused ? '#00ab01' : '#cecece',
+                height: '52px',
+                borderRadius: '8px',
+                boxShadow: 'none'
+              })
             }}
-          >
-            Registrar nuevo CBU
-          </Button>
-
-          <Button
-            onClick={() => {
-              if (cbuSeleccionado) {
-                setEditarModalOnOff(true);
-              }
-            }}
-            disabled={!cbuSeleccionado}
-          >
-            Editar
-          </Button>
-
-          
-
-
-
+            placeholder='Seleccione un CBU por default'
+            options={cbuOptions}
+            defaultValue={defaultOption}
+            onChange={handleChange}
+          />
+          {defaultCbu && (
+            <Button
+              style='outln'
+              onClick={() => setEditarModalOnOff(true)}
+            >
+              Editar
+            </Button>
+          )}
+          <Button onClick={() => setCBUModalOnOff(true)}>Registrar CBU</Button>
         </div>
       </div>
-      {CBUModalOnOf && (
-        <ModalRegistrarCBU
-          isOpen={CBUModalOnOf}
-          setIsOpen={setCBUModalOnOf}
+      {CBUModalOnOff && <ModalRegistrarEditarCBU setIsOpen={setCBUModalOnOff} />}
+      {editarModalOnOff && (
+        <ModalRegistrarEditarCBU
+          setIsOpen={setEditarModalOnOff}
+          cbuActual={{
+            nombre: defaultCbu?.nombre,
+            apellido: defaultCbu?.apellido,
+            nroCBU: defaultCbu?.cbu,
+            tipoDeCuenta: defaultCbu?.tipoDeCuenta,
+            cuilOCuit: defaultCbu?.cuil
+          }}
         />
       )}
-      {editarModalOnOff && (
-      <ModalEditarEliminarCBU
-        isOpen={editarModalOnOff}
-        setIsOpen={setEditarModalOnOff}
-        cbuActual={{...cbuSeleccionado} }
-        refetch={refetch} 
-      />
-    )}
-
     </div>
   );
 }

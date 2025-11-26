@@ -1,6 +1,8 @@
 function Input({ id, label, errorMsg, isTextArea = false, ...props }) {
   const baseStyles =
-    'flex min-w-40 min-h-[43px] p-3 pl-4 items-center self-stretch rounded-lg border border-gris-border bg-blanco-principal text-base outline-none focus:border-menta-600';
+    'flex min-w-40 min-h-[43px] p-3 pl-4 items-center w-full rounded-lg border border-gris-border bg-blanco-principal text-base outline-none focus:border-menta-600';
+  /* const baseStyles =
+    'flex min-w-40 min-h-[43px] p-3 pl-4 items-center self-stretch rounded-lg border border-gris-border bg-blanco-principal text-base outline-none focus:border-menta-600'; */
 
   return (
     <div className='flex self-stretch flex-col items-start gap-2 w-full'>

@@ -7,7 +7,7 @@
   gap: 16px;
 
   @media (min-width: 1024px) {
-    gap: 20px;
+    gap: 40px;
     flex-direction: row;
     padding-right: 40px;
     justify-content: center;
@@ -83,7 +83,7 @@
   align-items: center;
   gap: 20px;
   width: calc(100% - 32px);
-  max-width: 480px;
+  max-width: 520px;
   box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.12);
 }
 
