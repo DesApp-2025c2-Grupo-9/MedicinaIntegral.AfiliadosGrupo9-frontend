@@ -27,6 +27,7 @@ function ReintegroCard(props) {
   const user = useUserStore(state => state.user);
   const rolSesion = user?.rolSesion;
   const showButtons = rolSesion === 'Titular' && reintegro?.rolAfiliado === 'Cónyuge';
+  const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
   //Estilo de la card
   const cardStyle = 'grid-cols-3';
@@ -81,16 +82,16 @@ function ReintegroCard(props) {
           {/*El estilo del estado es dinámico si está o no en el dashboard*/}
           {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
             <>
-              <div>
-                <UsuarioActual paciente={reintegro.paraAfiliado} />
-              </div>
+              <>
+                {showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado}/>}
+              </>
               <div>
                 <TipoDeTramite tipo={'Reintegro'} />
               </div>
             </>
           ) : (
             <>
-              <UsuarioActual paciente={reintegro.paraAfiliado} />
+              {showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado}/>}
               {reintegro.estado !== 'pendiente' && reintegro.estado !== 'aceptado' && reintegro.estado !== 'en análisis' ? ( //el estado está en minuscula
                 !showButtons && (
                   <div className='row-start-4'>

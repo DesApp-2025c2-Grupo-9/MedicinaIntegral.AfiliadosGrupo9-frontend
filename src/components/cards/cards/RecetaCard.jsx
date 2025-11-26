@@ -33,6 +33,7 @@ function RecetaCard(props) {
   const rolSesion = user?.rolSesion;
   const showButtons =
     rolSesion === "Titular" && receta?.rolAfiliado === "Cónyuge";
+  const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
   const observacionPrestador = receta?.observaciones?.find(
     (obs) => obs.rolEmisor === "Prestador"
@@ -135,16 +136,16 @@ function RecetaCard(props) {
         <div className="grid grid-rows-4 justify-items-end">
           {dashboard ? (
             <>
-              <div>
-                <UsuarioActual paciente={receta.paraAfiliado} />
-              </div>
+              <>
+                {showUsuarioCard && <UsuarioActual paciente={receta.paraAfiliado}/>}
+              </>
               <div>
                 <TipoDeTramite tipo={"Receta"} />
               </div>
             </>
           ) : (
             <>
-              <UsuarioActual paciente={receta.paraAfiliado} />
+             {showUsuarioCard && <UsuarioActual paciente={receta.paraAfiliado}/>}
               {receta.estado !== "pendiente" && !showButtons && (
                 <div className="flex row-start-4">
                   {receta.estado === "aceptado" && (

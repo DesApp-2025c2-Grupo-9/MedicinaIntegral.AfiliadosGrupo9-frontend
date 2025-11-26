@@ -29,6 +29,7 @@ function AutorizacionCard(props) {
   const user = useUserStore(state => state.user);
   const rolSesion = user?.rolSesion;
   const showButtons = rolSesion === 'Titular' && autorizacion?.rolAfiliado === 'Cónyuge';
+  const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
   const handleObservacionesRechazadas = () => {
       //obtener la última observación del prestador
@@ -75,16 +76,16 @@ function AutorizacionCard(props) {
           {//Si es card de dashboard
             props.dashboard ? (
               <>
-                <div>
-                  <UsuarioActual paciente={autorizacion.paraAfiliado}/>
-                </div>
+                <>
+                  {showUsuarioCard && <UsuarioActual paciente={autorizacion.paraAfiliado}/>}
+                </>
                 <div>
                   <TipoDeTramite tipo={'Autorización'} />
                 </div>
               </>
             ) ://Si no es de dashboard
               < >
-                <UsuarioActual paciente={autorizacion.paraAfiliado}/>
+                {showUsuarioCard && <UsuarioActual paciente={autorizacion.paraAfiliado}/>}
                 {autorizacion.estado === "observado" || autorizacion.estado == "rechazado" ? (
                   !showButtons && (
                     <div className="row-start-4">
