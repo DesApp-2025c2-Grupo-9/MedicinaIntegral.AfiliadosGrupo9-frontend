@@ -9,6 +9,7 @@ function MarcoCard(props) {
     setdetalleOn,//useState para mostrar/ocultar detalle
     detalleOn,//detalle oculto/visible
     mostrarDetalle = false, //Por defecto no se muestra una pestaña para detalle
+    fechaSolicitud
   } = props
 
   const estilos = {
@@ -65,18 +66,16 @@ function MarcoCard(props) {
       {
       //Marco de estado de la card opcional 
       estado ? (
-        <div className="px-3 py-2">{/*Si se manda un estado se carga esta parte */}
-          <div className='flex items-center text-blanco-principal'>
+        <div className="px-3 py-1 flex justify-between">{/*Si se manda un estado se carga esta parte */}
+          <div className='flex items-center text-blanco-principal py-1'>
             {/* <div className='w-4 aspect-square flex justify-center items-center'>{stateIcon}</div> */}
             <p className='font-semibold uppercase tracking-wider leading-3'>{mostrarEstado()}</p>
           </div>
-          
-
-
-
+        
           {mostrarDetalle ? (//Si se quiere mostrar una pestaña para mostrar el detalle
             <button className="text-black bg-blue-300 rounded-t-2xl px-2" onClick={invertirDetalle}>Detalle</button>
           ) : <></>}
+          {<p className='text-white text-sm'>{fechaSolicitud}</p>}
         </div>
       ) : <></>//Sino no se muestra el marco y solo la card
       }
