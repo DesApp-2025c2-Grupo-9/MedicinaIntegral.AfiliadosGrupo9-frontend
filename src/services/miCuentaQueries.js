@@ -1,9 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
-import axios from 'axios'
-import { axiosPrivate } from '../api/axios';
 import { useUserStore } from '../store/userStore';
-
 
 // Api
 const getMiCuenta = async axiosClient => {
@@ -18,6 +15,16 @@ const registrarCbu = async (axiosClient, body) => {
 
 const setCbuPrincipal = async (axiosClient, body) => {
   const res = await axiosClient.put('/api/mi-cuenta/cbu', body);
+  return res.data;
+};
+
+const editarCbu = async (axiosClient, body) => {
+  const res = await axiosClient.put(`/api/mi-cuenta/cbu/${body.cbu}`, body);
+  return res.data;
+};
+
+const eliminarCbu = async (axiosClient, nroCbu) => {
+  const res = await axiosClient.delete(`/api/mi-cuenta/cbu/${nroCbu}`);
   return res.data;
 };
 
@@ -59,30 +66,24 @@ export function useSetCbuPrincipal() {
 
 export const useEditarCbu = () => {
   const queryClient = useQueryClient();
+  const axiosPrivate = useAxiosPrivate();
+
   return useMutation({
-    mutationFn: async (datos) => {
-      return axiosPrivate.put(`/api/mi-cuenta/cbu-principal/${datos.cbuPrincipal}`, datos);
-    },
+    mutationFn: data => editarCbu(axiosPrivate, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mi-cuenta'] });
+      queryClient.invalidateQueries({ queryKey: ['mi-cuenta'], exact: false });
     }
   });
 };
-
-
-
 
 export const useEliminarCbu = () => {
   const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (idCbu) => {
-      const res = await axiosPrivate.delete(`/api/mi-cuenta/cbu-principal/${idCbu}`);
-      return res.data;
-    },
+    mutationFn: data => eliminarCbu(axiosPrivate, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mi-cuenta'] });
+      queryClient.invalidateQueries({ queryKey: ['mi-cuenta'], exact: false });
     }
   });
 };

@@ -17,8 +17,7 @@ export const useReintegroStepTwoSchema = () => {
           .string()
           .trim()
           // .regex(/^[0-9]+$/, ERROR_MESSAGES.CUIT.REQUIRED)
-          .min(13, ERROR_MESSAGES.CUIT.INVALID_LENGTH)
-          .max(13, ERROR_MESSAGES.CUIT.INVALID_LENGTH),
+          .length(13, ERROR_MESSAGES.CUIT.INVALID_LENGTH),
         valorTotal: z.coerce.number().positive(ERROR_MESSAGES.VALOR_TOTAL.NEGATIVE),
         personaAFacturar: z
           .string()
