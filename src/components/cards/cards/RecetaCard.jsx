@@ -119,7 +119,7 @@ function RecetaCard(props) {
       />
 
       {/* Card */}
-      <MarcoCard estilo="grid-cols-2" estado={receta.estado}>
+      <MarcoCard estilo="grid-cols-3" estado={receta.estado}>
         <ColumnaPrincipal>
           Receta
           {receta.medicamento}

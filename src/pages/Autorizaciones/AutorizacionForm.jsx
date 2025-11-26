@@ -62,8 +62,9 @@ function AutorizacionForm({ className }) {
 
   const onSubmit = async formData => {
     if (location.pathname === '/autorizaciones/solicitar-autorizacion') {
+      const nroGestion = Math.floor(1000 + Math.random() * 9000);
       await createAutorizacion({...formData, idAfiliado: idParaAfiliado(formData.paraAfiliado)});
-      sucessText = 'La solicitud fue enviada correctamente. Puede verla en "Ver autorizaciones".';
+      sucessText = `La solicitud fue enviada correctamente.<br />N° de gestión: <b>${nroGestion}</b>.`;
     } else {
       await updateAutorizacion({ data: {...formData, idAfiliado: idParaAfiliado(formData.paraAfiliado)}, id: autorizacion.id });
       sucessText = 'La solicitud fue actualizada correctamente.';
@@ -72,7 +73,7 @@ function AutorizacionForm({ className }) {
     Swal.fire({
       icon: 'success',
       iconColor: '#00ab01',
-      text: sucessText,
+      html: sucessText,
       confirmButtonText: 'Continuar',
       customClass: {
         htmlContainer: 'swal-html',

@@ -18,7 +18,7 @@ function AutorizacionCard(props) {
   const setAutorizacion = useAutorizacionStore(state => state.setAutorizacion)
   const autorizacion = props.autorizacion;
   const dashboard = props.dashboard || false;
-  let cardStyle = `grid-cols-2`;
+  let cardStyle = `grid-cols-3`;
   const { onSubmit:commentAutorizacion } = useCommentAutorizacion();
   const { eliminarAutorizacion } = useEliminarAutorizacion();
   const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
@@ -66,12 +66,12 @@ function AutorizacionCard(props) {
       <MarcoCard estilo={cardStyle} estado={autorizacion.estado}>
         <ColumnaPrincipal>
           {autorizacion.especialidad}
-          {`Dr. ${autorizacion.medicoSolicitante}`}
-          {`Fecha prevista ${fechaSolicitud}`}
-          {autorizacion.lugar}
-          {`Dias de internación: ${autorizacion.diasDeInternacion} días`}
+          {`${autorizacion.practica}`}
+          {`Médico: ${autorizacion.medicoSolicitante}`}
+          {`Fecha prevista: ${fechaSolicitud}`}
+          {`Lugar: ${autorizacion.lugarAtencion}`}
         </ColumnaPrincipal>
-        <div className="grid grid-rows-4 min-h-[96px] items-center justify-items-end col-start-2">
+        <div className="grid grid-rows-4 min-h-[96px] items-center justify-items-end col-start-3">
           {//Si es card de dashboard
             props.dashboard ? (
               <>

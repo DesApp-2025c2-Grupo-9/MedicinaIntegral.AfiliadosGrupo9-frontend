@@ -29,7 +29,7 @@ function ReintegroCard(props) {
   const showButtons = rolSesion === 'Titular' && reintegro?.rolAfiliado === 'Cónyuge';
 
   //Estilo de la card
-  const cardStyle = 'grid-cols-2';
+  const cardStyle = 'grid-cols-3';
 
   const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
   const observacionPrestador = reintegro?.observaciones?.find(observacion => observacion.rolEmisor === 'Prestador');

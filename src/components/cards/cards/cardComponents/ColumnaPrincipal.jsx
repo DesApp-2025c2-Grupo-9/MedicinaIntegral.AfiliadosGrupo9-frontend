@@ -13,7 +13,7 @@ function ColumnaPrincipal(props) {
   const titulo = arrayChildren[0]     //Asigna el primer elemento del array al titulo
   const subtitulo = arrayChildren[1]  //Asigna el segundo elemento del array al subtitulo
   const campos = arrayChildren.slice(subtituloOn ? 2 : 1)//Asigna el resto del array para los campos
-  return <div className='grid'>
+  return <div className='grid col-span-2'>
     <TituloCard>{titulo}</TituloCard>
     
     
