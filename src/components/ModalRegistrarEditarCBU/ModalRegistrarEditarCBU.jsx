@@ -256,7 +256,7 @@ function ModalRegistrarEditarCBU({ setIsOpen, cbuActual }) {
           >
             Cancelar
           </Button>
-          <Button type='submit'>Guardar cambios</Button>
+          <Button type='submit'>{cbuActual ? 'Guardar cambios' : 'Confirmar'}</Button>
         </TwoButtons>
       </Form>
     </div>

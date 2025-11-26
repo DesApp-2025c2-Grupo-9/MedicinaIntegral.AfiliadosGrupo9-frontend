@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { useReintegroStore } from '../../../store/reintegroStore';
 import Swal from 'sweetalert2';
 import { useUserStore } from '../../../store/userStore';
+import ModalDetallesTramite from '../../ModalDetallesTramite/ModalDetallesTramite';
 
 function ReintegroCard(props) {
   const dashboard = props.dashboard || false;
@@ -74,6 +75,9 @@ function ReintegroCard(props) {
   const { onSubmit: commentReintegro } = useCommentReintegro();
   const setReintegro = useReintegroStore(state => state.setReintegro);
 
+  // Detalles
+  const [detallesIsVisible, setDetallesIsVisible] = useState(false);
+
   const mostrarObservacionesRechazado = () => {
     Swal.fire({
       icon: 'error',
@@ -89,6 +93,22 @@ function ReintegroCard(props) {
     });
   };
 
+  const reintegroDetails = {
+    'Para afiliado': reintegro?.paraAfiliado,
+    'Fecha de prestación': fechaDePrestacion,
+    Especialidad: reintegro?.especialidad,
+    Médico: reintegro?.medico,
+    'Lugar de atención': reintegro?.lugarDeAtencion,
+    'Fecha de facturación': format(addDays(reintegro?.factura.fecha, 1), 'dd/MM/yyyy'),
+    CUIT: reintegro?.factura.cuit,
+    'Valor total': pesosArg.format(reintegro?.factura.valorTotal),
+    'Persona a facturar': reintegro?.factura.personaAFacturar,
+    'Forma de pago': reintegro?.formaDePago,
+    CBU: reintegro?.cbu
+  };
+
+  console.log(reintegro);
+
   return (
     <>
       <ModalObservaciones
@@ -101,10 +121,19 @@ function ReintegroCard(props) {
         idTramite={reintegro.id}
         onSubmit={commentReintegro}
       />
+      <ModalDetallesTramite
+        estado={reintegro.estado}
+        tramite={reintegroDetails}
+        isVisible={detallesIsVisible}
+        closeModalFn={() => setDetallesIsVisible(false)}
+        headerText='Volver a Reintegros'
+      />
 
       <MarcoCard
         estilo={cardStyle}
         estado={reintegro.estado}
+        mostrarDetalle={true}
+        setdetalleOn={() => setDetallesIsVisible(true)}
         fechaSolicitud={fechaActualizacionFn()}
       >
         <ColumnaPrincipal>
