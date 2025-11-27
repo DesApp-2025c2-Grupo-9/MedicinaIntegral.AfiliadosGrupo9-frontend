@@ -1,7 +1,6 @@
 import AutorizacionCard from '../../components/cards/cards/AutorizacionCard';
 import FiltroEstados from '../../components/FiltroEstados';
 import { useGetAllAutorizaciones } from '../../services/autorizacionesQueries';
-import { capitalize } from 'lodash';
 import { useUserStore } from '../../store/userStore';
 import TramitesSkeleton from '../../components/Skeletons/TramitesSkeleton';
 import { useState } from 'react';

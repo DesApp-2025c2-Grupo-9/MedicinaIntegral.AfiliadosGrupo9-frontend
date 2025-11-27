@@ -12,7 +12,7 @@ function ListaFamiliares({ className, grupoFamiliar, onClick, afiliado, iniciale
       </p>
       <Separador className='bg-menta-100 lg:bg-gris-border' />
       <p className='text-negro-principal text-sm font-bold mr-auto px-3'>Ver como miembro familiar:</p>
-      <div className='w-full grid grid-cols-3 lg:flex lg:flex-col gap-2 lg:gap-1 lg:bg-fondo-documento lg:p-1 rounded-[28px]'>
+      <div className='w-full grid grid-cols-2 md:grid-cols-3 lg:flex lg:flex-col gap-2 lg:gap-1 lg:bg-fondo-documento lg:p-1 rounded-[28px]'>
         {grupoFamiliar.map((afiliado, index) => (
           <AfiliadoOption
             key={index}

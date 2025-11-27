@@ -19,8 +19,8 @@ function ReintegroVer() {
   const reintegros = data?.data;
 
   return (
-    <div className={twMerge(clsx('flex flex-col relative gap-3', { 'items-end': reintegros }))}>
-      {reintegros ? (
+    <div className={twMerge(clsx('flex flex-col relative gap-3', { 'items-end': reintegros.length > 1 }))}>
+      {reintegros.length > 1 ? (
         <>
           <FiltroEstados
             className='sm:absolute -top-9.5 mr-auto'

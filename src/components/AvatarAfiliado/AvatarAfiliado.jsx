@@ -88,7 +88,7 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
       <ListaFamiliares
         grupoFamiliar={grupoFamiliar}
         className={clsx('lg:absolute -right-4 transition-all', {
-          'absolute -top-108 opacity-0': !isOpen,
+          'absolute -top-136 opacity-0': !isOpen,
           'top-14 opacity-100': isOpen
         })}
         onClick={() => {

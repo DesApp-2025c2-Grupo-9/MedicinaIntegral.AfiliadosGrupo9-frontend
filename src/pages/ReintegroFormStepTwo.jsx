@@ -54,6 +54,8 @@ function ReintegroFormStepTwo({ className }) {
     }
   });
 
+  console.log(reintegro);
+
   const navigate = useNavigate();
   const formaDePagoInput = watch('formaDePago');
   const cuit = watch('factura.cuit');
@@ -83,7 +85,7 @@ function ReintegroFormStepTwo({ className }) {
 
   useEffect(() => {
     if (!reintegro?.cbu) {
-      setValue('cbu', CBUPrincipal);
+      setValue('cbu', CBUPrincipal || '');
     }
   }, [reintegro?.cbu, setValue, CBUPrincipal]);
 

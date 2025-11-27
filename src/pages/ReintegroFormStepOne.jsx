@@ -24,7 +24,7 @@ function ReintegroFormStepOne({ className }) {
 
   const rolSesion = user?.rolSesion; // Rol de quien inició sesión
   const listaEspecialidades = especialidades?.data;
-  const listaAfiliadosFiltrados = rolSesion === 'Titular' ? afiliado?.data?.grupoFamiliar?.filter(familiar => familiar.rol !== 'Cónyuge') : afiliado?.data?.grupoFamiliar; // Si quien inició sesión es Titular, Cónyuge no me se muestra en el input de paraAfiliado
+  const listaAfiliadosFiltrados = rolSesion === 'Titular' ? afiliado?.data?.grupoFamiliar?.filter(familiar => familiar.rol !== 'Cónyuge' && familiar.rol !== 'Hijo Mayor' && familiar.rol !== 'Otro') : afiliado?.data?.grupoFamiliar; // Si quien inició sesión es Titular, Cónyuge no me se muestra en el input de paraAfiliado
   const listaAfiliados = listaAfiliadosFiltrados?.map(familiar => `${familiar.nombre} ${familiar.apellido}`);
 
   const reintegro = useReintegroStore(state => state.reintegro);

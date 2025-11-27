@@ -21,7 +21,7 @@ function SolicitarReceta() {
   const listaAfiliadosFiltrados =
     rolSesion === "Titular"
       ? afiliadoRes?.data?.grupoFamiliar.filter(
-          (familiar) => familiar.rol !== "Cónyuge"
+          (familiar) => familiar.rol !== "Cónyuge" && familiar.rol !== 'Hijo Mayor' && familiar.rol !== 'Otro'
         )
       : afiliadoRes?.data?.grupoFamiliar;
   const listaAfiliados = listaAfiliadosFiltrados.map(

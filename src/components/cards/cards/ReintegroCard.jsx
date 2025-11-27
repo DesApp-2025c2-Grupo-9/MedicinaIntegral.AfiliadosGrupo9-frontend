@@ -29,7 +29,7 @@ function ReintegroCard(props) {
 
   const user = useUserStore(state => state.user);
   const rolSesion = user?.rolSesion;
-  const showButtons = rolSesion === 'Titular' && reintegro?.rolAfiliado === 'Cónyuge';
+  const showButtons = rolSesion === 'Titular' && (reintegro?.rolAfiliado === 'Cónyuge' || reintegro?.rolAfiliado === 'Hijo Mayor');
   const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
    let fechaAMostrar = null;
@@ -106,8 +106,6 @@ function ReintegroCard(props) {
     'Forma de pago': reintegro?.formaDePago,
     CBU: reintegro?.cbu
   };
-
-  console.log(reintegro);
 
   return (
     <>

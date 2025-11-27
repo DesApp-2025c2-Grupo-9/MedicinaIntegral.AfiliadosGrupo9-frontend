@@ -29,7 +29,7 @@ function AutorizacionCard(props) {
 
   const user = useUserStore(state => state.user);
   const rolSesion = user?.rolSesion;
-  const showButtons = rolSesion === 'Titular' && autorizacion?.rolAfiliado === 'Cónyuge';
+  const showButtons = rolSesion === 'Titular' && (autorizacion?.rolAfiliado === 'Cónyuge' || autorizacion?.rolAfiliado === 'Hijo Mayor');
   const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
   let fechaAMostrar = null;
