@@ -158,4 +158,5 @@
 .error-message {
   color: #dc143c;
   font-size: 14px;
+  margin-top: -8px;
 }

@@ -14,7 +14,7 @@ export const validacionRegistro = (usuario, clave, confirmarClave) => {
   }
 
   if (!formatoClave.test(clave)) {
-    return 'La contraseña debe tener una letra mayúscula seguida de cinco números.';
+    return 'La contraseña debe comenzar con una letra mayúscula seguida de cinco números.';
   }
 
   if (clave !== confirmarClave) {

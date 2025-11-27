@@ -72,7 +72,7 @@ const Register = () => {
             confirmButton: 'swal-confirm-button'
           }
         });
-      } else if(error?.response?.status === 404){
+      } else if (error?.response?.status === 404) {
         Swal.fire({
           icon: 'warning',
           iconColor: '#dc143c',
@@ -85,7 +85,7 @@ const Register = () => {
             confirmButton: 'swal-confirm-button'
           }
         });
-      }else if(error?.response?.status === 403){
+      } else if (error?.response?.status === 403) {
         Swal.fire({
           icon: 'warning',
           iconColor: '#dc143c',
@@ -98,7 +98,7 @@ const Register = () => {
             confirmButton: 'swal-confirm-button'
           }
         });
-      }else {
+      } else {
         Swal.fire({
           icon: 'error',
           iconColor: '#dc143c',
@@ -144,6 +144,7 @@ const Register = () => {
 
         <div className='contraseña-field'>
           <label htmlFor='contraseña-input'>Elija una contraseña:</label>
+          <p className='text-sm text-gris-placeholder italic leading-4'>La contraseña debe comenzar con una letra mayúscula seguida de cinco números.</p>
           <OcultarClave
             id='contraseña-input'
             type='password'

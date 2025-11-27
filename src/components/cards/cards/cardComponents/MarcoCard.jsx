@@ -3,14 +3,15 @@ import { icons } from '../../../../utils/icons';
 function MarcoCard(props) {
   //Marco con el estilo por defecto de las cards
 
-  let { children,
+  let {
+    children,
     estilo = '',
     estado = null,
-    setdetalleOn,//useState para mostrar/ocultar detalle
-    detalleOn,//detalle oculto/visible
+    setdetalleOn, //useState para mostrar/ocultar detalle
+    detalleOn, //detalle oculto/visible
     mostrarDetalle = false, //Por defecto no se muestra una pestaña para detalle
     fechaSolicitud
-  } = props
+  } = props;
 
   const estilos = {
     /*
@@ -25,10 +26,11 @@ function MarcoCard(props) {
     aceptado: 'bg-[#00AB01]',
     rechazado: 'bg-[#FF1D23]',
     observado: 'bg-[#1B76FF]',
-    analisis: 'bg-[#9C27B0]',
+    analisis: 'bg-[#9C27B0]'
   };
 
-    const innerBorderColor = estado === 'pendiente' 
+  const innerBorderColor =
+    estado === 'pendiente'
       ? 'border-[#FD7400]'
       : estado === 'observado'
       ? 'border-[#1B76FF]'
@@ -38,7 +40,8 @@ function MarcoCard(props) {
       ? 'border-[#FF1D23]'
       : 'border-[#9C27B0]';
 
-    const stateIcon = estado === 'pendiente' 
+  const stateIcon =
+    estado === 'pendiente'
       ? icons.pendiente
       : estado === 'observado'
       ? icons.observado
@@ -46,44 +49,50 @@ function MarcoCard(props) {
       ? icons.aceptado
       : estado === 'rechazado'
       ? icons.rechazado
-      : icons.enAnalisis;  
+      : icons.enAnalisis;
 
-    const mostrarEstado = () => {
-      
-      if(estado == 'analisis'){
-        return 'En analisis'  
-      }else{
-        return estado.charAt(0).toUpperCase() + estado.slice(1)
-      }
-
+  const mostrarEstado = () => {
+    if (estado == 'analisis') {
+      return 'En analisis';
+    } else {
+      return estado.charAt(0).toUpperCase() + estado.slice(1);
     }
-    const estiloAnalisis = estado ==='en análisis' ? estilos['analisis'] : ''
-    const estiloEstado = estilos[estado] || estiloAnalisis;
+  };
+  const estiloAnalisis = estado === 'en análisis' ? estilos['analisis'] : '';
+  const estiloEstado = estilos[estado] || estiloAnalisis;
 
   // const invertirDetalle = () => { setdetalleOn(!detalleOn); console.log(detalleOn) }//Utilizado si se usa una pestaña para mostrar detalle
   return (
     <div className={`rounded-lg shadow-custom-shadow ${estiloEstado}`}>
       {
-      //Marco de estado de la card opcional 
-      estado ? (
-        <div className="px-3 py-2 flex items-center justify-between text-blanco-principal">{/*Si se manda un estado se carga esta parte */}
-          <div className='flex items-center'>
-            {/* <div className='w-4 aspect-square flex justify-center items-center'>{stateIcon}</div> */}
-            <p className='font-semibold uppercase tracking-wider leading-3'>{mostrarEstado()}</p>
+        //Marco de estado de la card opcional
+        estado ? (
+          <div className='px-3 py-2 flex items-center justify-between text-blanco-principal'>
+            {/*Si se manda un estado se carga esta parte */}
+            <div className='flex items-center'>
+              {/* <div className='w-4 aspect-square flex justify-center items-center'>{stateIcon}</div> */}
+              <p className='font-semibold uppercase tracking-wider leading-3'>{mostrarEstado()}</p>
+            </div>
+
+            {mostrarDetalle && ( //Si se quiere mostrar una pestaña para mostrar el detalle
+              <button
+                className='font-semibold text-xs uppercase tracking-wider leading-3 lg:hover:underline lg:hover:cursor-pointer'
+                type='button'
+                onClick={setdetalleOn}
+              >
+                Ver detalles
+              </button>
+            )}
+            {<p className='text-blanco-principal text-sm leading-3'>{fechaSolicitud}</p>}
           </div>
-        
-          {mostrarDetalle ? (//Si se quiere mostrar una pestaña para mostrar el detalle
-            <button className='font-semibold text-xs uppercase tracking-wider leading-3 lg:hover:underline lg:hover:cursor-pointer' type='button' onClick={setdetalleOn}>Ver detalles</button>
-          ) : <></>}
-          {<p className='text-white text-sm'>{fechaSolicitud}</p>}
-        </div>
-      ) : <></>//Sino no se muestra el marco y solo la card
+        ) : (
+          <></>
+        ) //Sino no se muestra el marco y solo la card
       }
 
       <div className={`grid p-3 bg-blanco-principal rounded-lg ${estado ? `border-1 border-t-0 ${innerBorderColor}` : 'h-full border border-gris-border'} ${estilo}`}>
         {/*Aca dentro va la card */}
         {children}
-      
       </div>
     </div>
   );
