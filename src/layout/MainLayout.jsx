@@ -5,15 +5,19 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import MainFallback from '../components/ErrorFallbacks/MainFallback';
 import { ToastContainer } from 'react-toastify';
+import { useUserStore } from '../store/userStore';
 
 function MainLayout() {
   const { reset } = useQueryErrorResetBoundary();
   const location = useLocation();
   const navigate = useNavigate();
+  const user = useUserStore(state => state.user);
+  const setUser = useUserStore(state => state.setUser);
 
   const handleError = error => {
     if (error?.response?.status === 401) {
       navigate('/login', { replace: true, state: { from: location } });
+      setUser({ ...user, accessToken: undefined });
     }
   };
 

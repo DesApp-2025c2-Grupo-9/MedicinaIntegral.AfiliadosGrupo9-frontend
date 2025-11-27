@@ -26,7 +26,7 @@ function TurnosCard(props) {
   const afiliado = afiliadoRes?.data;
   const grupoFamiliar = afiliado?.grupoFamiliar;
   const afiliadoActual = grupoFamiliar?.find(familiar => familiar?.id === user?.idAfiliado)
-  const rolAfiliadoActual = afiliadoActual.rol || '';
+  const rolAfiliadoActual = afiliadoActual?.rol || '';
 
   
   

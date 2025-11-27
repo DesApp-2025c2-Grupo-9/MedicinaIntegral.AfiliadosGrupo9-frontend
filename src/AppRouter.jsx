@@ -36,7 +36,7 @@ export function AppRouter() {
       </Route>
 
       {/* Rutas protegidas */}
-      {/* <Route element={<RequireAuth />}> */}
+      <Route element={<RequireAuth />}>
         <Route element={<MainLayout />}>
           <Route path="/" element={
             <GenErrorBoundary FallbackComponent={InicioFallback}>
@@ -87,7 +87,7 @@ export function AppRouter() {
 
           <Route path="/cartilla-medica" element={<CartillaMedica />} />
         </Route>
-      {/* </Route> */}
+      </Route>
 
       {/* Catch all */}
       <Route path="*" element={<h3>Not Found.</h3>} />
