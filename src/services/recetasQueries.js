@@ -90,7 +90,7 @@ export function useCommentRecetaById() {
   return useMutation({
     mutationFn: (data) => commentRecetaById(axiosPrivate, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["recetas"] });
+      queryClient.invalidateQueries({ queryKey: ["recetas"], exact: false });
     },
   });
 }
