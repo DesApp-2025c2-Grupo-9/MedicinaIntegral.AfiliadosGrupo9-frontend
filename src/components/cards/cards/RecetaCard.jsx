@@ -32,7 +32,7 @@ function RecetaCard(props) {
   const user = useUserStore((state) => state.user);
   const rolSesion = user?.rolSesion;
   const showButtons =
-    rolSesion === "Titular" && receta?.rolAfiliado === "Cónyuge";
+    rolSesion === "Titular" && (receta?.rolAfiliado === "Cónyuge" || receta?.rolAfiliado === 'Hijo Mayor');
   const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
   const observacionPrestador = receta?.observaciones?.find(

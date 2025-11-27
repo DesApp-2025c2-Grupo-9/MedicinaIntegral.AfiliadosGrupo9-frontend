@@ -11,7 +11,7 @@ function NoTramitesAvailable({ tipoTramite = '', path = '' }) {
           to={path}
           className='text-menta-600 underline'
         >
-          Solicitar nuevo {tipoTramite}
+          Solicitar {tipoTramite}
         </Link>
         .
       </p>
