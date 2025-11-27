@@ -37,7 +37,7 @@ function ReintegroCard(props) {
   if (reintegro.estado === "rechazado" || reintegro.estado === "observado") {
     fechaAMostrar = ultimaObsPrestador?.fecha;
   } else if (reintegro.estado === "aceptado") {
-    fechaAMostrar = reintegro.estado?.fechaAprobacion;
+    fechaAMostrar = reintegro?.fechaAprobacion;
   } else if (reintegro.estado === "en análisis") {
     fechaAMostrar = ultimaObsAfiliado.fecha;
   } else {

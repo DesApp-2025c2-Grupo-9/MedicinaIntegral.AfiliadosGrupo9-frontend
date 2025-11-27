@@ -52,7 +52,7 @@ function RecetaCard(props) {
   if (estado === "rechazado" || estado === "observado") {
     fechaAMostrar = ultimaObservacionPrestador?.fecha;
   } else if (estado === "aceptado") {
-    fechaAMostrar = estado?.fechaAprobacion;
+    fechaAMostrar = receta?.fechaAprobacion;
   } else if (estado === "en análisis") {
     fechaAMostrar = ultimaObservacionAfiliado.fecha;
   } else {

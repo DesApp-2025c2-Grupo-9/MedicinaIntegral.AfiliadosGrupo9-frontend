@@ -62,7 +62,7 @@ function ReintegroFormStepOne({ className }) {
       legend={isEditPath && 'Editar reintegro'}
       legendClassName='text-xl font-bold text-blue-500'
     >
-      {afiliado?.data?.grupoFamiliar?.length > 1 && (
+      {!isEditPath && afiliado?.data?.grupoFamiliar?.length > 1 && (
         <Select
           {...register('paraAfiliado')}
           id='paraAfiliado'

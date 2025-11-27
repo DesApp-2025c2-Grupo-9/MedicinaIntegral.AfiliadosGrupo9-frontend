@@ -37,7 +37,7 @@ function AutorizacionCard(props) {
   if (autorizacion.estado === "rechazado" || autorizacion.estado === "observado") {
     fechaAMostrar = ultimaObsPrestador?.fecha;
   } else if (autorizacion.estado === "aceptado") {
-    fechaAMostrar = autorizacion.estado?.fechaAprobacion;
+    fechaAMostrar = autorizacion?.fechaAprobacion;
   } else if (autorizacion.estado === "en análisis") {
     fechaAMostrar = ultimaObsAfiliado.fecha;
   } else {
