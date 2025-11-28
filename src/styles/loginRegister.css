@@ -85,6 +85,9 @@
   width: calc(100% - 32px);
   max-width: 520px;
   box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.12);
+  @media (min-width: 1024px) {
+    max-width: 36vw;
+  }
 }
 
 .heading {

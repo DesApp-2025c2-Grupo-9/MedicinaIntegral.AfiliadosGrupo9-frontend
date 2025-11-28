@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ListaFamiliares from './ListaFamiliares';
 import clsx from 'clsx';
 import { icons } from '../../utils/icons';
@@ -13,6 +13,20 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
   const { data, isLoading } = useGetAfiliado();
   const user = useUserStore(state => state.user);
   const setUser = useUserStore(state => state.setUser);
+  const buttonRef = useRef(null);
+  const listaRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = e => {
+      if (isOpen && listaRef.current && !listaRef.current.contains(e.target) && !buttonRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
 
   if (isLoading) return <AvatarAfiliadoSkeleton />;
 
@@ -64,6 +78,7 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
       )}
 
       <div
+        ref={buttonRef}
         onClick={() => {
           if (grupoFamiliar.length > 1) {
             setIsOpen(!isOpen);
@@ -86,6 +101,7 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
       </div>
 
       <ListaFamiliares
+        ref={listaRef}
         grupoFamiliar={grupoFamiliar}
         className={clsx('lg:absolute -right-4 transition-all', {
           'absolute -top-136 opacity-0': !isOpen,

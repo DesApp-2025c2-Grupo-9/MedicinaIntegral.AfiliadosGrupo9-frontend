@@ -99,7 +99,7 @@ function MiCuenta() {
                 boxShadow: 'none'
               })
             }}
-            placeholder='Seleccione un CBU por default'
+            placeholder='Seleccione un CBU por default o registre un nuevo CBU'
             options={cbuOptions}
             defaultValue={defaultOption}
             onChange={handleChange}

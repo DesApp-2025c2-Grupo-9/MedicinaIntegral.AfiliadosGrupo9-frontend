@@ -1,9 +1,10 @@
 import Separador from '../Separador';
 import AfiliadoOption from './AfiliadoOption';
 
-function ListaFamiliares({ className, grupoFamiliar, onClick, afiliado, inicialesUser }) {
+function ListaFamiliares({ className, grupoFamiliar, onClick, afiliado, inicialesUser, ref }) {
   return (
     <div
+      ref={ref}
       className={`flex flex-col items-center w-full lg:w-92 lg:p-4 gap-3 lg:rounded-lg lg:border border-gris-border lg:bg-blanco-principal lg:shadow-custom-shadow ${className}`}
     >
       <div className='w-18 aspect-square rounded-full bg-menta-600 hidden lg:flex items-center justify-center text-blanco-principal font-bold text-[39.06px]'>{inicialesUser}</div>
