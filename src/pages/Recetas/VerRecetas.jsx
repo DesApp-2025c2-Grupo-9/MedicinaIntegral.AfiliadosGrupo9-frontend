@@ -29,8 +29,6 @@ function VerRecetas() {
     return <p>Error: {JSON.stringify(error)}</p>;
   }
 
-  console.log(recetas);
-
   return (
     <div className={twMerge(clsx('flex flex-col relative gap-3', { 'items-end': recetas }))}>
       {recetas ? (

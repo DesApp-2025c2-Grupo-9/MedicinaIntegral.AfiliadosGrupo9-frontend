@@ -97,7 +97,7 @@ function AutorizacionCard(props) {
         idTramite={autorizacion.id}
         onSubmit={commentAutorizacion}
       />
-      <MarcoCard estilo={cardStyle} estado={autorizacion.estado} fechaSolicitud={fechaActualizacionFn()}>
+      <MarcoCard estilo={cardStyle} estado={autorizacion.estado} fechaSolicitud={fechaFormateada}>
         <ColumnaPrincipal>
           {autorizacion.especialidad}
           {`${autorizacion.practica}`}

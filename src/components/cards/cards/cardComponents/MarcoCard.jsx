@@ -10,7 +10,8 @@ function MarcoCard(props) {
     setdetalleOn, //useState para mostrar/ocultar detalle
     detalleOn, //detalle oculto/visible
     mostrarDetalle = false, //Por defecto no se muestra una pestaña para detalle
-    fechaSolicitud
+    fechaSolicitud,
+    className = ''
   } = props;
 
   const estilos = {
@@ -63,27 +64,26 @@ function MarcoCard(props) {
 
   // const invertirDetalle = () => { setdetalleOn(!detalleOn); console.log(detalleOn) }//Utilizado si se usa una pestaña para mostrar detalle
   return (
-    <div className={`rounded-lg shadow-custom-shadow ${estiloEstado}`}>
+    <div className={`rounded-lg shadow-custom-shadow ${estiloEstado} ${className}`}>
       {
         //Marco de estado de la card opcional
         estado ? (
-          <div className='px-3 py-2 flex items-center justify-between text-blanco-principal'>
+          <div className='p-2 flex items-center justify-between text-blanco-principal font-semibold text-sm uppercase tracking-wider leading-3'>
             {/*Si se manda un estado se carga esta parte */}
-            <div className='flex items-center'>
-              {/* <div className='w-4 aspect-square flex justify-center items-center'>{stateIcon}</div> */}
-              <p className='font-semibold uppercase tracking-wider leading-3'>{mostrarEstado()}</p>
-            </div>
+            <p>
+              {mostrarEstado()} <span className='lowercase'>{fechaSolicitud ? `el día ${fechaSolicitud}` : ''}</span>
+            </p>
 
             {mostrarDetalle && ( //Si se quiere mostrar una pestaña para mostrar el detalle
               <button
-                className='font-semibold text-xs uppercase tracking-wider leading-3 lg:hover:underline lg:hover:cursor-pointer'
+                className='uppercase text-xs leading-3 lg:hover:underline lg:hover:cursor-pointer'
                 type='button'
                 onClick={setdetalleOn}
               >
                 Ver detalles
               </button>
             )}
-            {<p className='text-blanco-principal text-sm leading-3'>{fechaSolicitud}</p>}
+            {/* {<p className='text-blanco-principal text-sm leading-3'>{fechaSolicitud}</p>} */}
           </div>
         ) : (
           <></>

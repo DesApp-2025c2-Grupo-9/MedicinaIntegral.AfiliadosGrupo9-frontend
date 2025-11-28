@@ -12,7 +12,7 @@ import filtrarTramitePorFecha from '../../utils/filtrarTramitePorFecha';
 function ReintegroVer() {
   const [estadoTramite, setEstadoTramite] = useState('Todos');
   const { data, isLoading } = useGetReintegros();
-  const reintegrosFiltrados = data && filtrarTramitePorFecha(data.data, estadoTramite)
+  const reintegrosFiltrados = data && filtrarTramitePorFecha(data.data, estadoTramite);
 
   if (isLoading) return <TramitesSkeleton />;
 

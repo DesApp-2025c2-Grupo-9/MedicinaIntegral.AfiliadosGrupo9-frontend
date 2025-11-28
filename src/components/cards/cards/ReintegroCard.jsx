@@ -15,7 +15,9 @@ import { useNavigate } from 'react-router-dom';
 import { useReintegroStore } from '../../../store/reintegroStore';
 import Swal from 'sweetalert2';
 import { useUserStore } from '../../../store/userStore';
-import ModalDetallesTramite from '../../ModalDetallesTramite/ModalDetallesTramite';
+import DetallesCard from '../../DetallesCard';
+import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 function ReintegroCard(props) {
   const dashboard = props.dashboard || false;
@@ -24,7 +26,7 @@ function ReintegroCard(props) {
   const fechaDePrestacion = format(addDays(reintegro.fechaDePrestacion, 1), 'dd/MM/yyyy');
   const valorTotal = pesosArg.format(reintegro.factura.valorTotal);
   const ultimaObsPrestador = reintegro?.observaciones?.filter(obs => obs.rolEmisor === 'Prestador').slice(-1)[0];
-  const ultimaObsAfiliado = reintegro?.observaciones?.filter((obs) => obs.rolEmisor === "Afiliado")?.slice(-1)[0];
+  const ultimaObsAfiliado = reintegro?.observaciones?.filter(obs => obs.rolEmisor === 'Afiliado')?.slice(-1)[0];
   const navigate = useNavigate();
 
   const user = useUserStore(state => state.user);
@@ -32,51 +34,51 @@ function ReintegroCard(props) {
   const showButtons = rolSesion === 'Titular' && (reintegro?.rolAfiliado === 'Cónyuge' || reintegro?.rolAfiliado === 'Hijo Mayor');
   const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
-   let fechaAMostrar = null;
+  let fechaAMostrar = null;
 
-  if (reintegro.estado === "rechazado" || reintegro.estado === "observado") {
+  if (reintegro.estado === 'rechazado' || reintegro.estado === 'observado') {
     fechaAMostrar = ultimaObsPrestador?.fecha;
-  } else if (reintegro.estado === "aceptado") {
+  } else if (reintegro.estado === 'aceptado') {
     fechaAMostrar = reintegro?.fechaAprobacion;
-  } else if (reintegro.estado === "en análisis") {
+  } else if (reintegro.estado === 'en análisis') {
     fechaAMostrar = ultimaObsAfiliado.fecha;
   } else {
     fechaAMostrar = reintegro?.createdAt;
   }
 
   const fechaFormateada = fechaAMostrar
-    ? new Date(fechaAMostrar).toLocaleDateString("es-AR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
+    ? new Date(fechaAMostrar).toLocaleDateString('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
       })
-    : "Sin fecha";
+    : 'Sin fecha';
 
   const fechaActualizacion = {
     rechazado: `Rechazada: ${fechaFormateada}`,
     aceptado: `Aceptada: ${fechaFormateada}`,
     pendiente: `Solicitud: ${fechaFormateada}`,
     observado: `Observada: ${fechaFormateada}`,
-    analisis: `Análisis: ${fechaFormateada}`,
-  }
+    analisis: `Análisis: ${fechaFormateada}`
+  };
 
   const fechaActualizacionFn = () => {
-    if(reintegro.estado == 'en análisis'){
-        return fechaActualizacion.analisis
+    if (reintegro.estado == 'en análisis') {
+      return fechaActualizacion.analisis;
     }
-    return fechaActualizacion[reintegro.estado]
-  }
+    return fechaActualizacion[reintegro.estado];
+  };
 
   //Estilo de la card
-  const cardStyle = 'grid-cols-3';
+  // const cardStyle = 'grid-cols-3';
 
   const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
-  
+
   const { onSubmit: commentReintegro } = useCommentReintegro();
   const setReintegro = useReintegroStore(state => state.setReintegro);
 
   // Detalles
-  const [detallesIsVisible, setDetallesIsVisible] = useState(false);
+  const [detallesIsOpen, setDetallesIsOpen] = useState(false);
 
   const mostrarObservacionesRechazado = () => {
     Swal.fire({
@@ -93,22 +95,8 @@ function ReintegroCard(props) {
     });
   };
 
-  const reintegroDetails = {
-    'Para afiliado': reintegro?.paraAfiliado,
-    'Fecha de prestación': fechaDePrestacion,
-    Especialidad: reintegro?.especialidad,
-    Médico: reintegro?.medico,
-    'Lugar de atención': reintegro?.lugarDeAtencion,
-    'Fecha de facturación': format(addDays(reintegro?.factura.fecha, 1), 'dd/MM/yyyy'),
-    CUIT: reintegro?.factura.cuit,
-    'Valor total': pesosArg.format(reintegro?.factura.valorTotal),
-    'Persona a facturar': reintegro?.factura.personaAFacturar,
-    'Forma de pago': reintegro?.formaDePago,
-    CBU: reintegro?.cbu
-  };
-
   return (
-    <>
+    <div className='relative'>
       <ModalObservaciones
         open={isObservacionesOpen}
         onClose={() => setIsObservacionesOpen(false)}
@@ -119,20 +107,20 @@ function ReintegroCard(props) {
         idTramite={reintegro.id}
         onSubmit={commentReintegro}
       />
-      <ModalDetallesTramite
-        estado={reintegro.estado}
-        tramite={reintegroDetails}
-        isVisible={detallesIsVisible}
-        closeModalFn={() => setDetallesIsVisible(false)}
-        headerText='Volver a Reintegros'
+      <DetallesCard
+        className={clsx('absolute z-10 shadow-custom-shadow transition-all duration-300', { 'rotate-x-180 -z-10 shadow-none': !detallesIsOpen })}
+        reintegro={reintegro}
+        isOpen={detallesIsOpen}
+        setIsOpen={setDetallesIsOpen}
       />
 
       <MarcoCard
-        estilo={cardStyle}
+        estilo='grid-cols-3'
+        className={twMerge(clsx('transition-all duration-300', { 'rotate-x-180 shadow-none': detallesIsOpen }))}
         estado={reintegro.estado}
         mostrarDetalle={true}
-        setdetalleOn={() => setDetallesIsVisible(true)}
-        fechaSolicitud={fechaActualizacionFn()}
+        setdetalleOn={() => setDetallesIsOpen(true)}
+        fechaSolicitud={fechaFormateada}
       >
         <ColumnaPrincipal>
           {reintegro.especialidad}
@@ -147,16 +135,14 @@ function ReintegroCard(props) {
           {/*El estilo del estado es dinámico si está o no en el dashboard*/}
           {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
             <>
-              <>
-                {showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado}/>}
-              </>
+              <>{showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado} />}</>
               <div>
                 <TipoDeTramite tipo={'Reintegro'} />
               </div>
             </>
           ) : (
             <>
-              {showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado}/>}
+              {showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado} />}
               {reintegro.estado !== 'pendiente' && reintegro.estado !== 'aceptado' && reintegro.estado !== 'en análisis' ? ( //el estado está en minuscula
                 !showButtons && (
                   <div className='row-start-4'>
@@ -194,7 +180,7 @@ function ReintegroCard(props) {
           )}
         </div>
       </MarcoCard>
-    </>
+    </div>
   );
 }
 
