@@ -5,6 +5,7 @@ import TurnosCard from '../../components/cards/cards/TurnosCard';
 import SectionTitle from '../../components/SectionTitle';
 import TurnosSkeleton from '../../components/Skeletons/TurnosSkeleton';
 import { useUserStore } from '../../store/userStore';
+import NoTurnosAvailable from '../../components/NoTurnosAvailable';
 
 function VerTurnos() {
   const user = useUserStore(state => state.user)
@@ -81,7 +82,7 @@ function VerTurnos() {
             ))}
           </div>
         ) : (
-          <p>No tenés turnos próximos.</p>
+          <NoTurnosAvailable path='/turnos/solicitar-turno'/>
         )}
       </div>
 
