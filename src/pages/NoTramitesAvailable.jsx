@@ -4,7 +4,7 @@ import { icons } from '../utils/icons';
 function NoTramitesAvailable({ tipoTramite = '', path = '' }) {
   return (
     <div className='flex flex-col items-center gap-5 h-70 justify-center text-gris-placeholder'>
-      <div className='max-w-72'>{icons.shrug}</div>
+      <div className='max-w-30'>{icons.noTramites}</div>
       <p className='font-bold text-center'>
         No tiene ninguna solicitud de {tipoTramite}.{' '}
         <Link
@@ -13,7 +13,6 @@ function NoTramitesAvailable({ tipoTramite = '', path = '' }) {
         >
           Solicitar {tipoTramite}
         </Link>
-        .
       </p>
     </div>
   );

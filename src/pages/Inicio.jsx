@@ -8,6 +8,9 @@ import { Fragment } from 'react';
 import { useGetUltimosTramites, useGetUltimosTurnos } from '../services/inicioQueries';
 import { useUserStore } from '../store/userStore';
 import InicioSkeleton from '../components/Skeletons/InicioSkeleton';
+import NoTurnosAvailable from '../components/NoTurnosAvailable';
+import { icons } from '../utils/icons';
+import { Link } from 'react-router-dom';
 
 function Inicio() {
   const { user } = useUserStore(state => state);
@@ -31,7 +34,7 @@ function Inicio() {
     <div className='flex flex-col gap-5 lg:max-w-[calc(100dvw-296px)] mb-4'>
       <div className='flex flex-col gap-2'>
         <SectionTitle>Próximos turnos</SectionTitle>
-        <div className='w-full grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-3'>
+        <div className={`w-full grid ${turnos.length ? 'grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-3' : ''} `}>
           {turnos.length ? (
             turnos.map((t, tIndex) => (
               <TurnosCard
@@ -44,24 +47,33 @@ function Inicio() {
               />
             ))
           ) : (
-            <i>No tenés turnos próximos.</i>
+            <NoTurnosAvailable path='turnos/solicitar-turno'/>
           )}
         </div>
       </div>
 
       <div className='flex flex-col gap-2'>
         <SectionTitle>Trámites</SectionTitle>
-        <div className={`grid w-full ${tramitesStyles} grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-3`}>
-          {tramites ? (
+        <div className={`w-full ${tramitesStyles} ${tramites.length ? 'grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-3' : ''} `}>
+          {tramites.length ? (
             tramites?.map((t, indx) => {
               if(t) {
                 const Component = componentsCard[t.tipo];
                 return <Fragment key={indx}>{Component(t)}</Fragment>;
               }
-              
             })
           ) : (
-            <i>No tenés trámites.</i>
+              <div className='flex items-center gap-4 pl-4 text-gris-placeholder w-full'>
+                <div className='w-[100px]'>{icons.noTramites}</div>
+                <div className='font-bold flex flex-col gap-2'>
+                    <p>No hay ninguna solicitud de trámite.</p>
+                    <p className='flex gap-4 items-start flex-col md:flex-row'>
+                       <Link to={'/reintegros/solicitar-reintegro'}><button className="cursor-pointer border border-blue-500 text-blue-500 py-2 px-2 rounded-lg w-full lg:w-fit hover:bg-blue-100" > Solicitar Reintegro </button></Link> 
+                       <Link to={'/recetas/solicitar-receta'}><button className="cursor-pointer border border-menta-600 text-menta-600 py-2 px-2 rounded-lg w-full lg:w-fit hover:bg-menta-100" > Solicitar Receta </button></Link>
+                       <Link to={'/autorizaciones/solicitar-autorizacion'}><button className="cursor-pointer border border-[#FD7400] text-[#FD7400] py-2 px-2 rounded-lg w-full lg:w-fit hover:bg-orange-100" > Solicitar Autorización </button></Link> 
+                    </p>
+                </div>
+              </div>
           )}
         </div>
       </div>
