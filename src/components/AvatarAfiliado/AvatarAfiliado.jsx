@@ -13,12 +13,13 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
   const { data, isLoading } = useGetAfiliado();
   const user = useUserStore(state => state.user);
   const setUser = useUserStore(state => state.setUser);
-  const buttonRef = useRef(null);
+  const avatarRef = useRef(null);
   const listaRef = useRef(null);
+  const closeBtnRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = e => {
-      if (isOpen && listaRef.current && !listaRef.current.contains(e.target) && !buttonRef.current.contains(e.target)) {
+      if (isOpen && !listaRef?.current?.contains(e.target) && !avatarRef?.current?.contains(e.target) && !closeBtnRef?.current?.contains(e.target)) {
         setIsOpen(false);
       }
     };
@@ -45,6 +46,7 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
     </p>
   );
   const handleClick = () => {
+    setIsOpen(false);
     setUser({ ...user, idAfiliado: afiliado?.id });
     toast.dismiss();
     toast(toastContent, {
@@ -69,6 +71,7 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
             </span>
           </p>
           <div
+            ref={closeBtnRef}
             className='p-1.5 rounded-full flex justify-center items-center border border-gris-placeholder text-gris-placeholder cursor-pointer scale-90 hover:scale-110 transition-transform'
             onClick={handleClick}
           >
@@ -78,7 +81,7 @@ function AvatarAfiliado({ className, setIsHamburgerOpen }) {
       )}
 
       <div
-        ref={buttonRef}
+        ref={avatarRef}
         onClick={() => {
           if (grupoFamiliar.length > 1) {
             setIsOpen(!isOpen);
