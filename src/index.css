@@ -37,7 +37,6 @@ body {
 }
 
 /* Estilos para el elemento <select /> */
-
 select {
   appearance: base-select;
 
@@ -80,4 +79,14 @@ option {
   &::checkmark {
     display: none;
   }
+}
+
+/* Ocultar scrollbar en hamburger menu */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

@@ -33,7 +33,7 @@ function Inicio() {
   return (
     <div className='flex flex-col gap-5 lg:max-w-[calc(100dvw-296px)] mb-4'>
       <div className='flex flex-col gap-2'>
-        <SectionTitle>Próximos turnos</SectionTitle>
+        <SectionTitle>Próximos Turnos</SectionTitle>
         <div className={`w-full grid ${turnos.length ? 'grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-3' : ''} `}>
           {turnos.length ? (
             turnos.map((t, tIndex) => (
@@ -63,15 +63,30 @@ function Inicio() {
               }
             })
           ) : (
-              <div className='flex items-center gap-4 pl-4 text-gris-placeholder w-full'>
-                <div className='w-[100px]'>{icons.noTramites}</div>
-                <div className='font-bold flex flex-col gap-2'>
-                    <p>No hay ninguna solicitud de trámite.</p>
-                    <p className='flex gap-4 items-start flex-col md:flex-row'>
-                       <Link to={'/reintegros/solicitar-reintegro'}><button className="cursor-pointer border border-blue-500 text-blue-500 py-2 px-2 rounded-lg w-full lg:w-fit hover:bg-blue-100" > Solicitar Reintegro </button></Link> 
-                       <Link to={'/recetas/solicitar-receta'}><button className="cursor-pointer border border-menta-600 text-menta-600 py-2 px-2 rounded-lg w-full lg:w-fit hover:bg-menta-100" > Solicitar Receta </button></Link>
-                       <Link to={'/autorizaciones/solicitar-autorizacion'}><button className="cursor-pointer border border-[#FD7400] text-[#FD7400] py-2 px-2 rounded-lg w-full lg:w-fit hover:bg-orange-100" > Solicitar Autorización </button></Link> 
-                    </p>
+              <div className='flex gap-4 text-gris-placeholder'>
+                <div className='w-full max-w-20'>{icons.noTramites}</div>
+                <div className='font-bold flex flex-col gap-1'>
+                  <p>No tiene ninguna solicitud de trámite.</p>
+                  <div className='flex flex-col lg:flex-row gap-2'>
+                    <Link
+                      to='/reintegros/solicitar-reintegro'
+                      className='cursor-pointer border border-blue-500 text-blue-500 p-2 rounded-lg lg:w-fit lg:hover:bg-blue-200 text-center max-w-52'
+                    >
+                      Solicitar Reintegro
+                    </Link>
+                    <Link
+                      to='/recetas/solicitar-receta'
+                      className='cursor-pointer border border-menta-600 text-menta-600 p-2 rounded-lg lg:w-fit lg:hover:bg-menta-100 text-center max-w-52'
+                    >
+                      Solicitar Receta
+                    </Link>
+                    <Link
+                      to='/autorizaciones/solicitar-autorizacion'
+                      className='cursor-pointer border border-[#FD7400] text-[#FD7400] p-2 rounded-lg lg:w-fit lg:hover:bg-orange-100 text-center max-w-52'
+                    >
+                      Solicitar Autorización
+                    </Link>
+                  </div>
                 </div>
               </div>
           )}

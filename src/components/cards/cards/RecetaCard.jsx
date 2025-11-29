@@ -128,17 +128,17 @@ function RecetaCard(props) {
       />
 
       {/* Card */}
-      <MarcoCard estilo="grid-cols-3" estado={receta.estado}>
+      <MarcoCard estilo="grid-cols-3 min-h-[121px]" estado={receta.estado} fechaSolicitud={fechaFormateada}>
         <ColumnaPrincipal>
           Receta
           {receta.medicamento}
           {`Cantidad: ${receta.cantidad}`}
           {`Presentación: ${receta.presentacion}`}
-          {estado === "rechazado" && `Rechazada el: ${fechaFormateada}`}
+          {/* {estado === "rechazado" && `Rechazada el: ${fechaFormateada}`}
           {estado === "observado" && `Observada el: ${fechaFormateada}`}
           {estado === "aceptado" && `Aceptada el: ${fechaFormateada}`}
           {estado === "en análisis" && `En análisis desde: ${fechaFormateada}`}
-          {estado === "pendiente" && `Fecha de solicitud: ${fechaFormateada}`}
+          {estado === "pendiente" && `Fecha de solicitud: ${fechaFormateada}`} */}
         </ColumnaPrincipal>
 
         <div className="grid grid-rows-4 justify-items-end">

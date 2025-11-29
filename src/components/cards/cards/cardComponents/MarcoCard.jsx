@@ -71,7 +71,7 @@ function MarcoCard(props) {
           <div className='p-2 flex items-center justify-between text-blanco-principal font-semibold text-sm uppercase tracking-wider leading-3'>
             {/*Si se manda un estado se carga esta parte */}
             <p>
-              {mostrarEstado()} <span className='lowercase'>{fechaSolicitud ? `el día ${fechaSolicitud}` : ''}</span>
+              {mostrarEstado()} <span className='lowercase font-normal text-xs leading-2'>{fechaSolicitud ? (estado === 'en análisis' || estado === 'pendiente' ? `desde el día ${fechaSolicitud}` : `el día ${fechaSolicitud}`) : ''}</span>
             </p>
 
             {mostrarDetalle && ( //Si se quiere mostrar una pestaña para mostrar el detalle

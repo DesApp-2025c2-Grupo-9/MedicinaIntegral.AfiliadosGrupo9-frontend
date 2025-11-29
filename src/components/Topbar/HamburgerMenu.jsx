@@ -15,12 +15,12 @@ function HamburgerMenu() {
       <MenuButton onClick={() => setIsHamburgerOpen(true)}>{icons.hamburgerMenu}</MenuButton>
 
       <div
-        className={clsx('bg-fondo-documento flex w-dvw h-dvh p-16 flex-col justify-between items-start fixed top-0 transition-all', {
+        className={clsx('bg-fondo-documento flex w-dvw h-dvh p-8 flex-col justify-between items-start fixed top-0 transition-all', {
           'left-0 overflow-y-scroll': isHamburgerOpen,
           'left-[100dvw] opacity-0': !isHamburgerOpen
         })}
       >
-        <div className='flex flex-col self-stretch h-full gap-8 overflow-y-scroll'>
+        <div className='flex flex-col self-stretch h-full gap-8 overflow-y-scroll no-scrollbar'>
           <div className='ml-auto border border-negro-principal rounded-full p-3 mb-8'>
             <MenuButton onClick={() => setIsHamburgerOpen(false)}>{icons.cerrar}</MenuButton>
           </div>

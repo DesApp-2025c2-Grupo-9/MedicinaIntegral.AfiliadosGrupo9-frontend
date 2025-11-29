@@ -157,9 +157,9 @@ function CartillaMedica() {
         <div>
           {!hayFiltrosActivos && (
               <div className='flex flex-col items-center gap-5 h-70 justify-center w-full text-gris-placeholder'>
-                <FileSearch2 size={92} strokeWidth={1.2} />
+                <FileSearch2 size={108} strokeWidth={1.1} />
                 <p className='text-center'>
-                  Selecciona una <b>Localidad</b> y una <b>Especialidad</b> para iniciar la búsqueda.
+                  Seleccione una <b>Localidad</b> y una <b>Especialidad</b> para iniciar la búsqueda.
                 </p>
               </div>
             )}

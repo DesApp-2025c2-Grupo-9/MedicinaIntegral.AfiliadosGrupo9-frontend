@@ -4,14 +4,14 @@ import { icons } from '../utils/icons';
 function NoTramitesAvailable({ tipoTramite = '', path = '' }) {
   return (
     <div className='flex flex-col items-center gap-5 h-70 justify-center text-gris-placeholder'>
-      <div className='max-w-30'>{icons.noTramites}</div>
+      <div className='w-full max-w-20'>{icons.noTramites}</div>
       <p className='font-bold text-center'>
         No tiene ninguna solicitud de {tipoTramite}.{' '}
         <Link
           to={path}
           className='text-menta-600 underline'
         >
-          Solicitar {tipoTramite}
+          Solicitar {tipoTramite.toLowerCase() === 'reintegro' ? 'nuevo' : 'nueva'} {tipoTramite}
         </Link>
       </p>
     </div>
