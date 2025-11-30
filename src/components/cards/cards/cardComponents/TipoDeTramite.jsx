@@ -1,26 +1,35 @@
+import { twMerge } from 'tailwind-merge';
+import { icons } from '../../../../utils/icons';
+
 function TipoDeTramite(props) {
   const coloresTexto = {
     pendiente: 'text-naranja-pendiente',
-    aceptado: 'text-verde-aceptado', 
+    aceptado: 'text-verde-aceptado',
     rechazado: 'text-rojo-rechazado',
     observado: 'text-azul-observado',
-    analisis: 'text-violeta-analisis' 
+    'en análisis': 'text-violeta-analisis'
   };
 
   const coloresBg = {
-    pendiente: 'bg-orange-100',
-    aceptado: 'bg-green-100',
-    rechazado: 'bg-red-100',
-    observado: 'bg-blue-100',
-    analisis: 'bg-indigo-100'
+    pendiente: 'bg-naranja-pendiente/16',
+    aceptado: 'bg-verde-aceptado/16',
+    rechazado: 'bg-rojo-rechazado/16',
+    observado: 'bg-azul-observado/16',
+    'en análisis': 'bg-violeta-analisis/16'
   };
 
-  return (
-    <>
-      <p className={`col-start-2 row-start-1 ${coloresBg[props.colorEstado]} ${props.colorEstado ? coloresTexto[props.colorEstado] : ''} p-0.5 w-fit text-sm px-1`}>{props.tipo}</p>
+  const iconKeys = Object.keys(icons);
+  const formattedTipo = props.tipo.toLowerCase().slice(0, 10); // 
+  const key = iconKeys.find(entry => entry.includes(formattedTipo));
 
-    </>
-  )
+  return (
+    <div
+      className={twMerge(`${coloresBg[props.colorEstado]} ${props.colorEstado ? coloresTexto[props.colorEstado] : ''} w-fit h-fit text-sm leading-3 p-1.5 uppercase flex gap-1`)}
+    >
+      <div className='h-3 aspect-square'>{icons[key]}</div>
+      <p>{props.tipo}</p>
+    </div>
+  );
 }
 
-export default TipoDeTramite
+export default TipoDeTramite;

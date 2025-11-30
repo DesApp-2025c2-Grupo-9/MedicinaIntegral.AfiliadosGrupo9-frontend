@@ -3,15 +3,16 @@ import { twMerge } from 'tailwind-merge';
 import { icons } from '../utils/icons';
 import pesosArg from '../utils/pesosArg';
 import { useEffect, useRef } from 'react';
+import { ChevronLeft } from 'lucide-react';
 
 function DetallesCard({ reintegro, className, isOpen, setIsOpen }) {
   const cardRef = useRef(null);
   const bgColor = {
-    pendiente: 'bg-[#FD7400]',
-    observado: 'bg-[#1B76FF]',
-    'en análisis': 'bg-[#9C27B0]',
-    aceptado: 'bg-[#00AB01]',
-    rechazado: 'bg-[#FF1D23]'
+    pendiente: 'hover:bg-[#FD7400]/24',
+    observado: 'hover:bg-[#1B76FF]/24',
+    'en análisis': 'hover:bg-[#9C27B0]/24',
+    aceptado: 'hover:bg-[#00AB01]/24',
+    rechazado: 'hover:bg-[#FF1D23]/24'
   };
   const borderColor = {
     pendiente: 'border-[#FD7400]',
@@ -20,17 +21,17 @@ function DetallesCard({ reintegro, className, isOpen, setIsOpen }) {
     aceptado: 'border-[#00AB01]',
     rechazado: 'border-[#FF1D23]'
   };
+  const textColor = {
+    pendiente: 'text-[#FD7400]',
+    observado: 'text-[#1B76FF]',
+    'en análisis': 'text-[#9C27B0]',
+    aceptado: 'text-[#00AB01]',
+    rechazado: 'text-[#FF1D23]'
+  };
   const { factura, formaDePago, cbu } = reintegro;
   const fechaFacturacion = format(addDays(factura.fecha, 1), 'dd/MM/yy');
   const valorTotal = pesosArg.format(factura.valorTotal);
-  const iconsArr = [
-    icons.turnos,
-    icons.usuario,
-    icons.hashtag,
-    icons.reintegros,
-    icons.money,
-    icons.bank,
-  ];
+  const iconsArr = [icons.turnos, icons.usuario, icons.hashtag, icons.reintegros, icons.money, icons.bank];
   const camposArr = [
     ['Fecha de facturación', fechaFacturacion],
     ['Persona a facturar', factura.personaAFacturar],
@@ -78,11 +79,16 @@ function DetallesCard({ reintegro, className, isOpen, setIsOpen }) {
       <button
         onClick={() => setIsOpen(false)}
         className={twMerge(
-          'absolute top-2 right-2 p-1 pr-1.5 aspect-square lg:cursor-pointer flex justify-center items-centers rounded-full lg:hover:scale-120 transition-all',
-          bgColor[reintegro.estado]
+          'absolute top-2 right-2 w-11 h-6 aspect-square lg:cursor-pointer flex justify-center items-centers rounded-full transition-all border',
+          bgColor[reintegro.estado],
+          borderColor[reintegro.estado],
+          textColor[reintegro.estado]
         )}
       >
-        <div className='w-3 aspect-square rotate-90 text-blanco-principal'>{icons.chevronDown}</div>
+        <ChevronLeft
+          strokeWidth={2.4}
+          className='self-center w-5.5 h-5.5'
+        />
       </button>
     </div>
   );

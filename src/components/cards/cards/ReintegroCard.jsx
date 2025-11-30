@@ -136,9 +136,7 @@ function ReintegroCard(props) {
           {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
             <>
               <>{showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado} />}</>
-              <div>
                 <TipoDeTramite tipo={'Reintegro'} colorEstado={reintegro.estado}/>
-              </div>
             </>
           ) : (
             <>

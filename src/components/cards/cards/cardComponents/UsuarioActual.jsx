@@ -1,14 +1,13 @@
-import { icons } from "../../../../utils/icons";
+import { icons } from '../../../../utils/icons';
 
-function UsuarioActual({ paciente='Jane Doe' }) {
+function UsuarioActual({ paciente = 'Jane Doe' }) {
   /*
     El usuario logueado actualmente, propietario de turnos y trámites.
     */
   return (
-    // <div className="col-start-2 row-start-1 flex text-sm text-gray-600 justify-end">
-    <div className="flex text-sm text-gray-600 w-fit">
-      <span className="w-4 h-4 mr-1">{icons.usuario}</span>
-      <span className='text-nowrap'>{paciente}</span>
+    <div className='flex items-center gap-1 mb-1 text-gray-600'>
+      <div className='h-3 aspect-square'>{icons.usuario}</div>
+      <p className='text-sm h-fit leading-3 text-nowrap'>{paciente}</p>
     </div>
   );
 }
