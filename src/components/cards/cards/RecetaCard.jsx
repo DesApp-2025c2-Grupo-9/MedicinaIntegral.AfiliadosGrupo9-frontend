@@ -39,43 +39,19 @@ function RecetaCard(props) {
     (obs) => obs.rolEmisor === "Prestador"
   );
 
-  const ultimaObservacionAfiliado = receta?.observaciones
-    ?.filter((obs) => obs.rolEmisor === "Afiliado")
-    ?.slice(-1)[0];
-
   const ultimaObservacionPrestador = receta?.observaciones
     ?.filter((obs) => obs.rolEmisor === "Prestador")
     ?.slice(-1)[0];
 
-  let fechaAMostrar = null;
-
-  if (estado === "rechazado" || estado === "observado") {
-    fechaAMostrar = ultimaObservacionPrestador?.fecha;
-  } else if (estado === "aceptado") {
-    fechaAMostrar = receta?.fechaAprobacion;
-  } else if (estado === "en análisis") {
-    fechaAMostrar = ultimaObservacionAfiliado.fecha;
-  } else {
-    fechaAMostrar = receta?.createdAt;
-  }
-
-  const fechaFormateada = fechaAMostrar
-    ? new Date(fechaAMostrar).toLocaleDateString("es-AR", {
+  const fechaFormateada = receta?.fechaActualizacion
+    ? new Date(receta.fechaActualizacion).toLocaleDateString("es-AR", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
       })
     : "Sin fecha";
 
-  /*const esRecetaPropia =
-    user?.idAfiliado?.toString().trim() ===
-    receta?.idAfiliado?.toString().trim();*/
   const handleObservacionesClick = () => {
-    //obtener la última observación del prestador
-    /*const ultimaObsPrestador = receta?.observaciones
-      ?.filter((obs) => obs.rolEmisor === "Prestador")
-      .slice(-1)[0];*/
-
     if (estado === "observado") {
       setIsObservacionesOpen(true);
     } else if (receta.estado === "rechazado") {
@@ -134,11 +110,6 @@ function RecetaCard(props) {
           {receta.medicamento}
           {`Cantidad: ${receta.cantidad}`}
           {`Presentación: ${receta.presentacion}`}
-          {/* {estado === "rechazado" && `Rechazada el: ${fechaFormateada}`}
-          {estado === "observado" && `Observada el: ${fechaFormateada}`}
-          {estado === "aceptado" && `Aceptada el: ${fechaFormateada}`}
-          {estado === "en análisis" && `En análisis desde: ${fechaFormateada}`}
-          {estado === "pendiente" && `Fecha de solicitud: ${fechaFormateada}`} */}
         </ColumnaPrincipal>
 
         <div className="grid grid-rows-4 justify-items-end">

@@ -23,7 +23,6 @@ function AutorizacionCard(props) {
   const { eliminarAutorizacion } = useEliminarAutorizacion();
   const [isObservacionesOpen, setIsObservacionesOpen] = useState(false);
   const ultimaObsPrestador = autorizacion?.observaciones?.filter(obs => obs.rolEmisor === 'Prestador').slice(-1)[0];
-  const ultimaObsAfiliado = autorizacion?.observaciones?.filter((obs) => obs.rolEmisor === "Afiliado")?.slice(-1)[0];
   const navigate = useNavigate()
   const fechaSolicitud = format(addDays(autorizacion.fechaSolicitud, 1), 'dd/MM/yyyy');
 
@@ -32,40 +31,6 @@ function AutorizacionCard(props) {
   const showButtons = rolSesion === 'Titular' && (autorizacion?.rolAfiliado === 'Cónyuge' || autorizacion?.rolAfiliado === 'Hijo Mayor');
   const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
-  let fechaAMostrar = null;
-
-  if (autorizacion.estado === "rechazado" || autorizacion.estado === "observado") {
-    fechaAMostrar = ultimaObsPrestador?.fecha;
-  } else if (autorizacion.estado === "aceptado") {
-    fechaAMostrar = autorizacion?.fechaAprobacion;
-  } else if (autorizacion.estado === "en análisis") {
-    fechaAMostrar = ultimaObsAfiliado.fecha;
-  } else {
-    fechaAMostrar = autorizacion?.createdAt;
-  }
-
-  const fechaFormateada = fechaAMostrar
-    ? new Date(fechaAMostrar).toLocaleDateString("es-AR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      })
-    : "Sin fecha";
-
-  const fechaActualizacion = {
-    rechazado: `Rechazada: ${fechaFormateada}`,
-    aceptado: `Aceptada: ${fechaFormateada}`,
-    pendiente: `Solicitud: ${fechaFormateada}`,
-    observado: `Observada: ${fechaFormateada}`,
-    analisis: `Análisis: ${fechaFormateada}`,
-  }
-
-  const fechaActualizacionFn = () => {
-    if(autorizacion.estado == 'en análisis'){
-        return fechaActualizacion.analisis
-    }
-    return fechaActualizacion[autorizacion.estado]
-  }
 
   const handleObservacionesRechazadas = () => {
         Swal.fire({
@@ -83,7 +48,15 @@ function AutorizacionCard(props) {
         });
 
         return;
-};
+  };
+
+  const fechaFormateada = autorizacion?.fechaActualizacion
+    ? new Date(autorizacion.fechaActualizacion).toLocaleDateString("es-AR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+    : "Sin fecha";
 
   return (
     <>

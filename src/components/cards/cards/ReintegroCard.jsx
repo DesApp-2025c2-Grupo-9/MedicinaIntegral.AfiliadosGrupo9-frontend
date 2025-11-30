@@ -26,7 +26,6 @@ function ReintegroCard(props) {
   const fechaDePrestacion = format(addDays(reintegro.fechaDePrestacion, 1), 'dd/MM/yyyy');
   const valorTotal = pesosArg.format(reintegro.factura.valorTotal);
   const ultimaObsPrestador = reintegro?.observaciones?.filter(obs => obs.rolEmisor === 'Prestador').slice(-1)[0];
-  const ultimaObsAfiliado = reintegro?.observaciones?.filter(obs => obs.rolEmisor === 'Afiliado')?.slice(-1)[0];
   const navigate = useNavigate();
 
   const user = useUserStore(state => state.user);
@@ -34,40 +33,13 @@ function ReintegroCard(props) {
   const showButtons = rolSesion === 'Titular' && (reintegro?.rolAfiliado === 'Cónyuge' || reintegro?.rolAfiliado === 'Hijo Mayor');
   const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
-  let fechaAMostrar = null;
-
-  if (reintegro.estado === 'rechazado' || reintegro.estado === 'observado') {
-    fechaAMostrar = ultimaObsPrestador?.fecha;
-  } else if (reintegro.estado === 'aceptado') {
-    fechaAMostrar = reintegro?.fechaAprobacion;
-  } else if (reintegro.estado === 'en análisis') {
-    fechaAMostrar = ultimaObsAfiliado.fecha;
-  } else {
-    fechaAMostrar = reintegro?.createdAt;
-  }
-
-  const fechaFormateada = fechaAMostrar
-    ? new Date(fechaAMostrar).toLocaleDateString('es-AR', {
+  const fechaFormateada = reintegro?.fechaActualizacion
+    ? new Date(reintegro.fechaActualizacion).toLocaleDateString('es-AR', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric'
       })
     : 'Sin fecha';
-
-  const fechaActualizacion = {
-    rechazado: `Rechazada: ${fechaFormateada}`,
-    aceptado: `Aceptada: ${fechaFormateada}`,
-    pendiente: `Solicitud: ${fechaFormateada}`,
-    observado: `Observada: ${fechaFormateada}`,
-    analisis: `Análisis: ${fechaFormateada}`
-  };
-
-  const fechaActualizacionFn = () => {
-    if (reintegro.estado == 'en análisis') {
-      return fechaActualizacion.analisis;
-    }
-    return fechaActualizacion[reintegro.estado];
-  };
 
   //Estilo de la card
   // const cardStyle = 'grid-cols-3';
