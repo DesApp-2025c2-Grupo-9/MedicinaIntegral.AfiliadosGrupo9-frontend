@@ -15,31 +15,23 @@ function MarcoCard(props) {
   } = props;
 
   const estilos = {
-    /*
-      Si el estado es:
-        pendiente:  Se carga fondo y pestaña en amarillo
-        aceptado:   Se carga fondo y pestaña en verde
-        rechazado:  Se carga fondo y pestaña en rojo
-        observado:  Se carga fondo y pestaña en azul
-        analisis: Se carga fondo y pestaña en celeste
-    */
-    pendiente: 'bg-[#FD7400]',
-    aceptado: 'bg-[#00AB01]',
-    rechazado: 'bg-[#FF1D23]',
-    observado: 'bg-[#1B76FF]',
-    analisis: 'bg-[#9C27B0]'
+    pendiente: 'bg-naranja-pendiente',
+    aceptado: 'bg-verde-aceptado',
+    rechazado: 'bg-rojo-rechazado',
+    observado: 'bg-azul-observado',
+    analisis: 'bg-violeta-analisis'
   };
 
   const innerBorderColor =
     estado === 'pendiente'
-      ? 'border-[#FD7400]'
+      ? 'border-naranja-pendiente'
       : estado === 'observado'
-      ? 'border-[#1B76FF]'
+      ? 'border-azul-observado'
       : estado === 'aceptado'
-      ? 'border-[#00AB01]'
+      ? 'border-verde-aceptado'
       : estado === 'rechazado'
-      ? 'border-[#FF1D23]'
-      : 'border-[#9C27B0]';
+      ? 'border-rojo-rechazado'
+      : 'border-violeta-analisis';
 
   const stateIcon =
     estado === 'pendiente'

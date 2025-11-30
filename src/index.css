@@ -24,6 +24,11 @@
   --color-negro-semi-translucido: rgba(0, 0, 0, 0.76);
   --color-verde-translucido: rgba(0, 171, 1, 0.24);
 
+  --color-naranja-pendiente: #FD7400;
+  --color-verde-aceptado: #00AB01;
+  --color-azul-observado: #1B76FF;
+  --color-rojo-rechazado: #FF1D23;
+  --color-violeta-analisis: #9C27B0;
   /* Shadow */
   --shadow-custom-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.12);
 }
