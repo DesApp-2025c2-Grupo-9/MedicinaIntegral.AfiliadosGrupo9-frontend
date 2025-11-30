@@ -137,7 +137,7 @@ function ReintegroCard(props) {
             <>
               <>{showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado} />}</>
               <div>
-                <TipoDeTramite tipo={'Reintegro'} />
+                <TipoDeTramite tipo={'Reintegro'} colorEstado={reintegro.estado}/>
               </div>
             </>
           ) : (

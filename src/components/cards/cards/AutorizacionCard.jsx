@@ -113,7 +113,7 @@ function AutorizacionCard(props) {
                   {showUsuarioCard && <UsuarioActual paciente={autorizacion.paraAfiliado}/>}
                 </>
                 <div>
-                  <TipoDeTramite tipo={'Autorización'} />
+                  <TipoDeTramite tipo={'Autorización'} colorEstado={autorizacion.estado}/>
                 </div>
               </>
             ) ://Si no es de dashboard

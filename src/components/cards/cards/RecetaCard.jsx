@@ -148,7 +148,7 @@ function RecetaCard(props) {
                 {showUsuarioCard && <UsuarioActual paciente={receta.paraAfiliado}/>}
               </>
               <div>
-                <TipoDeTramite tipo={"Receta"} />
+                <TipoDeTramite tipo={"Receta"} colorEstado={receta.estado}/>
               </div>
             </>
           ) : (
