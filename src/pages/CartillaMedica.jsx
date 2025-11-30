@@ -70,7 +70,7 @@ function CartillaMedica() {
   const hayFiltrosActivos = filters.localidad && filters.especialidad;
 
   return (
-    <div className="mb-4 flex flex-col gap-5">
+    <div className="mb-4 flex flex-col gap-2">
       <SectionTitle>Cartilla Médica</SectionTitle>
 
       <div className="flex flex-col gap-4">

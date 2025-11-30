@@ -1,8 +1,14 @@
 import clsx from 'clsx';
 import { icons } from '../../utils/icons';
 import UsuarioActual from '../UsuarioActual';
+import { useEffect } from 'react';
 
 function ModalSituacionTerapeutica({ open, onClose, prefix, nombreUsuario, diagnosticoTexto, headerText = 'Volver' }) {
+  useEffect(() => {
+    document.body.classList.add('overflow-hidden');
+    return () => document.body.classList.remove('overflow-hidden');
+  }, []);
+  
   if (!open) return null;
 
   return (

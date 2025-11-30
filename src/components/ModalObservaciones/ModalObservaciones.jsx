@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { icons } from '../../utils/icons';
 import Input from '../Input';
 import UsuarioActual from '../UsuarioActual';
@@ -8,6 +8,13 @@ import clsx from 'clsx';
 
 function ModalObservaciones({ open, onClose, nombreUsuario, prefix, observacionesTexto, headerText = 'Volver a', fechaEnvio, idTramite, onSubmit }) {
   const [comentario, setComentario] = useState('');
+
+  useEffect(() => {
+    if (open) {
+      document.body.classList.add('overflow-hidden');
+    }
+    return () => document.body.classList.remove('overflow-hidden');
+  }, [open]);
 
   if (!open) return null;
 

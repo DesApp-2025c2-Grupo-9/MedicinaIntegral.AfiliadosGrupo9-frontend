@@ -181,7 +181,7 @@ function ReintegroFormStepTwo({ className }) {
                   key={entry.cbu}
                   value={entry.cbu}
                 >
-                  {`${entry.nombre} ${entry.apellido}: ${entry.cbu}`}
+                  {`${entry.nombre} ${entry.apellido} (${entry.tipoDeCuenta})`}
                 </option>
               ))}
             </datalist>
