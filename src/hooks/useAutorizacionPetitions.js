@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 import { useDeleteAutorizacion, useCommentAutorizacionById } from '../services/autorizacionesQueries';
-
+import { addDays, format } from 'date-fns';
 export const useEliminarAutorizacion = () => {
   const { mutateAsync } = useDeleteAutorizacion();
 
@@ -11,9 +11,10 @@ export const useEliminarAutorizacion = () => {
       titleText: 'Está a punto de eliminar la solicitud de autorización:',
       html: `
         <p>Para afiliado: <b>${props.paraAfiliado}</b></p>
+        <p>Fecha prevista: <b>${format(addDays(props.fechaSolicitud, 1), 'dd/MM/yyyy')}</b></p>
         <p>Especialidad: <b>${props.especialidad}</b><p>
         <p>Práctica: <b>${props.practica}</b><p>
-        <p>Fecha prevista: <b>${new Date(props.fechaSolicitud).toLocaleDateString()}</b></p>
+        <p>Lugar de prestación: <b>${props.lugarAtencion}</b></p>
         <p>Dias de internación: <b>${props.diasDeInternacion}</b></p><br>
         <br />
         <p>¿Desea continuar?</p>

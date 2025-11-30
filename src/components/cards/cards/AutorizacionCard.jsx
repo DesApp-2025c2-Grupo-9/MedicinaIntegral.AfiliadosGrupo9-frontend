@@ -103,7 +103,7 @@ function AutorizacionCard(props) {
           {`${autorizacion.practica}`}
           {`Médico: ${autorizacion.medicoSolicitante}`}
           {`Fecha prevista: ${fechaSolicitud}`}
-          {`Lugar: ${autorizacion.lugarAtencion}`}
+          {`Lugar: ${autorizacion.lugarAtencion} (${autorizacion.diasDeInternacion == 1 ? autorizacion.diasDeInternacion + " dia": autorizacion.diasDeInternacion + " dias"})`}
         </ColumnaPrincipal>
         <div className="grid grid-rows-4 justify-items-end col-start-3">
           {//Si es card de dashboard
