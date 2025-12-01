@@ -30,7 +30,7 @@ function ReintegroCard(props) {
 
   const user = useUserStore(state => state.user);
   const rolSesion = user?.rolSesion;
-  const showButtons = rolSesion === 'Titular' && (reintegro?.rolAfiliado === 'Cónyuge' || reintegro?.rolAfiliado === 'Hijo Mayor');
+  const showButtons = rolSesion === reintegro?.rolAfiliado || reintegro?.rolAfiliado === 'Hijo Menor';
   const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
   const fechaFormateada = reintegro?.fechaActualizacion
@@ -108,13 +108,16 @@ function ReintegroCard(props) {
           {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
             <>
               <>{showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado} />}</>
-                <TipoDeTramite tipo={'Reintegro'} colorEstado={reintegro.estado}/>
+              <TipoDeTramite
+                tipo={'Reintegro'}
+                colorEstado={reintegro.estado}
+              />
             </>
           ) : (
             <>
               {showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado} />}
               {reintegro.estado !== 'pendiente' && reintegro.estado !== 'aceptado' && reintegro.estado !== 'en análisis' ? ( //el estado está en minuscula
-                !showButtons && (
+                showButtons && (
                   <div className='row-start-4'>
                     <BotonObservaciones
                       onClick={() => {
@@ -134,7 +137,7 @@ function ReintegroCard(props) {
           )}
           {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
           {reintegro.estado == 'pendiente' && dashboard == false ? ( //El estado está en minuscula
-            !showButtons && (
+            showButtons && (
               <div className='flex items-baseline-last justify-end row-start-4'>
                 <BotonEditar
                   onClick={() => {

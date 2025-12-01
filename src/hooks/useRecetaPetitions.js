@@ -29,8 +29,8 @@ export const useCommentReceta = () => {
 
 export const useDescargarReceta = () => {
   const descargarReceta = (receta) => {
-    const fechaSolicitud = receta.createdAt
-      ? new Date(receta.createdAt).toLocaleDateString("es-AR", {
+    const fechaSolicitud = receta.fechaActualizacion
+      ? new Date(receta.fechaActualizacion).toLocaleDateString("es-AR", {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",

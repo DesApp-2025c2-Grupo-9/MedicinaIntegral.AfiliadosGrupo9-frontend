@@ -28,7 +28,7 @@ function AutorizacionCard(props) {
 
   const user = useUserStore(state => state.user);
   const rolSesion = user?.rolSesion;
-  const showButtons = rolSesion === 'Titular' && (autorizacion?.rolAfiliado === 'Cónyuge' || autorizacion?.rolAfiliado === 'Hijo Mayor');
+  const showButtons = rolSesion === autorizacion?.rolAfiliado || autorizacion?.rolAfiliado === 'Hijo Menor';
   const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
 
@@ -93,7 +93,7 @@ function AutorizacionCard(props) {
               < >
                 {showUsuarioCard && <UsuarioActual paciente={autorizacion.paraAfiliado}/>}
                 {autorizacion.estado === "observado" || autorizacion.estado == "rechazado" ? (
-                  !showButtons && (
+                  showButtons && (
                     <div className="row-start-4">
                       <BotonObservaciones onClick={() => autorizacion.estado == "observado" ? setIsObservacionesOpen(true) : handleObservacionesRechazadas()} />
                   </div>)
@@ -103,7 +103,7 @@ function AutorizacionCard(props) {
           }
           {/*Aca si el estado es pendiente se puede modificar o eliminar la autorizacion*/}
           {autorizacion.estado == 'pendiente' && dashboard == false ? (
-            !showButtons && (
+            showButtons && (
               <div className="flex items-baseline-last justify-end row-start-4 col-start-1">
                 <BotonEditar onClick={() => {
                     setAutorizacion(autorizacion);

@@ -31,8 +31,7 @@ function RecetaCard(props) {
   const { deleteRecetaHandler } = useDelReceta();
   const user = useUserStore((state) => state.user);
   const rolSesion = user?.rolSesion;
-  const showButtons =
-    rolSesion === "Titular" && (receta?.rolAfiliado === "Cónyuge" || receta?.rolAfiliado === 'Hijo Mayor');
+  const showButtons = rolSesion === receta?.rolAfiliado || receta?.rolAfiliado === 'Hijo Menor';
   const showUsuarioCard = (rolSesion === 'Titular' && user.grupoFamiliar?.length > 1) || rolSesion === 'Cónyuge';
 
   const observacionPrestador = receta?.observaciones?.find(
@@ -75,6 +74,8 @@ function RecetaCard(props) {
       return;
     }
   };
+
+  console.log(receta);
 
   return (
     <>
@@ -125,7 +126,7 @@ function RecetaCard(props) {
           ) : (
             <>
              {showUsuarioCard && <UsuarioActual paciente={receta.paraAfiliado}/>}
-              {receta.estado !== "pendiente" && !showButtons && (
+              {receta.estado !== "pendiente" && showButtons && (
                 <div className="flex row-start-4">
                   {receta.estado === "aceptado" && (
                     <BotonDescargar onClick={() => descargarReceta(receta)} />
@@ -139,7 +140,7 @@ function RecetaCard(props) {
             </>
           )}
 
-          {receta.estado === "pendiente" && !dashboard && !showButtons && (
+          {receta.estado === "pendiente" && !dashboard && showButtons && (
             <div className="flex justify-end row-start-4">
               <BotonEditar
                 onClick={() => navigate(`/recetas/editar/${receta.id}`)}

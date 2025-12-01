@@ -18,12 +18,7 @@ function SolicitarReceta() {
   const { data: afiliadoRes } = useGetAfiliado();
   const user = useUserStore((state) => state.user);
   const rolSesion = user?.rolSesion;
-  const listaAfiliadosFiltrados =
-    rolSesion === "Titular"
-      ? afiliadoRes?.data?.grupoFamiliar.filter(
-          (familiar) => familiar.rol !== "Cónyuge" && familiar.rol !== 'Hijo Mayor' && familiar.rol !== 'Otro'
-        )
-      : afiliadoRes?.data?.grupoFamiliar;
+  const listaAfiliadosFiltrados = afiliadoRes?.data?.grupoFamiliar?.filter(familiar => familiar.rol === rolSesion || familiar.rol === 'Hijo Menor');
   const listaAfiliados = listaAfiliadosFiltrados.map(
     (familiar) => `${familiar.nombre} ${familiar.apellido}`
   );
