@@ -69,7 +69,7 @@ function VerTurnos() {
         {/* --- SECCIÓN 1: PRÓXIMOS TURNOS --- */}
         <SectionTitle>Mis Próximos Turnos</SectionTitle>
         {turnosFuturos.length > 0 ? (
-          <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3">
+          <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-3">
             {turnosFuturos.map(turno => (
               <TurnosCard
                 key={turno.idTurno}
@@ -82,7 +82,7 @@ function VerTurnos() {
             ))}
           </div>
         ) : (
-          <NoTurnosAvailable path='/turnos/solicitar-turno'/>
+          <NoTurnosAvailable />
         )}
       </div>
 
@@ -91,7 +91,7 @@ function VerTurnos() {
         <SectionTitle>Historial de Turnos</SectionTitle>
         {turnosPasados.length > 0 ? (
           <div className='flex flex-col gap-3'>
-            <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3">
+            <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-3">
             {(mostrarTodoHistorial ? turnosPasados: turnosPasados.slice(0,4)).map
             (turno => (
               <TurnosCard
@@ -108,7 +108,7 @@ function VerTurnos() {
             turnosPasados.length > 4 &&(
               <button 
            onClick={() => setMostrarTodoHistorial(!mostrarTodoHistorial)}
-           className="text-menta-600 font-semibold hover:underline w-fit self-center"
+           className="text-menta-600 font-semibold hover:underline w-fit self-center cursor-pointer"
         >
            {mostrarTodoHistorial ? "Ver menos" : "Ver historial completo"}
         </button>

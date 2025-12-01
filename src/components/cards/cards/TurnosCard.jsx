@@ -8,30 +8,37 @@ import { useNavigate } from "react-router-dom";
 import { useGetAfiliado } from "../../../services/queries";
 import { useUserStore } from "../../../store/userStore";
 function TurnosCard(props) {
+
+  
   const navigate = useNavigate();
   //Recibe en sus props un turno
   //Opcionalmente, si el turno le pertenece al afiliado, se manda el afiliado o una flag
   //  que indique que el turno pertenece al paciente
   const {
     mutateAsync: reservar,
-    isLoading: isReservando,
-    isSuccess: isReservado,
-    isError: isErrorReserva
-    
+
   } = useReservarTurno();
 
   //Usuario actual para mostrar la papelera si corresponde
   const user = useUserStore(state => state.user)
-  const {data: afiliadoRes } = useGetAfiliado();
+  const { data: afiliadoRes } = useGetAfiliado();
   const afiliado = afiliadoRes?.data;
   const grupoFamiliar = afiliado?.grupoFamiliar;
   const afiliadoActual = grupoFamiliar?.find(familiar => familiar?.id === user?.idAfiliado)
   const rolAfiliadoActual = afiliadoActual?.rol || '';
 
+  //Grupo familiar
   
-  
-  
-  const { mutateAsync: anularReserva} = useAnularReserva();
+  const listaAfiliadosCompleta = afiliadoRes?.data?.grupoFamiliar.map((familiar) =>
+  ({
+    id: familiar.id,
+    nombre: `${familiar.nombre} ${familiar.apellido}`
+  })
+  ) || [];
+  const arrayDeAfiliados = listaAfiliadosCompleta.map(afiliado => afiliado.nombre)
+
+
+  const { mutateAsync: anularReserva } = useAnularReserva();
   const turno = props.turno; //El turno con el que se va a cargar la primera columna
   const paciente = props.paciente; //Flag  paciente
   const isPast = props.isPast;
@@ -41,17 +48,17 @@ function TurnosCard(props) {
   const diferenciaMs = fechaTurno.getTime() - ahora.getTime();
   const ms24Hs = 86400000;
   let cardStyle = `relative overflow-hidden group transition-all duration-300  ${paciente ? 'grid-cols-2' : ''}`;
-  
+
   //Para saber si el turno corresponde al usuario logueado
-  
+
   const turnoPropio = user.idAfiliado === props.idAfiliadoTurno
-  
+
   //Para saber si el turno corresponde a un hijo menor
   const turnoDeHijoMenor = rolAfiliadoActual === 'Hijo Menor'
-  
-const mostrarPapelera = () => {
-  return diferenciaMs > ms24Hs && (turnoPropio || turnoDeHijoMenor);
-};
+
+  const mostrarPapelera = () => {
+    return diferenciaMs > ms24Hs && (turnoPropio || turnoDeHijoMenor);
+  };
 
 
 
@@ -94,7 +101,7 @@ const mostrarPapelera = () => {
 
       // 6. LLAMAMOS A LA MUTACIÓN Y ESPERAMOS (await)
       await anularReserva(
-         turno.idTurno
+        turno.idTurno
       );
 
       // 7. SI 'await' TERMINA BIEN (Éxito):
@@ -115,7 +122,7 @@ const mostrarPapelera = () => {
 
     } catch (error) {
       // 8. SI 'await' FALLA (Error):
-      console.log('Error en la anulacińo: ', error)
+      console.log('Error en la anulación: ', error)
       Swal.fire({
         title: "Error",
         text: "No se pudo anular la reserva del turno.",
@@ -126,7 +133,8 @@ const mostrarPapelera = () => {
   const reservarTurno = async () => {
     const fechaFormateada = formatFecha(turno.fechaTurno)
     const result = await Swal.fire({
-      title: "Está a punto de reservar el turno:",
+      title: `Estás a punto de reservar un turno${arrayDeAfiliados.length > 1 ?  
+        `para ${props.nombreAfiliadoParaReservar}`: ''}.`,
       html: `<p>Para la especialidad: <b>${turno.especialidad}</b><br />
       Con: <b>${turno.prestador}</b><br />
       El día: <b>${fechaFormateada}</b></p>`,
@@ -163,7 +171,7 @@ const mostrarPapelera = () => {
         idTurno: turno.idTurno,
         idAfiliado: props.idAfiliadoParaReservar
       });
-      
+
       // 7. SI 'await' TERMINA BIEN (Éxito):
       // Tu 'onSuccess' global (el de 'invalidateQueries') se va a disparar solo.
       // Y acá mostramos el modal de éxito.
@@ -193,11 +201,11 @@ const mostrarPapelera = () => {
       });
     }
   }
-  
+
 
   return (
     <MarcoCard estilo={cardStyle} >
-      <div className={`transition-all duration-300 group-hover:blur-xxs group-hover:brightness-75 ${paciente || 'grid-cols-2'} ${isPast ? 'opacity-60 grayscale-[50%]': ''}`}>
+      <div className={`transition-all duration-300 group-hover:blur-xxs group-hover:brightness-75 ${paciente || 'grid-cols-2'} ${isPast ? 'opacity-60 grayscale-[50%]' : ''}`}>
         <div>
 
           {/*columna datos del turno*/}
@@ -214,16 +222,16 @@ const mostrarPapelera = () => {
       {/*Columna derecha si tiene turno asignado*/}
       {paciente && (
         <div className="grid grid-rows-4 justify-end">
-          <UsuarioActual paciente={props.nombrePaciente}/>
+          <UsuarioActual paciente={props.nombrePaciente} />
           <div className="row-start-4 justify-self-end">
 
-            {!isPast? (//Si no pasó
+            {!isPast ? (//Si no pasó
               //Si faltan más de 24hs hasta el turno mostrar el botón de papelera
               mostrarPapelera() &&
               <BotonPapelera
                 onClick={deleteTurno}
               />
-            ): (
+            ) : (
               <span className="text-sm font-bold text-gray-500 p-2">
                 Finalizado
               </span>

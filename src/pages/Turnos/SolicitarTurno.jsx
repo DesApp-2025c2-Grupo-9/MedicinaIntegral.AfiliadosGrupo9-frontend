@@ -22,6 +22,7 @@ function SolicitarTurno() {
   const [localidadSeleccionada, setLocalidadSeleccionada] = useState('')
   const [prestadorSeleccionado, setPrestadorSeleccionado] = useState('')
   const [afiliadoIdSeleccionado, setAfiliadoIdSeleccionado] = useState(undefined)
+  const [nombreSeleccionado, setNombreSeleccionado] = useState('')
 
   //Estádo con filtros aplicados:
   const [busquedaActual, setBusquedaActual] = useState(null);
@@ -47,9 +48,9 @@ function SolicitarTurno() {
     axiosPrivate,
     busquedaActual?.especialidad,
     busquedaActual?.localidad,
-    '',{//La query se activa si hay una busquedaActual cargada
-      enabled: !!busquedaActual
-    }
+    '', {//La query se activa si hay una busquedaActual cargada
+    enabled: !!busquedaActual
+  }
   );
 
   //Grupo familiar
@@ -66,7 +67,7 @@ function SolicitarTurno() {
     const espURL = searchParams.get('especialidad');
     const locURL = searchParams.get('localidad');
 
-    if(espURL && locURL){
+    if (espURL && locURL) {
       setEspecialidadSeleccionada(espURL);
       setLocalidadSeleccionada(locURL)
       //Disparar la busqueda automáticamente
@@ -80,14 +81,15 @@ function SolicitarTurno() {
 
   //Handlers
 
-  
+
   const handleAfiliadoChange = (e) => {
-    const nombreSeleccionado = e.target.value;
-    const afiliadoEncontrado = listaAfiliadosCompleta.find(afiliado => afiliado.nombre === nombreSeleccionado)
+    const nombre = e.target.value;
+    const afiliadoEncontrado = listaAfiliadosCompleta.find(afiliado => afiliado.nombre === nombre)
 
     setAfiliadoIdSeleccionado(
       afiliadoEncontrado.id
     )
+    setNombreSeleccionado(nombre)
   };
 
   const handleEspecialidadChange = (e) => {
@@ -98,7 +100,7 @@ function SolicitarTurno() {
     setBusquedaActual(null)
     setSearchParams({})
   };
-  
+
   const handleLocalidadChange = (e) => {
     setLocalidadSeleccionada(e.target.value);
     setPrestadorSeleccionado('')
@@ -106,7 +108,7 @@ function SolicitarTurno() {
     setBusquedaActual(null)
   };
   const handleBuscarClick = () => {
-    const nuevaBusqueda ={
+    const nuevaBusqueda = {
       especialidad: especialidadSeleccionada,
       localidad: localidadSeleccionada
     }
@@ -115,13 +117,14 @@ function SolicitarTurno() {
 
     setSearchParams(nuevaBusqueda)
   }
-  
+
   React.useEffect(() => {
     // Si el ID de afiliado NO está seteado y la lista YA cargó
     if (!afiliadoIdSeleccionado && listaAfiliadosCompleta.length > 0) {
       // Seteamos el ID del primer afiliado (el titular) como default
 
       setAfiliadoIdSeleccionado(listaAfiliadosCompleta[0].id);
+      setNombreSeleccionado(listaAfiliadosCompleta[0].nombre)
     }
   }, [listaAfiliadosCompleta, afiliadoIdSeleccionado]); // Dependencias
 
@@ -133,9 +136,12 @@ function SolicitarTurno() {
     return turno.prestador === prestadorSeleccionado;
   })
 
-
   return (
     <div className='flex flex-col gap-4'>
+      <div className="text-base font-semibold text-negro-principal px-1 pb-1">
+        Para buscar turnos disponibles seleccioná especialidad y ubicación.
+      </div>
+
       <InputContainer>
         {
           arrayDeAfiliados.length > 1 &&
@@ -163,14 +169,19 @@ function SolicitarTurno() {
             disabled={!especialidadSeleccionada}
           />
         }
-        
+
       </InputContainer>
 
       <Button
         onClick={handleBuscarClick}
+        state={!especialidadSeleccionada || !localidadSeleccionada ? 'disabled' : 'active'}
         disabled={!especialidadSeleccionada || !localidadSeleccionada}
+        title={!especialidadSeleccionada || !localidadSeleccionada ?
+          'Se debe seleccionar una especialidad y una ubicación para buscar turnos disponibles'
+          : 'Buscar turnos disponibles'
+        }
       >
-        {isLoadingTurnos ? 'Buscando ...' : 'Buscar disponibilidad'
+        {isLoadingTurnos ? 'Buscando ...' : 'Buscar'
         }
       </Button>
       <div>
@@ -180,19 +191,19 @@ function SolicitarTurno() {
         )}
         {busquedaActual && isSuccessTurnos &&
           <div>
-              <Select
-                placeholder='Todos'
-                label={'Profesional'}
-                options={isLoadingPrestadores ? ['Cargando...'] : prestadores || []}
-                onChange={
-                  e => {
-                    setPrestadorSeleccionado(e.target.value)
-                  }
-                }               
-              style={{marginBottom: '12px', width: '300px'}}
-              />
+            <Select
+              label={'Profesional'}
+              options={isLoadingPrestadores ? ['Cargando...'] : prestadores || []}
+              onChange={
+                e => {
+                  setPrestadorSeleccionado(e.target.value)
+                }
+              }
+              style={{ marginBottom: '12px', width: '300px' }}
+              value={prestadorSeleccionado || 'Todos'}
+            />
 
-            <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3">
+            <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-3">
               {
                 turnosFiltrados.length > 0 &&
                 turnosFiltrados.map(
@@ -200,7 +211,8 @@ function SolicitarTurno() {
                     key={turno.idTurno}
                     turno={turno}
                     idAfiliadoParaReservar={afiliadoIdSeleccionado}
-                    />
+                    nombreAfiliadoParaReservar={nombreSeleccionado}
+                  />
                 )
               }
             </div>

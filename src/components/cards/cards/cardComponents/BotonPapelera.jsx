@@ -1,13 +1,12 @@
 import { icons } from '../../../../utils/icons'
-
-
 function BotonPapelera(props) {
-  //Se debe cargar la posición para que quede al final de la card
+
+
   return (
     <div >
       <button
         type='button'
-       className="flex flex-row
+        className="flex flex-row
         text-gray-600
         hover:bg-red-100
         hover:text-red-800
@@ -15,7 +14,7 @@ function BotonPapelera(props) {
         px-3 justify-end cursor-pointer text-sm transition-colors
         rounded-full
          bg-red-50  border-s-gray-900 shadow-2xs 
-         " 
+         "
         onClick={props.onClick}
         title='Eliminar'
       >
