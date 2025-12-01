@@ -75,7 +75,7 @@ function VerTurnos() {
                 key={turno.idTurno}
                 turno={turno}
                 paciente={true}
-                nombrePaciente={`${afiliadoActual?.nombre} ${afiliadoActual.apellido}`}//Usuario que está viendo actualmente
+                nombrePaciente={`${afiliadoActual?.nombre} ${afiliadoActual?.apellido}`}//Usuario que está viendo actualmente
                 idAfiliadoTurno={idAfiliado}
                 isPast={false} // <-- Prop para que SÍ muestre la papelera
               />
