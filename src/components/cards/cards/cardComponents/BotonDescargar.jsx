@@ -5,6 +5,7 @@ function BotonDescargar(props) {
   return (
     <div >
       <button
+        type="button"
         className="flex flex-row
         text-gray-600
         hover:bg-green-100

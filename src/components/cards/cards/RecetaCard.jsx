@@ -75,7 +75,6 @@ function RecetaCard(props) {
     }
   };
 
-  console.log(receta);
 
   return (
     <>

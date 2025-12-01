@@ -1,9 +1,11 @@
 import { icons } from '../../../../utils/icons';
-
 function BotonObservaciones(props) {
+
+
   return (
     <div>
       <button
+        type='button'
         className='flex flex-row
         text-gray-600
         hover:bg-blue-100

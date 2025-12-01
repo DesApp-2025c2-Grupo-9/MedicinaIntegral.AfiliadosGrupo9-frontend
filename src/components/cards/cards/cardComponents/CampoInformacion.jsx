@@ -1,9 +1,20 @@
-function CampoInformacion({ children, campo }) {
-  //El número de campo es el que va a determinar en que posición se ubica en la tarjeta
-  //Se suma 2 ya que las primeras 2 row son para Título y Subtiulo de la card
-  const numeroDeCampo = campo + 2;
+import { FaPhone } from "react-icons/fa";
+
+function CampoInformacion({ children }) {
   //Children es el texto que va a contener
-  return <p className={`text-xs`}>{children}</p>;
+  return <div className="flex items-center gap-2 text-black text-xs">
+    {
+      validarTelefono(children) &&
+      <FaPhone size={12}/>
+    }
+    <span>
+    {children}
+    </span>
+    </div>;
+}
+function validarTelefono(str) {
+  //Verifica si se recibió un telefono por parámetro
+  return /^\d{10}$/.test(str);
 }
 
 export default CampoInformacion;
