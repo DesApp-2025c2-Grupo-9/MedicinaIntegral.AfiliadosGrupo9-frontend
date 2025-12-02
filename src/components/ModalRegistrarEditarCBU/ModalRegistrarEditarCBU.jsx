@@ -172,11 +172,11 @@ function ModalRegistrarEditarCBU({ setIsOpen, cbuActual }) {
   };
 
   return (
-    <div className='inset-0 h-full fixed top-0 left-0 z-50 bg-negro-translucido flex items-center justify-center'>
+    <div className='inset-0 h-full fixed top-0 left-0 z-50 bg-negro-translucido pt-4 md:pt-0 flex items-start md:items-center justify-center'>
       <Form
         onSubmit={handleSubmit}
         legend={cbuActual ? 'Edite o elimine el CBU' : 'Registrar CBU'}
-        className='w-[calc(100%-32px)] max-w-3xl animate-modal'
+        className='w-[calc(100%-32px)] max-w-3xl h-[calc(100dvh-32px)] md:h-fit overflow-y-scroll animate-modal no-scrollbar'
         legendClassName='text-xl font-bold text-blue-500'
       >
         <span className={clsx('text-sm', { 'hidden md:flex': cbuActual })}>{formDescription}</span>
@@ -193,7 +193,7 @@ function ModalRegistrarEditarCBU({ setIsOpen, cbuActual }) {
           disabled={cbuActual}
         />
 
-        <InputContainer className='flex-row'>
+        <InputContainer className=''>
           <Select
             label='Tipo de cuenta:'
             name='tipoDeCuenta'
@@ -214,7 +214,7 @@ function ModalRegistrarEditarCBU({ setIsOpen, cbuActual }) {
           />
         </InputContainer>
 
-        <InputContainer className='flex-row'>
+        <InputContainer className=''>
           <Input
             id='nombre'
             label='Nombre:'

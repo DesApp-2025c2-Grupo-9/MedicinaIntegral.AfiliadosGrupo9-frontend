@@ -34,7 +34,7 @@ function Inicio() {
     <div className='flex flex-col gap-5 lg:max-w-[calc(100dvw-296px)] mb-4'>
       <div className='flex flex-col gap-2'>
         <SectionTitle>Próximos Turnos</SectionTitle>
-        <div className={`w-full grid ${turnos.length ? 'grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-3' : ''} `}>
+        <div className={`w-full grid ${turnos.length ? 'sm:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-3' : ''} `}>
           {turnos.length ? (
             turnos.map((t, tIndex) => (
               <TurnosCard

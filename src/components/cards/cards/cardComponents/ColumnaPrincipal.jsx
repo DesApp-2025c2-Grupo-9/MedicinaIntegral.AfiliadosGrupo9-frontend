@@ -16,7 +16,7 @@ function ColumnaPrincipal(props) {
 
   return (
     // <div className='grid col-span-2'>
-    <div className='flex flex-col justify-between bg-red-300'>
+    <div className='flex flex-col justify-between'>
       <TituloCard>{titulo}</TituloCard>
 
       <SubTituloCard>{subtitulo}</SubTituloCard>
