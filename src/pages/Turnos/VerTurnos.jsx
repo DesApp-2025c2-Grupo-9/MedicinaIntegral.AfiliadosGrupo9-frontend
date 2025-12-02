@@ -103,7 +103,7 @@ function VerTurnos() {
                 isPast={true}
               />
             ))}
-          </div>
+            </div>
           {
             turnosPasados.length > 4 &&(
               <button 

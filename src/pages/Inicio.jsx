@@ -54,7 +54,7 @@ function Inicio() {
 
       <div className='flex flex-col gap-2'>
         <SectionTitle>Trámites</SectionTitle>
-        <div className={`w-full ${tramitesStyles} ${tramites.length ? 'grid grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-3' : ''} `}>
+        <div className={`min-w-full ${tramitesStyles} ${tramites.length ? 'grid sm:grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-3' : ''} `}>
           {tramites.length ? (
             tramites?.map((t, indx) => {
               if(t) {

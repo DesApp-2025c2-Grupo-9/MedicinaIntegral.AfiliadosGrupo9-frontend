@@ -27,7 +27,7 @@ function ReintegroVer() {
             setEstadoTramite={setEstadoTramite}
           />
           {reintegrosFiltrados.length >= 1 ? (
-            <div className='w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3'>
+            <div className='w-full grid sm:grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3'>
               {reintegrosFiltrados.map(r => (
                 <ReintegroCard
                   key={r.id}

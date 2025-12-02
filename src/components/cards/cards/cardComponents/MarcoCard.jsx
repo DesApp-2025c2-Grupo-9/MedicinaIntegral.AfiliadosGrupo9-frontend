@@ -82,7 +82,8 @@ function MarcoCard(props) {
         ) //Sino no se muestra el marco y solo la card
       }
 
-      <div className={`grid p-3 bg-blanco-principal rounded-lg ${estado ? `border-1 border-t-0 ${innerBorderColor}` : 'h-full border border-gris-border'} ${estilo}`}>
+      {/* <div className={`grid p-3 bg-blanco-principal rounded-lg ${estado ? `border-1 border-t-0 ${innerBorderColor}` : 'h-full border border-gris-border'} ${estilo}`}> */}
+      <div className={`flex justify-between p-3 bg-blanco-principal rounded-lg ${estado ? `border-1 border-t-0 ${innerBorderColor}` : 'h-full border border-gris-border'} ${estilo}`}>
         {/*Aca dentro va la card */}
         {children}
       </div>

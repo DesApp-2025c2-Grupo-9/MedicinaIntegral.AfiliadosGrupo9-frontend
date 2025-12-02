@@ -43,7 +43,7 @@ function VerRecetas() {
             setEstadoTramite={setEstadoTramite}
           />
           {recetasFiltradas.length >= 1 ? (
-            <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3">
+            <div className='w-full grid sm:grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3'>
               {recetasFiltradas.map((receta, idReceta) => (
                 <RecetaCard receta={receta} key={idReceta} />
               ))}

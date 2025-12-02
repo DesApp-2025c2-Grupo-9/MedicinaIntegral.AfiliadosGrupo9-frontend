@@ -112,7 +112,8 @@ function RecetaCard(props) {
           {`Presentación: ${receta.presentacion}`}
         </ColumnaPrincipal>
 
-        <div className="grid grid-rows-4 justify-items-end">
+        {/* <div className="grid grid-rows-4 justify-items-end bg-yellow-300"> */}
+        <div className="flex flex-col pt-1 gap-1 items-end">
           {dashboard ? (
             <>
               <>
@@ -126,7 +127,7 @@ function RecetaCard(props) {
             <>
              {showUsuarioCard && <UsuarioActual paciente={receta.paraAfiliado}/>}
               {receta.estado !== "pendiente" && showButtons && (
-                <div className="flex row-start-4">
+                <div className="mt-auto">
                   {receta.estado === "aceptado" && (
                     <BotonDescargar onClick={() => descargarReceta(receta)} />
                   )}
@@ -140,7 +141,7 @@ function RecetaCard(props) {
           )}
 
           {receta.estado === "pendiente" && !dashboard && showButtons && (
-            <div className="flex justify-end row-start-4">
+            <div className="flex gap-1 mt-auto">
               <BotonEditar
                 onClick={() => navigate(`/recetas/editar/${receta.id}`)}
               />

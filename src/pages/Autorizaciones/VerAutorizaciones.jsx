@@ -30,7 +30,7 @@ function VerAutorizaciones() {
             setEstadoTramite={setEstadoTramite}/>
           {
             autorizacionesFiltradas?.length >= 1 ?  
-              <div className='w-full grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3'>
+              <div className='w-full grid sm:grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-3'>
                 {
                   autorizacionesFiltradas.map((autorizacion, idAutorizacion) => (
                   <AutorizacionCard

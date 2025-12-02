@@ -103,7 +103,8 @@ function ReintegroCard(props) {
           {reintegro.lugarDeAtencion}
         </ColumnaPrincipal>
         {/**Columna dinámica con opciones o información del trámite */}
-        <div className='grid grid-rows-4 justify-items-end relative'>
+        {/* <div className='grid grid-rows-4 justify-items-end relative'> */}
+        <div className='flex flex-col pt-1 gap-1 items-end'>
           {/*El estilo del estado es dinámico si está o no en el dashboard*/}
           {props.dashboard ? ( //Si es card de dashboard mostrar el tipo de tramite
             <>
@@ -118,7 +119,7 @@ function ReintegroCard(props) {
               {showUsuarioCard && <UsuarioActual paciente={reintegro.paraAfiliado} />}
               {reintegro.estado !== 'pendiente' && reintegro.estado !== 'aceptado' && reintegro.estado !== 'en análisis' ? ( //el estado está en minuscula
                 showButtons && (
-                  <div className='row-start-4'>
+                  <div className='mt-auto'>
                     <BotonObservaciones
                       onClick={() => {
                         if (reintegro.estado === 'observado') {
@@ -138,7 +139,7 @@ function ReintegroCard(props) {
           {/*Aca si el estado es pendiente se puede modificar o elimnar la receta */}
           {reintegro.estado == 'pendiente' && dashboard == false ? ( //El estado está en minuscula
             showButtons && (
-              <div className='flex items-baseline-last justify-end row-start-4'>
+              <div className='flex gap-1 mt-auto'>
                 <BotonEditar
                   onClick={() => {
                     setReintegro(reintegro);

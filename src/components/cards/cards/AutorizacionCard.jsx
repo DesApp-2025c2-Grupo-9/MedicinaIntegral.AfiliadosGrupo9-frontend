@@ -78,7 +78,8 @@ function AutorizacionCard(props) {
           {`Fecha prevista: ${fechaSolicitud}`}
           {`Lugar: ${autorizacion.lugarAtencion} (${autorizacion.diasDeInternacion == 1 ? autorizacion.diasDeInternacion + " dia": autorizacion.diasDeInternacion + " dias"})`}
         </ColumnaPrincipal>
-        <div className="grid grid-rows-4 justify-items-end col-start-3">
+        {/* <div className="grid grid-rows-4 justify-items-end col-start-3"> */}
+        <div className="flex flex-col pt-1 gap-1 items-end">
           {//Si es card de dashboard
             props.dashboard ? (
               <>
@@ -94,7 +95,7 @@ function AutorizacionCard(props) {
                 {showUsuarioCard && <UsuarioActual paciente={autorizacion.paraAfiliado}/>}
                 {autorizacion.estado === "observado" || autorizacion.estado == "rechazado" ? (
                   showButtons && (
-                    <div className="row-start-4">
+                    <div className="mt-auto">
                       <BotonObservaciones onClick={() => autorizacion.estado == "observado" ? setIsObservacionesOpen(true) : handleObservacionesRechazadas()} />
                   </div>)
                   ) : <>  </>
@@ -104,7 +105,7 @@ function AutorizacionCard(props) {
           {/*Aca si el estado es pendiente se puede modificar o eliminar la autorizacion*/}
           {autorizacion.estado == 'pendiente' && dashboard == false ? (
             showButtons && (
-              <div className="flex items-baseline-last justify-end row-start-4 col-start-1">
+              <div className="flex gap-1 mt-auto">
                 <BotonEditar onClick={() => {
                     setAutorizacion(autorizacion);
                     navigate('/autorizaciones/editar-autorizacion');

@@ -15,7 +15,8 @@ function ColumnaPrincipal(props) {
   const camposFiltrados = campos.filter(entry => (typeof entry === 'string' && !entry.includes('Nro. Afiliado:')) || typeof entry === 'object'); // Se elimina el campo Nro. Afiliado: que aparecía duplicado en la Card
 
   return (
-    <div className='grid col-span-2'>
+    // <div className='grid col-span-2'>
+    <div className='flex flex-col justify-between bg-red-300'>
       <TituloCard>{titulo}</TituloCard>
 
       <SubTituloCard>{subtitulo}</SubTituloCard>
