@@ -98,7 +98,7 @@ function VerTurnos() {
                 key={turno.idTurno}
                 turno={turno}
                 paciente={true}
-                nombrePaciente={`${afiliadoActual?.nombre} ${afiliadoActual.apellido}`}
+                nombrePaciente={`${afiliadoActual?.nombre} ${afiliadoActual?.apellido}`}
                 idAfiliadoParaEliminar={idAfiliado}
                 isPast={true}
               />
