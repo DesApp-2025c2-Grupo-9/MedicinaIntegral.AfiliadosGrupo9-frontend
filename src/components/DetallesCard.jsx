@@ -63,11 +63,12 @@ function DetallesCard({ reintegro, className, isOpen, setIsOpen }) {
           return (
             <div
               key={index}
-              className='flex items-center gap-2 w-full max-w-[50%]'
+              className='flex items-start gap-2 w-full max-w-[calc(50%-16px)]'
             >
-              <div className='border p-2 rounded-full border-negro-principal flex items-center justify-center'>
+              <div className='hidden border p-2 rounded-full border-negro-principal xs:flex items-center justify-center'>
                 <div className='w-4 aspect-square'>{iconsArr[index]}</div>
               </div>
+              <span className='xs:hidden'>•</span>
               <p className='leading-4 text-xs'>
                 {key}:<br />
                 <span className='font-bold capitalize'>{value}</span>
@@ -79,7 +80,7 @@ function DetallesCard({ reintegro, className, isOpen, setIsOpen }) {
       <button
         onClick={() => setIsOpen(false)}
         className={twMerge(
-          'absolute top-2 right-2 w-11 h-6 aspect-square lg:cursor-pointer flex justify-center items-centers rounded-full transition-all border',
+          'absolute top-1 right-1 w-11 h-6 aspect-square lg:cursor-pointer flex justify-center items-centers rounded-full transition-all border',
           bgColor[reintegro.estado],
           borderColor[reintegro.estado],
           textColor[reintegro.estado]

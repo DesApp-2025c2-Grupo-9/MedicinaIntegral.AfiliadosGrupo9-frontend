@@ -29,8 +29,12 @@
   --color-azul-observado: #1B76FF;
   --color-rojo-rechazado: #FF1D23;
   --color-violeta-analisis: #9C27B0;
+
   /* Shadow */
   --shadow-custom-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.12);
+
+  /* Breakpoint */
+  --breakpoint-xs: 30rem;
 }
 
 body {
