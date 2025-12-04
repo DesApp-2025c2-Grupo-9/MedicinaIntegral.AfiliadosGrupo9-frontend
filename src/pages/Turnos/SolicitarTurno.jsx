@@ -8,6 +8,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { useGetAfiliado } from '../../services/queries';
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useUserStore } from '../../store/userStore';
 
 function SolicitarTurno() {
   const axiosPrivate = useAxiosPrivate();
@@ -52,9 +53,12 @@ function SolicitarTurno() {
     enabled: !!busquedaActual
   }
   );
+  const user = useUserStore(state => state.user);
+  const rolSesion = user?.rolSesion; // Rol de quien inició sesión
 
   //Grupo familiar
-  const listaAfiliadosCompleta = afiliadoRes?.data?.grupoFamiliar.map((familiar) =>
+  const listaAfiliadosFiltrados = afiliadoRes?.data?.grupoFamiliar?.filter(familiar => familiar.rol === rolSesion || familiar.rol === 'Hijo Menor');
+  const listaAfiliadosCompleta = listaAfiliadosFiltrados?.map((familiar) =>
   ({
     id: familiar.id,
     nombre: `${familiar.nombre} ${familiar.apellido}`

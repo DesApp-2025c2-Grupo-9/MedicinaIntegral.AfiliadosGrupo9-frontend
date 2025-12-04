@@ -115,7 +115,7 @@ function VerTurnos() {
             )}
             </div>
         ) : (
-          <p>No tenés turnos en tu historial.</p>
+          <p className='font-bold text-gris-placeholder'>No tiene turnos en su historial.</p>
         )}
       </div>
     </div>

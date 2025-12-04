@@ -30,6 +30,8 @@ function Inicio() {
   let heightCarousel = turnos.length > 0 || tramites.length > 0 ? 'h-56' : 'h-[550px]';
   let tramitesStyles = tramites.filter(t => t != null).length % 2 != 0 ? "2xl:w-full" : "2xl:w-2/3";
 
+  tramites.sort((a, b) => new Date(b.fechaActualizacion) - new Date(a.fechaActualizacion));
+
   return (
     <div className='flex flex-col gap-5 lg:max-w-[calc(100dvw-296px)] mb-4'>
       <div className='flex flex-col gap-2'>
