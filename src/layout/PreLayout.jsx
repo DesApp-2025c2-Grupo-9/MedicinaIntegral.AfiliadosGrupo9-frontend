@@ -1,6 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import clinica_img from '../assets/img/clinica.webp';
 import med_integral_logo from '../assets/img/med_integral_logo.png';
+import { ToastContainer } from 'react-toastify';
+import DemoBadge from '../components/DemoBadge';
 
 function PreLayout() {
   return (
@@ -13,11 +15,14 @@ function PreLayout() {
         />
 
         <div className='logo-section'>
-          <img
-            className='logo'
-            src={med_integral_logo}
-            alt='logo'
-          />
+          <DemoBadge />
+          <div className='logo-stack'>
+            <img
+              className='logo'
+              src={med_integral_logo}
+              alt='logo'
+            />
+          </div>
           <p className='title'>
             Medicina
             <br />
@@ -25,6 +30,8 @@ function PreLayout() {
           </p>
         </div>
       </div>
+
+      <ToastContainer limit={1} />
 
       <Outlet />
     </div>

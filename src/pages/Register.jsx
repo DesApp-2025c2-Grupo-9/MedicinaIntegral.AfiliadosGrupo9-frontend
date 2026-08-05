@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { validacionRegistro } from '../utils/validacionRegistro';
 import OcultarClave from '../components/OcultarClave/ocultarClave';
 import { useRegister } from '../services/queries';
+import DemoResetButton from '../components/DemoResetButton';
 
 const Register = () => {
   const [usuario, setUsuario] = useState('');
@@ -119,6 +120,14 @@ const Register = () => {
     <div className='register-page'>
       <h1 className='heading'>Regístrese</h1>
 
+      <div className='demo-register-help'>
+        <p className='demo-register-help__title'>¿Quieres probar el registro? Registra uno de los siguientes DNIs:</p>
+        <p className='demo-register-help__dni'>30123456 (Titular)</p>
+        <p className='demo-register-help__dni'>31234567 (Cónyuge)</p>
+      </div>
+
+      <div className='h-0.25 w-[72%] bg-black/15'></div>
+
       <form
         onSubmit={handleSubmit}
         className='register-form'
@@ -150,6 +159,7 @@ const Register = () => {
             type='password'
             placeholder='ej: ******'
             value={clave}
+            maxLength={6}
             onChange={handleClaveChange}
           />
         </div>
@@ -161,6 +171,7 @@ const Register = () => {
             type='password'
             placeholder='ej: ******'
             value={confirmarClave}
+            maxLength={6}
             onChange={handleConfirmarClaveChange}
           />
         </div>
@@ -181,6 +192,13 @@ const Register = () => {
           <Link to='/login'>Ingrese aquí.</Link>
         </span>
       </p>
+
+      <div className='h-0.25 w-[72%] bg-black/15'></div>
+
+      <div className='demo-register-help'>
+        <p className='demo-register-help__title'>¿Los DNIs ya fueron registrados? Restablece los datos de demostración.</p>
+        <DemoResetButton className='demo-action-button' />
+      </div>
     </div>
   );
 };

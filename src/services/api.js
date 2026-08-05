@@ -6,6 +6,11 @@ export const register = async body => {
   return res.data;
 };
 
+export const resetDemoData = async () => {
+  const res = await axios.post('api/demo/reset');
+  return res.data;
+};
+
 export const login = async body => {
   const res = await axios.post('api/auth/login', body, { withCredentials: true });
   return res.data;

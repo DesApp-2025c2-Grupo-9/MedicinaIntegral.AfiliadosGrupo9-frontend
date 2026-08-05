@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import './ocultarClave.css';
 
-const OcultarClave = ({ id, placeholder, value, onChange, label }) => {
+const OcultarClave = ({ id, placeholder, value, onChange, label, maxLength = 20 }) => {
   const [mostrarClave, setMostrarClave] = useState(false);
 
   return (
@@ -12,7 +12,7 @@ const OcultarClave = ({ id, placeholder, value, onChange, label }) => {
         id={id}
         type={mostrarClave ? 'text' : 'password'}
         placeholder={placeholder}
-        maxLength={6}
+        maxLength={maxLength}
         value={value}
         onChange={onChange}
       />

@@ -7,9 +7,5 @@ export const validacionLogin = (usuario, clave) => {
     return 'El número de documento no es válido.';
   }
 
-  if (clave.length !== 6) {
-    return 'La contraseña no es válida.';
-  }
-
   return '';
 };

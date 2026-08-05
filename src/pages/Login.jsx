@@ -6,6 +6,8 @@ import { useLogin } from '../services/queries';
 import { useUserStore } from '../store/userStore';
 import Swal from 'sweetalert2';
 import { useResetErrorBoundaryStore } from '../store/resetErrorBoundaryStore';
+// import DemoLoginButton from '../components/DemoLoginButton';
+import DemoResetButton from '../components/DemoResetButton';
 
 const Login = () => {
   const [usuario, setUsuario] = useState('');
@@ -96,6 +98,7 @@ const Login = () => {
             type='password'
             placeholder='ej: ******'
             value={clave}
+            maxLength={6}
             onChange={handleClaveChange}
           />
         </div>
@@ -108,6 +111,7 @@ const Login = () => {
         >
           Ingresar
         </button>
+
       </form>
 
       <p className='form-footer'>
@@ -116,6 +120,14 @@ const Login = () => {
           <Link to='/register'>Regístrese aquí.</Link>
         </span>
       </p>
+
+      <div className='h-0.25 w-[72%] bg-black/15'></div>
+
+      <div className='demo-register-help'>
+        <p className='demo-register-help__title'>¿Los DNIs ya fueron registrados? Restablece los datos de demostración.</p>
+        <DemoResetButton className='demo-action-button' />
+      </div>
+
     </div>
   );
 };

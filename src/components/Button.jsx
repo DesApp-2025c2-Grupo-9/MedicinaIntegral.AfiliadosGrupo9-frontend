@@ -34,7 +34,7 @@ const variants = cva(
       {
         state: 'disabled',
         style: 'outln',
-        class: ['border-gris-border bg-gris-placeholder text-gris-border']
+        class: ['border-gris-border text-gris-border']
       }
     ],
     defaultVariants: {
